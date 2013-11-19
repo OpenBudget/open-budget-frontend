@@ -1,0 +1,274 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>מה התכניות?</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+	<link rel="stylesheet" href="styles/tablesorter.theme.blue.css">
+        <!-- endbuild -->
+        <!-- build:js scripts/vendor/modernizr.js -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+        <div class="container">
+            <div class="header">
+                <ul class="nav nav-pills pull-left">
+                  <li><a href="#changes" data-toggle="pill">העברות</a></li>
+                    <li><a href="#supports" data-toggle="pill">תמיכות</a></li>
+                    <li><a href="#history" data-toggle="pill">היסטוריה</a></li>
+                    <li class="active"><a href="#general" data-toggle="pill">כללי</a></li>
+                </ul>
+                <h3 class="text-muted">מה התכניות?</h3>
+            </div>
+
+            <div class="row">
+		<div class="col-lg-3">
+		  <div class="input-group" style="direction:ltr" id="new-program">
+		    <span class="input-group-btn">
+		      <button class="btn btn-default" type="button">חפש</button>
+		    </span>
+		    <input type="text" class="form-control" placeholder="6 ספרות">
+		  </div><!-- /input-group -->
+		</div><!-- /.col-lg-6 -->
+	        <div class="col-lg-9">
+		  <ol class="breadcrumb template" data-template="breadcrumbs">
+		  </ol>
+		</div>
+	    </div>
+
+	    <div class="tab-content">
+	      <div class="tab-pane active" id="general">
+		<div class="row template" data-template="general-info">
+		</div>
+		<h3>איפה זה מופיע בספר התקציב?</h3>
+		<div class="row template" data-template="hierarchy">
+		</div>
+	      </div>
+	      <div class="tab-pane" id="history">
+		<h3>נתונים היסטוריים של הסעיף (במחירי 2013)</h3>
+		<div class="row template" data-template="history-table">
+		</div>
+	      </div>
+	      <div class="tab-pane" id="supports">
+		<h3>תמיכות שונות מתוך תקנות תחת התכנית הזו</h3>
+		<div class="row template" data-template="supports-table">
+		</div>
+	      </div>
+	      <div class="tab-pane" id="changes">
+		<h3>העברות תקציביות בעבר מתוך תכנית זו</h3>
+		<div class="row template" data-template="changes-table">
+		</div>
+	      </div>
+            </div>
+
+            <div class="footer">
+            </div>
+
+        </div>
+
+
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	  ga('create', 'UA-10203855-7', 'open-budget.org.il');
+	</script>
+
+        <!-- build:js scripts/main.js -->
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js(.tmp) scripts/coffee.js -->
+        <script src="scripts/hello.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js scripts/plugins.js -->
+        <script src="bower_components/sass-bootstrap/js/affix.js"></script>
+        <script src="bower_components/sass-bootstrap/js/alert.js"></script>
+        <script src="bower_components/sass-bootstrap/js/dropdown.js"></script>
+        <script src="bower_components/sass-bootstrap/js/tooltip.js"></script>
+        <script src="bower_components/sass-bootstrap/js/modal.js"></script>
+        <script src="bower_components/sass-bootstrap/js/transition.js"></script>
+        <script src="bower_components/sass-bootstrap/js/button.js"></script>
+        <script src="bower_components/sass-bootstrap/js/popover.js"></script>
+        <script src="bower_components/sass-bootstrap/js/carousel.js"></script>
+        <script src="bower_components/sass-bootstrap/js/scrollspy.js"></script>
+        <script src="bower_components/sass-bootstrap/js/collapse.js"></script>
+        <script src="bower_components/sass-bootstrap/js/tab.js"></script>
+        <script src="bower_components/underscore/underscore-min.js"></script>
+	<script src="bower_components/jquery.tablesorter/js/jquery.tablesorter.min.js"></script>
+	<script src="bower_components/jquery-hashchange/jquery.ba-hashchange.js"></script>
+        <!-- endbuild -->
+</body>
+
+<script type="text/plain" id="general-info">
+<div class="jumbotron">
+  <h2>בשנת <%= rec.year %> תקציב <%= rec.title %> הינו </h2>
+  <h1>
+    <% if ( rec.gross_allocated !== null ) { %>
+    <%= format_number(rec.gross_allocated) %> 
+    <% } else { %> 
+    <%= format_number(rec.net_allocated) %>
+    <% } %>
+ </h1>
+</div>
+</script>
+
+<script type="text/plain" id="breadcrumbs">
+  <% _.each(parents, function(parent) { %>
+  <li><a href="#"><%= parent.title %></a></li>
+  <% }); %>
+  <li><a href="#" class="active"><%= rec.title %> <small>(<%= rec.code.substring(2) %>)</small></a></li>
+</script>
+
+<script type="text/plain" id="supports-table">
+  <% _.each(supports, function(value, key) { %>
+  <h4><%= value.title %> <small>(<%= value.code.substring(2) %>)</small> / <%= value.subject %></h4>
+  <table class="tablesorter">
+    <thead>
+      <th>שם הארגון</th>
+      <th>ממוצע תמיכות</th>
+      <th>פירוט</th>
+    </thead>
+    <tbody>
+      <% _.each( value.recepients, function( recepient, recepient_name ) {  %>
+      <tr>
+	<td data-sortkey="<%= recepient_name %>"><%= recepient_name %></td>
+	<td data-sortkey="<%= recepient.sum / recepient.count %>"><%= format_number(recepient.sum / recepient.count,true) %></td>
+	<td>
+	  <% _.each(recepient.kinds, function(years,kind) { %>
+	  <em><%= kind %></em>
+	  <table>
+	    <thead>
+	      <tr>
+		<th>שנה</th>
+		<th>מספר מקבלי התמיכה</th>
+		<th>סכום שאושר</th>
+		<th>בוצע בפועל</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	    <% _.each(years, function(item) { %>
+	    <tr>
+	      <td><%= item.year%></td>
+	      <td><%= item.num_supported%></td>
+	      <td><%= format_number(item.amount_allocated,true) %></td>
+	      <td><%= format_number(item.amount_used,true) %></td>
+	    </tr>
+	    <% }); %>
+	    </tbody>
+	  </table>
+	  
+	  <% }); %>
+	</td>
+      </tr>
+      <% }); %>
+  </tbody></table>
+  <% }); %>
+</script>
+
+<script type="text/plain" id="changes-table">
+  <table class="tablesorter">
+    <thead>
+      <tr>
+	<th data-date-format="ddmmyyyy">מועד ההעברה</th>
+	<th>בקשה</th>
+	<th>כותרת השינוי</th>
+	<th>סוג השינוי</th>
+	<th>הוצאה נטו</th>
+	<th>הוצאה מותנית</th>
+	<th>הכנסה מיועדת</th>
+	<th>הרשאה להתחייב</th>
+	<th>שיא כח אדם</th>
+	<th>דברי הסבר</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(changes, function(item) { %>
+      <tr>
+	<td data-sortkey="<%= item.date %>"><%= item.date %></td>
+	<td data-sortkey="<%= item.req_title %>"><%= item.req_title %></td>
+	<td data-sortkey="<%= item.change_title %>"><%= item.change_title %></td>
+	<td data-sortkey="<%= item.change_type_name %>"><%= item.change_type_name %></td>
+	<td data-sortkey="<%= item.net_expense_diff%>"><%= format_number(item.net_expense_diff) %></td>
+	<td data-sortkey="<%= item.gross_expense_diff%>"><%= format_number(item.gross_expense_diff) %></td>
+	<td data-sortkey="<%= item.allocated_income_diff%>"><%= format_number(item.allocated_income_diff) %></td>
+	<td data-sortkey="<%= item.commitment_limit_diff%>"><%= format_number(item.commitment_limit_diff) %></td>
+	<td data-sortkey="<%= item.personnel_max_diff%>"><%= item.personnel_max_diff %></td>
+	<td data-sortkey=""><%= item.explanation %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+</script>
+
+<script type="text/plain" id="history-table">
+  <table class="tablesorter">
+    <thead>
+      <tr>
+	<th>שם הסעיף</th>
+	<th>שנה</th>
+	<th>תקציב מאושר (נטו)</th>
+	<th>תקציב על שינוייו (נטו)</th>
+	<th>ביצוע (נטו)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(history, function(item) { %>
+      <tr>
+	<td data-sortkey="<%= item.title %>"><%= item.title %></td>
+	<td data-sortkey="<%= item.year %>"><%= item.year %></td>
+	<td data-sortkey="<%= item.net_allocated%>"><%= format_number(item.net_allocated) %></td>
+	<td data-sortkey="<%= item.net_revised%>"><%= format_number(item.net_revised) %></td>
+	<td data-sortkey="<%= item.net_used%>"><%= format_number(item.net_used) %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  
+</script>
+
+<script type="text/plain" id="hierarchy">
+  <% for ( i = 2; i <= 4 ; i++ ) { %>
+  <div class="col-lg-4 pull-right">
+    <h4><%= titles[''+i] %></h4>
+    <% _.each(hierarchy[''+i], function(item) { %>
+    <span class="hierarchy-item
+      <% if ( rec.code.indexOf(item.code) == 0 ) { %>
+      active
+      <% } %>">
+      <small><%= item.code.substring(2) %></small>
+      <span class="hierarchy-item-title">      
+	<%= item.title %>
+      </span>
+      <span class="hierarchy-item-sum">      
+	<%= format_number(item.net_allocated) %>
+      </span>
+    </span>
+    <% }); %>
+  </div>
+  <% } %>
+</script>
+
+</html>
