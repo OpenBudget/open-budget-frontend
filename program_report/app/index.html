@@ -10,10 +10,12 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css(.tmp) styles/main.css -->
+
+	<!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
-	<link rel="stylesheet" href="styles/tablesorter.theme.blue.css">
+        <link rel="stylesheet" href="tablesorter.theme.blue.css">
         <!-- endbuild -->
+
         <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
         <!-- endbuild -->
@@ -208,7 +210,11 @@
     <tbody>
       <% _.each(changes, function(item) { %>
       <tr>
+	<% if ( typeof item.date !== "undefined" && item.date !== null ) { %>
 	<td data-sortkey="<%= item.date %>"><%= item.date %></td>
+	<% } else { %>
+	<td data-sortkey="<%= item.year %>"><%= item.year %></td>
+	<% } %>
 	<td data-sortkey="<%= item.req_title %>"><%= item.req_title %></td>
 	<td data-sortkey="<%= item.change_title %>"><%= item.change_title %></td>
 	<td data-sortkey="<%= item.change_type_name %>"><%= item.change_type_name %></td>
