@@ -13,7 +13,10 @@
 
 	<!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
-        <link rel="stylesheet" href="tablesorter.theme.blue.css">
+        <!-- endbuild -->
+	<!-- build:css styles/modules.css -->
+        <link rel="stylesheet" href="styles/tablesorter.theme.blue.css">
+	<link rel="stylesheet" href="bower_components/typeahead.js-bootstrap.css/typeahead.js-bootstrap.css">
         <!-- endbuild -->
 
         <!-- build:js scripts/vendor/modernizr.js -->
@@ -38,41 +41,50 @@
             </div>
 
             <div class="row">
-		<div class="col-lg-3">
-		  <div class="input-group" style="direction:ltr" id="new-program">
-		    <span class="input-group-btn">
-		      <button class="btn btn-default" type="button">חפש</button>
-		    </span>
-		    <input type="text" class="form-control" placeholder="6 ספרות">
-		  </div><!-- /input-group -->
-		</div><!-- /.col-lg-6 -->
-	        <div class="col-lg-9">
-		  <ol class="breadcrumb template" data-template="breadcrumbs">
-		  </ol>
+	      <div class="col-lg-9 pull-left">
+		<div class="input-group" style="direction:ltr" id="new-program">
+		  <span class="input-group-btn">
+		    <button class="btn btn-default" type="button">חפש</button>
+		  </span>
+		  <input type="text" id="search-item" class="input-lg form-control typeahead" autocomplete="off" placeholder="6 ספרות">
 		</div>
+	      </div>
+            </div>
+	    
+            <div class="row">
+	      <div class="col-lg-12">
+		<ol class="breadcrumb template" data-template="breadcrumbs" data-debug="n" data-path="budget/{code}/{year}/parents">
+		</ol>
+	      </div>
 	    </div>
 
 	    <div class="tab-content">
 	      <div class="tab-pane active" id="general">
-		<div class="row template" data-template="general-info">
+		<div class="row template" data-template="general-info" data-debug="n" data-path="budget/{code}/{year}">
 		</div>
 		<h3>איפה זה מופיע בספר התקציב?</h3>
-		<div class="row template" data-template="hierarchy">
+		<div class="row">
+		  <div class="col-lg-4 pull-right template" data-template="hierarchy" data-debug="n" data-extra='{"title":"תחומי פעולה"}' data-path="budget/{code^^}/{year}/kids">
+		  </div>
+		  <div class="col-lg-4 pull-right template" data-template="hierarchy" data-debug="n" data-extra='{"title":"תכניות"}' data-path="budget/{code^}/{year}/kids">
+		  </div>
+		  <div class="col-lg-4 pull-right template" data-template="hierarchy" data-debug="n" data-extra='{"title":"תקנות"}' data-path="budget/{code}/{year}/kids">
+		  </div>
 		</div>
 	      </div>
 	      <div class="tab-pane" id="history">
 		<h3>נתונים היסטוריים של הסעיף (במחירי 2013)</h3>
-		<div class="row template" data-template="history-table">
+		<div class="row template" data-template="history-table" data-debug="n" data-path="budget/{code}">
 		</div>
 	      </div>
 	      <div class="tab-pane" id="supports">
 		<h3>תמיכות שונות מתוך תקנות תחת התכנית הזו</h3>
-		<div class="row template" data-template="supports-table">
+		<div class="row template" data-template="supports-table" data-debug="n" data-path="supports/{code}" data-pagesize="3">
 		</div>
 	      </div>
 	      <div class="tab-pane" id="changes">
 		<h3>העברות תקציביות בעבר מתוך תכנית זו</h3>
-		<div class="row template" data-template="changes-table">
+		<div class="row template" data-template="changes-table" data-debug="n" data-path="changes/{code}"  data-pagesize="3">
 		</div>
 	      </div>
             </div>
@@ -98,10 +110,6 @@
 	  ga('create', 'UA-10203855-7', 'open-budget.org.il');
 	</script>
 
-        <!-- build:js scripts/main.js -->
-        <script src="scripts/main.js"></script>
-        <!-- endbuild -->
-
         <!-- build:js(.tmp) scripts/coffee.js -->
         <script src="scripts/hello.js"></script>
         <!-- endbuild -->
@@ -122,30 +130,38 @@
         <script src="bower_components/underscore/underscore-min.js"></script>
 	<script src="bower_components/jquery.tablesorter/js/jquery.tablesorter.min.js"></script>
 	<script src="bower_components/jquery-hashchange/jquery.ba-hashchange.js"></script>
+	<script src="bower_components/typeahead.js/dist/typeahead.min.js"></script>
+	<script src="bower_components/hogan/web/1.0.0/hogan.js"></script>
+	
+        <!-- endbuild -->
+
+        <!-- build:js scripts/main.js -->
+        <script src="scripts/main.js"></script>
+        <script src="scripts/jquery.tablesorter.pager.js"></script>
         <!-- endbuild -->
 </body>
 
 <script type="text/plain" id="general-info">
 <div class="jumbotron">
-  <h2>בשנת <%= rec.year %> תקציב <%= rec.title %> הינו </h2>
+  <h2>בשנת <%= data.year %> תקציב <%= data.title %> הינו </h2>
   <h1>
-    <% if ( rec.gross_allocated !== null ) { %>
-    <%= format_number(rec.gross_allocated) %> 
+    <% if ( data.gross_allocated !== null ) { %>
+    <%= format_number(data.gross_allocated) %> 
     <% } else { %> 
-    <%= format_number(rec.net_allocated) %>
+    <%= format_number(data.net_allocated) %>
     <% } %>
  </h1>
 </div>
 </script>
 
 <script type="text/plain" id="breadcrumbs">
-  <% _.each(parents, function(parent) { %>
+  <% _.each(data, function(parent) { %>
   <li><a href="#"><%= parent.title %></a></li>
   <% }); %>
-  <li><a href="#" class="active"><%= rec.title %> <small>(<%= rec.code.substring(2) %>)</small></a></li>
+  <li><a href="#" class="active"><%= data[3].title %> <small>(<%= data[3].code.substring(2) %>)</small></a></li>
 </script>
 
-<script type="text/plain" id="supports-table">
+<script type="text/plain" id="old-supports-table">
   <% _.each(supports, function(value, key) { %>
   <h4><%= value.title %> <small>(<%= value.code.substring(2) %>)</small> / <%= value.subject %></h4>
   <table class="tablesorter">
@@ -192,6 +208,21 @@
 </script>
 
 <script type="text/plain" id="changes-table">
+  <div class="pager">
+    <form>
+      <img src="icons/first.png" class="first"/>
+      <img src="icons/prev.png" class="prev"/>
+      <input type="text" class="pagedisplay"/>
+      <img src="icons/next.png" class="next"/>
+      <img src="icons/last.png" class="last"/>
+      <select class="pagesize">
+	<option value="10">10</option>
+	<option value="20">20</option>
+	<option value="30">30</option>
+	<option value="40">40</option>
+      </select>
+    </form>
+  </div>
   <table class="tablesorter">
     <thead>
       <tr>
@@ -208,9 +239,9 @@
       </tr>
     </thead>
     <tbody>
-      <% _.each(changes, function(item) { %>
+      <% _.each(data, function(item) { %>
       <tr>
-	<% if ( typeof item.date !== "undefined" && item.date !== null ) { %>
+	<% if ( item.date ) { %>
 	<td data-sortkey="<%= item.date %>"><%= item.date %></td>
 	<% } else { %>
 	<td data-sortkey="<%= item.year %>"><%= item.year %></td>
@@ -241,7 +272,7 @@
       </tr>
     </thead>
     <tbody>
-      <% _.each(history, function(item) { %>
+      <% _.each(data, function(item) { %>
       <tr>
 	<td data-sortkey="<%= item.title %>"><%= item.title %></td>
 	<td data-sortkey="<%= item.year %>"><%= item.year %></td>
@@ -255,13 +286,54 @@
   
 </script>
 
+<script type="text/plain" id="supports-table">
+  <div class="pager">
+    <form>
+      <img src="icons/first.png" class="first"/>
+      <img src="icons/prev.png" class="prev"/>
+      <input type="text" class="pagedisplay"/>
+      <img src="icons/next.png" class="next"/>
+      <img src="icons/last.png" class="last"/>
+      <select class="pagesize">
+	<option value="10">10</option>
+	<option value="20">20</option>
+	<option value="30">30</option>
+	<option value="40">40</option>
+      </select>
+    </form>
+  </div>
+  <table class="tablesorter">
+    <thead>
+      <th>תקנה</th>
+      <th>נושא</th>
+      <th>שם הארגון</th>
+      <th>פירוט</th>
+      <th>שנה</th>
+      <th>מספר מקבלי התמיכה</th>
+      <th>סכום שאושר</th>
+      <th>בוצע בפועל</th>
+    </thead>
+    <tbody>
+      <% _.each(data, function(item, key) { %>
+      <tr>
+	<td data-sortkey="<%= item.code %>"><%= item.title%> <small>(<%= item.code %>)</small></td>
+	<td data-sortkey="<%= item.subject %>"><%= item.subject%></td>
+	<td data-sortkey="<%= item.recepient %>"><%= item.recepient%></td>
+	<td data-sortkey="<%= item.kind %>"><%= item.kind%></td>
+
+	<td><%= item.year%></td>
+	<td><%= item.num_supported%></td>
+	<td><%= format_number(item.amount_allocated,true) %></td>
+	<td><%= format_number(item.amount_used,true) %></td>
+      <% }); %>
+  </tbody></table>
+</script>
+
 <script type="text/plain" id="hierarchy">
-  <% for ( i = 2; i <= 4 ; i++ ) { %>
-  <div class="col-lg-4 pull-right">
-    <h4><%= titles[''+i] %></h4>
-    <% _.each(hierarchy[''+i], function(item) { %>
+    <h4><%= extra.title %></h4>
+    <% _.each(data, function(item) { %>
     <span class="hierarchy-item
-      <% if ( rec.code.indexOf(item.code) == 0 ) { %>
+      <% if ( false && item.code.indexOf(item.code) == 0 ) { %>
       active
       <% } %>">
       <small><%= item.code.substring(2) %></small>
@@ -273,8 +345,6 @@
       </span>
     </span>
     <% }); %>
-  </div>
-  <% } %>
 </script>
 
 </html>

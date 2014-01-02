@@ -11,7 +11,7 @@ window.format_number = (num,is_shekels) ->
         if is_shekels == true
                 num = num / 1000
 
-        if num == 0
+        if not num or num == 0
                 "—"
         else if num < 1000
                 num_to_str(num) + " אלף ש״ח "
@@ -28,7 +28,7 @@ handle_data = (data) ->
                 '2': 'תחומי פעולה',
                 '3': 'תכניות',
                 '4': 'תקנות'
-        #for i in [0..2]
+
         _.each( $(".template"), (e) ->
                 el = $(e)
                 template_name = el.attr('data-template')
@@ -49,21 +49,91 @@ handle_data = (data) ->
                         
         )
 
+
+process_templates = (code,year) ->
+        _.each( $(".template"), (e) ->
+                el = $(e)
+                template_name = el.attr('data-template')
+                template = $("#"+template_name).html()
+                api_path = el.attr('data-path')
+                debug = el.attr('data-debug') != "n"
+                extra = el.attr('data-extra')
+                pagesize = el.attr('data-pagesize')
+                if extra
+                        try
+                                extra = JSON.parse(extra)
+                        catch
+                                console.log 'cant parse '+extra
+                if pagesize
+                        pagesize = parseInt(pagesize)
+                console.log "pagesize:"+pagesize
+                if api_path
+                        console.log api_path
+                        api_path = api_path.replace('{code}',"00"+code)
+                        api_path = api_path.replace('{code^}',"00"+code.substring(0,code.length-2))
+                        api_path = api_path.replace('{code^^}',"00"+code.substring(0,code.length-4))
+                        api_path = api_path.replace('{code^^^}',"00"+code.substring(0,code.length-6))
+                        api_path = api_path.replace('{year}',year)
+                        url = 'http://the.open-budget.org.il/api/' + api_path
+                        render_template = (data) ->
+                                data = {'data':data}
+                                data.extra = extra
+                                if debug then console.log data
+                                if debug then console.log template
+                                rendered = _.template(template,data)
+                                el.html( rendered )
+                                el.css("display","inherit")                     
+                                if debug then console.log 'rendered',rendered
+                                table = el.find(".tablesorter").tablesorter(
+                                        theme:'blue'
+                                        textExtraction: (node)->
+                                                $(node).attr('data-sortkey')
+                                        )
+                                if pagesize
+                                    table.tablesorterPager({container: el.find(".pager"), size: 10, positionFixed: false})
+
+                        $.get(url, render_template, 'jsonp')
+                                                        
+                )
+
 get_program = ->
-        program_num = $("#new-program input").val()
+        program_num = $("#search-item").val()
         console.log "loading new program "+program_num
-        window.location.hash = "#00"+program_num+"/"+2013
+        window.location.hash = "#"+program_num+"/"+2013
 
 $ ->
         $(".template, .tab-content").css("display","none")
         $(window).hashchange( ->
+                $(".tab-content").css("display","none")
                 queryString = window.location.hash.substring(1)
                 console.log queryString
-                $.get('http://the.open-budget.org.il/report/api/'+queryString, handle_data, 'jsonp')
+                queryString = queryString.split("/")
+                code = queryString[0]
+                year = queryString[1]
+                process_templates(code,year)
+                #$.get('http://the.open-budget.org.il/report/api/'+queryString, handle_data, 'jsonp')
                 location = window.location.pathname + window.location.search + window.location.hash
                 window.ga('send', 'pageview', location)
+                $(".tab-content").css("display","inherit")
         )
-        $(".tab-content").css("display","inherit")
-        $("#new-program input").change( get_program )
+        $("#search-item").typeahead(
+                name: 'budgets'
+                limit: 20
+                engine: Hogan
+                template: [ '<p class="item-code">{{code}}</p>'
+                            '<p class="item-title">{{title}}</p>' ].join('')
+                remote:
+                        url: 'http://the.open-budget.org.il/api/search/budget/2013?q=%QUERY&limit=20'
+                        dataType: 'jsonp'
+                        filter: (l) ->
+                                for x in l
+                                        x._code = x.code.substring(2)
+                                        x.value = x._code
+                                l
+        )
+        $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
+        $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+        $("#search-item").on('typeahead:selected', get_program )
+        $("#search-item").on('change', get_program )
         $("#new-program .btn").click( get_program )
         $( window ).hashchange()
