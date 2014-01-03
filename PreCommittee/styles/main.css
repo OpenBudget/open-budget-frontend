@@ -1,0 +1,198 @@
+body
+{
+	padding: 0 200px;
+}
+.main label
+{
+	width: 80px;
+}
+.main ul
+{
+	margin-bottom: 0;
+}
+
+
+/*** Bootstrap overrides ***/
+
+/* form */
+.form-control.inline_input_heb
+{
+	display: inline-block;
+}
+.form-control.short_text
+{
+	width: 200px;
+}
+.form-control.very_short_text
+{
+	width: 130px;
+}
+
+/* modal */
+.modal-dialog .modal-header, .modal-dialog .modal-body, .modal-dialog .modal-footer
+{
+	padding: 10px 20px 10px 10px;
+}
+.modal-dialog .modal-footer
+{	
+	text-align: left;
+}
+.modal-dialog .close
+{
+	float: left;
+}
+
+/* icons */
+.glyphicon:hover
+{
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 0.5s;
+	-webkit-transition: color 0.5s; /* Safari */
+}
+
+
+/*** home ***/
+
+#dropzone
+{
+	margin: 30px 0;
+	border: #aaaaaa 3px dashed;
+	width: 250px;
+	height: 250px;	
+	text-align: center;
+}
+#dropzone h6
+{
+	margin-top: 0;
+	line-height: 250px;
+	font-size: 11px;
+	font-style: italic;
+	color: #bbbbbb;
+}
+.home_container
+{
+	padding: 20px 0;
+}
+
+
+/*** request ***/
+
+#requestHeader
+{
+	border-bottom: 1px solid #181818;
+	background-color: #686868;
+	padding: 10px 20px;
+}
+#requestHeader h3, #requestHeader h4
+{
+	display: inline-block;
+	margin: 0 0 0 10px;
+}
+#requestHeader h3
+{
+	color: #e0e0e0;
+	font-size: 20px;
+}
+#requestHeader h4
+{
+	color: #dddddd;
+	font-size: 18px;
+}
+#pagesCarousel .carousel-control 
+{	
+	top: 150px;
+	bottom: auto;
+	width: 0;
+	transition: opacity 0.5s;
+	-webkit-transition: opacity 0.5s; /* Safari */
+}
+#pagesCarousel .glyphicon-chevron-right, #pagesCarousel .glyphicon-chevron-left
+{
+	color: #333333;
+}
+#pagesCarousel .glyphicon-chevron-left
+{
+	left: 20px;
+}
+#pagesCarousel .glyphicon-chevron-right
+{
+	right: 20px;
+}
+.img_container
+{
+	text-align: center;
+	padding: 10px 0;
+	border-bottom: 1px solid #c4c4c4;
+}
+.img_container img
+{
+	max-height: 330px;
+}
+
+.transfer_details
+{
+	padding: 20px 10px;
+}
+.transfer_details ul
+{
+	padding: 0;
+	list-style: none;
+}
+.transfer_details ul li .form-group
+{
+	display: inline-block;
+}
+.transfers_header
+{	
+	margin-bottom: 10px;
+}
+.transfers_header h5
+{
+	display: inline-block;	
+	font-weight: bold;
+	color:; #333333;
+	text-decoration: underline;
+}
+.articleId
+{
+	width: 180px;
+}
+.articleName
+{
+	width: 350px;
+}
+.amount
+{
+	width: 130px;
+}
+.transfer_details .glyphicon.glyphicon-remove, #transferDetails .glyphicon.glyphicon-remove:active
+{
+	margin-right: 20px;
+	top: 4px;
+	font-size: 18px;
+	color: #cc0000;
+}
+.transfer_details .glyphicon.glyphicon-remove:hover
+{	
+	color: #ee0000;
+}
+.transfer_details .glyphicon.glyphicon-plus, #transferDetails .glyphicon.glyphicon-plus:active
+{	
+	font-size: 20px;
+	color: #333333;
+
+}
+.transfer_details .glyphicon.glyphicon-plus:hover
+{	
+	color: #555555;
+}
+.btns_container
+{
+	text-align: left;
+	margin-top: 10px;
+}
+.page_details_btn
+{
+	margin-left: 10px;
+}
