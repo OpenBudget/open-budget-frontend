@@ -1,0 +1,46 @@
+
+tasks - client:
+
+1. solve rtl value display in amount text box
+2. get article name by ID (via AJAX request to existing api)
+3. input validation before page save
+4. file loading indicator
+5. design
+6. add/fix animations
+7. save transfers on input blur
+8. article ID textbox - limit to digits, 6 chars, "digit" font
+9. add row - automatic after article ID input is entered
+10. remove save / clean / add row buttons - make transfers area more dense
+11. keyboard events - left, right, flip, zoom
+
+tasks - server:
+
+1. 
+
+
+
+html template engine (JINJA2):
+
+http://jinja.pocoo.org/docs/
+
+
+file upload plugin:
+
+https://github.com/weixiyen/jquery-filedrop
+
+
+Client-side templating - jQote2:
+
+http://aefxx.com/jquery-plugins/jqote2/
+
+
+HTML PDF viewer:
+http://www.jquery4u.com/javascript/javascriptjquery-pdf-viewer-plugins/
+http://pdfobject.com/
+http://www.jqueryrain.com/2012/09/best-jquery-pdf-viewer-plugin-examples/?goback=%2Egde_2204708_member_159206518#%21
+http://cdn.mozilla.net/pdfjs/tracemonkey.pdf - Good one
+
+Converting PDF to images:
+http://stackoverflow.com/questions/2002055/converting-pdf-to-images-automatically
+http://nedbatchelder.com/blog/200712/extracting_jpgs_from_pdfs.html
+http://stackoverflow.com/questions/331918/converting-a-pdf-to-a-series-of-images-with-python

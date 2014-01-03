@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link type="text/css" rel="stylesheet" href="/styles/datepicker.css" />
+{% endblock styles %}
+
+{% block content %}
+<div class="home_container">
+  <div class="form-group">
+    <label for="committeeDate">תאריך ועדה</label>
+    <input type="text" class="form-control datepicker inline_input_heb short_text" id="committeeDate" data-inputId="committeeDateVal">
+  </div>
+  <div class="form-group">
+    <label for="requestDate">תאריך בקשה</label>
+    <input type="text" class="form-control datepicker inline_input_heb short_text" id="requestDate" data-inputId="requestDateVal">
+  </div>
+  <div id="dropzone">
+    <h6>גרור קובץ או לחץ</h6>
+  </div>
+  <input type="file" id="uploadBtn" value="upload PDF" />
+  <form action="/request" method="post">
+    <input type="hidden" name="requestDateVal" id="requestDateVal" />
+    <input type="hidden" name="committeeDateVal" id="committeeDateVal" />
+    <input type="hidden" name="requestFileUrl" id="requestFileUrl" />
+    <input type="submit" class="btn btn-default" value="המשך" />
+  </form>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript" src="/scripts/jquery.filedrop.js"></script>
+<script type="text/javascript" src="/scripts/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/scripts/home.js"></script>
+{% endblock scripts %}
