@@ -13,14 +13,28 @@ window.format_number = (num,is_shekels) ->
 
         if not num or num == 0
                 "—"
-        else if num < 1000
+        else if Math.abs(num) < 1000
                 num_to_str(num) + " אלף ש״ח "
-        else if num < 1000000
+        else if Math.abs(num) < 1000000
                 num_to_str(num / 1000) + " מיליון ש״ח "
-        else if num < 1000000000
+        else if Math.abs(num) < 1000000000
                 num_to_str(num / 1000000) + " מיליארד ש״ח "
         else
                 "—"
+
+window.format_percent = (revised,allocated) ->
+        if not revised or not allocated or allocated == 0
+                return "—"
+        num = revised / allocated
+        num = (num*100.0)-100
+        bold = false
+        bold = num > 25 or num < -25
+        ret = num.toFixed(2)+"%"
+        ret = "&lrm;" + ret  + "&rlm;"
+        if bold
+                "<strong style='color:red'>"+ret+"</strong>"
+        else
+                ret
 
 handle_data = (data) ->
         console.log data
