@@ -134,6 +134,12 @@ module.exports = function (grunt) {
         }
       }
     },
+    'bower-install': {
+      target: {
+        src: '<%= yeoman.app %>/index.html',
+	exclude: [ "app/bower_components/bootstrap/dist/css/bootstrap.css" ]
+      }
+    },
     // not used since Uglify task does concat,
     // but still available if needed
     /*concat: {

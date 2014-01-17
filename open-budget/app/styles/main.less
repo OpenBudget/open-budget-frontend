@@ -23,11 +23,6 @@ body {
     padding-right: 15px;
 }
 
-/* Custom page header */
-.header {
-    border-bottom: 1px solid #e5e5e5;
-}
-
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
     margin-top: 0;
@@ -67,25 +62,54 @@ body {
     margin-top: 28px;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-    .container {
-        max-width: 730px;
+/* Color scheme */
+@approved: #00AF6A;
+@spent: #F94641;
+@link: #00A1F6;
+@text: #3C4948;
+
+@gray: #cccccc;
+@darkgray: #888888;
+@lightgray: #eeeeee;
+
+/* Overview Widget */
+#overview-widget {
+    width: 100%;
+    height: 40px;
+
+    .changeBar rect {
+	fill: @gray;
     }
 
-    /* Remove the padding we set earlier */
-    .header,
-    .marketing,
-    .footer {
-        padding-left: 0;
-        padding-right: 0;
+    .approvedBar {
+	line {
+	    stroke: @approved;
+	}
+
+	rect.upper {
+	    fill-color: @lightgray
+	}
+
+	rect.lower {
+	    fill-color: @approved
+	}
+
     }
-    /* Space out the masthead */
-    .header {
-        margin-bottom: 30px;
+
+    .yearNumberText {
+	font-family: "verdana";
+	font-size: 8;
+	stroke: @gray;
     }
-    /* Remove the bottom border on the jumbotron for visual effect */
-    .jumbotron {
-        border-bottom: 0;
+
+    #upperApprovedRect {
+	stroke: @lightgray;
     }
+
+    #lowerApprovedRect {
+	stroke: @approved;
+    }
+
 }
+
+                 

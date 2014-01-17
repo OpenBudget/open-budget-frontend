@@ -36,6 +36,9 @@
                 <h3 class="text-muted">open budget2</h3>
             </div>
 
+	    <div class="row" id="overview-widget">
+	    </div>
+
             <div class="jumbotron">
                 <h1>'Allo, 'Allo!</h1>
                 <p class="lead">Always a pleasure scaffolding your apps.</p>
@@ -65,7 +68,12 @@
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
         <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/d3/d3.js"></script>
+        <script src="bower_components/underscore/underscore.js"></script>
+        <script src="bower_components/backbone/backbone.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -76,12 +84,15 @@
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
             e.src='//www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
+	    ga('create', 'UA-10203855-7', 'open-budget.org.il');
+            /*ga('send','pageview');*/
         </script>
 
         <!-- build:js scripts/main.js -->
         <script src="scripts/main.js"></script>
-        <script src="scripts/hello.js"></script>
+        <script src="scripts/models.js"></script>
+        <script src="scripts/widget_data.js"></script>
+        <script src="scripts/history_widget.js"></script>
         <!-- endbuild -->
 
         <!-- build:js scripts/vendor/bootstrap.js -->
