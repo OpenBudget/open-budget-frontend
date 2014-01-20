@@ -1,6 +1,25 @@
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import "../bower_components/bootstrap-rtl/less/bootstrap-rtl.less";
+@import url("http://fonts.googleapis.com/earlyaccess/alefhebrew.css");
 @icon-font-path: "../fonts/glyphicons/";
+
+
+/* Color scheme */
+@background: #F3F3F3;
+
+@approved: #00AF6A;
+@spent: #F94641;
+@reduced: #9F7E27; 
+@incresed: #5731E7;
+@link: #00A1F6;
+@text: #3C4948;
+
+@gray: #cccccc;
+@darkgray: #888888;
+@lightgray: #eeeeee;
+
+@selection: #3399ff;
+
 
 .browsehappy {
     margin: 0.2em 0;
@@ -13,6 +32,8 @@
 body {
     padding-top: 20px;
     padding-bottom: 20px;
+    background: @background;
+    font-family: "Alef Hebrew","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -29,6 +50,23 @@ body {
     margin-bottom: 0;
     line-height: 40px;
     padding-bottom: 19px;
+}
+
+strong.incresed {
+	color: @incresed;
+}
+
+strong.reduced {
+	color: @reduced;
+}
+
+strong.approved {
+	color: @approved;
+}
+
+#brief {
+	font-size: 24px;
+
 }
 
 /* Custom page footer */
@@ -62,17 +100,7 @@ body {
     margin-top: 28px;
 }
 
-/* Color scheme */
-@approved: #00AF6A;
-@spent: #F94641;
-@link: #00A1F6;
-@text: #3C4948;
-
-@gray: #cccccc;
-@darkgray: #888888;
-@lightgray: #eeeeee;
-
-@selection: #3399ff;
+// VISUALIZTION ///////////////////////////////
 
 /* In depth, zoomable Widget */
 #indepth-widget {
