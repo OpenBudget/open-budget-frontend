@@ -9,7 +9,7 @@
 
 @approved: #00AF6A;
 @spent: #F94641;
-@reduced: #9F7E27; 
+@decresed: #9F7E27; 
 @incresed: #5731E7;
 @link: #00A1F6;
 @text: #3C4948;
@@ -33,6 +33,9 @@ body {
     padding-top: 20px;
     padding-bottom: 20px;
     background: @background;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
     font-family: "Alef Hebrew","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
@@ -56,18 +59,103 @@ strong.incresed {
 	color: @incresed;
 }
 
-strong.reduced {
-	color: @reduced;
+strong.decresed {
+	color: @decresed;
 }
 
 strong.approved {
 	color: @approved;
 }
 
-#brief {
-	font-size: 24px;
 
+/////// ARTICLE ///////////
+
+article {
+	
+	&.six-fig{
+		margin-left: 72px;
+	}
+
+	background: #FFFFFF;
+	.box-shadow(-4px 2px 5px 0px rgba(0,0,0,0.10));
+
+	header {
+
+		position: relative;
+
+		h1 {
+			margin: 0 0 0 15px;
+			font-size: 24px;
+			padding: 15px;
+			font-weight: bold;
+		}
+
+		.nav {
+			font-size: 18px;
+			
+			>li>a {
+				padding: 17px 15px 15px;
+			}
+		}
+		#issue-num {
+			position: absolute;
+			left: -92px;
+			top: 4px;
+			direction: ltr;
+			font-size: 36px;
+
+			a {
+				padding: 5px 0;
+				margin-right: -12px;
+				background: @lightgray;
+				.box-shadow(-4px 0px 5px 0px rgba(0,0,0,0.10));
+
+				&.active, &.home {
+					background: none;
+				}
+
+				&.home {.box-shadow(none);}
+			}
+		}
+	}
+
+	&.incresed header {
+		background: lighten(@incresed, 40%);
+
+		h1, .nav>li>a.active, .nav>li>a:hover, div>a {
+			color: @incresed;
+		}
+		.nav>li>a {
+			color: lighten(@incresed, 20%);
+			&:hover {
+				background: lighten(@incresed, 35%);
+			}
+		}
+	}
+	&.decresed header {
+		background: lighten(@incresed, 40%);
+	}
+
+	section {
+
+	}
+
+	#brief {
+		padding: 40px;
+		font-size: 24px;
+	}
+
+	h2 {
+		margin: 0 0 10px;
+		font-size: 18px;
+		padding: 0 13px 5px;
+		border-bottom: 1px solid @link;
+		color: @link;
+		display: inline-block;
+	}
 }
+
+
 
 /* Custom page footer */
 .footer {
