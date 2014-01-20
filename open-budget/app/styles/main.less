@@ -10,7 +10,7 @@
 @approved: #00AF6A;
 @spent: #F94641;
 @reduced: #9F7E27; 
-@incresed: #5731E7;
+@increased: #5731E7;
 @link: #00A1F6;
 @text: #3C4948;
 
@@ -52,8 +52,8 @@ body {
     padding-bottom: 19px;
 }
 
-strong.incresed {
-	color: @incresed;
+strong.increased {
+	color: @increased;
 }
 
 strong.reduced {
@@ -130,10 +130,44 @@ strong.approved {
 
 	.graphPartApproved {
 	    stroke: @approved;
+
+	    .approvedLine {
+		stroke-width: 2;
+		&.increase {
+		    stroke: @increased;
+		}
+		&.reduce {
+		    stroke: @reduced;
+		}
+	    }
 	}
 
 	.graphPartChanged {
+
 	    stroke: @approved;
+
+	    .changeLine {
+		&.increase {
+		    stroke: @increased;
+		}
+		&.reduce {
+		    stroke: @reduced;
+		}
+	    }
+
+	    .changeBar {
+		stroke-width: 2;
+		&.increase {
+		    stroke: @increased;
+		}
+		&.reduce {
+		    stroke: @reduced;
+		}
+	    }
+	}
+
+	.graphPartUsed {
+	    stroke: @spent;
 	}
     }
 }

@@ -28,6 +28,7 @@ class WidgetData extends Backbone.Collection
         postProcess: () ->
                 if @gotAllEvents > 0
                         return
+                last_baseline = null
                 baseline = null
                 lastPoint = null
                 for point in @models
@@ -35,11 +36,16 @@ class WidgetData extends Backbone.Collection
                         point.set('date', new Date(time) )
                         kind = point.get('kind')
                         if kind  == 'approved'
+                                last_baseline = original_baseline
                                 baseline = point.get('value')
+                                original_baseline = baseline
                                 lastPoint = null
+                                if last_baseline != null
+                                        point.set('diff-yearly', baseline-last_baseline)
                         else if kind == 'change'
                                 if baseline != null
                                         baseline += point.get('diff-value')
+                                        point.set('diff-baseline',baseline - original_baseline)
                                         point.set('value', baseline)
                                         if lastPoint != null
                                                 lastPoint.set('width',time - lastPoint.get('timestamp'))
@@ -65,11 +71,11 @@ class WidgetData extends Backbone.Collection
                 @gotAllEvents -= 1
 
                 for m in models
-                        point = new WidgetDataPoint()
-                        point.set("source", m)
-                        point.set("kind", "approved")
                         value = m.get("net_allocated")
                         if value?
+                                point = new WidgetDataPoint()
+                                point.set("source", m)
+                                point.set("kind", "approved")
                                 point.set("value", m.get("net_allocated"))
                                 startYear = new Date(m.get('year'),0).valueOf()
                                 endYear = new Date(m.get('year'),11,31).valueOf()
@@ -87,6 +93,20 @@ class WidgetData extends Backbone.Collection
                                 point.set('width',endYear-startYear-1)
                                 point.set('src','budgetline')
                                 @add point
+
+                        value = m.get("net_used")
+                        if value?
+                                point = new WidgetDataPoint()
+                                point.set("source", m)
+                                point.set("kind", "used")
+                                point.set("value", m.get("net_used"))
+                                startYear = new Date(m.get('year'),11,20).valueOf()
+                                endYear = new Date(m.get('year'),11,31).valueOf()
+                                point.set('timestamp',startYear)
+                                point.set('width', endYear - startYear)
+                                point.set('src','budgetline')
+                                @add point
+                                
 
                 @postProcess()
 
