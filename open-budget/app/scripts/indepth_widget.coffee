@@ -1,4 +1,4 @@
-class OverviewWidget extends Backbone.View
+class IndepthWidget extends Backbone.View
 
         VALUE_MARGIN = 0.1
         CHART_MARGIN_TOP = 15 #px
@@ -9,8 +9,6 @@ class OverviewWidget extends Backbone.View
 
         initialize: ->
                 @model.on 'reset', => @render()
-                @pageModel = window.pageModel               
-                @pageModel.on "change:selection", => @renderSelectionBar()
 
                 @svg = d3.select(@el).append('svg')
                         .attr('width','100%')
@@ -34,15 +32,11 @@ class OverviewWidget extends Backbone.View
                                 if selection_src == 0
                                         if newX < selection[1]
                                                 selection[0] = newX
-                                        else
-                                                selection[0] = selection[1]-1
-                                        that.pageModel.set('selection', selection)
+                                                that.pageModel.set('selection', selection)
                                 if selection_src == 1
                                         if newX > selection[0]
                                                 selection[1] = newX
-                                        else
-                                                selection[1] = selection[0] + 1
-                                        that.pageModel.set('selection', selection)
+                                                that.pageModel.set('selection', selection)
                                 if selection_src == 2
                                         dx = d3.event.dx
                                         dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
@@ -109,11 +103,10 @@ class OverviewWidget extends Backbone.View
                         .domain([@minValue, @maxValue])
                         .range([@maxHeight+MARGIN, MARGIN])
 
-                selectionStart = @model.minTime * 0.5 + @model.maxTime * 0.5
-                selectionEnd = @model.minTime * 0.25 + @model.maxTime * 0.75
-                @pageModel.set('selection', [ selectionStart, selectionEnd ] )
+                @pageModel = window.pageModel               
+                @pageModel.on "change:selection", => @renderSelectionBar()
 
-                console.log 'OverviewWidget',@maxWidth,@maxHeight
+                console.log 'IndepthWidget',@maxWidth,@maxHeight
 
                 # Bars of individual changes
                 changeBars = @changeBars.selectAll('.changeBar')
@@ -178,6 +171,6 @@ class OverviewWidget extends Backbone.View
 
         
 $( ->
-        console.log "history_widget"
-        window.overviewWidget = new OverviewWidget({el: $("#overview-widget"),model: window.widgetData});
+        console.log "indepth_widget"
+        window.indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.widgetData});
 )

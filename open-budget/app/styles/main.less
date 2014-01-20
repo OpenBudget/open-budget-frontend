@@ -74,6 +74,60 @@ body {
 
 @selection: #3399ff;
 
+/* In depth, zoomable Widget */
+#indepth-widget {
+    width: 100%;
+    height: 440px;
+
+    .changeBar rect {
+	fill: @gray;
+    }
+
+    .approvedBar {
+	line {
+	    stroke: @approved;
+	}
+
+	rect.upper {
+	    fill-color: @lightgray
+	}
+
+	rect.lower {
+	    fill-color: @approved
+	}
+
+    }
+
+    .yearNumberText {
+	font-family: "verdana";
+	font-size: 8;
+	stroke: @gray;
+    }
+
+    #upperApprovedRect {
+	stroke: @lightgray;
+    }
+
+    #lowerApprovedRect {
+	stroke: @approved;
+    }
+
+    .selectionBar {
+	.selectionLine {
+	    stroke: @selection;
+	}
+
+	.selectionShade {
+	    fill: @selection;
+	    opacity: 0.3;
+	}
+
+	.selectionHandle {
+	    fill: @selection;
+	}
+    }
+}
+
 /* Overview Widget */
 #overview-widget {
     width: 100%;

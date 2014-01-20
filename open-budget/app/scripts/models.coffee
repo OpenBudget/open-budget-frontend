@@ -2,7 +2,6 @@
 $( ->
         window.pageModel = new PageModel()
         pageModel.set("budgetCode","00203804")
-    
 )
 
 class ChangeLine extends Backbone.Model
@@ -71,6 +70,7 @@ class PageModel extends Backbone.Model
         defaults:
                 budgetCode: null
                 baseURL: "http://the.open-budget.org.il"
+                selection: [ 0, 0 ]
 
         initialize: ->
                 @changeLines = new ChangeLines([], pageModel: @)
