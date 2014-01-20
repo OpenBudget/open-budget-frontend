@@ -1,7 +1,7 @@
 
 $( ->
         window.pageModel = new PageModel()
-        pageModel.set("budgetCode","00203804")
+        pageModel.set("budgetCode",window.location.hash.substring(1))
 )
 
 class ChangeLine extends Backbone.Model

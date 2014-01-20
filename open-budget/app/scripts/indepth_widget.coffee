@@ -1,98 +1,35 @@
 class IndepthWidget extends Backbone.View
 
-        VALUE_MARGIN = 0.1
-        CHART_MARGIN_TOP = 15 #px
-        MARGIN = 10 #px
+        TOP_PART_SIZE = 200 #p
+        TICKS = 10
 
-        HANDLE_WIDTH = 7
-        HANDLE_HEIGHT = 18
+        YEAR_LINE_HANG_LENGTH = 46 # px
+        CHANGE_LINE_HANG_LENGTH = 18 # px
 
         initialize: ->
-                @model.on 'reset', => @render()
+                @pageModel = window.pageModel
+                @pageModel.on 'change:selection', => @render()
 
                 @svg = d3.select(@el).append('svg')
                         .attr('width','100%')
                         .attr('height','100%')
-                @svg.append('defs').html('<pattern id="upperApprovedRect" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
-                @svg.append('defs').html('<pattern id="lowerApprovedRect" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
-                
-                @changeBars = @svg.append('g').attr('class','changeBar')
-                @approvedBars = @svg.append('g').attr('class','approvedBar')
-                @yearNumberTexts = @svg.append('g').attr('class','yearNumberText')
-                @selectionBar = @svg.append('g').attr('class','selectionBar')
-
-                that = @
-                @drag = d3.behavior.drag()
-                        .on("drag", (d) ->
-                                selection_orig = that.pageModel.get('selection')
-                                selection = selection_orig[0..1]
-                                selection_src = parseInt(d3.select(@).attr('data-selection'))
-                                x = d3.event.x
-                                newX = that.baseTimeScale.invert(x)
-                                if selection_src == 0
-                                        if newX < selection[1]
-                                                selection[0] = newX
-                                                that.pageModel.set('selection', selection)
-                                if selection_src == 1
-                                        if newX > selection[0]
-                                                selection[1] = newX
-                                                that.pageModel.set('selection', selection)
-                                if selection_src == 2
-                                        dx = d3.event.dx
-                                        dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
-                                        selection[0] += dx
-                                        selection[1] += dx
-                                        that.pageModel.set('selection', selection)
-                )
-
-        renderSelectionBar: ->
-
-                selection = @pageModel.get('selection')
-                selectionLines = @selectionBar.selectAll('.selectionLine').data( selection )
-                selectionLines.enter()
-                        .append('line')
-                        .attr('class','selectionLine')
-                selectionLines.attr('y1',0)
-                        .attr('y2',@maxHeight+2*MARGIN)
-                        .attr('x1',(d) => @timeScale(d) )
-                        .attr('x2',(d) => @timeScale(d) )
-
-                selectionHandles = @selectionBar.selectAll('.selectionHandle').data( selection )
-                selectionHandles.enter()
-                        .append('rect')
-                        .attr('class','selectionHandle')
-                        .attr('data-selection', (d,i) -> i)
-                        .attr('height', HANDLE_HEIGHT)
-                        .attr('width', HANDLE_WIDTH )
-                        .attr('y',(@maxHeight-HANDLE_HEIGHT)/2 + MARGIN )
-                        .call(@drag)
-                selectionHandles
-                        .attr('x',(d,i) => @timeScale(d) + if i == 0 then -HANDLE_WIDTH else 0 )
-                        
-                selectionShade = @selectionBar.selectAll('.selectionShade').data( [selection] )
-                selectionShade.enter()
-                        .append('rect')
-                        .attr('class','selectionShade')
-                        .attr('data-selection', '2')
-                        .attr('y',MARGIN)
-                        .attr('height',@maxHeight)
-                        .call(@drag)
-                selectionShade
-                        .attr('x',(d) => @timeScale(d[0]) )
-                        .attr('width',(d) => @timeScale(d[1]) - @timeScale(d[0]) )
-                        
+                @svg.append('defs').html('<pattern id="backgroundPattern" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
+        
+                @chart = @svg.append('g').attr('class','chart')
+                @bars = @svg.append('g').attr('class','bar')
 
         render: ->
 
                 @maxWidth = $(@el).width()
-                @maxHeight = $(@el).height() - 2*MARGIN
+                @maxHeight = $(@el).height()
 
-                valueRange = @model.maxValue - @model.minValue
-                valueMargin = VALUE_MARGIN*valueRange
-                @minValue = _.min([ @model.minValue - valueMargin, 0 ])
-                @maxValue = @model.maxValue + _.max([ valueMargin, ((valueRange * CHART_MARGIN_TOP) / (@maxHeight - CHART_MARGIN_TOP))])
+                @setValueRange()
+
+                @minTime = @pageModel.get('selection')[0]
+                @maxTime = @pageModel.get('selection')[1]
+                
                 @baseTimeScale = d3.scale.linear()
-                        .domain([@model.minTime, @model.maxTime])
+                        .domain([@minTime, @maxTime])
                         .range([0, @maxWidth])
                 @timeScale = (t) =>
                         year = new Date(t).getFullYear()
@@ -101,74 +38,131 @@ class IndepthWidget extends Backbone.View
                         @baseTimeScale( base + (t - base) * 0.98 )
                 @valueScale = d3.scale.linear()
                         .domain([@minValue, @maxValue])
-                        .range([@maxHeight+MARGIN, MARGIN])
+                        .range([TOP_PART_SIZE, 0])
 
-                @pageModel = window.pageModel               
-                @pageModel.on "change:selection", => @renderSelectionBar()
+                @chart.selectAll('.background').data([1])
+                        .enter()
+                                .append('rect')
+                                .attr("class", "background")
+                                .style("fill", "url(#backgroundPattern)")
+                                .style("stroke", null)
 
-                console.log 'IndepthWidget',@maxWidth,@maxHeight
-
-                # Bars of individual changes
-                changeBars = @changeBars.selectAll('.changeBar')
-                    .data(_.filter(@model.models, (p) -> p.get('kind') == 'change'))
-                    .enter()
-                        .append("rect")
-                        .attr("class", "changeBar widgetElement")
-                        .attr("data-z", 0)
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y", (d) => @valueScale( d.get('value') ) )
-                        .attr("width", (d) => Math.ceil( @timeScale( d.get('width') ) - @timeScale(0) ) )
-                        .attr("height", (d) => @valueScale(0) - @valueScale(d.get('value')) )
-                        .style("stroke", "none")
-
-                # Lines of each year's budget
-                approvedBars = @approvedBars.selectAll('.approvedBar')
-                    .data(_.filter(@model.models, (p) -> p.get('kind') == 'approved'))
-                    .enter()
-                        .append("g")
-                        .attr("class", "approvedBar widgetElement")
-                approvedBars
-                        .append("rect")
-                        .attr("class", "lower")
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y", (d) => @valueScale( d.get('value') ) )
-                        .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width') ) - @timeScale( d.get('timestamp') ) )
-                        .attr("height", (d) => @valueScale(0) - @valueScale( d.get('value') ) )
-                        .style("fill", "url(#lowerApprovedRect)")
-                        .style("stroke", null)
-                approvedBars
-                        .append("rect")
-                        .attr("class", "upper")
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                @chart.selectAll('.background').data([1])
+                        .attr("x", (d) => @timeScale( @minTime ) )
                         .attr("y", (d) => @valueScale( @maxValue ) )
-                        .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width') ) - @timeScale( d.get('timestamp') ) )
-                        .attr("height", (d) => @valueScale( d.get('value') ) - @valueScale( @maxValue ) )
-                        .style("fill", "url(#upperApprovedRect)")
-                        .style("stroke", null)
-                approvedBars
-                        .append("line")
-                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y1", (d) => @valueScale( d.get('value') ) )
-                        .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
-                        .attr("y2", (d) => @valueScale( d.get('value') ) )
+                        .attr("width", (d) => @timeScale( @maxTime ) - @timeScale( @minTime ) )
+                        .attr("height", (d) => @valueScale( @minValue ) - @valueScale( @maxValue ) )
 
+                allLabelIndexes = _.map([0..9], (x) =>
+                        index: x
+                        major: (@minValue + x*@tickValue) % @labelValue < 1
+                        )
 
-                # Year numbers
-                yearNumberTexts = @yearNumberTexts.selectAll('.yearNumberText')
-                    .data(_.filter(@model.models, (p) -> p.get('kind') == 'approved'))
-                    .enter()
-                        .append("text")
-                        .attr("class", "yearNumberText widgetElement")
-                        .attr("data-z", 2)
-                        .attr("x", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
-                        .attr("y", (d) => @valueScale( @maxValue ) )
-                        .attr("dx", -3 )
-                        .attr("dy", 9 )
-                        .style("font-size", 8)
-                        .style("text-anchor", "start")
-                        .text((d) => new Date(d.get('timestamp')).getFullYear() )
+                @chart.selectAll(".graduationLine")
+                        .data(allLabelIndexes)
+                        .enter()
+                                .append('line')
+                                .attr('class', (d) -> 'graduationLine ' + (if d.major then "major" else "minor"))
+                @chart.selectAll(".graduationLine")
+                        .data(allLabelIndexes)
+                        .attr('x1', (d) => @timeScale( @minTime ))
+                        .attr('x2', (d) => @timeScale( @maxTime ))
+                        .attr('y1', (d) => @valueScale( @minValue + d.index*@tickValue ))
+                        .attr('y2', (d) => @valueScale( @minValue + d.index*@tickValue ))
                 
+                graduationLabels = @chart.selectAll('.graduationLabel')
+                        .data(_.filter(allLabelIndexes, (x)->x.major))
+                graduationLabels.enter()
+                        .append('text')
+                        .attr("class", "graduationLabel")
+                        .attr("x", (d) => @timeScale( @minTime ) )
+                        .attr("y", (d) => @valueScale( @minValue + d.index*@tickValue ) )
+                        .attr("dx", 5 )
+                        .attr("dy", -1 )
+                        .style("font-size", 8)
+                        .style("text-anchor", "end")
+                        .text((d) => @formatNumber( @minValue + d.index*@tickValue ) )
 
+                approvedModels = _.filter(@model.models, (x)->x.get('kind')=='approved')
+                newGraphParts = @chart.selectAll('.graphPartApproved').data(approvedModels)
+                        .enter().append("g")
+                        .attr('class','graphPartApproved')
+                newGraphParts
+                        .append('line')
+                                .attr('class', 'yearlyHang')
+                                .datum( (d) => d)
+                newGraphParts
+                        .append('text')
+                                .attr('class', 'approvedLabel')
+                                .style("font-size", 10)
+                                .attr("dx",3)
+                                .text((d) => d.get('date').getFullYear())
+                                .style("text-anchor", "end")
+                                .datum( (d) => d)
+
+                @chart.selectAll('.yearlyHang').data(approvedModels)
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y1", (d) => @valueScale( d.get('value') ) )
+                        .attr("y2", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+                @chart.selectAll('.approvedLabel').data(approvedModels)
+                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+
+                changeModels = _.filter(@model.models, (x)->x.get('kind')=='change')
+                newGraphParts = @chart.selectAll('.graphPartChanged').data(changeModels)
+                        .enter().append("g")
+                        .attr('class','graphPartChanged')
+                newGraphParts
+                        .append('line')
+                                .attr('class', 'changeBar')
+                                .datum( (d) => d)
+                newGraphParts
+                        .append('line')
+                                .attr('class', 'changeLine')
+                                .datum( (d) => d)
+
+                @chart.selectAll('.changeBar').data(changeModels)
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
+                        .attr("y1", (d) => @valueScale( d.get('value') ) )
+                        .attr("y2", (d) => @valueScale( d.get('value') )  )
+                @chart.selectAll('.changeLine').data(changeModels)
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y1", (d) => @valueScale( d.get('value') - d.get('diff-value') ) )
+                        .attr("y2", (d) => @valueScale( @minValue ) + CHANGE_LINE_HANG_LENGTH  )
+
+                        
+                
+        formatNumber: (n) ->
+                rx=  /(\d+)(\d{3})/
+                String(n*1000).replace(/^\d+/, (w) -> 
+                        while rx.test(w)
+                            w = w.replace rx, '$1,$2'
+                        w)
+                
+        setValueRange: () ->
+                @valueRange = @model.maxValue - @model.minValue
+                scale = 1
+                valueRange = @valueRange
+                RATIO = (TICKS-1) / TICKS
+                while valueRange > 1*RATIO
+                        scale *= 10
+                        valueRange /= 10
+                if valueRange < 0.25*RATIO
+                        @tickValue = 0.025*scale
+                        @labelValue = 0.1*scale 
+                if valueRange < 0.5*RATIO
+                        @tickValue = 0.05*scale
+                        @labelValue = 0.2*scale 
+                if valueRange <=1*RATIO
+                        @tickValue = 0.1*scale
+                        @labelValue = 0.2*scale
+                @minValue = Math.floor(@model.minValue / @tickValue) * @tickValue
+                @maxValue = @minValue + TICKS * @tickValue
+                        
+                
         
 $( ->
         console.log "indepth_widget"
