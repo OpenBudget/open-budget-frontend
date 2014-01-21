@@ -92,9 +92,17 @@ article {
 
 		.nav {
 			font-size: 18px;
+			border-bottom: 0;
 			
 			>li>a {
 				padding: 17px 15px 15px;
+
+				&.active{
+					
+				}
+				&:hover{
+					border-color: rgba(0,0,0,0);
+				}
 			}
 		}
 		#issue-num {
@@ -126,9 +134,14 @@ article {
 			color: @increased;
 		}
 		.nav>li>a {
-			color: lighten(@increased, 20%);
-			&:hover {
+			color: lighten(@increased, 25%);
+			&:hover{
+				background: none;
+			}
+			&.active {
 				background: lighten(@increased, 35%);
+				border-radius: 0;
+				border: 0;
 			}
 		}
 	}
@@ -189,6 +202,10 @@ article {
 }
 
 // VISUALIZTION ///////////////////////////////
+
+svg rect{
+	shape-rendering:crispEdges;
+}
 
 /* In depth, zoomable Widget */
 #indepth-widget {
@@ -313,6 +330,13 @@ article {
 	}
     }
 
+}
+
+#indepth-widget {
+	.approvedBar {
+		stroke-dasharray: 2px, 4px !important;
+		stroke-width: 2px;
+	}
 }
 
                  
