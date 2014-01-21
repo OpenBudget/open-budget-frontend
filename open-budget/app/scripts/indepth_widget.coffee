@@ -31,14 +31,20 @@ class IndepthWidget extends Backbone.View
                 @baseTimeScale = d3.scale.linear()
                         .domain([@minTime, @maxTime])
                         .range([0, @maxWidth])
-                @timeScale = (t) =>
+                @yearSeperatingScale = (t) =>
                         year = new Date(t).getFullYear()
                         base = new Date(year,0).valueOf()                       
                         #console.log t, year, base
-                        @baseTimeScale( base + (t - base) * 0.98 )
-                @valueScale = d3.scale.linear()
+                        base + (t - base) * 0.98
+                @pixelPerfecter = (t) =>
+                        Math.floor(t) + 0.5
+                @timeScale = (t) =>
+                        @pixelPerfecter(@baseTimeScale(@yearSeperatingScale(t)))
+                @baseValueScale = d3.scale.linear()
                         .domain([@minValue, @maxValue])
                         .range([TOP_PART_SIZE, 0])
+                @valueScale = (t) =>
+                        @pixelPerfecter(@baseValueScale(t))
 
                 @chart.selectAll('.background').data([1])
                         .enter()
@@ -115,7 +121,8 @@ class IndepthWidget extends Backbone.View
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
                         .attr("y2", (d) => @valueScale( d.get('value') ) )
-                        .style("stroke-dasharray","10,10")
+                        .style("stroke-dasharray","2,4")
+                        .style("stroke-width",2)
                 @chart.selectAll('.approvedLabel').data(approvedModels)
                         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )

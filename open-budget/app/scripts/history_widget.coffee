@@ -97,17 +97,25 @@ class OverviewWidget extends Backbone.View
                 valueMargin = VALUE_MARGIN*valueRange
                 @minValue = _.min([ @model.minValue - valueMargin, 0 ])
                 @maxValue = @model.maxValue + _.max([ valueMargin, ((valueRange * CHART_MARGIN_TOP) / (@maxHeight - CHART_MARGIN_TOP))])
+                @pixelPerfecter = (t) =>
+                        Math.floor(t) + 0.5
+
                 @baseTimeScale = d3.scale.linear()
                         .domain([@model.minTime, @model.maxTime])
                         .range([0, @maxWidth])
-                @timeScale = (t) =>
+                @yearSeperatingScale = (t) =>
                         year = new Date(t).getFullYear()
                         base = new Date(year,0).valueOf()                       
                         #console.log t, year, base
-                        @baseTimeScale( base + (t - base) * 0.98 )
-                @valueScale = d3.scale.linear()
+                        base + (t - base) * 0.98
+                @timeScale = (t) =>
+                        @pixelPerfecter(@baseTimeScale(@yearSeperatingScale(t)))
+                        
+                @baseValueScale = d3.scale.linear()
                         .domain([@minValue, @maxValue])
                         .range([@maxHeight+MARGIN, MARGIN])
+                @valueScale = (t) =>
+                        @pixelPerfecter(@baseValueScale(t))
 
                 selectionStart = @model.minTime * 0.5 + @model.maxTime * 0.5
                 selectionEnd = @model.minTime * 0.25 + @model.maxTime * 0.75
@@ -123,7 +131,7 @@ class OverviewWidget extends Backbone.View
                         .attr("class", "changeBar widgetElement")
                         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y", (d) => @valueScale( d.get('value') ) )
-                        .attr("width", (d) => Math.ceil( @timeScale( d.get('width') ) - @timeScale(0) ) )
+                        .attr("width", (d) => Math.ceil( 0.5 + @timeScale( d.get('width') ) - @timeScale(0) ) )
                         .attr("height", (d) => @valueScale(0) - @valueScale(d.get('value')) )
                         .style("stroke", "none")
 
