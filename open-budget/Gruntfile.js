@@ -200,8 +200,7 @@ module.exports = function (grunt) {
       dist: {
         files: {
           '<%= yeoman.dist %>/styles/main.css': [
-            '.tmp/styles/{,*/}*.css',
-            '<%= yeoman.app %>/styles/{,*/}*.css'
+            '<%= yeoman.app %>/styles/main.css'
           ]
         }
       }
@@ -297,8 +296,8 @@ module.exports = function (grunt) {
     'copy:server',
     'useminPrepare',
     'concurrent',
-    'cssmin',
     'concat',
+    'cssmin',
     'uglify',
     'copy',
     'rev',

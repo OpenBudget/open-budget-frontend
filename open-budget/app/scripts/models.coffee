@@ -65,13 +65,19 @@ class BudgetHistory extends Backbone.Collection
 
         comparator: (m) -> m.get('year')
 
+        getLast: -> @models[@models.length-1]
+
+                
+
 class PageModel extends Backbone.Model
 
         defaults:
                 budgetCode: null
                 baseURL: "http://the.open-budget.org.il"
                 selection: [ 0, 0 ]
+                currentItem: null
 
         initialize: ->
                 @changeLines = new ChangeLines([], pageModel: @)
                 @budgetHistory = new BudgetHistory([], pageModel: @)
+                @budgetHistory.on 'reset', () => @set('currentItem', @budgetHistory.getLast())
