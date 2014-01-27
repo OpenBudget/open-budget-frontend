@@ -16,7 +16,7 @@
 
 @gray: #cccccc;
 @darkgray: #888888;
-@lightgray: #eeeeee;
+@lightgray: #D4D4D4;
 
 @selection: #3399ff;
 
@@ -339,4 +339,75 @@ svg rect{
 	}
 }
 
-                 
+// TABLE ///////////////////////////////
+
+#change-list {
+	padding: 10px;
+}
+
+table {
+	width: 100%;
+	font-size: 15px;
+	th {
+		font-weight: 700;
+		color: @text;
+		padding: 10px 0;
+	}
+	tr{
+		color: @darkgray;
+		border-bottom: 1px solid @lightgray;
+		line-height: 20px;
+		td {
+			padding: 10px 0;
+		}
+		
+		.table-date {
+			width: 10%;
+		}
+		.table-trans {
+			width: 30%;
+			.table-change{
+				font-size: 24px;
+				display: block;
+			}
+		}
+		.table-from {
+			width: 35%;
+			.table-from-num{
+				display: block;
+			}
+			.table-from-name{
+				font-weight: 700;
+			}
+		}
+		.table-more {
+			.table-finance-story{
+				display: block;
+			}
+		}
+		&.table-increased {
+			.table-change {color: @increased;}
+			.table-from {color: @decreased;}
+		}
+		&.table-decreased {
+			.table-change {color: @decreased;}
+			.table-from {color: @increased;}
+		}
+		&.table-yearly-budget {
+			.table-date, .table-total, .table-from {color: @approved;}
+			.table-total { font-size: 24px; }
+		}
+		&.table-year-folded {
+			font-weight: 700;
+			.table-date { font-size: 24px; }
+			span { opacity: 0.5;}
+			.table-year-incresed { color: @increased;}
+			.table-year-decresed { color: @decreased;}
+			&:hover {
+				.table-date { color: @link; }
+				color: @text;
+				span { opacity: 1;}
+			}
+		}
+	}
+}
