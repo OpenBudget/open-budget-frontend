@@ -396,6 +396,8 @@ table {
 		&.table-yearly-budget {
 			.table-date, .table-total, .table-from {color: @approved;}
 			.table-total { font-size: 24px; }
+			border-bottom-color: @approved;
+			background: url(assets/diagonal-green.png);
 		}
 		&.table-year-folded {
 			font-weight: 700;
@@ -404,7 +406,7 @@ table {
 			.table-year-incresed { color: @increased;}
 			.table-year-decresed { color: @decreased;}
 			&:hover {
-				.table-date { color: @link; }
+				.table-date { color: @link }
 				color: @text;
 				span { opacity: 1;}
 			}
