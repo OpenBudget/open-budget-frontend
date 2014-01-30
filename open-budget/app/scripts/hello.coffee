@@ -1,7 +1,7 @@
 console.log "'Allo from CoffeeScript!"
 
 get_program = ->
-        window.pageModel.set('budgetCode', $("#search-item").val()
+        window.pageModel.set('budgetCode', $("#search-item").val())
 
 $( ->
         console.log 'setting up typeahead'
