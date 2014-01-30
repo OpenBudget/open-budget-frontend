@@ -1,9 +1,3 @@
-
-$( ->
-        window.pageModel = new PageModel()
-        pageModel.set("budgetCode",window.location.hash.substring(1))
-)
-
 class ChangeLine extends Backbone.Model
 
         defaults:
@@ -25,6 +19,15 @@ class ChangeLine extends Backbone.Model
                 req_title: null
                 change_code: null
                 change_type_id: null
+
+        requestId: ->
+                ret = ""+@get('req_code')
+                while ret.length < 3
+                        ret = "0"+ret
+                ret = @get('leading_item')+'-'+ret
+                while ret.length < 6
+                        ret = "0"+ret
+                ret
 
 class BudgetItem extends Backbone.Model
 
@@ -51,6 +54,9 @@ class ChangeLines extends Backbone.Collection
 
         url: ->
                 "#{pageModel.get('baseURL')}/api/changes/#{@pageModel.get('budgetCode')}"
+
+        comparator: 'req_code'
+
 
 class BudgetHistory extends Backbone.Collection
 
@@ -81,3 +87,13 @@ class PageModel extends Backbone.Model
                 @changeLines = new ChangeLines([], pageModel: @)
                 @budgetHistory = new BudgetHistory([], pageModel: @)
                 @budgetHistory.on 'reset', () => @set('currentItem', @budgetHistory.getLast())
+
+
+window.models =
+        ChangeLine: ChangeLine
+
+
+$( ->
+        window.pageModel = new PageModel()
+        pageModel.set("budgetCode",window.location.hash.substring(1))
+)

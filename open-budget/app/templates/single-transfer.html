@@ -1,0 +1,32 @@
+<% if (kind == 1) { %><tr class="table-decreased">
+  <td class="table-date">- <!--%= date %/--></td>
+  <td class="table-trans">
+    <span class="table-change"><%= amount_transferred %></span>
+    <span class="table-total"><%= amount %></span>
+  </td>
+  <td class="table-from">
+  </td>
+  <td class="table-more">
+    <a href="#" class="table-finance-story">דברי הסבר של אגף תקציבים</a>
+    <a href="#" class="table-committee-protocol">פרוטוקול הועדה</a>
+  </td>
+</tr><% } else { %><tr class="table-yearly-budget">
+  <td class="table-date">
+    <%= year %>
+  </td>
+  <td class="table-trans">
+    <span class="table-total">
+      <%= amount %>
+    </span>
+  </td>
+  <td class="table-from">
+    <span class="table-from-name">תקציב 
+      <%= year %>
+    </span>
+  </td>
+  <td class="table-more">
+    <a href="#" class="table-finance-story">
+      דברי הסבר של אגף תקציבים
+    </a>
+  </td>
+</tr><% } %>

@@ -26,6 +26,10 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
         tasks: ['coffee']
       },
+      jst: {
+        files: ['<%= yeoman.app %>/templates/*.html'],
+        tasks: ['jst']
+      },
       less: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.less'],
         tasks: ['less']
@@ -226,6 +230,22 @@ module.exports = function (grunt) {
         }]
       }
     },
+    jst: {
+	compile: {
+	    options: {
+		processName: function(name) {
+		    name = name.split('/');
+		    name = name[name.length-1];
+		    name = name.substring(0,name.length-5);
+		    name = name.replace(/-/g,"_");
+		    return name;
+		}
+	    },
+	    files: {
+		"<%= yeoman.app %>/scripts/templates.js": ["<%= yeoman.app %>/templates/*.html"]
+	    }
+	}
+    },
     copy: {
       dist: {
         files: [{
@@ -257,7 +277,8 @@ module.exports = function (grunt) {
         'less',
         'imagemin',
         'svgmin',
-        'htmlmin'
+        'htmlmin',
+	'jst'
       ]
     }
   });
@@ -271,6 +292,7 @@ module.exports = function (grunt) {
       'clean:server',
       'coffee',
       'less',
+      'jst',
       'copy:server',
       'connect:livereload',
       'watch'
