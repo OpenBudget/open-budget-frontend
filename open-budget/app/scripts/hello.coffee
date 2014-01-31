@@ -1,7 +1,7 @@
 console.log "'Allo from CoffeeScript!"
 
 get_program = ->
-        window.pageModel.set('budgetCode', $("#search-item").val())
+        window.pageModel.set('budgetCode', '00'+$("#search-item").val())
 
 $( ->
         console.log 'setting up typeahead'
@@ -24,5 +24,8 @@ $( ->
         $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
         $("#search-item").on('typeahead:selected', get_program )
         $("#search-item").on('change', get_program )
+        $("#search-form").submit( ->
+                false
+                )
 
 )
