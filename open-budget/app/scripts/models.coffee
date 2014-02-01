@@ -50,7 +50,7 @@ class ChangeLines extends Backbone.Collection
 
         initialize: (models, options) ->
                 @pageModel = options.pageModel
-                @pageModel.on "change:budgetCode", => @fetch(dataType: "jsonp",reset: true)
+                @pageModel.on "change:budgetCode", => @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
                 "#{pageModel.get('baseURL')}/api/changes/#{@pageModel.get('budgetCode')}"
@@ -64,7 +64,7 @@ class BudgetHistory extends Backbone.Collection
 
         initialize: (models, options) ->
                 @pageModel = options.pageModel
-                @pageModel.on "change:budgetCode", => @fetch(dataType: "jsonp",reset: true)
+                @pageModel.on "change:budgetCode", => @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
                 "#{pageModel.get('baseURL')}/api/budget/#{@pageModel.get('budgetCode')}"
@@ -82,11 +82,14 @@ class PageModel extends Backbone.Model
                 baseURL: "http://the.open-budget.org.il"
                 selection: [ 0, 0 ]
                 currentItem: null
+                dataType: "jsonp"
 
         initialize: ->
                 @changeLines = new ChangeLines([], pageModel: @)
                 @budgetHistory = new BudgetHistory([], pageModel: @)
                 @budgetHistory.on 'reset', () => @set('currentItem', @budgetHistory.getLast())
+                if window.location.origin == @get('baseURL')
+                        @set('dataType','json')
 
 
 window.models =

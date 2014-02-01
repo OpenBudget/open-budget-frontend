@@ -1,10 +1,12 @@
-<tr class="table-year-folded" data-year="<%= year %>">
-  <td class="table-date"><%= year %></td>
-  <td class="table-trans" colspan="3">
-    4 העברות: 
-    <%= amount %>
-    <span class="table-year-decresed">
-      &#11015; <%= amount_transferred %> ₪
+<% var cls = amount_transferred < 0 ? 'decresed' : 'incresed'; %><tr class="table-year-folded active" data-year="<%= year %>">
+  <td class="table-date"><div><%= year %></div></td>
+  <td class="table-trans" colspan="3"><div>
+    <% if ( (new Date().getFullYear() > year) && (num_transfers > 0) ) { %>
+    <span class="num-transfers"><%= num_transfers %></span> העברות: 
+    <%= format_number( amount ) %>
+    <span class="table-year-<%= cls %>">
+      <%= format_number( amount_transferred ) %> ₪
     </span>
-  </td>
+    <% } %>
+   </div></td>
 </tr>

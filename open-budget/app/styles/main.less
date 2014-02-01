@@ -348,6 +348,8 @@ svg rect{
 table {
 	width: 100%;
 	font-size: 15px;
+	border-collapse: collapse;
+	border-spacing: 0;
 	th {
 		font-weight: 700;
 		color: @text;
@@ -355,10 +357,17 @@ table {
 	}
 	tr{
 		color: @darkgray;
-		border-bottom: 1px solid @lightgray;
-		line-height: 20px;
+		&.active {
+		    border-bottom: 1px solid @lightgray;
+		    line-height: 20px;
+		}
 		td {
+		    padding: 0;
+		    div {
 			padding: 10px 0;
+			overflow: hidden;
+			transition: padding 1s, height 1s;
+		    }
 		}
 		
 		.table-date {
@@ -403,13 +412,30 @@ table {
 			font-weight: 700;
 			.table-date { font-size: 24px; }
 			span { opacity: 0.5;}
-			.table-year-incresed { color: @increased;}
-			.table-year-decresed { color: @decreased;}
+			.table-year-incresed { 
+			    color: @increased;
+			    &:before {
+				content: "\2b06";
+			    }
+			}
+			.table-year-decresed { 
+			    color: @decreased;
+			    &:before {
+				content: "\2b07";
+			    }
+			}
 			&:hover {
 				.table-date { color: @link }
 				color: @text;
+				cursor: pointer;
 				span { opacity: 1;}
 			}
+		}
+		&.table-single-transfer, &.table-yearly-budget {
+		    td > div {
+			height: 0;
+			padding: 0;
+		    }
 		}
 	}
 }
@@ -512,4 +538,58 @@ table {
 .twitter-typeahead {
     width: 100%;
     direction: rtl;
+}
+
+/* spinner */
+.spinner {
+  margin: 0px;
+  width: 60px;
+  height: 20px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner > div {
+  background-color: #333;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  
+  -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+  animation: stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
 }

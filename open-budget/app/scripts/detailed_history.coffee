@@ -4,11 +4,10 @@ class ChangeLineList extends Backbone.Collection
         model: window.models.ChangeLine
 
         initialize: (models, options) ->
-                console.log 'ChangeLineList',models,options
                 @pageModel = window.pageModel
                 @year = options.year
                 @req_id = options.req_id
-                @fetch(dataType: "jsonp",reset: true)
+                @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: () => "#{@pageModel.get('baseURL')}/api/changes/#{@req_id}/#{@year}"
 
@@ -17,6 +16,7 @@ class YearlyHistoryItem extends Backbone.Model
                 year: null
                 date: null
                 kind: null # 0 - budget approval, 1 - transfer
+                title: null
                 amount: null
                 amount_transferred: null
                 budget_items: null
@@ -52,6 +52,8 @@ class GlobalHistoryItem extends Backbone.Model
                 @set('transfer_detail', @transferDetails)
                 firstItem = new YearlyHistoryItem({kind : 0, year: @get('year'), amount: @get('amount'), amount_transferred: @get('amount')})
                 @transferDetails.add(firstItem)               
+                @transferDetails.on 'add', () =>
+                        @set('num_transfers',@transferDetails.length-1)
                 @processChangeLines()
 
         processChangeLines: ->
@@ -61,7 +63,7 @@ class GlobalHistoryItem extends Backbone.Model
                         diff = transfer.get('net_expense_diff')
                         amount += diff
                         req_id = transfer.requestId()
-                        item = new YearlyHistoryItem({kind: 1, amount_transferred: diff, amount: amount, year: transfer.get('year'), date: transfer.get('date'), req_id: req_id})
+                        item = new YearlyHistoryItem({kind: 1, amount_transferred: diff, amount: amount, title: transfer.get('req_title'), year: transfer.get('year'), date: transfer.get('date'), req_id: req_id})
                         @transferDetails.add(item)
 
 class GlobalHistoryItems extends Backbone.Collection
@@ -84,15 +86,40 @@ class HistoryTableYearSummary extends Backbone.View
 
         initialize: ->
                 @pageModel = window.pageModel
-                @render()
-
-        render: ->
-                el = $( window.JST.year_summary( @model.toJSON() ) )
-                console.log 'HistoryTableYearSummary', @el, el
+                el = $("<p>hello</p>")
                 $(@el).prepend( el )
                 @el = el
+                @render()
+                @delegateEvents()
+                @model.on 'change', () => @render()
 
-                                
+        render: ->
+                el = @el
+                @el = $( window.JST.year_summary( @model.toJSON() ) )
+                $(el).replaceWith(  @el )
+                $(@el).find('.table-date').click( () => @updateRowVisibility() )
+
+        updateRowVisibility: ->
+                year = @model.get('year')
+                $(".history-table tbody tr").each( ->
+                        row = $(@)
+                        row_year = parseInt(row.attr('data-year'))
+                        if (row.hasClass('table-single-transfer') or row.hasClass('table-yearly-budget'))
+                                if (year != row_year)
+                                        row.toggleClass('active',false)
+                                        row.find('td > div').css('height',0)
+                                        row.find('td > div').css('padding',0)
+                                else
+                                        row.toggleClass('active',true)
+                                        row.find('td > div').css('height','auto')
+                                        row.find('td > div').css('padding','10px 0')
+                        )
+                window.setTimeout(  () =>
+                                        $('html, body').animate({ scrollTop: $(@el).position().top  },1000);#                                         $(@el)[0].scrollIntoView()
+                                  ,
+                                    1000)
+
+                                                                
 class HistoryTableSingleTransfer extends Backbone.View
 
         initialize: ->
@@ -103,10 +130,11 @@ class HistoryTableSingleTransfer extends Backbone.View
                 el = $( window.JST.single_transfer( @model.toJSON() ) )
                 $(@el).after( el )
                 @el = el
+                #$(@el).css('display','none')
 
         addBudgetLine: (cl) ->
                 el = $( window.JST.single_transfer_budget_line( cl.toJSON() ) )
-                $(@el).find('.table-from').append( el )
+                $(@el).find('.budget-lines').append( el )
                 
              
 
@@ -117,22 +145,35 @@ class HistoryTableYear extends Backbone.View
                 @transferItems = []
                 @render()
                 @model.get('transfer_detail').on 'add', (model) => @addTransferItem(model)
-                for model in @model.get('transfer_detail').models
-                        console.log 'adding explicitly'
+                transfers = @model.get('transfer_detail').models
+                for model in transfers
                         @addTransferItem(model)
 
         render: ->
                 @summaryView = new HistoryTableYearSummary({model: @model, el: @el})
 
         addTransferItem: (model) ->
-                console.log 'addTransferItem', model, @summaryView.el, @el
+                if ((model.get('kind') == 1) and (model.get('amount_transferred') == 0))
+                        return
+                if not model.get('amount_transferred')?
+                        return
                 htst = new HistoryTableSingleTransfer({model: model, el: @summaryView.el})
                 @transferItems.push htst
                 if model.get('kind') == 1
                         model.get('budget_items').on 'reset', =>
-                                for cl in model.get('budget_items').models
-                                        if cl.get('budget_code') != @pageModel.get('budgetCode')
-                                                htst.addBudgetLine(cl)
+                                $(htst.el).find('.spinner').remove()
+                                budget_items = model.get('budget_items').models
+                                amount_transferred = model.get('amount_transferred')
+                                if amount_transferred?
+                                        sign = if amount_transferred<0 then -1 else 1
+                                else
+                                        sign = 0
+                                budget_items = _.filter(budget_items, (m) -> m.get('net_expense_diff') and m.get('net_expense_diff') != 0 )
+                                budget_items = _.sortBy(budget_items, (m) -> sign*m.get('net_expense_diff'))
+                                budget_items = _.filter(budget_items, (m) -> (sign*m.get('net_expense_diff')) < 0)
+                                budget_items = _.filter(budget_items, (m) -> m.get('budget_code') != @pageModel.get('budgetCode'))
+                                for cl in budget_items[0..2]
+                                        htst.addBudgetLine(cl)
         
 
 class HistoryTable extends Backbone.View
