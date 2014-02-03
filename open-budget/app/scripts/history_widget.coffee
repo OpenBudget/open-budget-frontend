@@ -18,8 +18,8 @@ class OverviewWidget extends Backbone.View
                 @svg.append('defs').html('<pattern id="upperApprovedRect" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
                 @svg.append('defs').html('<pattern id="lowerApprovedRect" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
                 
-                @changeBars = @svg.append('g').attr('class','changeBar')
                 @approvedBars = @svg.append('g').attr('class','approvedBar')
+                @changeBars = @svg.append('g').attr('class','changeBar')
                 @yearNumberTexts = @svg.append('g').attr('class','yearNumberText')
                 @selectionBar = @svg.append('g').attr('class','selectionBar')
 
@@ -123,18 +123,6 @@ class OverviewWidget extends Backbone.View
 
                 console.log 'OverviewWidget',@maxWidth,@maxHeight
 
-                # Bars of individual changes
-                changeBars = @changeBars.selectAll('.changeBar')
-                    .data(_.filter(@model.models, (p) -> p.get('kind') == 'change'))
-                    .enter()
-                        .append("rect")
-                        .attr("class", "changeBar widgetElement")
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y", (d) => @valueScale( d.get('value') ) )
-                        .attr("width", (d) => Math.ceil( 0.5 + @timeScale( d.get('width') ) - @timeScale(0) ) )
-                        .attr("height", (d) => @valueScale(0) - @valueScale(d.get('value')) )
-                        .style("stroke", "none")
-
                 # Lines of each year's budget
                 approvedBars = @approvedBars.selectAll('.approvedBar')
                     .data(_.filter(@model.models, (p) -> p.get('kind') == 'approved'))
@@ -148,8 +136,6 @@ class OverviewWidget extends Backbone.View
                         .attr("y", (d) => @valueScale( d.get('value') ) )
                         .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width') ) - @timeScale( d.get('timestamp') ) )
                         .attr("height", (d) => @valueScale(0) - @valueScale( d.get('value') ) )
-                        .style("fill", "url(#lowerApprovedRect)")
-                        .style("stroke", null)
                 approvedBars
                         .append("rect")
                         .attr("class", "upper")
@@ -157,8 +143,6 @@ class OverviewWidget extends Backbone.View
                         .attr("y", (d) => @valueScale( @maxValue ) )
                         .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width') ) - @timeScale( d.get('timestamp') ) )
                         .attr("height", (d) => @valueScale( d.get('value') ) - @valueScale( @maxValue ) )
-                        .style("fill", "url(#upperApprovedRect)")
-                        .style("stroke", null)
                 approvedBars
                         .append("line")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
@@ -166,6 +150,16 @@ class OverviewWidget extends Backbone.View
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y2", (d) => @valueScale( d.get('value') ) )
 
+                # Bars of individual changes
+                changeBars = @changeBars.selectAll('.changeBar')
+                    .data(_.filter(@model.models, (p) -> p.get('kind') == 'change'))
+                    .enter()
+                        .append("line")
+                        .attr("class", (d) => dbl = d.get('diff-baseline'); if dbl > 0 then "changeBar widgetElement increase" else if dbl < 0 then "changeBar widgetElement reduce" else "changeBar widgetElement")
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
+                        .attr("y1", (d) => @valueScale( d.get('value') ) )
+                        .attr("y2", (d) => @valueScale( d.get('value') ) )
 
                 # Year numbers
                 yearNumberTexts = @yearNumberTexts.selectAll('.yearNumberText')

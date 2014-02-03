@@ -121,8 +121,6 @@ class IndepthWidget extends Backbone.View
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
                         .attr("y2", (d) => @valueScale( d.get('value') ) )
-                        .style("stroke-dasharray","2,4")
-                        .style("stroke-width",2)
                 @chart.selectAll('.approvedLabel').data(approvedModels)
                         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )

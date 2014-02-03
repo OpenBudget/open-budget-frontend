@@ -17,6 +17,7 @@
 @gray: #cccccc;
 @darkgray: #888888;
 @lightgray: #D4D4D4;
+@ultralightgray: #f8f8f8;
 
 @selection: #3399ff;
 
@@ -209,41 +210,46 @@ svg rect{
 
 /* In depth, zoomable Widget */
 #indepth-widget {
-    width: 100%;
-    height: 440px;
+  width: 100%;
+  height: 440px;
 
-    #backgroundPattern {
-	stroke: @lightgray;
-    }
-
-    .chart {
-	.graduationLabel {
-	    font-family: "verdana";
-	    font-size: 8;
-	    stroke: @darkgray;
-	}
-
-	.graduationLine {
-	    &.major {
-		stroke: @gray;
-	    }
-
-	    &.minor {
+  #backgroundPattern {
 		stroke: @lightgray;
+  }
+
+  .chart {
+		.background {
+			fill: @ultralightgray !important;
+		}
+		.graduationLabel {
+	    font-size: 11px;
+	    font-weight: 700;
+	    fill: @darkgray;
+		}
+		.graduationLine {
+	    &.major {
+				stroke: @gray;
 	    }
-	}
-
-	.graphPartApproved {
-	    stroke: @approved;
-
+	    &.minor {
+				stroke: @lightgray;
+	    }
+		}
+		.graphPartApproved {
+	    text {
+				fill: @approved;
+	    }
+	    .approvedBar {
+	    	stroke: @approved;
+	    }
 	    .approvedLine {
-		stroke-width: 2;
-		&.increase {
-		    stroke: @increased;
-		}
-		&.reduce {
-		    stroke: @decreased;
-		}
+	    	stroke: @approved;
+	    	stroke-dasharray: 1,3;
+				&.increase {
+				    stroke: @increased;
+				}
+				&.reduce {
+				    stroke: @decreased;
+				}
 	    }
 	}
 
@@ -252,27 +258,29 @@ svg rect{
 	    stroke: @approved;
 
 	    .changeLine {
-		&.increase {
-		    stroke: @increased;
-		}
-		&.reduce {
-		    stroke: @decreased;
-		}
+	    	stroke-dasharray: 1,3;
+				&.increase {
+				    stroke: @increased;
+				}
+				&.reduce {
+				    stroke: @decreased;
+				}
 	    }
 
 	    .changeBar {
-		stroke-width: 2;
-		&.increase {
-		    stroke: @increased;
-		}
-		&.reduce {
-		    stroke: @decreased;
-		}
+				stroke-width: 4;
+				&.increase {
+				    stroke: @increased;
+				}
+				&.reduce {
+				    stroke: @decreased;
+				}
 	    }
 	}
 
 	.graphPartUsed {
-	    stroke: @spent;
+	    line { stroke: @spent;}
+	    text { fill: @spent;}
 	}
     }
 }
@@ -282,42 +290,35 @@ svg rect{
     width: 100%;
     height: 60px;
 
-    .changeBar rect {
-	fill: @gray;
+    .changeBar line {
+			stroke: @gray;
+			&.increase {stroke: @increased;}
+			&.reduce {stroke: @decreased;}
     }
 
     .approvedBar {
-	line {
-	    stroke: @approved;
-	}
-
-	rect.upper {
-	    fill-color: @lightgray
-	}
-
-	rect.lower {
-	    fill-color: @approved
-	}
-
+    	rect {fill: @ultralightgray;}
+			line {stroke: @approved;}
+			rect.upper {fill-color: lighten(@ultralightgray, 2%);}
     }
 
-    .yearNumberText {
-	font-family: "verdana";
-	font-size: 8;
-	stroke: @gray;
-    }
+  .yearNumberText {
+		font-size: 11px;
+		font-weight: 700;
+		fill: @darkgray;
+  }
 
-    #upperApprovedRect {
-	stroke: @lightgray;
-    }
+  #upperApprovedRect {
+		stroke: @lightgray;
+  }
 
-    #lowerApprovedRect {
-	stroke: @approved;
-    }
+  #lowerApprovedRect {
+		stroke: @approved;
+  }
 
-    .selectionBar {
-	.selectionLine {
-	    stroke: @selection;
+  .selectionBar {
+		.selectionLine {
+	  stroke: @selection;
 	}
 
 	.selectionShade {
