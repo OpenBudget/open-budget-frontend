@@ -358,36 +358,42 @@ table {
 	}
 	tr{
 		color: @darkgray;
+		vertical-align: top;
 		&.active {
 		    border-bottom: 1px solid @lightgray;
 		    line-height: 20px;
 		}
 		td {
-		    padding: 0;
-		    div {
-			padding: 10px 0;
-			overflow: hidden;
-			transition: padding 1s, height 1s;
-		    }
+	    padding: 0;
+	    div {
+				padding: 10px 0 0;
+				overflow: hidden;
+				transition: padding 1s, height 1s;
+	    }
 		}
 		
 		.table-date {
 			width: 10%;
 		}
 		.table-trans {
-			width: 30%;
+			width: 25%;
 			.table-change{
 				font-size: 24px;
 				display: block;
 			}
 		}
 		.table-from {
-			width: 35%;
+			width: 40%;
 			.table-from-num{
 				display: block;
 			}
 			.table-from-name{
 				font-weight: 700;
+				margin-bottom: 10px;
+				display: block;
+				&:last-child {
+					margin-bottom: 0;
+				}
 			}
 		}
 		.table-more {
