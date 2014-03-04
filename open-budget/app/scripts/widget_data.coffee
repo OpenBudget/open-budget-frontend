@@ -119,14 +119,13 @@ class WidgetData extends Backbone.Collection
                 changesPerYear = _.sortBy( changesPerYear, (pair) => pair[0] )
                 for pair in changesPerYear
                         [year, yearly] = [parseInt(pair[0]), pair[1]]
-                        yearly = _.sortBy( yearly, (m) => m.get('req_code') )
+                        yearly = _.sortBy( yearly, (m) => Date.parse(m.get('timestamp')) )
                         yearStart = new Date(year,0).valueOf()
                         yearEnd = new Date(year,11,31).valueOf()
                         actualLen = _.filter(yearly, (m) -> m.get('net_expense_diff')? and m.get('net_expense_diff') != 0).length
                         
-                        diff = (yearEnd - yearStart) / (actualLen+1)
-
                         timestamp = yearStart
+                        lastPoint = null
                         for m, i in yearly
                                 value = m.get('net_expense_diff')
                                 if value? and value != 0
@@ -134,18 +133,25 @@ class WidgetData extends Backbone.Collection
                                         point.set("source",m)
                                         point.set('kind','change')
                                         point.set('diff-value',value)
-                                        timestamp += diff
-                                
+                                        date = m.get('timestamp')
+                                        diff = date - timestamp
+                                        console.log m.get('date'), date, diff
+                                        timestamp = date
+                                        if lastPoint
+                                                lastPoint.set('width', diff)
+                                        lastPoint = point
+                                        
                                 else
                                         point = new WidgetDataPoint()
                                         point.set("source",m)
                                         point.set('kind','change-misc')
                                 
                                 point.set('timestamp',timestamp)
-                                point.set('width', diff)
                                 point.set('src', 'changeline')
-
+                
                                 @add point
+                        if lastPoint?
+                                lastPoint.set('width', yearEnd - timestamp)
                 @postProcess()
 
 

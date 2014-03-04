@@ -29,6 +29,21 @@ class ChangeLine extends Backbone.Model
                         ret = "0"+ret
                 ret
 
+        initialize: ->
+                dateStr = @get 'date'
+                if dateStr?
+                        @setTimestamp()
+                else
+                        @on 'change:date', =>
+                                @setTimestamp()
+
+        setTimestamp: ->
+                dateStr = @get 'date'
+                console.log 'date changed ',dateStr
+                date = dateStr.split('/')
+                date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
+                @set 'timestamp', date.valueOf()
+
 class BudgetItem extends Backbone.Model
 
         defaults:
