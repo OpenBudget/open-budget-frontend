@@ -74,7 +74,7 @@ strong.approved {
 article {
 	
 	&.six-fig{
-		margin-left: 72px;
+		//margin-left: 72px;
 	}
 
 	background: #FFFFFF;
@@ -108,16 +108,16 @@ article {
 		}
 		#issue-num {
 			position: absolute;
-			left: -92px;
+			left: 0px;
 			top: 4px;
 			direction: ltr;
 			font-size: 36px;
 
 			a {
 				padding: 5px 0;
-				margin-right: -12px;
-				background: @lightgray;
-				.box-shadow(-4px 0px 5px 0px rgba(0,0,0,0.10));
+				//margin-right: -12px;
+				//background: @lightgray;
+				//.box-shadow(-4px 0px 5px 0px rgba(0,0,0,0.10));
 
 				&.active, &.home {
 					background: none;
@@ -359,9 +359,20 @@ table {
 	tr{
 		color: @darkgray;
 		vertical-align: top;
+		display: none;
 		&.active {
 		    border-bottom: 1px solid @lightgray;
 		    line-height: 20px;
+		    display: block;
+		}
+		&.table-year-folded {
+			height: 45px;
+			.table-date {
+				width: 43.5%;;
+			}
+			.table-trans {
+				width: auto;
+			}
 		}
 		td {
 	    padding: 0;
@@ -376,14 +387,14 @@ table {
 			width: 10%;
 		}
 		.table-trans {
-			width: 25%;
+			width: 23%;
 			.table-change{
 				font-size: 24px;
 				display: block;
 			}
 		}
 		.table-from {
-			width: 40%;
+			width: 45%;
 			.table-from-num{
 				display: block;
 			}
