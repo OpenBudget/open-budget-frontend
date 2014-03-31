@@ -208,16 +208,29 @@ svg rect{
 	shape-rendering:crispEdges;
 }
 
-@-webkit-keyframes  dash-up {
-  to {
-    stroke-dashoffset: 5;
-  }
+@keyframes  dash-up {
+  to {stroke-dashoffset: 5;}
 }
-
+@keyframes  dash-down {
+  to {stroke-dashoffset: -5;}
+}
+@-webkit-keyframes  dash-up {
+  to {stroke-dashoffset: 5;}
+}
 @-webkit-keyframes  dash-down {
-  to {
-    stroke-dashoffset: -5;
-  }
+  to {stroke-dashoffset: -5;}
+}
+@-moz-keyframes  dash-up {
+  to {stroke-dashoffset: 5;}
+}
+@-moz-keyframes  dash-down {
+  to {stroke-dashoffset: -5;}
+}
+@-o-keyframes  dash-up {
+  to {stroke-dashoffset: 5;}
+}
+@-o-keyframes  dash-down {
+  to {stroke-dashoffset: -5;}
 }
 
 /* In depth, zoomable Widget */
@@ -274,9 +287,15 @@ svg rect{
 				&.increase {
 				    stroke: @increased;
 				    -webkit-animation: dash-up 0.5s linear infinite;
+				    -moz-animation: dash-up 0.5s linear infinite;
+				    -0-animation: dash-up 0.5s linear infinite;
+				    animation: dash-up 0.5s linear infinite;
 				}
 				&.reduce {
 				    stroke: @decreased;
+				    -webkit-animation: dash-down 0.5s linear infinite;
+				    -moz-animation: dash-down 0.5s linear infinite;
+				    -o-animation: dash-down 0.5s linear infinite;
 				    -webkit-animation: dash-down 0.5s linear infinite;
 				}
 	    }
