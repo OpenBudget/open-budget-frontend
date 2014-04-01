@@ -8,7 +8,7 @@ class WidgetDataPoint extends Backbone.Model
                 source: null
                 width: 0
                 date: null
-                
+
 
 class WidgetData extends Backbone.Collection
 
@@ -83,7 +83,7 @@ class WidgetData extends Backbone.Collection
                                 point.set('width', endYear - startYear)
                                 point.set('src','budgetline')
                                 @add point
-                                
+
                                 # period between start of year and first committee
                                 point = new WidgetDataPoint()
                                 point.set("source","dummy")
@@ -106,7 +106,7 @@ class WidgetData extends Backbone.Collection
                                 point.set('width', endYear - startYear)
                                 point.set('src','budgetline')
                                 @add point
-                                
+
 
                 @postProcess()
 
@@ -123,7 +123,7 @@ class WidgetData extends Backbone.Collection
                         yearStart = new Date(year,0).valueOf()
                         yearEnd = new Date(year,11,31).valueOf()
                         actualLen = _.filter(yearly, (m) -> m.get('net_expense_diff')? and m.get('net_expense_diff') != 0).length
-                        
+
                         timestamp = yearStart
                         lastPoint = null
                         for m, i in yearly
@@ -140,15 +140,15 @@ class WidgetData extends Backbone.Collection
                                         if lastPoint
                                                 lastPoint.set('width', diff)
                                         lastPoint = point
-                                        
+
                                 else
                                         point = new WidgetDataPoint()
                                         point.set("source",m)
                                         point.set('kind','change-misc')
-                                
+
                                 point.set('timestamp',timestamp)
                                 point.set('src', 'changeline')
-                
+
                                 @add point
                         if lastPoint?
                                 lastPoint.set('width', yearEnd - timestamp)

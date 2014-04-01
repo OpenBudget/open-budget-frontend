@@ -1,5 +1,5 @@
-<% var cls = amount_transferred < 0 ? 'decreased' : 'increased'; %><% if (kind == 1) { %><tr class="table-<%= cls %> table-single-transfer" data-year="<%= year %>">
-  <td class="table-date"><div> - <!--%= date %/--></div></td>
+<% var cls = amount_transferred < 0 ? 'decreased' : 'increased'; %><% if (kind == 1) { %><tr class="table-<%= cls %> table-single-transfer date-type-<%= date_type %>" data-year="<%= year %>">
+  <td class="table-date"><div><%= date %></div></td>
   <td class="table-trans"><div>
     <span class="table-change" title="<%= amount_transferred %>"><%= format_number( amount_transferred ) %></span>
     <span class="table-total"><%= format_number( amount ) %></span>
@@ -31,7 +31,7 @@
     </span>
   </div></td>
   <td class="table-from"><div>
-    <span class="table-from-name">תקציב 
+    <span class="table-from-name">תקציב
       <%= year %>
     </span>
   </div></td>

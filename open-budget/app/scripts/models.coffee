@@ -16,6 +16,7 @@ class ChangeLine extends Backbone.Model
                 budget_code: null
                 year: null
                 date: null
+                date_type: null
                 req_title: null
                 change_code: null
                 change_type_id: null
@@ -29,6 +30,17 @@ class ChangeLine extends Backbone.Model
                         ret = "0"+ret
                 ret
 
+        dateType: ->
+                date_type = @get('date_type')
+                if date_type == 0
+                    ret = "approved"
+                if date_type == 1
+                    ret = "approved-approximate"
+                if date_type == 10
+                    ret = "pending"
+                console.log 'date_type', date_type, ret
+                ret
+
         initialize: ->
                 dateStr = @get 'date'
                 if dateStr?
@@ -39,7 +51,6 @@ class ChangeLine extends Backbone.Model
 
         setTimestamp: ->
                 dateStr = @get 'date'
-                console.log 'date changed ',dateStr
                 date = dateStr.split('/')
                 date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
                 @set 'timestamp', date.valueOf()
@@ -88,7 +99,7 @@ class BudgetHistory extends Backbone.Collection
 
         getLast: -> @models[@models.length-1]
 
-                
+
 
 class PageModel extends Backbone.Model
 

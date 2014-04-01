@@ -15,6 +15,7 @@ class YearlyHistoryItem extends Backbone.Model
         defaults:
                 year: null
                 date: null
+                date_type: null
                 kind: null # 0 - budget approval, 1 - transfer
                 title: null
                 amount: null
@@ -31,8 +32,8 @@ class YearlyHistoryItem extends Backbone.Model
                         @on 'change:req_id', () => @getBudgetItems()
 
         getBudgetItems: ->
-                @set('budget_items', new ChangeLineList([],{req_id: @get('req_id'), year: @get('year')}))  
-                                        
+                @set('budget_items', new ChangeLineList([],{req_id: @get('req_id'), year: @get('year')}))
+
 
 class YearlyHistoryItems extends Backbone.Collection
         model: YearlyHistoryItem
@@ -47,11 +48,11 @@ class GlobalHistoryItem extends Backbone.Model
 
         initialize: ->
                 @pageModel = window.pageModel
-                @pageModel.changeLines.on 'reset', () => @processChangeLines()               
+                @pageModel.changeLines.on 'reset', () => @processChangeLines()
                 @transferDetails = new YearlyHistoryItems()
                 @set('transfer_detail', @transferDetails)
                 firstItem = new YearlyHistoryItem({kind : 0, year: @get('year'), amount: @get('amount'), amount_transferred: @get('amount')})
-                @transferDetails.add(firstItem)               
+                @transferDetails.add(firstItem)
                 @transferDetails.on 'add', () =>
                         @set('num_transfers',@transferDetails.length-1)
                 @processChangeLines()
@@ -63,7 +64,7 @@ class GlobalHistoryItem extends Backbone.Model
                         diff = transfer.get('net_expense_diff')
                         amount += diff
                         req_id = transfer.requestId()
-                        item = new YearlyHistoryItem({kind: 1, amount_transferred: diff, amount: amount, title: transfer.get('req_title'), year: transfer.get('year'), date: transfer.get('date'), req_id: req_id})
+                        item = new YearlyHistoryItem({kind: 1, amount_transferred: diff, amount: amount,title: transfer.get('req_title'), year: transfer.get('year'),date: transfer.get('date'), date_type: transfer.dateType(),req_id: req_id})
                         @transferDetails.add(item)
 
 class GlobalHistoryItems extends Backbone.Collection
@@ -119,7 +120,7 @@ class HistoryTableYearSummary extends Backbone.View
                                   ,
                                     1000)
 
-                                                                
+
 class HistoryTableSingleTransfer extends Backbone.View
 
         initialize: ->
@@ -135,8 +136,8 @@ class HistoryTableSingleTransfer extends Backbone.View
         addBudgetLine: (cl) ->
                 el = $( window.JST.single_transfer_budget_line( cl.toJSON() ) )
                 $(@el).find('.budget-lines').append( el )
-                
-             
+
+
 
 class HistoryTableYear extends Backbone.View
 
@@ -174,7 +175,7 @@ class HistoryTableYear extends Backbone.View
                                 budget_items = _.filter(budget_items, (m) -> m.get('budget_code') != @pageModel.get('budgetCode'))
                                 for cl in budget_items[0..2]
                                         htst.addBudgetLine(cl)
-        
+
 
 class HistoryTable extends Backbone.View
 
@@ -184,11 +185,11 @@ class HistoryTable extends Backbone.View
                 @globalHistoryItems.on 'add', (model) => @addYearPanel(model)
                 @subViews = {}
                 @render()
-                       
+
         addYearPanel: (globalHistoryItem) ->
                 year = globalHistoryItem.get('year')
                 yearView = new HistoryTableYear({model: globalHistoryItem, el: @$('tbody')})
-                @subViews[year] = yearView                
+                @subViews[year] = yearView
 
         render: ->
                 $(@el).html( window.JST.history_table() )
