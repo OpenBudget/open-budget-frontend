@@ -3,6 +3,7 @@ class WidgetDataPoint extends Backbone.Model
 
         defaults:
                 kind: null
+                subkind: ""
                 timestamp: null
                 value: null
                 source: null
@@ -133,9 +134,9 @@ class WidgetData extends Backbone.Collection
                                         point.set("source",m)
                                         point.set('kind','change')
                                         point.set('diff-value',value)
+                                        point.set('subkind',m.dateType())
                                         date = m.get('timestamp')
                                         diff = date - timestamp
-                                        console.log m.get('date'), date, diff
                                         timestamp = date
                                         if lastPoint
                                                 lastPoint.set('width', diff)

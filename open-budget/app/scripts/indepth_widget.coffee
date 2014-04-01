@@ -14,7 +14,7 @@ class IndepthWidget extends Backbone.View
                         .attr('width','100%')
                         .attr('height','100%')
                 @svg.append('defs').html('<pattern id="backgroundPattern" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
-        
+
                 @chart = @svg.append('g').attr('class','chart')
                 @bars = @svg.append('g').attr('class','bar')
 
@@ -27,13 +27,13 @@ class IndepthWidget extends Backbone.View
 
                 @minTime = @pageModel.get('selection')[0]
                 @maxTime = @pageModel.get('selection')[1]
-                
+
                 @baseTimeScale = d3.scale.linear()
                         .domain([@minTime, @maxTime])
                         .range([0, @maxWidth])
                 @yearSeperatingScale = (t) =>
                         year = new Date(t).getFullYear()
-                        base = new Date(year,0).valueOf()                       
+                        base = new Date(year,0).valueOf()
                         #console.log t, year, base
                         base + (t - base) * 0.98
                 @pixelPerfecter = (t) =>
@@ -75,7 +75,7 @@ class IndepthWidget extends Backbone.View
                         .attr('x2', (d) => @timeScale( @maxTime ))
                         .attr('y1', (d) => @valueScale( @minValue + d.index*@tickValue ))
                         .attr('y2', (d) => @valueScale( @minValue + d.index*@tickValue ))
-                
+
                 graduationLabels = @chart.selectAll('.graduationLabel')
                         .data(_.filter(allLabelIndexes, (x)->x.major))
                 graduationLabels.enter()
@@ -139,7 +139,7 @@ class IndepthWidget extends Backbone.View
                                 .datum( (d) => d)
 
                 @chart.selectAll('.changeBar').data(changeModels)
-                        .attr("class", (d) => dbl = d.get('diff-baseline'); if dbl > 0 then "changeBar increase" else if dbl < 0 then "changeBar reduce" else "changeBar")
+                        .attr("class", (d) => dbl = d.get('diff-baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar increase #{subkind}" else if dbl < 0 then "changeBar reduce #{subkind}" else "changeBar  #{subkind}")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
@@ -190,15 +190,15 @@ class IndepthWidget extends Backbone.View
                         .attr("x", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
 
-                        
-                
+
+
         formatNumber: (n) ->
                 rx=  /(\d+)(\d{3})/
-                String(n*1000).replace(/^\d+/, (w) -> 
+                String(n*1000).replace(/^\d+/, (w) ->
                         while rx.test(w)
                             w = w.replace rx, '$1,$2'
                         w)
-                
+
         setValueRange: () ->
                 @valueRange = @model.maxValue - @model.minValue
                 scale = 1
@@ -209,18 +209,18 @@ class IndepthWidget extends Backbone.View
                         valueRange /= 10
                 if valueRange < 0.25*RATIO
                         @tickValue = 0.025*scale
-                        @labelValue = 0.1*scale 
+                        @labelValue = 0.1*scale
                 if valueRange < 0.5*RATIO
                         @tickValue = 0.05*scale
-                        @labelValue = 0.2*scale 
+                        @labelValue = 0.2*scale
                 if valueRange <=1*RATIO
                         @tickValue = 0.1*scale
                         @labelValue = 0.2*scale
                 @minValue = Math.floor(@model.minValue / @tickValue) * @tickValue
                 @maxValue = @minValue + TICKS * @tickValue
-                        
-                
-        
+
+
+
 $( ->
         console.log "indepth_widget"
         window.indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.widgetData});
