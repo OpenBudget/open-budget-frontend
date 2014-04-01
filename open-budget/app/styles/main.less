@@ -7,7 +7,7 @@
 /* Color scheme */
 @background: #F3F3F3;
 
-@approved: #00AF6A;
+@approved: #33cd56; // #00AF6A;
 @spent: #F94641;
 @decreased: #9F7E27; 
 @increased: #5731E7;
@@ -208,6 +208,31 @@ svg rect{
 	shape-rendering:crispEdges;
 }
 
+@keyframes  dash-up {
+  to {stroke-dashoffset: 5;}
+}
+@keyframes  dash-down {
+  to {stroke-dashoffset: -5;}
+}
+@-webkit-keyframes  dash-up {
+  to {stroke-dashoffset: 5;}
+}
+@-webkit-keyframes  dash-down {
+  to {stroke-dashoffset: -5;}
+}
+@-moz-keyframes  dash-up {
+  to {stroke-dashoffset: 5;}
+}
+@-moz-keyframes  dash-down {
+  to {stroke-dashoffset: -5;}
+}
+@-o-keyframes  dash-up {
+  to {stroke-dashoffset: 5;}
+}
+@-o-keyframes  dash-down {
+  to {stroke-dashoffset: -5;}
+}
+
 /* In depth, zoomable Widget */
 #indepth-widget {
   width: 100%;
@@ -222,28 +247,28 @@ svg rect{
 			fill: @ultralightgray !important;
 		}
 		.graduationLabel {
-	    font-size: 11px;
-	    font-weight: 700;
-	    fill: @darkgray;
+		    font-size: 11px;
+		    font-weight: 700;
+		    fill: @darkgray;
 		}
 		.graduationLine {
-	    &.major {
-				stroke: @gray;
-	    }
-	    &.minor {
-				stroke: @lightgray;
-	    }
+		    &.major {
+					stroke: @gray;
+		    }
+		    &.minor {
+					stroke: @lightgray;
+		    }
 		}
 		.graphPartApproved {
-	    text {
+		    text {
 				fill: @approved;
-	    }
-	    .approvedBar {
-	    	stroke: @approved;
-	    }
-	    .approvedLine {
-	    	stroke: @approved;
-	    	stroke-dasharray: 1,3;
+		    }
+		    .approvedBar {
+		    	stroke: @approved;
+		    }
+		    .approvedLine {
+		    	stroke: @approved;
+		    	stroke-dasharray: 1,4;
 				&.increase {
 				    stroke: @increased;
 				}
@@ -258,12 +283,20 @@ svg rect{
 	    stroke: @approved;
 
 	    .changeLine {
-	    	stroke-dasharray: 1,3;
+	    	stroke-dasharray: 1,4;
 				&.increase {
 				    stroke: @increased;
+				    -webkit-animation: dash-up 0.5s linear infinite;
+				    -moz-animation: dash-up 0.5s linear infinite;
+				    -0-animation: dash-up 0.5s linear infinite;
+				    animation: dash-up 0.5s linear infinite;
 				}
 				&.reduce {
 				    stroke: @decreased;
+				    -webkit-animation: dash-down 0.5s linear infinite;
+				    -moz-animation: dash-down 0.5s linear infinite;
+				    -o-animation: dash-down 0.5s linear infinite;
+				    -webkit-animation: dash-down 0.5s linear infinite;
 				}
 	    }
 
@@ -271,9 +304,11 @@ svg rect{
 				stroke-width: 4;
 				&.increase {
 				    stroke: @increased;
+	    			stroke-dasharray: 3,1;
 				}
 				&.reduce {
 				    stroke: @decreased;
+	    			stroke-dasharray: 3,1;
 				}
 	    }
 	}
@@ -292,8 +327,8 @@ svg rect{
 
     .changeBar line {
 			stroke: @gray;
-			&.increase {stroke: @increased;}
-			&.reduce {stroke: @decreased;}
+			&.increase {stroke: @increased;stroke-dasharray: 1;}
+			&.reduce {stroke: @decreased;stroke-dasharray: 1;}
     }
 
     .approvedBar {
@@ -335,9 +370,64 @@ svg rect{
 
 #indepth-widget {
 	.approvedBar {
-		stroke-dasharray: 2px, 4px !important;
+		//stroke-dasharray: 2px, 4px !important;
 		stroke-width: 2px;
+		stroke: fadeout(@approved, 70%) !important;
 	}
+}
+
+// Breath in/out for pending transactions
+
+@keyframes pending {
+  0% {
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-opacity: 0.5;
+  }
+  100% {
+    stroke-opacity: 1;
+  }
+}
+@-webkit-keyframes pending {
+  0% {
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-opacity: 0.5;
+  }
+  100% {
+    stroke-opacity: 1;
+  }
+}
+@-moz-keyframes pending {
+  0% {
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-opacity: 0.5;
+  }
+  100% {
+    stroke-opacity: 1;
+  }
+}
+@-o-keyframes pending {
+  0% {
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-opacity: 0.5;
+  }
+  100% {
+    stroke-opacity: 1;
+  }
+}
+
+.pending {
+	animation:         pending 1s infinite; /* IE 10+ */
+	-webkit-animation: pending 1s infinite; /* Safari 4+ */
+	-moz-animation:    pending 1s infinite; /* Fx 5+ */
+	-o-animation:      pending 1s infinite; /* Opera 12+ */
 }
 
 // TABLE ///////////////////////////////
