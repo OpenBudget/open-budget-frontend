@@ -371,6 +371,43 @@ svg rect{
     }
 }
 
+.popover {
+	.date {
+		margin-top: -35px;
+		text-align: center;
+		position: absolute;
+		width: 100%;
+		color: @darkgray;
+	}
+	h2 {
+		margin: 0;
+		padding-bottom: 0.1em;
+	}
+	&.trans-increased .popover-title{ background-color: @increased }
+	&.trans-decreased .popover-title{ background-color: @decreased }
+	.popover-title {
+		color: @background;
+		text-align: center;
+		background: none;
+		padding: 8px 0;
+		p {
+			margin-bottom: 0em;
+		}
+	}
+	.popover-content .trans-description {
+		display: none;
+		color: @gray;
+		span.increased { color: @increased}
+		span.decreased { color: @decreased}
+	}
+
+	&.bottom,&.bottom{
+	  .arrow:after {
+		margin-right: -10px; //RTL fix
+	  }
+	}
+}
+
 /* Overview Widget */
 #overview-widget {
     width: 100%;
