@@ -31,9 +31,13 @@ class IndepthWidget extends Backbone.View
                 @baseTimeScale = d3.scale.linear()
                         .domain([@minTime, @maxTime])
                         .range([0, @maxWidth])
-                @yearSeperatingScale = (t) =>
+                @roundToYearStart = (t) =>
                         year = new Date(t).getFullYear()
                         base = new Date(year,0).valueOf()
+                        return base
+
+                @yearSeperatingScale = (t) =>
+                        base = @roundToYearStart(t)
                         #console.log t, year, base
                         base + (t - base) * 0.98
                 @pixelPerfecter = (t) =>
@@ -135,21 +139,51 @@ class IndepthWidget extends Backbone.View
                                 .datum( (d) => d)
                 newGraphParts
                         .append('line')
+                                .attr('class', 'changeLine-background')
+                                .datum( (d) => d)
+                                .style("stroke-width",10)
+                                .style("color","#fff")
+                                .style("opacity",0.01)
+                newGraphParts
+                        .append('line')
                                 .attr('class', 'changeLine')
                                 .datum( (d) => d)
 
+                change_tip = d3.tip()
+                               .attr('class', 'd3-tip')
+                               .offset([-10, 0])
+                               .html((d) -> JST.widget_change_tooltip(d.get("source")))
+                @chart.call( change_tip )
                 @chart.selectAll('.changeBar').data(changeModels)
                         .attr("class", (d) => dbl = d.get('diff-baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar increase #{subkind}" else if dbl < 0 then "changeBar reduce #{subkind}" else "changeBar  #{subkind}")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
                         .attr("y2", (d) => @valueScale( d.get('value') ) )
+                @chart.selectAll('.changeLine-background').data(changeModels)
+                        .attr("class", (d) => "changeLine-background")
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y1", (d) => @valueScale( d.get('value') + _.max([0, -d.get('diff-value')]) ) )
+                        .attr("y2", (d) => if d.get('source') == "dummy" then @valueScale( d.get('value') + _.max([0, -d.get('diff-value')]) ) else @valueScale(@minValue) + CHANGE_LINE_HANG_LENGTH )
+                        .on('mouseover', change_tip.show)
+                        .on('mouseout', change_tip.hide)
                 @chart.selectAll('.changeLine').data(changeModels)
                         .attr("class", (d) => if d.get('diff-value') > 0 then "changeLine increase" else "changeLine reduce")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') + _.max([0, -d.get('diff-value')]) ) )
                         .attr("y2", (d) => if d.get('source') == "dummy" then @valueScale( d.get('value') + _.max([0, -d.get('diff-value')]) ) else @valueScale(@minValue) + CHANGE_LINE_HANG_LENGTH )
+
+                @chart.selectAll(".changeBar-last").data(_.filter(changeModels,(x)->x.get("last")))
+                       .enter()
+                       .append("line")
+                            .datum( (d) => d)
+                            .attr("class", (d) => dbl = d.get('diff-baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar-last increase #{subkind}" else if dbl < 0 then "changeBar-last reduce #{subkind}" else "changeBar-last  #{subkind}")
+                            .attr("x1", (d) => @timeScale( @roundToYearStart( d.get('timestamp') ) ) )
+                            .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                            .attr("y1", (d) => @valueScale( d.get('value') ) )
+                            .attr("y2", (d) => @valueScale( d.get('value') ) )
 
                 usedModels = _.filter(@model.models, (x)->x.get('kind')=='used')
                 newGraphParts = @chart.selectAll('.graphPartUsed').data(usedModels)

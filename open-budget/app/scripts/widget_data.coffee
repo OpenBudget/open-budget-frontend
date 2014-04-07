@@ -9,6 +9,7 @@ class WidgetDataPoint extends Backbone.Model
                 source: null
                 width: 0
                 date: null
+                last: false
 
 
 class WidgetData extends Backbone.Collection
@@ -153,6 +154,7 @@ class WidgetData extends Backbone.Collection
                                 @add point
                         if lastPoint?
                                 lastPoint.set('width', yearEnd - timestamp)
+                                lastPoint.set('last', true)
                 @postProcess()
 
 
