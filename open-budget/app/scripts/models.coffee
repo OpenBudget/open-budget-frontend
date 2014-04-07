@@ -1,3 +1,11 @@
+class ChangeExplanation extends Backbone.Model
+
+        defaults:
+                year: null
+                leading_item: null
+                req_code: null
+                explanation: null
+
 class ChangeLine extends Backbone.Model
 
         defaults:
@@ -120,6 +128,7 @@ class PageModel extends Backbone.Model
 
 window.models =
         ChangeLine: ChangeLine
+        ChangeExplanation: ChangeExplanation
 
 
 $( ->

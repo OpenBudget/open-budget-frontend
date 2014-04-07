@@ -11,6 +11,17 @@ class ChangeLineList extends Backbone.Collection
 
         url: () => "#{@pageModel.get('baseURL')}/api/changes/#{@req_id}/#{@year}"
 
+class ChangeExplanations extends Backbone.Collection
+        model: window.models.ChangeExplanation
+
+        initialize: (models, options) ->
+                @pageModel = window.pageModel
+                @year = options.year
+                @req_id = options.req_id
+                @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+        url: () => "#{@pageModel.get('baseURL')}/api/change_expl/#{@req_id}/#{@year}"
+
 class YearlyHistoryItem extends Backbone.Model
         defaults:
                 year: null
@@ -21,19 +32,20 @@ class YearlyHistoryItem extends Backbone.Model
                 amount: null
                 amount_transferred: null
                 budget_items: null
+                explanation: null
                 links: null
                 req_id: null
 
         initialize: ->
                 req_id = @get('req_id')
                 if req_id
-                        @getBudgetItems()
+                        @getExtraData()
                 else
-                        @on 'change:req_id', () => @getBudgetItems()
+                        @on 'change:req_id', () => @getExtraData()
 
-        getBudgetItems: ->
+        getExtraData: ->
                 @set('budget_items', new ChangeLineList([],{req_id: @get('req_id'), year: @get('year')}))
-
+                @set('explanation', new ChangeExplanations([],{req_id: @get('req_id'), year: @get('year')}))
 
 class YearlyHistoryItems extends Backbone.Collection
         model: YearlyHistoryItem
@@ -131,12 +143,14 @@ class HistoryTableSingleTransfer extends Backbone.View
                 el = $( window.JST.single_transfer( @model.toJSON() ) )
                 $(@el).after( el )
                 @el = el
-                #$(@el).css('display','none')
+                $(@el).find('.table-finance-story').click((event) -> event.preventDefault())
 
         addBudgetLine: (cl) ->
                 el = $( window.JST.single_transfer_budget_line( cl.toJSON() ) )
                 $(@el).find('.budget-lines').append( el )
 
+        addExplanation: (ex) ->
+                $(@el).find('.table-finance-story').popover({content:ex.get("explanation"),trigger:'hover',placement:'auto',container:'#popups'})
 
 
 class HistoryTableYear extends Backbone.View
@@ -161,6 +175,10 @@ class HistoryTableYear extends Backbone.View
                 htst = new HistoryTableSingleTransfer({model: model, el: @summaryView.el})
                 @transferItems.push htst
                 if model.get('kind') == 1
+                        model.get('explanation').on 'reset', =>
+                                 explanation = model.get('explanation').models[0]
+                                 htst.addExplanation(explanation)
+
                         model.get('budget_items').on 'reset', =>
                                 $(htst.el).find('.spinner').remove()
                                 budget_items = model.get('budget_items').models

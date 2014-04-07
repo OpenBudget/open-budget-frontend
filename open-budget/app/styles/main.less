@@ -9,7 +9,7 @@
 
 @approved: #33cd56; // #00AF6A;
 @spent: #F94641;
-@decreased: #9F7E27; 
+@decreased: #9F7E27;
 @increased: #5731E7;
 @link: #00A1F6;
 @text: #3C4948;
@@ -68,11 +68,20 @@ strong.approved {
 	color: @approved;
 }
 
+/* Popover */
+.popover {
+    max-width: 500px;
+
+    .popover-content, .popover-title {
+        text-align: right;
+        direction:rtl;
+    }
+}
 
 /////// ARTICLE ///////////
 
 article {
-	
+
 	&.six-fig{
 		//margin-left: 72px;
 	}
@@ -94,12 +103,12 @@ article {
 		.nav {
 			font-size: 18px;
 			border-bottom: 0;
-			
+
 			>li>a {
 				padding: 17px 15px 15px;
 
 				&.active{
-					
+
 				}
 				&:hover{
 					border-color: rgba(0,0,0,0);
@@ -436,7 +445,7 @@ svg rect{
 	padding: 10px;
 }
 
-table {
+table.history-table {
 	width: 100%;
 	font-size: 15px;
 	border-collapse: collapse;
@@ -472,7 +481,7 @@ table {
 				transition: padding 1s, height 1s;
 	    }
 		}
-		
+
 		.table-date {
 			width: 10%;
 		}
@@ -520,13 +529,13 @@ table {
 			font-weight: 700;
 			.table-date { font-size: 24px; }
 			span { opacity: 0.5;}
-			.table-year-incresed { 
+			.table-year-incresed {
 			    color: @increased;
 			    &:before {
 				content: "\2b06";
 			    }
 			}
-			.table-year-decresed { 
+			.table-year-decresed {
 			    color: @decreased;
 			    &:before {
 				content: "\2b07";
@@ -662,7 +671,7 @@ table {
   height: 100%;
   width: 6px;
   display: inline-block;
-  
+
   -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
   animation: stretchdelay 1.2s infinite ease-in-out;
 }
@@ -688,15 +697,15 @@ table {
 }
 
 @-webkit-keyframes stretchdelay {
-  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
   20% { -webkit-transform: scaleY(1.0) }
 }
 
 @keyframes stretchdelay {
-  0%, 40%, 100% { 
+  0%, 40%, 100% {
     transform: scaleY(0.4);
     -webkit-transform: scaleY(0.4);
-  }  20% { 
+  }  20% {
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }
