@@ -1,3 +1,22 @@
-<%= get('budget_code') %> - <%= get('budget_title') %><br/>
-<%= get('date') %>:
-עברו <%= format_number(get('net_expense_diff')) %>
+<div id="trans-tip" class="widget-popover fade in bottom trans-increased">
+  <div class="date"><%= get('date') %></div>
+  <div class="arrow"></div>
+  <div class="widget-popover-title">
+    <p>העברה <%= get('req_code') %> מוסיפה:</p>
+    <h2><%= format_number(get('net_expense_diff')) %></h2>
+  </div>
+  <div class="widget-popover-content">
+    עליות של
+    <strong class="increased">
+        ₪12,000,000+
+    </strong>
+     מתחילת
+      <%= get('year') %>
+       לסה״כ של
+     <strong class="increased">
+         ₪58,000,000
+     </strong>
+     .
+
+  </div>
+</div>
