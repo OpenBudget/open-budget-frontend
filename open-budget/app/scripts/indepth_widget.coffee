@@ -152,7 +152,7 @@ class IndepthWidget extends Backbone.View
                                .attr('class', 'd3-tip')
                                    #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
                                .offset((d) => [@valueScale(0) - @valueScale( d.get('value') )+150,-(@timeScale( d.get('width')/2 ) - @timeScale(0))])
-                               .html((d) -> JST.widget_change_tooltip(d.get("source")))
+                               .html((d) -> JST.widget_change_tooltip(d))
                 @chart.call( change_tip )
                 @chart.selectAll('.changeBar').data(changeModels)
                         .attr("class", (d) => dbl = d.get('diff-baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar increase #{subkind}" else if dbl < 0 then "changeBar reduce #{subkind}" else "changeBar  #{subkind}")

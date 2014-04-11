@@ -25,6 +25,10 @@ window.format_number = (num,is_shekels) ->
         else
                 "—"
 
+window.color_classname = (value) ->
+    if value == 0 then ""
+    return if value > 0 then "increased" else "decreased"
+
 get_program = ->
         window.pageModel.set('budgetCode', '00'+$("#search-item").val())
 

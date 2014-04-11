@@ -177,7 +177,8 @@ class HistoryTableYear extends Backbone.View
                 if model.get('kind') == 1
                         model.get('explanation').on 'reset', =>
                                  explanation = model.get('explanation').models[0]
-                                 htst.addExplanation(explanation)
+                                 if explanation?
+                                     htst.addExplanation(explanation)
 
                         model.get('budget_items').on 'reset', =>
                                 $(htst.el).find('.spinner').remove()

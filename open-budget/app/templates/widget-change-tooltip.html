@@ -1,20 +1,30 @@
-<div id="trans-tip" class="widget-popover fade in bottom trans-increased">
-  <div class="date"><%= get('date') %></div>
+<div id="trans-tip" class="widget-popover fade in bottom trans-<%= color_classname(get("diff-value")) %>">
+  <div class="date"><%= get("source").get('date') %></div>
   <div class="arrow"></div>
   <div class="widget-popover-title">
-    <p>העברה <%= get('req_code') %> מוסיפה:</p>
-    <h2><%= format_number(get('net_expense_diff')) %></h2>
+    <p>העברה <%= get("source").get('req_code') %>
+        <% if ( get("source").get('net_expense_diff') > 0 ) { %>
+            מוסיפה:
+        <% } else { %>
+            מורידה:
+         <% } %>
+    </p>
+    <h2><%= format_number( get("source").get('net_expense_diff') ) %></h2>
   </div>
   <div class="widget-popover-content">
-    עליות של
-    <strong class="increased">
-        ₪12,000,000+
+<% if ( get("diff-baseline") > 0 ) { %>
+עליות של
+<% } else { %>
+ירידות של
+ <% } %>
+    <strong class="<%= color_classname(get("diff-baseline")) %>">
+        <%= format_number( get("diff-baseline") ) %>
     </strong>
      מתחילת
-      <%= get('year') %>
+      <%= get("source").get('year') %>
        לסה״כ של
-     <strong class="increased">
-         ₪58,000,000
+     <strong class="<%= color_classname(get("diff-baseline")) %>">
+         <%= format_number(get("value")) %>
      </strong>
      .
 
