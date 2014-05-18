@@ -386,15 +386,15 @@ a {
   text-decoration: none;
 }
 
-a:hover {
+.item a:hover {
   color: #6E7AED !important;
 }
 
-a:active {
+.item a:active {
   color: #6E7AED !important;
 }
 
-a:visited {
+.item a:visited {
   color: #6E7AED !important;
 }
 
@@ -482,9 +482,10 @@ table.large-button td {
   display: block;
   width: auto !important;
   text-align: center;
-  background: #2ba6cb;
-  border: 1px solid #2284a1;
-  color: #ffffff;
+  background: #ffffff;
+  border: 2px solid #6E7AED;
+	border-radius: 30px;
+  color: #6E7AED;
   padding: 8px 0;
 }
 
@@ -512,7 +513,7 @@ table.large-button td a {
   font-weight: bold;
   text-decoration: none;
   font-family: Helvetica, Arial, sans-serif;
-  color: #ffffff;
+  color: #6E7AED;
   font-size: 16px;
 }
 
@@ -536,13 +537,13 @@ table.large-button td a {
 table.button:hover td,
 table.button:visited td,
 table.button:active td {
-  background: #2795b6 !important;
+  background: #ffffff !important;
 }
 
 table.button:hover td a,
 table.button:visited td a,
 table.button:active td a {
-  color: #fff !important;
+  color: #6E7AED !important;
 }
 
 table.button:hover td,
@@ -550,7 +551,7 @@ table.tiny-button:hover td,
 table.small-button:hover td,
 table.medium-button:hover td,
 table.large-button:hover td {
-  background: #2795b6 !important;
+  background: #ffffff !important;
 }
 
 table.button:hover td a,
@@ -568,7 +569,7 @@ table.medium-button td a:visited,
 table.large-button:hover td a,
 table.large-button:active td a,
 table.large-button td a:visited {
-  color: #ffffff !important;
+  color: #6E7AED !important;
 }
 
 table.secondary td {
@@ -893,7 +894,7 @@ body.outlook p {
                       </tr>
                     </table>
 
-                    <table class="twelve columns" title="item1">
+                    <table id="item1" class="twelve columns">
                       <tr>
                         <td class="item">
 													<h5>1</h5>
@@ -932,6 +933,17 @@ body.outlook p {
 														<li>מדוע ההעברות לטובת המשרד קורות דווקא בסוף שנת התקציב?</li>
 														<li>מה הם הנתונים הנוספים שעל בסיסם הוחלט לבצע את הקיצוץ?</li>
 													</ul>
+
+
+
+													<table class="button">
+														<tr>
+															<td>
+																<a href="#">עוד אודות העברה זו</a>
+															</td>
+														</tr>
+													</table>
+
 												</td>
 											</tr>
                     </table>
@@ -953,14 +965,6 @@ body.outlook p {
                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet.</p>
 
                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet.</p>
-
-                          <table class="button">
-                            <tr>
-                              <td>
-                                <a href="#">Click Me!</a>
-                              </td>
-                            </tr>
-                          </table>
 
                         </td>
                         <td class="expander"></td>
