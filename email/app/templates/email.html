@@ -1,0 +1,2255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width"/>
+    <style>
+    /**********************************************
+    * Ink v1.0.5 - Copyright 2013 ZURB Inc        *
+    **********************************************/
+
+    /* Client-specific Styles & Reset */
+
+    #outlook a {
+        padding:0;
+    }
+
+    body{
+        width:100% !important;
+        min-width: 100%;
+        -webkit-text-size-adjust:100%;
+        -ms-text-size-adjust:100%;
+        margin:0;
+        padding:0;
+        background-color: #6E7AED;
+        font-size: 15px;
+        direction: rtl;
+        color: #333333;
+    }
+
+    .ExternalClass {
+        width:100%;
+    }
+
+    .ExternalClass,
+    .ExternalClass p,
+    .ExternalClass span,
+    .ExternalClass font,
+    .ExternalClass td,
+    .ExternalClass div {
+        line-height: 100%;
+    }
+
+    #backgroundTable {
+        margin:0;
+        padding:0;
+        width:100% !important;
+        line-height: 100% !important;
+    }
+
+    img {
+        outline:none;
+        text-decoration:none;
+        -ms-interpolation-mode: bicubic;
+        width: auto;
+        max-width: 100%;
+        float: left;
+        clear: both;
+        display: block;
+    }
+
+    center {
+        width: 100%;
+        min-width: 580px;
+    }
+
+    a img {
+        border: none;
+    }
+
+    p {
+        margin: 0 0 0 10px;
+    }
+
+    table {
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+
+    td {
+        word-break: break-word;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
+        border-collapse: collapse !important;
+    }
+
+    table, tr, td {
+        padding: 0;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    hr {
+        color: #d9d9d9;
+        background-color: #d9d9d9;
+        height: 1px;
+        border: none;
+    }
+
+    /* Responsive Grid */
+
+    table.body {
+        height: 100%;
+        width: 100%;
+    }
+
+    table.container {
+        width: 580px;
+        margin: 0 auto;
+        text-align: inherit;
+    }
+
+    table.row {
+        padding: 0px;
+        width: 100%;
+        position: relative;
+    }
+
+    table.container table.row {
+        display: block;
+    }
+
+    td.wrapper {
+        padding: 10px 20px 0px 0px;
+        position: relative;
+    }
+
+    table.columns,
+    table.column {
+        margin: 0 auto;
+    }
+
+    table.columns td,
+    table.column td {
+        padding: 0px 0px 10px;
+    }
+
+    table.columns td.sub-columns,
+    table.column td.sub-columns,
+    table.columns td.sub-column,
+    table.column td.sub-column {
+        padding-right: 10px;
+    }
+
+    td.sub-column, td.sub-columns {
+        min-width: 0px;
+    }
+
+    table.row td.last,
+    table.container td.last {
+        padding-right: 0px;
+    }
+
+    table.one { width: 30px; }
+    table.two { width: 80px; }
+    table.three { width: 130px; }
+    table.four { width: 180px; }
+    table.five { width: 230px; }
+    table.six { width: 280px; }
+    table.seven { width: 330px; }
+    table.eight { width: 380px; }
+    table.nine { width: 430px; }
+    table.ten { width: 480px; }
+    table.eleven { width: 530px; }
+    table.twelve { width: 580px; }
+
+    table.one center { min-width: 30px; }
+    table.two center { min-width: 80px; }
+    table.three center { min-width: 130px; }
+    table.four center { min-width: 180px; }
+    table.five center { min-width: 230px; }
+    table.six center { min-width: 280px; }
+    table.seven center { min-width: 330px; }
+    table.eight center { min-width: 380px; }
+    table.nine center { min-width: 430px; }
+    table.ten center { min-width: 480px; }
+    table.eleven center { min-width: 530px; }
+    table.twelve center { min-width: 580px; }
+
+    table.one .panel center { min-width: 10px; }
+    table.two .panel center { min-width: 60px; }
+    table.three .panel center { min-width: 110px; }
+    table.four .panel center { min-width: 160px; }
+    table.five .panel center { min-width: 210px; }
+    table.six .panel center { min-width: 260px; }
+    table.seven .panel center { min-width: 310px; }
+    table.eight .panel center { min-width: 360px; }
+    table.nine .panel center { min-width: 410px; }
+    table.ten .panel center { min-width: 460px; }
+    table.eleven .panel center { min-width: 510px; }
+    table.twelve .panel center { min-width: 560px; }
+
+    .body .columns td.one,
+    .body .column td.one { width: 8.333333%; }
+    .body .columns td.two,
+    .body .column td.two { width: 16.666666%; }
+    .body .columns td.three,
+    .body .column td.three { width: 25%; }
+    .body .columns td.four,
+    .body .column td.four { width: 33.333333%; }
+    .body .columns td.five,
+    .body .column td.five { width: 41.666666%; }
+    .body .columns td.six,
+    .body .column td.six { width: 50%; }
+    .body .columns td.seven,
+    .body .column td.seven { width: 58.333333%; }
+    .body .columns td.eight,
+    .body .column td.eight { width: 66.666666%; }
+    .body .columns td.nine,
+    .body .column td.nine { width: 75%; }
+    .body .columns td.ten,
+    .body .column td.ten { width: 83.333333%; }
+    .body .columns td.eleven,
+    .body .column td.eleven { width: 91.666666%; }
+    .body .columns td.twelve,
+    .body .column td.twelve { width: 100%; }
+
+    td.offset-by-one { padding-left: 50px; }
+    td.offset-by-two { padding-left: 100px; }
+    td.offset-by-three { padding-left: 150px; }
+    td.offset-by-four { padding-left: 200px; }
+    td.offset-by-five { padding-left: 250px; }
+    td.offset-by-six { padding-left: 300px; }
+    td.offset-by-seven { padding-left: 350px; }
+    td.offset-by-eight { padding-left: 400px; }
+    td.offset-by-nine { padding-left: 450px; }
+    td.offset-by-ten { padding-left: 500px; }
+    td.offset-by-eleven { padding-left: 550px; }
+
+    td.expander {
+        visibility: hidden;
+        width: 0px;
+        padding: 0 !important;
+    }
+
+    table.columns .text-pad,
+    table.column .text-pad {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    table.columns .left-text-pad,
+    table.columns .text-pad-left,
+    table.column .left-text-pad,
+    table.column .text-pad-left {
+        padding-left: 10px;
+    }
+
+    table.columns .right-text-pad,
+    table.columns .text-pad-right,
+    table.column .right-text-pad,
+    table.column .text-pad-right {
+        padding-right: 10px;
+    }
+
+    /* Block Grid */
+
+    .block-grid {
+        width: 100%;
+        max-width: 580px;
+    }
+
+    .block-grid td {
+        display: inline-block;
+        padding:10px;
+    }
+
+    .two-up td {
+        width:270px;
+    }
+
+    .three-up td {
+        width:173px;
+    }
+
+    .four-up td {
+        width:125px;
+    }
+
+    .five-up td {
+        width:96px;
+    }
+
+    .six-up td {
+        width:76px;
+    }
+
+    .seven-up td {
+        width:62px;
+    }
+
+    .eight-up td {
+        width:52px;
+    }
+
+    /* Alignment & Visibility Classes */
+
+    table.center, td.center {
+        text-align: center;
+    }
+
+    h1.center,
+    h2.center,
+    h3.center,
+    h4.center,
+    h5.center,
+    h6.center {
+        text-align: center;
+    }
+
+    span.center {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    img.center {
+        margin: 0 auto;
+        float: none;
+    }
+
+    .show-for-small,
+    .hide-for-desktop {
+        display: none;
+    }
+
+    /* Typography */
+
+    body, table.body, h1, h2, h3, h4, h5, h6, p, td {
+        font-family: "Helvetica", "Arial", sans-serif;
+        font-weight: normal;
+        padding:0;
+        margin: 0;
+        text-align: right;
+        line-height: 1.3;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        word-break: normal;
+    }
+
+    h1 {font-size: 17px; text-align: center; color: #ffffff}
+    h2 {font-size: 24px; margin-bottom: 1em;}
+    h3 {font-size: 32px;}
+    h4 {font-size: 28px;}
+    h5 {font-size: 24px; text-align: center; color: #6E7AED; font-weight: bold;}
+    h6 {font-size: 20px;}
+    body, table.body, p, td {font-size: 14px;line-height:19px;}
+
+    h1 span {
+        display: block;
+        font-size: 50px;
+    }
+
+    h2 a {
+        text-decoration: underline;
+    }
+
+    p.lead, p.lede, p.leed {
+        font-size: 18px;
+        line-height:21px;
+    }
+
+    ol.toc li{
+        text-align: right;
+        font-size: 17px;
+        color: #1A1D39;
+        margin-bottom: 0.5em;
+    }
+
+    ol.toc a {
+        color: #1A1D39;
+        text-decoration: underline;
+    }
+
+    p {
+        margin-bottom: 10px;
+    }
+
+    small {
+        font-size: 10px;
+    }
+
+    a {
+        color: #2ba6cb;
+        text-decoration: none;
+    }
+
+    .item a:hover {
+        color: #6E7AED !important;
+    }
+
+    .item a:active {
+        color: #6E7AED !important;
+    }
+
+    .item a:visited {
+        color: #6E7AED !important;
+    }
+
+    h1 a,
+    h2 a,
+    h3 a,
+    h4 a,
+    h5 a,
+    h6 a {
+        color: #6E7AED;
+    }
+
+    h1 a:active,
+    h2 a:active,
+    h3 a:active,
+    h4 a:active,
+    h5 a:active,
+    h6 a:active {
+        color: #6E7AED !important;
+    }
+
+    h1 a:visited,
+    h2 a:visited,
+    h3 a:visited,
+    h4 a:visited,
+    h5 a:visited,
+    h6 a:visited {
+        color: #6E7AED !important;
+    }
+
+    /* Items */
+
+    .item {
+        background: #ffffff;
+        padding: 10px !important;
+        border-width: 0px 5px;
+        border-style: solid;
+        border-color: #6E7AED;
+    }
+
+    .request {
+        background: #F8F7F0;
+        border: 1px solid #C7C7CC;
+        color: #131973;
+        padding: 10px !important;
+    }
+
+    .request h4 {
+        color: #9B9B9B;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .item h3,
+    .request h3 {
+        font-size: 15px;
+        font-weight: bold;
+        margin: 1em 0;
+    }
+
+    .sub-grid table {
+        width: 100%;
+    }
+
+    .sub-grid td.sub-columns {
+        padding-bottom: 0;
+    }
+
+    /* Buttons */
+
+    table.button,
+    table.tiny-button,
+    table.small-button,
+    table.medium-button,
+    table.large-button {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    table.button td,
+    table.tiny-button td,
+    table.small-button td,
+    table.medium-button td,
+    table.large-button td {
+        display: block;
+        width: auto !important;
+        text-align: center;
+        background: #ffffff;
+        border: 2px solid #6E7AED;
+        border-radius: 30px;
+        color: #6E7AED;
+        padding: 8px 0;
+    }
+
+    table.tiny-button td {
+        padding: 5px 0 4px;
+    }
+
+    table.small-button td {
+        padding: 8px 0 7px;
+    }
+
+    table.medium-button td {
+        padding: 12px 0 10px;
+    }
+
+    table.large-button td {
+        padding: 21px 0 18px;
+    }
+
+    table.button td a,
+    table.tiny-button td a,
+    table.small-button td a,
+    table.medium-button td a,
+    table.large-button td a {
+        font-weight: bold;
+        text-decoration: none;
+        font-family: Helvetica, Arial, sans-serif;
+        color: #6E7AED;
+        font-size: 16px;
+    }
+
+    table.tiny-button td a {
+        font-size: 12px;
+        font-weight: normal;
+    }
+
+    table.small-button td a {
+        font-size: 16px;
+    }
+
+    table.medium-button td a {
+        font-size: 20px;
+    }
+
+    table.large-button td a {
+        font-size: 24px;
+    }
+
+    table.button:hover td,
+    table.button:visited td,
+    table.button:active td {
+        background: #ffffff !important;
+    }
+
+    table.button:hover td a,
+    table.button:visited td a,
+    table.button:active td a {
+        color: #6E7AED !important;
+    }
+
+    table.button:hover td,
+    table.tiny-button:hover td,
+    table.small-button:hover td,
+    table.medium-button:hover td,
+    table.large-button:hover td {
+        background: #ffffff !important;
+    }
+
+    table.button:hover td a,
+    table.button:active td a,
+    table.button td a:visited,
+    table.tiny-button:hover td a,
+    table.tiny-button:active td a,
+    table.tiny-button td a:visited,
+    table.small-button:hover td a,
+    table.small-button:active td a,
+    table.small-button td a:visited,
+    table.medium-button:hover td a,
+    table.medium-button:active td a,
+    table.medium-button td a:visited,
+    table.large-button:hover td a,
+    table.large-button:active td a,
+    table.large-button td a:visited {
+        color: #6E7AED !important;
+    }
+
+    table.secondary td {
+        background: #e9e9e9;
+        border-color: #d0d0d0;
+        color: #555;
+    }
+
+    table.secondary td a {
+        color: #555;
+    }
+
+    table.secondary:hover td {
+        background: #d0d0d0 !important;
+        color: #555;
+    }
+
+    table.secondary:hover td a,
+    table.secondary td a:visited,
+    table.secondary:active td a {
+        color: #555 !important;
+    }
+
+    table.success td {
+        background: #5da423;
+        border-color: #457a1a;
+    }
+
+    table.success:hover td {
+        background: #457a1a !important;
+    }
+
+    table.alert td {
+        background: #c60f13;
+        border-color: #970b0e;
+    }
+
+    table.alert:hover td {
+        background: #970b0e !important;
+    }
+
+    table.radius td {
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+    table.round td {
+        -webkit-border-radius: 500px;
+        -moz-border-radius: 500px;
+        border-radius: 500px;
+    }
+
+    /* Outlook First */
+
+    body.outlook p {
+        display: inline !important;
+    }
+
+    /*  Media Queries */
+
+    @media only screen and (max-width: 600px) {
+
+        table[class="body"] img {
+            width: auto !important;
+            height: auto !important;
+        }
+
+        table[class="body"] center {
+            min-width: 0 !important;
+        }
+
+        table[class="body"] .container {
+            width: 95% !important;
+        }
+
+        table[class="body"] .row {
+            width: 100% !important;
+            display: block !important;
+        }
+
+        table[class="body"] .wrapper {
+            display: block !important;
+            padding-right: 0 !important;
+        }
+
+        table[class="body"] .columns,
+        table[class="body"] .column {
+            table-layout: fixed !important;
+            float: none !important;
+            width: 100% !important;
+            padding-right: 0px !important;
+            padding-left: 0px !important;
+            display: block !important;
+        }
+
+        table[class="body"] .wrapper.first .columns,
+        table[class="body"] .wrapper.first .column {
+            display: table !important;
+        }
+
+        table[class="body"] table.columns td,
+        table[class="body"] table.column td {
+            width: 100% !important;
+        }
+
+        table[class="body"] .columns td.one,
+        table[class="body"] .column td.one { width: 8.333333% !important; }
+        table[class="body"] .columns td.two,
+        table[class="body"] .column td.two { width: 16.666666% !important; }
+        table[class="body"] .columns td.three,
+        table[class="body"] .column td.three { width: 25% !important; }
+        table[class="body"] .columns td.four,
+        table[class="body"] .column td.four { width: 33.333333% !important; }
+        table[class="body"] .columns td.five,
+        table[class="body"] .column td.five { width: 41.666666% !important; }
+        table[class="body"] .columns td.six,
+        table[class="body"] .column td.six { width: 50% !important; }
+        table[class="body"] .columns td.seven,
+        table[class="body"] .column td.seven { width: 58.333333% !important; }
+        table[class="body"] .columns td.eight,
+        table[class="body"] .column td.eight { width: 66.666666% !important; }
+        table[class="body"] .columns td.nine,
+        table[class="body"] .column td.nine { width: 75% !important; }
+        table[class="body"] .columns td.ten,
+        table[class="body"] .column td.ten { width: 83.333333% !important; }
+        table[class="body"] .columns td.eleven,
+        table[class="body"] .column td.eleven { width: 91.666666% !important; }
+        table[class="body"] .columns td.twelve,
+        table[class="body"] .column td.twelve { width: 100% !important; }
+
+        table[class="body"] td.offset-by-one,
+        table[class="body"] td.offset-by-two,
+        table[class="body"] td.offset-by-three,
+        table[class="body"] td.offset-by-four,
+        table[class="body"] td.offset-by-five,
+        table[class="body"] td.offset-by-six,
+        table[class="body"] td.offset-by-seven,
+        table[class="body"] td.offset-by-eight,
+        table[class="body"] td.offset-by-nine,
+        table[class="body"] td.offset-by-ten,
+        table[class="body"] td.offset-by-eleven {
+            padding-left: 0 !important;
+        }
+
+        table[class="body"] table.columns td.expander {
+            width: 1px !important;
+        }
+
+        table[class="body"] .right-text-pad,
+        table[class="body"] .text-pad-right {
+            padding-left: 10px !important;
+        }
+
+        table[class="body"] .left-text-pad,
+        table[class="body"] .text-pad-left {
+            padding-right: 10px !important;
+        }
+
+        table[class="body"] .hide-for-small,
+        table[class="body"] .show-for-desktop {
+            display: none !important;
+        }
+
+        table[class="body"] .show-for-small,
+        table[class="body"] .hide-for-desktop {
+            display: inherit !important;
+        }
+    }
+
+    </style>
+    <style>
+
+    table.facebook td {
+        background: #3b5998;
+        border-color: #2d4473;
+    }
+
+    table.facebook:hover td {
+        background: #2d4473 !important;
+    }
+
+    table.twitter td {
+        background: #00acee;
+        border-color: #0087bb;
+    }
+
+    table.twitter:hover td {
+        background: #0087bb !important;
+    }
+
+    table.google-plus td {
+        background-color: #DB4A39;
+        border-color: #CC0000;
+    }
+
+    table.google-plus:hover td {
+        background: #CC0000 !important;
+    }
+
+    .template-label {
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 11px;
+    }
+
+    .callout .panel {
+        background: #ECF8FF;
+        border-color: #b9e5ff;
+    }
+
+    .header td{
+        text-align: center;
+        font-size: 9px;
+        color: #4C55A5;
+    }
+
+    .footer .wrapper {
+        background: #ebebeb;
+    }
+
+    .footer h5 {
+        padding-bottom: 10px;
+    }
+
+    table.columns .text-pad {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    table.columns .left-text-pad {
+        padding-left: 10px;
+    }
+
+    table.columns .right-text-pad {
+        padding-right: 10px;
+    }
+
+    @media only screen and (max-width: 600px) {
+
+        table[class="body"] .right-text-pad {
+            padding-left: 10px !important;
+        }
+
+        table[class="body"] .left-text-pad {
+            padding-right: 10px !important;
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <table class="body">
+        <tr>
+            <td class="center" align="center" valign="top">
+                <center>
+
+                    <table class="row header">
+                        <tr>
+                            <td class="center" align="center">
+                                <center>
+
+                                    <table class="container">
+                                        <tr>
+                                            <td class="wrapper last">
+
+                                                <table class="twelve columns">
+                                                    <tr>
+                                                        <!--td class="preview">
+                                                            בריאות: 45- מיל׳  ◆ בטחון: 2,345+ מיל׳  ◆ חינוך: 15+ מיל׳  ◆ משרד ראש הממשלה: 270+ מיל׳  ◆ תחבורה: 60- מיל׳  ◆
+                                                        </td-->
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br/>
+
+                    <table class="container">
+                        <tr>
+                            <td>
+
+                                <!-- content start -->
+                                <table class="row">
+                                    <tr>
+                                        <td class="wrapper last">
+
+                                            <table class="twelve columns">
+                                                <tr>
+                                                    <td>
+                                                        <h1>על שולחן ועדת הכספים
+                                                            <span>6 / 21-27</span>
+                                                            - 2014 -
+                                                        </h1>
+                                                        <br/>
+                                                        <br/>
+                                                        <ol class="toc">
+                                                            <li><a href="#item1">729 מיליון ₪ כהרשאה להתחייב לטובת שיכון<a></li>
+                                                            <li><a href="#item2">העברת 115 מיליון ₪ מהוצאות שונות לתיירות<a></li>
+                                                            <li><a href="#item3">העברת 111 מיליון ₪ מהוצאות פיתוח אחרות לפיתוח ביטחון-   פנים, ביטחון פנים<a></li>
+                                                            <li><a href="#item4">תוספת של 651 מיליון ₪ לבתי חולים ממשלתים<a></li>
+                                                            <li><a href="#item5">העברת 100 מיליון ₪ מהוצאות פיתוח אחרות להוצאות חירום אזרחיות<a></li>
+                                                            <li><a href="#item6">תוספת של 47 מיליון ₪ לביטחון פנים<a></li>
+                                                            <li><a href="#item7">העברת 32.8 מיליון ₪ מהוצאות שונות, ביטחון פנים לפיתוח ביטחון-   פנים<a></li>
+                                                            <li><a href="#item8">העברת 104 מיליון ₪ מהוצאות שונות לרשויות מקומיות<a></li>
+                                                            <li><a href="#item9">שינוי פנימי של 54.7 מיליון ₪ בתקציב תמיכות שונות<a></li>
+                                                            <li><a href="#item10">תוספת של 27.1 מיליון ₪ לבריאות<a></li>
+                                                            <li><a href="#item11">שינוי פנימי של 21.6 מיליון ₪ בתקציב מדע והחלל, התרבות<a></li>
+                                                            <li><a href="#item12">העברת 34.8 מיליון ₪ מהוצאות פיתוח אחרות, הוצאות שונות לתקשורת<a></li>
+                                                            <li><a href="#item13">שינוי פנימי של 10.9 מיליון ₪ בתקציב משרד ראש הממשלה<a></li>
+                                                            <li><a href="#item14">העברת 18.8 מיליון ₪ מהוצאות פיתוח אחרות לאנרגיה והמים<a></li>
+                                                            <li><a href="#item15">העברת 6.61 מיליון ₪ מתיירות לפיתוח תיירות<a></li>
+                                                            <li><a href="#item16">50 מיליון ₪ כהרשאה להתחייב לטובת משרד ראש הממשלה<a></li>
+                                                            <li><a href="#item17">שינוי פנימי של 266 אלף ₪ בתקציב חקלאות<a></li>
+                                                            <li><a href="#item18">קיצוץ בסך 180 אלף ₪ במשרד ראש הממשלה<a></li>
+                                                            </ol>
+                                                            <br/>
+                                                            <br/>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                </table>
+
+                                                <table id="item1" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>1</h5>
+                                                            <h2><a href="#">729 מיליון ₪ כהרשאה להתחייב לטובת שיכון</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: לוועדה 1 - משרד השיכון</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 523,485 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית, לסעיף 70 - שיכון, בהתאם לסעיף 12 לחוק יסודות התקציב התשמ"ה - 1985. כמפורט בתדפיס המצ"ב.<br/><br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיף 70 - שיכון.<br/>עיקרי הפנייה:<br/>1. הגדלת תקציב חברות מנהלות בסך של 298,000 אלפי ש"ח- פירוט היישובים: נצרת עלית, ביתר, מגדל העמק, יפיע, כרמיאל,	 אבו גוש, צפת, בועיינה, נוג'ידאת, טבריה,	 ראש העין ורמת בית שמש. <br/>2. תקצוב סך של 64,614 אלפי ש"ח עבור החזקה בדיור הציבורי. <br/>3. תקצוב סך של 55,000 אלפי ש"ח עבור תמיכה בחיזוק מבנים, בהתאם לתכנית מענקים לעידוד חיזוק מבנים באזורי שיקום באמצעות תמ"א 38.<br/>4. תקצוב סך של 46,865 אלפי ש"ח עבור תוכנית מיקוד מאמץ - בגין הרשאה להתחייב משנת 2013 שלא נוצלה.<br/>5. הגדלת תקציב לחברות מתכננות בסך של 40,000 אלפי ש"ח. <br/>6. תקצוב הרשאה להתחייב בסך של 3,500 אלפי ש"ח עבור עמיגור בגין עמלת התחדשות עירונית. האומדן המקורי בוצע בחסר ולכן נדרשת תוספת.<br/>7. תקצוב סך של 18,500 אלפי ש"ח עבור נ"ר ומענקי נ"ר הנובע מסיכום תקציבי לפינוי הדיירים בשכונת הארגזים ואספקת פתרון מגורים חלופי.</p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">עמידר, החברה הלאומית לשיכון בישראל (1.12 מיליון ₪)</a></li>
+                
+                <li><a href="#">שלהבת - שלוב נכים בסביבה תומכת (ער (834 אלף ₪)</a></li>
+                
+                <li><a href="#">שקמונה חברה ממשלתית - עירונית לשקום (35.9 אלף ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>700603 - ניצנים</li>
+            
+                <li>700201 - תכנון, פיקוח ומדידות</li>
+            
+                <li>700604 - ניצן</li>
+            
+                <li>700605 - מזרח לכיש</li>
+            
+                <li>700210 - משק סגור חומת שמואל</li>
+            
+                <li>700401 - פעולות שוטפות</li>
+            
+                <li>700214 - בנייה כפרית</li>
+            
+                <li>700205 - פעולות תומכות בבניה</li>
+            
+                <li>700601 - הסכמי העתקה</li>
+            
+                <li>700204 - עבודות פיתוח בניהול</li>
+            
+                <li>700306 - תקן מוסדות ציבור</li>
+            
+                <li>700506 - רכישת דירות נכסי רכישה</li>
+            
+                <li>700507 - תחזוקת הדיור הציבורי</li>
+            
+                <li>700304 - פיתוח תשתיות ומוסדות</li>
+            
+                <li>700301 - שיקום שכונות ותשתיות</li>
+            
+                <li>700504 - הסכם עמיגור</li>
+            
+                <li>700216 - חברות מתכננות</li>
+            
+                <li>700202 - עבודות פיתוח לבנייה</li>
+            
+                <li>700302 - ריכוז מאמץ</li>
+            
+                <li>700212 - משק סגור חריש</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item2" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>2</h5>
+                                                            <h2><a href="#">העברת 115 מיליון ₪ מהוצאות שונות לתיירות</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: תיירות 115 / סיכום תקציב תיירות - רבעון ראשון</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 115,000          אלפי שקלים חדשים ו-36 חודשי עבודה בלתי צמיתה מסעיף 47 - רזרבה כללית לסעיף 37 - משרד התיירות בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף  37 - משרד התיירות.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לביצוע השינויים הבאים:<br/>1. תקצוב תוספת של 112,633 אלפי ש"ח לתקציב השיווק של משרד התיירות עבור תגבור פעולות השיווק של משרד התיירות בחו"ל.<br/>2. תקצוב 2,367 אלפי ש"ח עבור מימון הילולת הרשב"י בהר מירון בהתאם להחלטת ממשלה מספר 3886 מיום ה-27 בנובמבר 2011.<br/>3. תקצוב תוספת של 4 צוערים למשרד התיירות עבור תגבור מערך השיווק של המשרד בחו"ל.<br/>4. ביצוע שינויים פנימיים בתקציב המשרד.<br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 115,000 אלפי שקלים חדשים מסעיף 13 - הוצאות שונות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 115,000          אלפי שקלים חדשים ו-36 חודשי עבודה בלתי צמיתה מסעיף 47 - רזרבה כללית לסעיף 37 - משרד התיירות בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף  37 - משרד התיירות.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לתקצוב סך של 115,000 אלפי ש"ח למטרות הבאות:<br/>1. תקצוב תוספת סך של 112,633 אלפי ש"ח לתקציב השיווק של משרד התיירות עבור תגבור פעולות השיווק של משרד התיירות בחו"ל.<br/>2. תקצוב סך של 2,367 אלפי ש"ח עבור מימון הילולת הרשב"י בהר מירון בהתאם להחלטת ממשלה מספר 3886 מיום ה-27 בנובמבר 2011.<br/>3. תקצוב תוספת של 4 צוערים למשרד התיירות עבור תגבור מערך השיווק של המשרד בחו"ל.<br/>4. ביצוע שינויים פנימיים בתקציב המשרד.<br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">ורד השרון נסיעות ותיירות בעמ (2.39 מיליון ₪)</a></li>
+                
+                <li><a href="#">בנק דקסיה ישראל בעמ (2.03 מיליון ₪)</a></li>
+                
+                <li><a href="#">עמיאל טורס בעמ (1.93 מיליון ₪)</a></li>
+                
+                <li><a href="#">דיזנהאוז- יוניתורס תיירות נכנסת 998 (1.72 מיליון ₪)</a></li>
+                
+                <li><a href="#">אשת - תיירות נכנסת (1.41 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>370408 - אסטרטגיה, מדיניות,</li>
+            
+                <li>370304 - שיווק תיירות בישראל</li>
+            
+                <li>370208 - הכשרת כח אדם ושירותי</li>
+            
+                <li>370316 - פעולות שיווק תיירות</li>
+            
+                <li>370901 - אשראי לענף המלונאות</li>
+            
+                <li>370101 - שכר</li>
+            
+                <li>370102 - מנהלה</li>
+            
+                <li>370212 - המרכז לפיתוח המקומות</li>
+            
+                <li>130105 - הוצאות שונות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item3" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>3</h5>
+                                                            <h2><a href="#">העברת 111 מיליון ₪ מהוצאות פיתוח אחרות לפיתוח ביטחון-   פנים, ביטחון פנים</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: שינוי תקציבי</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 111,000 אלפי שקלים חדשים מסעיף 83 - הוצאות פיתוח אחרות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 111,000          אלפי שקלים חדשים ו-378 תקני כוח אדם מסעיף 47 - רזרבה כללית לסעיף 07 - משרד לביטחון פנים, 52 - פיתוח המשרד לביטחון פנים, בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיפים 07 - משרד לביטחון פנים ו-52 - פיתוח המשרד לביטחון פנים.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לתגבר את תקציב משטרת ישראל ושירות בתי הסוהר בסך של 33,122 אלפי ש"ח ואת תקציב הפיתוח של המשטרה ושירות בתי הסוהר בסך של 77,878 אלפי ש"ח, בהתאם להחלטת ממשלה מספר 960 מיום ה-24 בנובמבר 2013 שעניינה תכנית משולבת לטיפול בתופעת ההסתננות הבלתי חוקית.<br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 111,000 אלפי שקלים חדשים מסעיף 83 - הוצאות פיתוח אחרות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 111,000          אלפי שקלים חדשים ו-378 תקני כוח אדם מסעיף 47 - רזרבה כללית לסעיף 07 - משרד לביטחון פנים, 52 - פיתוח המשרד לביטחון פנים, בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיפים 07 - משרד לביטחון פנים ו-52 - פיתוח המשרד לביטחון פנים.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לתגבר את תקציב משטרת ישראל ושירות בתי הסוהר בסך של 33,122 אלפי ש"ח ואת תקציב הפיתוח של המשטרה ושירות בתי הסוהר בסך של 77,878 אלפי ש"ח, בהתאם להחלטת ממשלה מספר 960 מיום ה-24 בנובמבר 2013 שעניינה תכנית משולבת לטיפול בתופעת ההסתננות הבלתי חוקית.<br/><br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 111,000          אלפי שקלים חדשים ו-378 תקני כוח אדם מסעיף 47 - רזרבה כללית לסעיף 07 - משרד לביטחון פנים, 52 - פיתוח המשרד לביטחון פנים, בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיפים 07 - משרד לביטחון פנים ו-52 - פיתוח המשרד לביטחון פנים.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לתגבר את תקציב משטרת ישראל ושירות בתי הסוהר בסך של 33,122 אלפי ש"ח ואת תקציב הפיתוח של המשטרה ושירות בתי הסוהר בסך של 77,878 אלפי ש"ח, בהתאם להחלטת ממשלה מספר 960 מיום ה-24 בנובמבר 2013 שעניינה תכנית משולבת לטיפול בתופעת ההסתננות הבלתי חוקית.<br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">איגוד ערים לכבאות איזור חיפה (22.3 מיליון ₪)</a></li>
+                
+                <li><a href="#">עירית ירושלים (19.9 מיליון ₪)</a></li>
+                
+                <li><a href="#">איגוד ערים לכבאות איזור באר-שבע (18.4 מיליון ₪)</a></li>
+                
+                <li><a href="#">איגוד רשויות לכבאות יוש (17.8 מיליון ₪)</a></li>
+                
+                <li><a href="#">איגוד ערים לכבאות איזור אשקלון (17.7 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>525002 - פרוייקטים במחשוב</li>
+            
+                <li>524001 - פיתוח שירות בתי הסוהר</li>
+            
+                <li>525003 - הקמה ושיפוץ מבני משטרה</li>
+            
+                <li>830401 - השקעות שונות</li>
+            
+                <li>077002 - קניות</li>
+            
+                <li>077001 - שכר</li>
+            
+                <li>078001 - שכר</li>
+            
+                <li>076001 - שכר</li>
+            
+                <li>075002 - קניות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item4" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>4</h5>
+                                                            <h2><a href="#">תוספת של 651 מיליון ₪ לבתי חולים ממשלתים</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: פניית תחילת שנה בתי חולים כלליים</h3>
+            <p><br/>שר הבריאות מציע שינויים בתקציב משרדו, ושר האוצר מבקש אישורה של ועדת הכספים של הכנסת על כך, בהתאם לסעיף 11 לחוק יסודות התקציב התשמ"ה - 1985,<br/>כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הפניה דנה בסעיף 94 – בתי חולים.<br/><br/>עיקרי הפניה:<br/>ביצוע התאמות בתקציב בתי החולים הממשלתיים – הכנסות שכר ותפעול, בהתאם לעדכון מחיר יום אשפוז לשנת 2014 ולתכנית העבודה של בתי החולים הממשלתיים לשנת 2014; <br/>הקצאת  תקני כח אדם לבתי החולים הממשלתיים:<br/>1 . 28 תקני אחיות, בהתאם להסכם שנחתם עם הסתדרות האחיות בשנת 2013;<br/>2 . 498 תקני מנהל ומשק, בהתאם לסיכום בין משרד האוצר להסתדרות הכללית משנת 2012 שעניינו העברת עובדי תאגידי בריאות לבתי החולים;<br/>3 . 20 תקני כח אדם, בגין תוספת מיטות פסיכיאטריות לבתי החולים;<br/>4 . 34 תקני כח אדם, לטובת פתיחת מחלקת שיקום בבית חולים נהריה;<br/>5 . 19 תקני כח אדם, לטובת איוש תקני ליבה במחשוב על ידי עובדי מדינה;<br/>6 . 63 תקני רופאים, בהתאם להסכם השכר שנחתם עם הסתדרות הרפואית בשנת 2011;<br/><br/>השפעה על כח אדם:<br/>אישור הבקשה יגדיל את מצבת כח האדם של בתי החולים הממשלתיים ב- 662 תקני כח אדם.<br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>940202 - קניות בי"ח רמב"ם חיפה</li>
+            
+                <li>947501 - הכנסות ב"ח ע"ש אסף</li>
+            
+                <li>940602 - בי"ח הלל-יפה חדרה -</li>
+            
+                <li>940402 - בי"ח ע"ש וולפסון חולון</li>
+            
+                <li>940302 - קניות בי"ח נהריה</li>
+            
+                <li>940502 - בי"ח ע"ש אסף הרופא</li>
+            
+                <li>948101 - הכנסות מרכז רפואי</li>
+            
+                <li>940702 - מרכז רפואי ע"ש ברזילי</li>
+            
+                <li>940201 - בי"ח ע"ש רמב"ם חיפה</li>
+            
+                <li>947701 - הכנסות מרכז רפואי ע"ש</li>
+            
+                <li>940102 - מרכז רפואי ע"ש שיבא תל</li>
+            
+                <li>947101 - הכנסות מרכז רפואי ע"ש</li>
+            
+                <li>940802 - קניות</li>
+            
+                <li>948001 - הכנסות בי"ח עירוני</li>
+            
+                <li>941102 - מרכז רפואי עירוני</li>
+            
+                <li>942003 - תכנית מאגר הכנסות</li>
+            
+                <li>940205 - העברה להכנסות מרכזיות</li>
+            
+                <li>945005 - פיתוח שירותים</li>
+            
+                <li>940105 - העברה להכנסות מרכזיות</li>
+            
+                <li>941001 - בי"ח עירוני ממשלתי חיפה</li>
+            
+                <li>940902 - קניות בי"ח - צפת</li>
+            
+                <li>945013 - רזרבה לעמידה ביעדי</li>
+            
+                <li>940901 - בי"ח זיו-צפת - הוצאות</li>
+            
+                <li>947301 - הכנסות בי"ח וולפסון</li>
+            
+                <li>940601 - בי"ח הלל יפה חדרה -</li>
+            
+                <li>947801 - הכנסות בי"ח פוריה</li>
+            
+                <li>940501 - בי"ח אסף הרופא צריפין</li>
+            
+                <li>941002 - בי"ח עירוני ממשלתי חיפה</li>
+            
+                <li>947201 - הכנסות רמב"ם</li>
+            
+                <li>941205 - העברת הכנסות בתי חולים</li>
+            
+                <li>945001 - התיקרויות שכר</li>
+            
+                <li>947401 - הכנסות בי"ח נהריה -</li>
+            
+                <li>940101 - מרכז רפואי ע"ש ד"ר</li>
+            
+                <li>940801 - הוצאות שכר בי"ח פוריה</li>
+            
+                <li>945002 - התיקרויות קניות</li>
+            
+                <li>940401 - בי"ח ע"ש וולפסון חולון</li>
+            
+                <li>948201 - השלמת הכנסות בתי חולים</li>
+            
+                <li>941101 - מרכז רפואי עירוני</li>
+            
+                <li>940701 - מרכז רפואי ע"ש ברזילי</li>
+            
+                <li>947901 - הכנסות בי"ח צפת</li>
+            
+                <li>940301 - בי"ח נהריה - הוצאות</li>
+            
+                <li>947601 - הכנסות בי"ח הלל יפה</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item5" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>5</h5>
+                                                            <h2><a href="#">העברת 100 מיליון ₪ מהוצאות פיתוח אחרות להוצאות חירום אזרחיות</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: העברה לסעיף 16 בגין סופת חול / תגבור תכנית סופת חול והרחבת טייסת כיבוי</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 100,000 אלפי שקלים חדשים מסעיף 47 - רזרבה כללית, לסעיף 16 - הוצאות חרום אזרחיות , בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של         אלפי שקלים חדשים מסעיף 47 - רזרבה כללית לסעיף                בהתאם לסעיף 12 (א)<br/>לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/><br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של -100,000  אלפי שקלים חדשים מסעיף 83 - הוצאות פיתוח אחרות , לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 100,000 אלפי שקלים חדשים מסעיף 47 - רזרבה כללית לסעיף 16 – הוצאות חירום אזרחיות בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הפניה דנה בסעיף 16 – הוצאות חירום אזרחיות.<br/>עיקרי הפניה:<br/>הפניה נועדה לביצוע תגבור תקציב סופת חול בסך של 100,000 אלפי ש"ח בהתאם להחלטת קבינט מיום 19.1.2014. <br/><br/>בשינוי זה אין שימוש ברזרבה כללית.<br/><br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>161303 - מענה רפואי, טיהור,</li>
+            
+                <li>161302 - ציוד איום בלתי</li>
+            
+                <li>161501 - כיבוי אש</li>
+            
+                <li>161301 - שכר</li>
+            
+                <li>830401 - השקעות שונות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item6" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>6</h5>
+                                                            <h2><a href="#">תוספת של 47 מיליון ₪ לביטחון פנים</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: שינוי תקציבי - 1</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 92,491  אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית, לסעיף 07 - משרד לביטחון פנים, בהתאם לסעיף 12 לחוק יסודות התקציב התשמ"ה - 1985. כמפורט בתדפיס המצ"ב.<br/><br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיף 07 - משרד לביטחון פנים.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לתגבר את תקציב ההוצאה מותנית בהכנסה של המשרד לביטחון פנים בסך של 47,082 אלפי ש"ח שעיקרם:<br/>1 . סך של 30,000 אלפי ש"ח לשם תקצוב רכש בקנטינות על-ידי אסירים.<br/>2 . סך של 9,582 אלפי ש"ח לשם תקצוב אגף חקירות ומודיעין של משטרת ישראל בהתאם להחלטת ועדת המעקב ובהתאם להחלטת מועצת קרן חילוט הלבנת הון.<br/>3 . סך של 4,300 אלפי ש"ח בהתאם להתחשבנות בין שירות בתי הסוהר לחברת מקורות.<br/><br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>078005 - תוכנית למאבק בפשיעה</li>
+            
+                <li>078003 - רכישת שירותי כוח אדם</li>
+            
+                <li>078001 - שכר</li>
+            
+                <li>078002 - קניות</li>
+            
+                <li>077002 - קניות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item7" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>7</h5>
+                                                            <h2><a href="#">העברת 32.8 מיליון ₪ מהוצאות שונות, ביטחון פנים לפיתוח ביטחון-   פנים</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: שינויים תקציביים / 24.5 בט"פ</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 32,820         אלפי שקלים חדשים ו-33,357 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 52 - פיתוח המשרד לביטחון פנים בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיפים 07 - משרד לביטחון פנים, 52 - פיתוח המשרד לביטחון פנים.<br/>עיקרי הפנייה:<br/>הפנייה נועדה לתגבר את תקציב משטרת ישראל בסך של 24,500 אלפי ש"ח עבור העמקת המעורבות המשטרתית במגזר החרדי במחוז ירושלים בהתאם לסיכום בין משרד האוצר למשרד לביטחון פנים, וכן לביצוע שינויים פנימיים שעיקרם:<br/>1. סך של 19,400 אלפי ש"ח לשם תקצוב הסכם הסדרת רמות פעילות במשטרה אשר נחתם במאי 2012.<br/>2. סך של 7,260 אלפי ש"ח לשם הצטיידות הימ"מ.<br/>3. סך של 7,500 אלפי ש"ח לשם תקצוב פרוייקט מחשוב נייד במשטרת ישראל.<br/>4. סך של 2,500 אלפי ש"ח לשם הערכות משטרת ישראל ליישום פיילוט המאגר הביומטרי.<br/>5. סך של 1,500 אלפי ש"ח לשם בינוי נקודת משטרה בהר מירון.<br/>6. תקצוב הרחבת תוכנית שיטור עירוני, הפעלת שני אורגנים נוספים במגזר הלא יהודי (בעירון ובכפר קאסם) והרחבת יחידת יואב לאכיפת דיני מקרקעין בדרום הארץ בהתאם לסיכום בין משרד האוצר והמשרד לביטחון פנים. <br/>כמו כן, נועדה הפנייה לתגבר את תקציב ההוצאה מותנית בהכנסה בסך של 12,700 אלפי ש"ח שעיקרם סך של 9,600 אלפי ש"ח לשם תקצוב פרויקט בינוי במשטרה בהתאם לסיכום בין משרד האוצר, מנהל הדיור הממשלתי ורשות מקרקעי ישראל.<br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 32,820 אלפי שקלים חדשים מסעיף 13 - הוצאות שונות, 07 - משרד לביטחון פנים, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 32,820         אלפי שקלים חדשים ו-33,357 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 52 - פיתוח המשרד לביטחון פנים בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיפים 07 - משרד לביטחון פנים, 52 - פיתוח המשרד לביטחון פנים.<br/>עיקרי הפנייה:<br/>הפנייה נועדה לתגבר את תקציב משטרת ישראל בסך של 24,500 אלפי ש"ח עבור העמקת המעורבות המשטרתית במגזר החרדי במחוז ירושלים בהתאם לסיכום בין משרד האוצר למשרד לביטחון פנים, וכן לביצוע שינויים פנימיים שעיקרם:<br/>1. סך של 19,400 אלפי ש"ח לשם תקצוב הסכם הסדרת רמות פעילות במשטרה אשר נחתם במאי 2012.<br/>2. סך של 7,260 אלפי ש"ח לשם הצטיידות הימ"מ.<br/>3. סך של 7,500 אלפי ש"ח לשם תקצוב פרוייקט מחשוב נייד במשטרת ישראל.<br/>4. סך של 2,500 אלפי ש"ח לשם הערכות משטרת ישראל ליישום פיילוט המאגר הביומטרי.<br/>5. סך של 1,500 אלפי ש"ח לשם בינוי נקודת משטרה בהר מירון.<br/>6. תקצוב הרחבת תוכנית שיטור עירוני, הפעלת שני אורגנים נוספים במגזר הלא יהודי (בעירון ובכפר קאסם) והרחבת יחידת יואב לאכיפת דיני מקרקעין בדרום הארץ בהתאם לסיכום בין משרד האוצר והמשרד לביטחון פנים. <br/><br/>כמו כן, נועדה הפנייה לתגבר את תקציב ההוצאה מותנית בהכנסה בסך של 12,700 אלפי ש"ח שעיקרם סך של 9,600 אלפי ש"ח לשם תקצוב פרויקט בינוי במשטרה בהתאם לסיכום בין משרד האוצר, מנהל הדיור הממשלתי ורשות מקרקעי ישראל.<br/><hr/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 32,820 אלפי שקלים חדשים מסעיף 13 - הוצאות שונות, 07 - משרד לביטחון פנים, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 32,820         אלפי שקלים חדשים ו-33,357 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 52 - פיתוח המשרד לביטחון פנים בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיפים 07 - משרד לביטחון פנים, 52 - פיתוח המשרד לביטחון פנים.<br/>עיקרי הפנייה:<br/>הפנייה נועדה לתגבר את תקציב משטרת ישראל בסך של 24,500 אלפי ש"ח עבור העמקת המעורבות המשטרתית במגזר החרדי במחוז ירושלים בהתאם לסיכום בין משרד האוצר למשרד לביטחון פנים, וכן לביצוע שינויים פנימיים שעיקרם:<br/>1. סך של 19,400 אלפי ש"ח לשם תקצוב הסכם הסדרת רמות פעילות במשטרה אשר נחתם במאי 2012.<br/>2. סך של 7,260 אלפי ש"ח לשם הצטיידות הימ"מ.<br/>3. סך של 7,500 אלפי ש"ח לשם תקצוב פרוייקט מחשוב נייד במשטרת ישראל.<br/>4. סך של 2,500 אלפי ש"ח לשם הערכות משטרת ישראל ליישום פיילוט המאגר הביומטרי.<br/>5. סך של 1,500 אלפי ש"ח לשם בינוי נקודת משטרה בהר מירון.<br/>6. תקצוב הרחבת תוכנית שיטור עירוני, הפעלת שני אורגנים נוספים במגזר הלא יהודי (בעירון ובכפר קאסם) והרחבת יחידת יואב לאכיפת דיני מקרקעין בדרום הארץ בהתאם לסיכום בין משרד האוצר והמשרד לביטחון פנים. <br/>כמו כן, נועדה הפנייה לתגבר את תקציב ההוצאה מותנית בהכנסה בסך של 12,700 אלפי ש"ח שעיקרם סך של 9,600 אלפי ש"ח לשם תקצוב פרויקט בינוי במשטרה בהתאם לסיכום בין משרד האוצר, מנהל הדיור הממשלתי ורשות מקרקעי ישראל.</p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">עירית אשדוד (2.37 מיליון ₪)</a></li>
+                
+                <li><a href="#">עירית חיפה (2.05 מיליון ₪)</a></li>
+                
+                <li><a href="#">בנק דקסיה ישראל בעמ (2.03 מיליון ₪)</a></li>
+                
+                <li><a href="#">עירית ראשון לציון (1.82 מיליון ₪)</a></li>
+                
+                <li><a href="#">עירית באר שבע (1.69 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>525002 - פרוייקטים במחשוב</li>
+            
+                <li>524001 - פיתוח שירות בתי הסוהר</li>
+            
+                <li>525003 - הקמה ושיפוץ מבני משטרה</li>
+            
+                <li>523001 - פיתוח משרד</li>
+            
+                <li>130105 - הוצאות שונות</li>
+            
+                <li>075002 - קניות</li>
+            
+                <li>078005 - תוכנית למאבק בפשיעה</li>
+            
+                <li>078002 - קניות</li>
+            
+                <li>077001 - שכר</li>
+            
+                <li>075001 - שכר</li>
+            
+                <li>078006 - המטה הארצי</li>
+            
+                <li>078004 - תקציב עקיף</li>
+            
+                <li>078003 - רכישת שירותי כוח אדם</li>
+            
+                <li>078001 - שכר</li>
+            
+                <li>077002 - קניות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item8" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>8</h5>
+                                                            <h2><a href="#">העברת 104 מיליון ₪ מהוצאות שונות לרשויות מקומיות</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: פנית אפריל / סעיף 18 104.5</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 104,500 אלפי שקלים חדשים מסעיף 13 - הוצאות שונות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 104,500         אלפי שקלים חדשים ו-409,000 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 18 - רשויות מקומיות בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר: <br/>הפניה התקציבית נועדה לביצוע שינויים בסעיף 18 - רשויות מקומיות.<br/><br/>עיקרי הפניה:<br/>הפניה נועדה לתקצוב הנושאים הבאים:<br/>1. סך של 450,000 אלפי ש"ח בהוצאה מותנית עבור מענקי איזון ופיתוח בהתאם לחוק.<br/>2. סך של 259,000 אלפי ש"ח בהרשאה להתחייב עבור תכניות הבראה בהתאם לסיכום בין המשרדים.<br/>3. סך של 150,000 אלפי ש"ח בהרשאה להתחייב עבור מענק איזון.<br/>4. סך של 78,507 אלפי ש"ח עבור מענק ירושלים מתוכם סך של 40,000 אלפי ש"ח בגין נזקי סופת דצמבר 2013.<br/>5. סך של 26,000 אלפי ש"ח עבור שיפוי הנחות ארנונה ומענקים ליישובים בעוטף עזה בהתאם להחלטת ממשלה.<br/>6. סך של 31,100 אלפי ש"ח בהוצאה מותנית בגין הסכם חלף היטל השבחה.<br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 104,500         אלפי שקלים חדשים ו-409,000 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 18 - רשויות מקומיות בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר: <br/>הפניה התקציבית נועדה לביצוע שינויים בסעיף 18 - רשויות מקומיות.<br/><br/>עיקרי הפניה:<br/>הפניה נועדה לתקצוב הנושאים הבאים:<br/>1. סך של 450,000 אלפי ש"ח בהוצאה מותנית עבור מענקי איזון ופיתוח בהתאם לחוק.<br/>2. סך של 259,000 אלפי ש"ח בהרשאה להתחייב עבור תכניות הבראה בהתאם לסיכום בין המשרדים.<br/>3. סך של 150,000 אלפי ש"ח בהרשאה להתחייב עבור מענק איזון.<br/>4. סך של 78,507 אלפי ש"ח עבור מענק ירושלים מתוכם סך של 40,000 אלפי ש"ח בגין נזקי סופת דצמבר 2013.<br/>5. סך של 26,000 אלפי ש"ח עבור שיפוי הנחות ארנונה ומענקים ליישובים בעוטף עזה בהתאם להחלטת ממשלה.<br/>6. סך של 31,100 אלפי ש"ח בהוצאה מותנית בגין הסכם חלף היטל השבחה.<br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">מ. א. מטה בנימין (162 מיליון ₪)</a></li>
+                
+                <li><a href="#">מ. א. שומרון (139 מיליון ₪)</a></li>
+                
+                <li><a href="#">מ. א. הר חברון (65.6 מיליון ₪)</a></li>
+                
+                <li><a href="#">מ. א. מטה יהודה (61.3 מיליון ₪)</a></li>
+                
+                <li><a href="#">מ. א. אשכול (60.3 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>130105 - הוצאות שונות</li>
+            
+                <li>181101 - כללי</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item9" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>9</h5>
+                                                            <h2><a href="#">שינוי פנימי של 54.7 מיליון ₪ בתקציב תמיכות שונות</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: פניית הסכם תוספות</h3>
+            <p><br/>שר החקלאות מציע שינויים בתקציב משרדו, ושר האוצר מבקש אישורה של ועדת הכספים של הכנסת על כך, בהתאם לסעיף 11 לחוק יסודות התקציב התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 32 – תמיכות שנות.<br/>עיקרי הפניה:<br/>הפניה התקציבית נועדה לערוך שינויים פנימיים בתקציב התמיכות של משרד החקלאות, בהתאם לבקשת משרד החקלאות.<br/><br/><br/><br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">המועצה לענף הלול (204 מיליון ₪)</a></li>
+                
+                <li><a href="#">אחר (23.4 מיליון ₪)</a></li>
+                
+                <li><a href="#">החברה הממשלתית לתיירות (11.9 מיליון ₪)</a></li>
+                
+                <li><a href="#">מ. א. גולן (10.3 מיליון ₪)</a></li>
+                
+                <li><a href="#">מי גולן - אגודת מים שיתופית חקלאית (7.64 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>325201 - רזרבה להתייקרויות</li>
+            
+                <li>325004 - תמיכות שנתיות שונות</li>
+            
+                <li>325001 - תמיכות שנתיות ביצרן</li>
+            
+                <li>325005 - תמיכות רב שנתיות שונות</li>
+            
+                <li>325007 - תמיכות רב שנתיות במחקר</li>
+            
+                <li>325006 - תמיכות שנתיות במחקר</li>
+            
+                <li>325002 - תמיכות רב שנתיות ביצרן</li>
+            
+                <li>325003 - תמיכות רב שנתיות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item10" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>10</h5>
+                                                            <h2><a href="#">תוספת של 27.1 מיליון ₪ לבריאות</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: שינויים פנימיים בתקציב משרד הבריאות</h3>
+            <p>שר הבריאות מציע שינויים בתקציב משרדו, ושר האוצר מבקש אישורה של ועדת הכספים של הכנסת על כך, בהתאם לסעיף 11 לחוק יסודות התקציב התשמ"ה - 1985,  כמפורט בתדפיס הצורף בזה<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 24 – משרד הבריאות.<br/>עיקרי הפניה:<br/>1 . העברת  סך של 562,835 אלפי ש"ח לתקציב האגף לבריאות הנפש במשרד הבריאות לטובת רכש שירותי מרפאות ושירותי אשפוז בתחום הבריאות הנפש;<br/>2 . העברת סך של 33,597 אלפי ש"ח לתקציב בתי החולים הגריאטריים בהתאם לעדכון מחיר יום אשפוז לשנת 2014 ולתכנית העבודה של בתי החולים הנ"ל לשנת 2014;<br/>3 . העברת סך של 100,041 אלפי ש"ח לתקציב בתי החולים הפסיכיאטריים בהתאם לעדכון מחיר יום אשפוז לשנת 2014  ולתכנית העבודה של בתי החולים הנ"ל לשנת 2014;<br/>4 . העברת סך של 133,639 אלפי ש"ח לתקציב בתי החולים הכלליים בהתאם לעדכון מחיר יום אשפוז לשנת 2014  ולתכנית העבודה של בתי החולים הנ"ל לשנת 2014;<br/>5 . העברת סך של 102,396 אלפי ש"ח לתקציב תמיכות משרד הבריאות, לטובת תקצוב מתן מענקים לרופאים, המתחילים התמחות בפריפריה או במקצועות במצוקה בבתי חולים שאינם ממשלתיים.<br/>6 . הקצאת תקני כח אדם למשרד הבריאות ליח' השונות של משרד הבריאות לפי הפירוט הבא:<br/>1. 66 תקני כח אדם לבתי החולים הפסיכיאטריים בגין פתיחת מיטות אשפוז בבתי חולים פסיכיאטריים;<br/>2. 13 תקני כח אדם לבתי החולים הגריאטריים בגין הסכם השכר שנחתם עם הסתדרות הרפואית בשנת 2011;<br/>3. 3 תקני כח אדם בגין החלטת ממשלה 960 מיום ה -24.11.2013 שעניינה "תכנית משולבת ומתואמת לטיפול בתופעת ההסתננות הבלתי חוקית".<br/>7 . ביצוע שינויים פנימיים נוספים.<br/><br/>השפעה על כח אדם: <br/>אישור הבקשה יגדיל את מצבת כח האדם של משרד הבריאות ב- 72 תקני כח אדם.<br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">שירותי בריאות כללית (2.68 מיליארד ₪)</a></li>
+                
+                <li><a href="#">מכבי שירותי בריאות (938 מיליון ₪)</a></li>
+                
+                <li><a href="#">קופת חולים מאוחדת מרכזית עממי (633 מיליון ₪)</a></li>
+                
+                <li><a href="#">קופת חולים לעובדים לאומיים (565 מיליון ₪)</a></li>
+                
+                <li><a href="#">מגן דוד אדם (182 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>241372 - תחנה לילד ונוער ירושלים</li>
+            
+                <li>240298 - שירותי חירום</li>
+            
+                <li>241636 - לשכת הבריאות מחוז צפון</li>
+            
+                <li>240222 - מינהל טכנולוגיות</li>
+            
+                <li>240418 - המכון לרפואה משפטית</li>
+            
+                <li>240260 - המרכז הלאומי לבקרת</li>
+            
+                <li>241337 - יפו - מרכז לגמילה מסמים</li>
+            
+                <li>242002 - ייעודה להשלמת עלות סל</li>
+            
+                <li>241036 - ראשון לציון - מרכז</li>
+            
+                <li>241317 - חיפה - שרות קהילתי</li>
+            
+                <li>240210 - מינהל ומשאבי אנוש</li>
+            
+                <li>241346 - באר יעקב - מרכז</li>
+            
+                <li>241306 - מזרע - בית חולים לחולי</li>
+            
+                <li>241341 - מעון יפו (18 מיטות)</li>
+            
+                <li>241348 - רמלה לוד - תחנות</li>
+            
+                <li>242003 - השלמת עלות סל שירותי</li>
+            
+                <li>240707 - מינהל הרפואה</li>
+            
+                <li>241336 - בת-ים - מרכז לבריאות</li>
+            
+                <li>241646 - לשכת בריאות מחוז ת"א</li>
+            
+                <li>240212 - מתמחים בפסיכולוגיה</li>
+            
+                <li>241321 - שער מנשה - מרכז</li>
+            
+                <li>241656 - לשכת בריאות מחוז י-ם</li>
+            
+                <li>240713 - שירותי בריאות הנפש</li>
+            
+                <li>241343 - יפו - מרכז קהילתי</li>
+            
+                <li>241307 - עכו ונהריה - שרות</li>
+            
+                <li>241641 - לשכת הבריאות מחוז חיפה</li>
+            
+                <li>241950 - רזרבה להתייקרויות</li>
+            
+                <li>240440 - וולפסון תל גיבורים</li>
+            
+                <li>241383 - באר שבע - מרכז לגמילה</li>
+            
+                <li>240201 - שכר מטה</li>
+            
+                <li>241026 - נתניה - מרכז גריאטרי</li>
+            
+                <li>241364 - מרכז גמילה מסמים -י-ם</li>
+            
+                <li>241368 - איתנים - שרותים</li>
+            
+                <li>243110 - עתודה להסכמי תקינה</li>
+            
+                <li>240710 - האגף לגריאטריה</li>
+            
+                <li>240740 - רזרבה</li>
+            
+                <li>240230 - יחידות מטה</li>
+            
+                <li>241344 - גוש דן - שרות קהילתי</li>
+            
+                <li>241011 - פלימן חיפה - בית חולים</li>
+            
+                <li>241621 - מעבדות בריאות הציבור</li>
+            
+                <li>241326 - לב השרון - בית-חולים</li>
+            
+                <li>241651 - לשכת בריאות מחוז מרכז</li>
+            
+                <li>240708 - העסקת מתמחים</li>
+            
+                <li>241352 - רחובות ראשל"צ ויבנה-</li>
+            
+                <li>241666 - לשכת הבריאות מחוז דרום</li>
+            
+                <li>241034 - שמואל הרופא, באר יעקב</li>
+            
+                <li>240403 - הכשרת אחיות</li>
+            
+                <li>241381 - באר-שבע - מרכז לבריאות</li>
+            
+                <li>241327 - נתניה - שירות קהילתי</li>
+            
+                <li>241601 - מטה בריאות הציבור</li>
+            
+                <li>241362 - כפר שאול - שרותים</li>
+            
+                <li>241920 - תמיכות והעברות לבתי</li>
+            
+                <li>240409 - העסקת עולים</li>
+            
+                <li>241314 - טירת הכרמל - תחנה</li>
+            
+                <li>241356 - רמלה - מרכז לבריאות</li>
+            
+                <li>240240 - ויסות פעילויות</li>
+            
+                <li>241021 - פרדס חנה - מרכז גריאטרי</li>
+            
+                <li>241366 - בי"ח מאוחד לחולי נפש</li>
+            
+                <li>241385 - תחנה לבריאות הנפש אילת</li>
+            
+                <li>240723 - בריאות השן</li>
+            
+                <li>241661 - לשכת הבריאות מחוז</li>
+            
+                <li>241316 - טירת הכרמל - מרכז</li>
+            
+                <li>241626 - מעבדות מרכזיות ירושלים</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item11" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>11</h5>
+                                                            <h2><a href="#">שינוי פנימי של 21.6 מיליון ₪ בתקציב מדע והחלל, התרבות</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: פניית תחילת שנה תרבות וספורט</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת 84 חודשי עבודה בלתי צמיתה מסעיף 47 - רזרבה כללית, לסעיף 19 - מדע, תרבות וספורט , בהתאם לסעיף 12 לחוק יסודות התקציב התשמ"ה - 1985.<br/>כמפורט בתדפיס המצ"ב.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 19 תרבות וספורט.<br/>עיקרי הבקשה:<br/>1 . תקצוב סך של 5,000 אלפי ש"ח עבור התפעול השוטף של המשרד.<br/><br/>2 . ביצוע שינויים במינהל התרבות שעיקרם מימוש הסיכום התקציבי עם המשרד לשנת 2014 הכולל: תמיכה בשיפוץ מוסדות תרבות, פעילות תרבותית בפריפריה, תמיכה במוזיאונים  וכתיבת קריטריוני תמיכה חדשים.<br/><br/>3 . ביצוע שינויים במינהל הספורט שעיקרם מימוש הסיכום התקציבי עם המשרד לשנת 2014  <br/>הכולל את הרחבת סל הספורט ותמיכה בשכר המאמנים הלאומיים.<br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">האופרה הישראלית - תל אביב-יפו }ער{ (40.8 מיליון ₪)</a></li>
+                
+                <li><a href="#">מוזיאון ישראל (חלצ) (32.3 מיליון ₪)</a></li>
+                
+                <li><a href="#">מכון וינגייט לחינוך גופני ולספורט (31.6 מיליון ₪)</a></li>
+                
+                <li><a href="#">התיאטרון הלאומי הבימה בעמ(חלצ) (28.7 מיליון ₪)</a></li>
+                
+                <li><a href="#">חברת התזמורת הפילהרמונית הישראלית ( (24.5 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>194101 - שכר</li>
+            
+                <li>194102 - תפעול</li>
+            
+                <li>194301 - תמיכה בספורט</li>
+            
+                <li>194202 - מינהל התרבות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item12" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>12</h5>
+                                                            <h2><a href="#">העברת 34.8 מיליון ₪ מהוצאות פיתוח אחרות, הוצאות שונות לתקשורת</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: העברה למשרד התקשורת - סיכום תקציבי / תיירות 20 מלש"ח / שינויים בתקציב משרד התקשורת-רבעון ראשון</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 34,861 אלפי שקלים חדשים ו-12 חודשי עבודה בלתי צמיתה מסעיף 04 - משרד ראש הממשלה, 13 - הוצאות שונות, 83 - הוצאות פיתוח אחרות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 34,861 אלפי שקלים חדשים ו-132 חודשי עבודה בלתי צמיתה מסעיף 47 - רזרבה כללית לסעיף 39 - משרד התקשורת בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, <br/>כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 39 - משרד התקשורת.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לתקצוב סך של 34,861 אלפי ש"ח בהוצאה ו-20,000 אלפי ש"ח בהרשאה להתחייב למטרות הבאות:<br/>1 . תקצוב סך של 15,670 אלפי ש"ח עבור השלמת הרחבת מערך השידורים הדיגיטליים בהתאם להחלטת הממשלה מה- 6 בפברואר 2012 להרחבת מערך השידורים הדיגיטליים.<br/>2 . תקצוב תוספת של 5 עובדים וכן תוספת של 17,500 אלפי ש"ח בהתאם לסיכום בין המשרדים.<br/>3 . תוספת של 4 עובדים וסך של 3,000 אלפי ש"ח בהתאם להחלטת הממשלה ישראל דיגיטלית מספר 1046 מיום ה-15 בדצמבר 2014.<br/>4 . תקצוב העברת שני עובדים מהלשכה לפרסום ממשלתי למשרד התקשורת בהתאם להחלטת ממשלה להעברת האחריות על הלשכה לפרסום ממשלתי למשרד התקשורת.<br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 34,861          אלפי שקלים חדשים ו-132 חודשי עבודה בלתי צמיתה מסעיף 47 - רזרבה כללית לסעיף 39 - משרד התקשורת בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 39 - משרד התקשורת.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לביצוע השינויים הבאים:<br/>1. תקצוב סך של 15,670 אלפי ש"ח עבור השלמת הרחבת מערך השידורים הדיגיטליים בהתאם להחלטת הממשלה מה- 6 בפברואר 2012 להרחבת מערך השידורים הדיגיטליים.<br/>2. תקצוב תוספת של 5 עובדים וכן תוספת של 17,500 אלפי ש"ח בהתאם לסיכום בין המשרדים.<br/>3. תוספת של 4 עובדים וסך של 3,000 אלפי ש"ח בהתאם להחלטת הממשלה ישראל דיגיטלית מספר 1046 מיום ה-15 בדצמבר 2014.<br/>4. תקצוב העברת שני עובדים מלפ"מ למשרד התקשורת בהתאם להחלטת ממשלה להעברת האחריות על הלפ"מ למשרד התקשורת.<br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 34,861 אלפי שקלים חדשים ו-12 חודשי עבודה בלתי צמיתה מסעיף 04 - משרד ראש הממשלה, 13 - הוצאות שונות, 83 - הוצאות פיתוח אחרות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 34,861          אלפי שקלים חדשים ו-132 חודשי עבודה בלתי צמיתה מסעיף 47 - רזרבה כללית לסעיף 39 - משרד התקשורת בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 39 - משרד התקשורת.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לתקצוב סך 34,861 אלפי ש"ח למטרות הבאות:<br/>1. תקצוב סך של 15,670 אלפי ש"ח עבור השלמת הרחבת מערך השידורים הדיגיטליים בהתאם להחלטת הממשלה מה- 6 בפברואר 2012 להרחבת מערך השידורים הדיגיטליים.<br/>2. תקצוב תוספת של 5 עובדים וכן תוספת של 17,500 אלפי ש"ח בהתאם לסיכום בין המשרדים.<br/>3. תוספת של 4 עובדים וסך של 3,000 אלפי ש"ח בהתאם להחלטת הממשלה ישראל דיגיטלית מספר 1046 מיום ה-15 בדצמבר 2014.<br/>4. תקצוב העברת שני עובדים מלשכה לפרסום ממשלתי למשרד התקשורת בהתאם להחלטת ממשלה להעברת האחריות על הלשכה לפרסום ממשלתי למשרד התקשורת.<br/><br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">בנק דקסיה ישראל בעמ (2.03 מיליון ₪)</a></li>
+                
+                <li><a href="#">פנא - עמותה לעידוד שילוב עולי אתיופ (1.02 מיליון ₪)</a></li>
+                
+                <li><a href="#">אביינש הפקות בעמ (586 אלף ₪)</a></li>
+                
+                <li><a href="#">האגודה לתקשורת קהילתית (ער) (280 אלף ₪)</a></li>
+                
+                <li><a href="#">זוג הפקות בעמ (234 אלף ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>830502 - פעולות מיוחדות</li>
+            
+                <li>391102 - מנהל וארגון</li>
+            
+                <li>391103 - חשבות</li>
+            
+                <li>391105 - המועצה לשידורי הכבלים</li>
+            
+                <li>391101 - שכר</li>
+            
+                <li>130105 - הוצאות שונות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item13" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>13</h5>
+                                                            <h2><a href="#">שינוי פנימי של 10.9 מיליון ₪ בתקציב משרד ראש הממשלה</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: נציבות - פניה מס' 1</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת 156 חודשי עבודה בלתי צמיתה מסעיף 47 - רזרבה כללית, לסעיף 04 - משרד ראש הממשלה, בהתאם לסעיף 12 לחוק יסודות התקציב התשמ"ה - 1985. כמפורט בתדפיס המצ"ב.<br/><br/>דברי הסבר:<br/>הפנייה נועדה לביצוע שינויים בסעיף 04 - משרד ראש הממשלה.<br/><br/>עיקרי הפנייה:<br/>פניה זו נועדה לביצוע התאמות פנימיות בתקציב נציבות שירות המדינה בהתאם לסיכומים בינמשרדיים בנוגע לרפורמה בניהול מנגנוני ניהול ההון האנושי בשירות המדינה ובהתאם לסדרי עדיפות של היחידה.<br/><br/><br/><br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">אחר (35.9 אלף ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>047001 - רזרבה לעמידה במגבלה</li>
+            
+                <li>045501 - נציבות שירות המדינה</li>
+            
+                <li>045502 - תכניות מיוחדות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item14" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>14</h5>
+                                                            <h2><a href="#">העברת 18.8 מיליון ₪ מהוצאות פיתוח אחרות לאנרגיה והמים</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: אנרגיה 18.86 / מנהל האדמה והים - רכישת אניה והסטות</h3>
+            <p>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 18,865 אלפי שקלים חדשים מסעיף 83 - הוצאות פיתוח אחרות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 18,865 אלפי שקלים חדשים ו-20,000 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 34 - משרד האנרגיה והמים בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/>דברי הסבר:<br/>הבקשה דנה בסעיף 34 - משרד האנרגיה והמים.<br/>הפניה נועדה לתקצוב סך של 18,865 אלפי ש"ח בתקציב מינהל האדמה והים – במשרד התשתיות הלאומיות למטרות הבאות:<br/>1 . תקצוב בסך 15,000 אלף ש"ח לצורך מימון רכישת אניית מחקר עבור המכון לחקר ימים והאגמים לישראל, מתוקף החלטת ממשלה 4291 מיום 19.02.2012 שעניינה ניהול הכנסות ממשאבי טבע בישראל (משאבי גז ונפט);<br/>2 . תקצוב סך 3,865 אלף ש"ח בהרשאה להתחייב מ-2013 עבור ניטור קידוחי מים של רשות המים ומחקר גיאולוגי מתוקף החלטת ממשלה 4254 מיום 12.2.2012 שעניינה פיתוח ושיקום אגן ים המלח;<br/>3 . שינויים פנימיים בסך 35,942 אלף ש"ח בפעילות מכון לחקר ימים ואגמים בישראל והאגף הסיסמולוגי במכון הגיאופיזי, אשר טרם אוחדו עם המנהל מתוקף החלטת ממשלה מספר 4494 מיום 19.2.2009, שעניינה הקמת מינהל המחקר למדעי האדמה והים והסדרת פעילות מכוני המחקר.<br/>4 . המרת 96 חדשי עבודה בלתי צמית ל-8 תקני כח אדם.<br/>מטרת השינוי התקציבי:<br/>יישום החלטות ממשלה, התאמת התקציב לביצוע בפועל.<br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 18,865         אלפי שקלים חדשים ו-20,000 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 34 - משרד האנרגיה והמים בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 34 - משרד האנרגיה והמים.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לביצוע השינויים הבאים:<br/>1. הפניה נועדה לתקצוב סך של 18,865 אלפי ש"ח בתקציב מנהל האדמה והים לצורך מימון רכישת אוניית מחקר עבור המכון לחקר ימים והאגמים לישראל מתוקף החלטת ממשלה מספר 4291 מיום 19.02.2012. <br/>2. הסטות תקציביות עבור פעילות מכוני המחקר אשר טרם אוחדו עם המנהל מתוקף החלטת ממשלה מספר 4494 מיום 19.2.2009.<br/>3.  תקצוב מזומן על בסיס הרשאה להתחייב מ-2013 עבור שדרוג המערך הסיסמי מתוקף החלטת ממשלה מספר 4254 מיום 12.2.2012.<br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>830401 - השקעות שונות</li>
+            
+                <li>343101 - הוצאות שכר</li>
+            
+                <li>343102 - תפעול ופעולות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item15" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>15</h5>
+                                                            <h2><a href="#">העברת 6.61 מיליון ₪ מתיירות לפיתוח תיירות</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: העברת החמת לסעיף הפיתוח / סיכום תקציבי תיירות - רבעון שני</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 6,613          אלפי שקלים חדשים ו-170,000 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 78 - פיתוח תיירות בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 78 - פיתוח תיירות.<br/><br/>עיקרי הפנייה:<br/>הפניה נועדה לביצוע השינויים הבאים:<br/>1. תקצוב סך של 100,000 אלפי ש"ח עבור עידוד אכסון מלונאי בישראל בהתאם לסיכום בין המשרדים.<br/>2. תקצוב תוספת של 70,000 אלפי ש"ח עבור תגבור תקציב התשתיות של משרד התיירות בהתאם לסיכום בין המשרדים.<br/>3. העברת תקציב החמ"ת מהתקציב הרגיל של משרד התיירות לתקציב הפיתוח. מדובר בשינוי מבני בתקציב המשרד בהתאם לסיכום בין המשרדים.<br/><br/><hr/><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 6,613 אלפי שקלים חדשים מסעיף 37 - משרד התיירות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 6,613  אלפי שקלים חדשים ו-170,000 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית לסעיף 78 - פיתוח תיירות בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 78 - פיתוח תיירות.<br/><br/>עיקרי הפנייה:<br/>הפניה נועדה לביצוע השינויים הבאים:<br/>1. תקצוב סך של 6,613 אלפי ש"ח לתקציב החמ"ת מהתקציב הרגיל של משרד התיירות לתקציב הפיתוח. מדובר בשינוי מבני בתקציב המשרד בהתאם לסיכום בין המשרדים.<br/><br/>2. תקצוב סך של 100,000 אלפי ש"ח בהרשאה להתחייב בעבור עידוד אכסון מלונאי בישראל בהתאם לסיכום בין המשרדים.<br/>3. תקצוב תוספת של 70,000 אלפי ש"ח בהרשאה להתחייב עבור תגבור תקציב התשתיות של משרד התיירות בהתאם לסיכום בין המשרדים.</p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">איי.פי.סי. ירושלים בעמ (36.6 מיליון ₪)</a></li>
+                
+                <li><a href="#">מלון ספא קריית ענבים בעמ (10.1 מיליון ₪)</a></li>
+                
+                <li><a href="#">משואה למלונאות ונופש בעמ (8.76 מיליון ₪)</a></li>
+                
+                <li><a href="#">מלונות הירדן מ.ה.י. בעמ (7.36 מיליון ₪)</a></li>
+                
+                <li><a href="#">ארק ניו גייט בעמ (6.16 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>780201 - מענקים עפ"י חוק</li>
+            
+                <li>780104 - פיתוח תשתיות תיירותיות</li>
+            
+                <li>370104 - חברות תשתית תיירותית</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item16" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>16</h5>
+                                                            <h2><a href="#">50 מיליון ₪ כהרשאה להתחייב לטובת משרד ראש הממשלה</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: מטה הסייבר - לוועדה 1</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 50,000 אלפי שקלים חדשים בהרשאה להתחייב מסעיף 47 - רזרבה כללית, לסעיף 04 - משרד ראש הממשלה, בהתאם לסעיף 12 לחוק יסודות התקציב התשמ"ה - 1985. כמפורט בתדפיס המצ"ב.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 04 - משרד ראש הממשלה.<br/><br/>עיקרי הפנייה:<br/>פנייה תקציבית זו נועדה להעברת סך של 50,000 אלפי ש"ח בהרשאה להתחייב למטה הסייבר הלאומי לצורך הקמת מרכז תגובה לאומי לאירועי סייבר.<br/><br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>045108 - המטה הקיברנטי הלאומי</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item17" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>17</h5>
+                                                            <h2><a href="#">שינוי פנימי של 266 אלף ₪ בתקציב חקלאות</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: פניית הסכם תוספות</h3>
+            <p><br/>שר החקלאות מציע שינויים בתקציב משרדו, ושר האוצר מבקש אישורה של ועדת הכספים של הכנסת על כך, בהתאם לסעיף 11 לחוק יסודות התקציב התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 33 – משרד החקלאות.<br/>עיקרי הפניה:<br/>הפניה התקציבית נועדה לערוך שינויים פנימיים בתקציב התפעול והפעילות של משרד החקלאות ומנהל המחקר החקלאי, בהתאם לבקשת משרד החקלאות.<br/><br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>330202 - הוצאות תפעול ופעולות</li>
+            
+                <li>330102 - הוצאות לתפעול ולפעילות</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+                                                <table id="item18" class="twelve columns">
+                                                    <tr>
+                                                        <td class="item">
+                                                            <h5>18</h5>
+                                                            <h2><a href="#">קיצוץ בסך 180 אלף ₪ במשרד ראש הממשלה</a></h2>
+                                                            <p></p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                        <tr>
+        <td class="request">
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: העברת תקן ממשרד ראש הממשלה למשרד התקשורת</h3>
+            <p><br/>שר האוצר מבקש את אישורה של ועדת הכספים של הכנסת להעברת סכום של 34,861 אלפי שקלים חדשים ו-12 חודשי עבודה בלתי צמיתה מסעיף 04 - משרד ראש הממשלה, 13 - הוצאות שונות, 83 - הוצאות פיתוח אחרות, לסעיף 47 - רזרבה כללית, בהתאם לסעיף 11 (ה) לחוק יסודות התקציב התשמ"ה - 1985.<br/><br/>כמו כן, מבקש שר האוצר את אישורה של ועדת הכספים של הכנסת להעברת סכום של 34,861          אלפי שקלים חדשים ו-132 חודשי עבודה בלתי צמיתה מסעיף 47 - רזרבה כללית לסעיף 39 - משרד התקשורת בהתאם לסעיף 12 (א) לחוק יסודות התקציב, התשמ"ה - 1985, כמפורט בתדפיס המצורף בזה.<br/><br/>דברי הסבר:<br/>הבקשה דנה בסעיף 39 - משרד התקשורת.<br/><br/>עיקרי הפנייה:<br/>הפנייה נועדה לביצוע השינויים הבאים:<br/>1. תקצוב סך של 15,670 אלפי ש"ח עבור השלמת הרחבת מערך השידורים הדיגיטליים בהתאם להחלטת הממשלה מה- 6 בפברואר 2012 להרחבת מערך השידורים הדיגיטליים.<br/>2. תקצוב תוספת של 5 עובדים וכן תוספת של 17,500 אלפי ש"ח בהתאם לסיכום בין המשרדים.<br/>3. תוספת של 4 עובדים וסך של 3,000 אלפי ש"ח בהתאם להחלטת הממשלה ישראל דיגיטלית מספר 1046 מיום ה-15 בדצמבר 2014.<br/>4. תקצוב העברת שני עובדים מלפ"מ למשרד התקשורת בהתאם להחלטת ממשלה להעברת האחריות על הלפ"מ למשרד התקשורת.<br/></p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+        <td class="item">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                
+                <li><a href="#">שיתופים - לקידום החברה האזרחית חברה (1.03 מיליון ₪)</a></li>
+                
+            </ul>
+            
+
+            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <ul>
+            
+                <li>045101 - מטה המשרד</li>
+            
+            </ul>
+
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="#">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <br>  <!-- Break Tag for row -->
+
+
+                                    <br>
+                                    <br>
+                                    <!-- Legal + Unsubscribe -->
+                                    <table class="row">
+                                        <tr>
+                                            <td class="wrapper last">
+
+                                                <table class="twelve columns">
+                                                    <tr>
+                                                        <td align="center">
+                                                            <center>
+                                                                <p style="text-align:center;"><a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Unsubscribe</a></p>
+                                                            </center>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <!-- container end below -->
+                                </td>
+                            </tr>
+                        </table>
+
+                    </center>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
