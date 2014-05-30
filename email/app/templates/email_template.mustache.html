@@ -14,6 +14,9 @@
         padding:0;
     }
 
+    /* Web Fonts */
+    @import url(http://fonts.googleapis.com/earlyaccess/opensanshebrew.css);
+
     body{
         width:100% !important;
         min-width: 100%;
@@ -21,6 +24,7 @@
         -ms-text-size-adjust:100%;
         margin:0;
         padding:0;
+        font-family: 'Open Sans Hebrew','Helvetica Neue',Helvetica,Arial,sans-serif;
     }
 
     .body {
@@ -94,10 +98,11 @@
     }
 
     hr {
-        color: #d9d9d9;
-        background-color: #d9d9d9;
-        height: 1px;
-        border: none;
+        color: #F8F7F0;
+        background-color: #F8F7F0;
+        height: 0px;
+        border: 0;
+        border-bottom: 1px dashed #C7C7CC;
     }
 
     /* Responsive Grid */
@@ -330,7 +335,6 @@
     /* Typography */
 
     body, table.body, h1, h2, h3, h4, h5, h6, p, td {
-        font-family: "Helvetica", "Arial", sans-serif;
         font-weight: normal;
         padding:0;
         margin: 0;
@@ -350,6 +354,11 @@
     h6 {font-size: 20px;}
     body, table.body, p, td {font-size: 14px;line-height:19px;}
 
+    h1 {
+      font-family: 'Open Sans Hebrew', 'Alef Hebrew';
+      font-weight: 200;
+    }
+
     h1 span {
         display: block;
         font-size: 50px;
@@ -357,6 +366,21 @@
 
     h2 a {
         text-decoration: underline;
+    }
+
+    h5 {
+      border-radius: 40px;
+      height: 40px;
+      width: 40px;
+      margin: -30px auto 30px;
+      background: #FFF;
+      border: 2px solid #6E7AED;
+      padding: 0;
+      line-height: 1.5em;
+    }
+
+    h3 {
+      margin: 1em;
     }
 
     p.lead, p.lede, p.leed {
@@ -369,6 +393,7 @@
         font-size: 17px;
         color: #1A1D39;
         margin-bottom: 0.5em;
+        font-family: 'Open Sans Hebrew', 'Alef Hebrew';
     }
 
     ol.toc a {
@@ -378,6 +403,7 @@
 
     p {
         margin-bottom: 10px;
+        margin: 1em;
     }
 
     small {
@@ -446,6 +472,7 @@
     .request {
         background: #F8F7F0;
         border: 1px solid #C7C7CC;
+        border-bottom:0;
         color: #131973;
         padding: 10px !important;
     }
@@ -461,6 +488,13 @@
         font-size: 15px;
         font-weight: bold;
         margin: 1em 0;
+    }
+
+    table.columns td.paper-edge {
+      width:100%;
+      padding:0;
+      border: 1px solid #C7C7CC;
+      border-top: 0;
     }
 
     .sub-grid table {
@@ -522,7 +556,6 @@
     table.large-button td a {
         font-weight: normal;
         text-decoration: none;
-        font-family: Helvetica, Arial, sans-serif;
         color: #6E7AED;
         font-size: 16px;
     }
