@@ -12,6 +12,7 @@ $( function() {
                 var rendered_items = [];
                 for ( var _item in rss_items ) {
                     var item = rss_items[_item];
+                    item['baseurl'] = '';
                     rendered_item = jinja.render(item_template,item);
                     rendered_items.push({
                         description: rendered_item,
