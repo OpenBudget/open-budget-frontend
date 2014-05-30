@@ -389,15 +389,15 @@
         text-decoration: none;
     }
 
-    .item a:hover {
+    .item-sec a:hover {
         color: #6E7AED !important;
     }
 
-    .item a:active {
+    .item-sec a:active {
         color: #6E7AED !important;
     }
 
-    .item a:visited {
+    .item-sec a:visited {
         color: #6E7AED !important;
     }
 
@@ -430,7 +430,12 @@
 
     /* Items */
 
-    .item {
+    table.item {
+
+      margin-bottom: 50px;
+    }
+
+    .item-sec {
         background: #ffffff;
         padding: 10px !important;
         border-width: 0px 5px;
@@ -451,7 +456,7 @@
         text-align: center;
     }
 
-    .item h3,
+    .item-sec h3,
     .request h3 {
         font-size: 15px;
         font-weight: bold;
@@ -473,8 +478,9 @@
     table.small-button,
     table.medium-button,
     table.large-button {
-        width: 100%;
+        width: 90%;
         overflow: hidden;
+        margin: 30px auto 20px;
     }
 
     table.button td,
@@ -484,9 +490,10 @@
     table.large-button td {
         display: block;
         width: auto !important;
+        max-width: 99% !important;
         text-align: center;
         background: #ffffff;
-        border: 2px solid #6E7AED;
+        border: 1px solid #6E7AED;
         border-radius: 30px;
         color: #6E7AED;
         padding: 8px 0;
@@ -513,7 +520,7 @@
     table.small-button td a,
     table.medium-button td a,
     table.large-button td a {
-        font-weight: bold;
+        font-weight: normal;
         text-decoration: none;
         font-family: Helvetica, Arial, sans-serif;
         color: #6E7AED;
@@ -540,13 +547,13 @@
     table.button:hover td,
     table.button:visited td,
     table.button:active td {
-        background: #ffffff !important;
+        background: #6E7AED !important;
     }
 
     table.button:hover td a,
     table.button:visited td a,
     table.button:active td a {
-        color: #6E7AED !important;
+        color: #ffffff !important;
     }
 
     table.button:hover td,
@@ -554,7 +561,7 @@
     table.small-button:hover td,
     table.medium-button:hover td,
     table.large-button:hover td {
-        background: #ffffff !important;
+        background: #6E7AED !important;
     }
 
     table.button:hover td a,
@@ -572,7 +579,7 @@
     table.large-button:hover td a,
     table.large-button:active td a,
     table.large-button td a:visited {
-        color: #6E7AED !important;
+        color: #ffffff !important;
     }
 
     table.secondary td {
@@ -889,9 +896,9 @@
                                                 </table>
 
                                                 {{#entries}}
-                                                <table id="item{{index}}" class="twelve columns">
+                                                <table id="item{{index}}" class="twelve columns item">
                                                     <tr>
-                                                        <td class="item">
+                                                        <td class="item-sec">
                                                             <h5>{{index}}</h5>
                                                             <h2><a href="#">{{title}}</a></h2>
                                                             <p>{{subtitle}}</p>
