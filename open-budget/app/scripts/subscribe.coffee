@@ -70,14 +70,12 @@ class SubscribeView extends Backbone.View
     console.log 'onClick'
     if @model.get('state') == "not-logged-in"
       if @model.get('loginURL') != null
-        console.log 'onClick 1'
         @attempting = true
         return true
     else if @model.get('state') == "not-subscribed"
       @model.subscribe()
     else if @model.get('state') == "subscribed"
       @model.unsubscribe()
-    console.log 'onClick 2'
     false
 
   events:

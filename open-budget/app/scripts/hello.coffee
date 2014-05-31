@@ -29,8 +29,18 @@ window.color_classname = (value) ->
     if value == 0 then ""
     return if value > 0 then "increased" else "decreased"
 
-get_program = ->
-        window.pageModel.set('budgetCode', '00'+$("#search-item").val())
+get_program = (obj,datum,name) ->
+        console.log "selected:", obj, datum, name
+        console.log "selected2:", $("#search-item").val()
+        if datum?
+            code = datum.code
+            window.location.hash = "#" + code
+            window.location.reload()
+        else
+            code = $("#search-item").val()
+            if code.match(/^[0-9]+$/)
+                window.location.hash = "#00"+code
+                window.location.reload()
 
 $( ->
         console.log 'setting up typeahead'
@@ -51,8 +61,8 @@ $( ->
         )
         $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
         $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
-        $("#search-item").on('typeahead:selected', get_program )
-        $("#search-item").on('change', get_program )
+        $("#search-item").bind('typeahead:selected', get_program )
+        $("#search-item").bind('change', get_program )
         $("#search-form").submit( ->
                 false
                 )
