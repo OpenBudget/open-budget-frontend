@@ -35,10 +35,30 @@
             </ul>
             {% endif %}
 
-            <h3>שינויים תקציביים בהעברה זו:</h3>
+            <h3>סעיפים שגדלו בהעברה זו:</h3>
             <ul>
-            {%for tr in filt_items %}
-                <li>{{tr.budget_code }} - {{tr.budget_title}}</li>
+            {%for gi in plus_items %}
+                <li>{{gi.group }} (+{{gi.value_str}})<br/>
+                <ul>
+                    {%for item in gi.changes %}
+                    <li>{{item.budget_code}}: {{item.budget_title}}
+                    </li>
+                    {%endfor%}
+                </ul>
+                </li>
+            {%endfor%}
+            </ul>
+            <h3>סעיפים שקוצצו בהעברה זו:</h3>
+            <ul>
+            {%for gi in minus_items %}
+                <li>{{gi.group }} ({{gi.value_str}})<br/>
+                <ul>
+                    {%for item in gi.changes %}
+                    <li>{{item.budget_code}}: {{item.budget_title}}
+                    </li>
+                    {%endfor%}
+                </ul>
+                </li>
             {%endfor%}
             </ul>
 
