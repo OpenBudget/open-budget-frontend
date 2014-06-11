@@ -105,6 +105,10 @@
         border-bottom: 1px dashed #C7C7CC;
     }
 
+    ul{
+        padding: 0 1em 0 0;
+    }
+
     /* Responsive Grid */
 
     table.body {
@@ -116,6 +120,7 @@
         width: 580px;
         margin: 0 auto;
         text-align: inherit;
+        max-width: 580px;
     }
 
     table.row {
@@ -374,7 +379,7 @@
       width: 40px;
       margin: -40px auto 30px;
       background: #FFF;
-      border: 2px solid #6E7AED;
+      border: 1px solid #6E7AED;
       padding: 0;
       line-height: 1.65em;
     }
@@ -410,15 +415,16 @@
         text-decoration: none;
     }
 
-    .item-sec a:hover {
+
+    table.columns td.item-sec a:hover {
         color: #6E7AED !important;
     }
 
-    .item-sec a:active {
+    table.columns td.item-sec a:active {
         color: #6E7AED !important;
     }
 
-    .item-sec a:visited {
+    table.columns td.item-sec a:visited {
         color: #6E7AED !important;
     }
 
@@ -456,7 +462,7 @@
       margin-bottom: 50px;
     }
 
-    .item-sec {
+    table.columns td.item-sec {
         background: #ffffff;
         padding: 1.5em !important;
         border-width: 0px 5px;
@@ -464,7 +470,7 @@
         border-color: #6E7AED;
     }
 
-    .request {
+    table.columns td.request {
         background: #F8F7F0;
         border: 1px solid #C7C7CC;
         border-bottom:0;
@@ -472,14 +478,14 @@
         padding: 1.5em !important;
     }
 
-    .request h4 {
+    table.columns td.request h4 {
         color: #9B9B9B;
         font-size: 15px;
         text-align: center;
     }
 
-    .item-sec h3,
-    .request h3 {
+    table.columns td.item-sec h3,
+    table.columns td.request h3 {
         font-size: 15px;
         font-weight: bold;
         margin: 1em 0;
@@ -669,7 +675,7 @@
 
     /*  Media Queries */
 
-    @media only screen and (max-width: 600px) {
+  /*  @media only screen and (max-width: 600px) { */
 
         table[class="body"] img {
             width: auto !important;
@@ -776,7 +782,7 @@
         table[class="body"] .hide-for-desktop {
             display: inherit !important;
         }
-    }
+  /*  } */
 
     </style>
     <style>
