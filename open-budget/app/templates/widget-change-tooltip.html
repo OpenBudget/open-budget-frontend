@@ -2,14 +2,15 @@
   <div class="date"><%= get("source").get('date') %></div>
   <div class="arrow"></div>
   <div class="widget-popover-title">
-    <p>העברה <%= get("source").get('req_code') %>
-        <% if ( get("source").get('net_expense_diff') > 0 ) { %>
+    <p>העברה <%= get("source").get('group_id') %>
+        <%  var expense_diff = get("source").getCodeChanges(window.pageModel.get('budgetCode')).expense_change;
+            if (  expense_diff > 0 ) { %>
             מוסיפה:
         <% } else { %>
             מורידה:
          <% } %>
     </p>
-    <h2><%= format_number( get("source").get('net_expense_diff') ) %></h2>
+    <h2><%= format_number( expense_diff ) %></h2>
   </div>
   <div class="widget-popover-content">
 <% if ( get("diff-baseline") > 0 ) { %>

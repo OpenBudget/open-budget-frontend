@@ -1,15 +1,15 @@
 #### Models
 
-class ChangeLineList extends Backbone.Collection
-        model: window.models.ChangeLine
-
-        initialize: (models, options) ->
-                @pageModel = window.pageModel
-                @year = options.year
-                @req_id = options.req_id
-                @fetch(dataType: @pageModel.get('dataType'), reset: true)
-
-        url: () => "#{@pageModel.get('baseURL')}/api/changes/#{@req_id}/#{@year}"
+# class ChangeLineList extends Backbone.Collection
+#         model: window.models.ChangeLine
+#
+#         initialize: (models, options) ->
+#                 @pageModel = window.pageModel
+#                 @year = options.year
+#                 @req_id = options.req_id
+#                 @fetch(dataType: @pageModel.get('dataType'), reset: true)
+#
+#         url: () => "#{@pageModel.get('baseURL')}/api/changes/#{@req_id}/#{@year}"
 
 class ChangeExplanations extends Backbone.Collection
         model: window.models.ChangeExplanation
@@ -26,7 +26,6 @@ class YearlyHistoryItem extends Backbone.Model
         defaults:
                 year: null
                 date: null
-                date_type: null
                 kind: null # 0 - budget approval, 1 - transfer
                 title: null
                 amount: null
@@ -35,8 +34,10 @@ class YearlyHistoryItem extends Backbone.Model
                 explanation: null
                 links: null
                 req_id: null
+                date_type: false
 
         initialize: ->
+                @pageModel = window.pageModel
                 req_id = @get('req_id')
                 if req_id
                         @getExtraData()
@@ -44,7 +45,7 @@ class YearlyHistoryItem extends Backbone.Model
                         @on 'change:req_id', () => @getExtraData()
 
         getExtraData: ->
-                @set('budget_items', new ChangeLineList([],{req_id: @get('req_id'), year: @get('year')}))
+                #@set('budget_items', new ChangeLineList([],{req_id: @get('req_id'), year: @get('year')}))
                 @set('explanation', new ChangeExplanations([],{req_id: @get('req_id'), year: @get('year')}))
 
 class YearlyHistoryItems extends Backbone.Collection
@@ -70,13 +71,45 @@ class GlobalHistoryItem extends Backbone.Model
                 @processChangeLines()
 
         processChangeLines: ->
-                yearlyTransfers = @pageModel.changeLines.where({ year: @get('year')})
+                yearlyTransfers = @pageModel.changeGroups.where({ year: @get('year')})
                 amount = @get('amount')
                 for transfer in yearlyTransfers
-                        diff = transfer.get('net_expense_diff')
+                        diff = transfer.getCodeChanges(@pageModel.get('budgetCode')).expense_change
                         amount += diff
-                        req_id = transfer.requestId()
-                        item = new YearlyHistoryItem({kind: 1, amount_transferred: diff, amount: amount,title: transfer.get('req_title'), year: transfer.get('year'),date: transfer.get('date'), date_type: transfer.dateType(),req_id: req_id})
+                        req_id = transfer.get('group_id')
+                        if diff?
+                                sign = if diff<0 then -1 else 1
+                        else
+                                sign = 0
+                        budget_items = transfer.get('changes')
+                        budget_items = _.filter(budget_items, (m) -> m.expense_change != 0 )
+                        budget_items = _.sortBy(budget_items,(m) -> m.budget_code.length)
+                        budget_items = _.sortBy(budget_items, (m) -> sign*m.expense_change)
+                        budget_items = _.filter(budget_items, (m) -> (sign*m.expense_change) < 0)
+                        #budget_items = _.filter(budget_items, (m) -> m.budget_code != @pageModel.get('budgetCode'))
+                        selected_budget_items = [@pageModel.get('budgetCode')]
+                        budget_items = _.filter(budget_items,
+                                                (m) ->
+                                                    for x in selected_budget_items
+                                                        if m.budget_code.indexOf(x) == 0
+                                                             return false
+                                                    selected_budget_items.push(m.budget_code)
+                                                    true
+                                                )
+                        budget_items = budget_items[0..2]
+
+                        init_params =
+                            kind: 1
+                            amount_transferred: diff
+                            amount: amount
+                            title: transfer.get('req_titles')[0]
+                            year: @get('year')
+                            date: transfer.get('date')
+                            req_id: req_id
+                            date_type: transfer.getDateType()
+                            budget_items: budget_items
+
+                        item = new YearlyHistoryItem(init_params)
                         @transferDetails.add(item)
 
 class GlobalHistoryItems extends Backbone.Collection
@@ -84,7 +117,7 @@ class GlobalHistoryItems extends Backbone.Collection
 
         initialize: ->
                 @pageModel = window.pageModel
-                @pageModel.budgetHistory.on 'reset', () => @processBudgetHistory()
+                @pageModel.on 'ready', () => @processBudgetHistory()
 
         processBudgetHistory: ->
                 @yearlyModels = {}
@@ -146,11 +179,11 @@ class HistoryTableSingleTransfer extends Backbone.View
                 $(@el).find('.table-finance-story').click((event) -> event.preventDefault())
 
         addBudgetLine: (cl) ->
-                el = $( window.JST.single_transfer_budget_line( cl.toJSON() ) )
+                el = $( window.JST.single_transfer_budget_line( cl ) )
                 $(@el).find('.budget-lines').append( el )
 
         addExplanation: (ex) ->
-                $(@el).find('.table-finance-story').popover({content:ex.get("explanation"),trigger:'hover',placement:'auto',container:'#popups'})
+                $(@el).find('.table-finance-story').popover({content:ex.get("explanation").replace(/\n/g,"<br/>"),html:true,trigger:'hover',placement:'auto',container:'#popups'})
 
 
 class HistoryTableYear extends Backbone.View
@@ -180,20 +213,9 @@ class HistoryTableYear extends Backbone.View
                                  if explanation?
                                      htst.addExplanation(explanation)
 
-                        model.get('budget_items').on 'reset', =>
-                                $(htst.el).find('.spinner').remove()
-                                budget_items = model.get('budget_items').models
-                                amount_transferred = model.get('amount_transferred')
-                                if amount_transferred?
-                                        sign = if amount_transferred<0 then -1 else 1
-                                else
-                                        sign = 0
-                                budget_items = _.filter(budget_items, (m) -> m.get('net_expense_diff') and m.get('net_expense_diff') != 0 )
-                                budget_items = _.sortBy(budget_items, (m) -> sign*m.get('net_expense_diff'))
-                                budget_items = _.filter(budget_items, (m) -> (sign*m.get('net_expense_diff')) < 0)
-                                budget_items = _.filter(budget_items, (m) -> m.get('budget_code') != @pageModel.get('budgetCode'))
-                                for cl in budget_items[0..2]
-                                        htst.addBudgetLine(cl)
+                        $(htst.el).find('.spinner').remove()
+                        for bl in model.get('budget_items')
+                            htst.addBudgetLine(bl)
 
 
 class HistoryTable extends Backbone.View

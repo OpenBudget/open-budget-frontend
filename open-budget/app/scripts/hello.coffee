@@ -34,12 +34,12 @@ get_program = (obj,datum,name) ->
         console.log "selected2:", $("#search-item").val()
         if datum?
             code = datum.code
-            window.location.hash = "#" + code
+            window.location.hash = "#budget/" + code + "/" + window.pageModel.get('year')
             window.location.reload()
         else
             code = $("#search-item").val()
             if code.match(/^[0-9]+$/)
-                window.location.hash = "#00"+code
+                window.location.hash = "#budget/00" + code + "/" + window.pageModel.get('year')
                 window.location.reload()
 
 $( ->
@@ -51,7 +51,7 @@ $( ->
                 template: [ '<p class="item-code">{{code}}</p>'
                             '<p class="item-title">{{title}}</p>' ].join('')
                 remote:
-                        url: window.pageModel.get('baseURL')+'/api/search/budget/2013?q=%QUERY&limit=20'
+                        url: window.pageModel.get('baseURL')+"/api/search/budget/#{pageModel.get('year')}?q=%QUERY&limit=20"
                         dataType: 'jsonp'
                         filter: (l) ->
                                 for x in l

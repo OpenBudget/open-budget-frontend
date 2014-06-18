@@ -20,9 +20,9 @@ class WidgetData extends Backbone.Collection
 
         initialize: (models, options) ->
                 @pageModel = options.pageModel
-                @changeLines = @pageModel.changeLines
+                @changeGroups = @pageModel.changeGroups
                 @budgetHistory = @pageModel.budgetHistory
-                @changeLines.on "reset", => @processChangeLines(@changeLines.models)
+                @changeGroups.on "reset", => @processChangeLines(@changeGroups.models)
                 @budgetHistory.on "reset", => @processBudgetHistory(@budgetHistory.models)
                 @minValue = @maxValue = @minTime = @maxTime = null
                 @gotAllEvents = 2
@@ -121,23 +121,24 @@ class WidgetData extends Backbone.Collection
                 changesPerYear = _.sortBy( changesPerYear, (pair) => pair[0] )
                 for pair in changesPerYear
                         [year, yearly] = [parseInt(pair[0]), pair[1]]
-                        yearly = _.sortBy( yearly, (m) => Date.parse(m.get('timestamp')) )
+                        yearly = _.sortBy( yearly, (m) => m.get('timestamp') )
                         yearStart = new Date(year,0).valueOf()
                         yearEnd = new Date(year,11,31).valueOf()
-                        actualLen = _.filter(yearly, (m) -> m.get('net_expense_diff')? and m.get('net_expense_diff') != 0).length
+                        actualLen = _.filter(yearly, (m) -> m.getCodeChanges(@pageModel.get("budgetCode")).expense_change != 0).length
 
                         timestamp = yearStart
                         lastPoint = null
                         for m, i in yearly
-                                value = m.get('net_expense_diff')
+                                value = m.getCodeChanges(@pageModel.get("budgetCode")).expense_change
                                 if value? and value != 0
                                         point = new WidgetDataPoint()
                                         point.set("source",m)
                                         point.set('kind','change')
                                         point.set('diff-value',value)
-                                        point.set('subkind',m.dateType())
+                                        point.set('subkind',m.getDateType())
                                         date = m.get('timestamp')
                                         diff = date - timestamp
+                                        console.log m.get('date'),m.get('timestamp'),diff
                                         timestamp = date
                                         if lastPoint
                                                 lastPoint.set('width', diff)
