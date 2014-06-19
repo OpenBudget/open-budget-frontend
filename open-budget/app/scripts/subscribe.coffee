@@ -7,7 +7,7 @@ class SubscribeModel extends Backbone.Model
     key: null
     loginURL: null
 
-  initialize: ->
+  initialize: (options) ->
     @refreshSubscription()
 
   notLoggedIn: (loginURL) =>
@@ -43,7 +43,7 @@ class SubscribeModel extends Backbone.Model
 
 class SubscribeView extends Backbone.View
 
-  initialize: ->
+  initialize: (options) ->
     @model.on('change:state', => @render())
     @model.on('change:loginURL', => @render())
     @attempting = false
@@ -52,12 +52,11 @@ class SubscribeView extends Backbone.View
         @model.subscribe()
 
   render: ->
-    console.log 'subscribeView:render'
+    console.log 'SubscribeModalButtonView:render'
     if @model.get('state') == "not-logged-in"
       @$el.toggleClass('loggedout',true)
       @$el.toggleClass('subscribed',false)
-      @$el.attr('href',@model.get('loginURL'))
-      @$el.attr('target','_blank')
+      @renderLogin(@model.get('loginURL'))
     else if @model.get('state') == "not-subscribed"
       @$el.toggleClass('loggedout',false)
       @$el.toggleClass('subscribed',false)
@@ -66,12 +65,14 @@ class SubscribeView extends Backbone.View
       @$el.toggleClass('subscribed',true)
     @attempting = false
 
+  renderLogin: (loginUrl) ->
+
   onClick: ->
     console.log 'onClick'
     if @model.get('state') == "not-logged-in"
       if @model.get('loginURL') != null
-        @attempting = true
-        return true
+          @attempting = true
+          return @onLogin()
     else if @model.get('state') == "not-subscribed"
       @model.subscribe()
     else if @model.get('state') == "subscribed"
@@ -80,7 +81,31 @@ class SubscribeView extends Backbone.View
 
   events:
     'click': 'onClick'
+
+
+class SubscribeModalButtonView extends SubscribeView
+
+  renderLogin: (loginUrl) ->
+    @$el.attr('href',@model.get('loginURL'))
+    @$el.attr('target','_blank')
+
+  onLogin: ->
+    window.open(@$el.attr('href'),"_blank")
+    false
+
+class SubscribeMainButtonView extends SubscribeView
+
+  initialize: (options) ->
+    @modal = options.modal
+    @modal.modal({show:false})
+    super
+
+  onLogin: ->
+    @modal.modal({show:true})
+    false
+
 $( ->
-        subscribeModel = new SubscribeModel()
-        window.subscribeView = new SubscribeView(model: subscribeModel,el: $("#subscribeWidget"))
+  subscribeModel = new SubscribeModel()
+  window.subscribeModalButtonView = new SubscribeModalButtonView(model: subscribeModel,el: $("#subscribeModal .btn-primary"))
+  window.subscribeMainButtonView = new SubscribeMainButtonView(model: subscribeModel,el: $("#subscribeWidget"), modal: $("#subscribeModal"))
 )

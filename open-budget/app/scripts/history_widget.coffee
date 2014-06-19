@@ -9,7 +9,7 @@ class OverviewWidget extends Backbone.View
 
         initialize: ->
                 @model.on 'reset', => @render()
-                @pageModel = window.pageModel               
+                @pageModel = window.pageModel
                 @pageModel.on "change:selection", => @renderSelectionBar()
 
                 @svg = d3.select(@el).append('svg')
@@ -17,7 +17,7 @@ class OverviewWidget extends Backbone.View
                         .attr('height','100%')
                 @svg.append('defs').html('<pattern id="upperApprovedRect" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
                 @svg.append('defs').html('<pattern id="lowerApprovedRect" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
-                
+
                 @approvedBars = @svg.append('g').attr('class','approvedBar')
                 @changeBars = @svg.append('g').attr('class','changeBar')
                 @yearNumberTexts = @svg.append('g').attr('class','yearNumberText')
@@ -74,7 +74,7 @@ class OverviewWidget extends Backbone.View
                         .call(@drag)
                 selectionHandles
                         .attr('x',(d,i) => @timeScale(d) + if i == 0 then -HANDLE_WIDTH else 0 )
-                        
+
                 selectionShade = @selectionBar.selectAll('.selectionShade').data( [selection] )
                 selectionShade.enter()
                         .append('rect')
@@ -86,7 +86,7 @@ class OverviewWidget extends Backbone.View
                 selectionShade
                         .attr('x',(d) => @timeScale(d[0]) )
                         .attr('width',(d) => @timeScale(d[1]) - @timeScale(d[0]) )
-                        
+
 
         render: ->
 
@@ -105,12 +105,12 @@ class OverviewWidget extends Backbone.View
                         .range([0, @maxWidth])
                 @yearSeperatingScale = (t) =>
                         year = new Date(t).getFullYear()
-                        base = new Date(year,0).valueOf()                       
+                        base = new Date(year,0).valueOf()
                         #console.log t, year, base
                         base + (t - base) * 0.98
                 @timeScale = (t) =>
                         @pixelPerfecter(@baseTimeScale(@yearSeperatingScale(t)))
-                        
+
                 @baseValueScale = d3.scale.linear()
                         .domain([@minValue, @maxValue])
                         .range([@maxHeight+MARGIN, MARGIN])
@@ -174,10 +174,11 @@ class OverviewWidget extends Backbone.View
                         .style("font-size", 8)
                         .style("text-anchor", "start")
                         .text((d) => new Date(d.get('timestamp')).getFullYear() )
-                
 
-        
+
+
 $( ->
+    if window.pageModel.get('budgetCode')?
         console.log "history_widget"
         window.overviewWidget = new OverviewWidget({el: $("#overview-widget"),model: window.widgetData});
 )

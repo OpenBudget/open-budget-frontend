@@ -160,5 +160,6 @@ class WidgetData extends Backbone.Collection
 
 
 $( ->
+    if window.pageModel.get('budgetCode')?
         window.widgetData = new WidgetData([], pageModel: window.pageModel)
 )
