@@ -11,17 +11,6 @@
 #
 #         url: () => "#{@pageModel.get('baseURL')}/api/changes/#{@req_id}/#{@year}"
 
-class ChangeExplanations extends Backbone.Collection
-        model: window.models.ChangeExplanation
-
-        initialize: (models, options) ->
-                @pageModel = window.pageModel
-                @year = options.year
-                @req_id = options.req_id
-                @fetch(dataType: @pageModel.get('dataType'), reset: true)
-
-        url: () => "#{@pageModel.get('baseURL')}/api/change_expl/#{@req_id}/#{@year}"
-
 class YearlyHistoryItem extends Backbone.Model
         defaults:
                 year: null
@@ -45,8 +34,9 @@ class YearlyHistoryItem extends Backbone.Model
                         @on 'change:req_id', () => @getExtraData()
 
         getExtraData: ->
-                #@set('budget_items', new ChangeLineList([],{req_id: @get('req_id'), year: @get('year')}))
-                @set('explanation', new ChangeExplanations([],{req_id: @get('req_id'), year: @get('year')}))
+                explanation = new window.models.ChangeExplanation({req_id: @get('req_id'), year: @get('year')})
+                explanation.doFetch()
+                @set('explanation', explanation)
 
 class YearlyHistoryItems extends Backbone.Collection
         model: YearlyHistoryItem
@@ -183,7 +173,7 @@ class HistoryTableSingleTransfer extends Backbone.View
                 $(@el).find('.budget-lines').append( el )
 
         addExplanation: (ex) ->
-                $(@el).find('.table-finance-story').popover({content:ex.get("explanation").replace(/\n/g,"<br/>"),html:true,trigger:'hover',placement:'auto',container:'#popups'})
+                $(@el).find('.table-finance-story').popover({content:ex.replace(/\n/g,"<br/>"),html:true,trigger:'hover',placement:'auto',container:'#popups'})
 
 
 class HistoryTableYear extends Backbone.View
@@ -208,10 +198,10 @@ class HistoryTableYear extends Backbone.View
                 htst = new HistoryTableSingleTransfer({model: model, el: @summaryView.el})
                 @transferItems.push htst
                 if model.get('kind') == 1
-                        model.get('explanation').on 'reset', =>
-                                 explanation = model.get('explanation').models[0]
-                                 if explanation?
-                                     htst.addExplanation(explanation)
+                        model.get('explanation').on 'change:explanation', =>
+                                explanation = model.get('explanation').get('explanation')
+                                if explanation?
+                                    htst.addExplanation(explanation)
 
                         $(htst.el).find('.spinner').remove()
                         for bl in model.get('budget_items')
@@ -233,8 +223,10 @@ class HistoryTable extends Backbone.View
                 @subViews[year] = yearView
 
         render: ->
+                @$el.css('display','inherit')
                 $(@el).html( window.JST.history_table() )
 
 $( ->
+    if window.pageModel.get('budgetCode')?
         window.historyTable = new HistoryTable({el: $("#change-list")})
 )

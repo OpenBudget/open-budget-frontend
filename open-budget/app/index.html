@@ -78,19 +78,19 @@
             <article class="six-fig increased">
 
                 <header>
-                    <h1 class="pull-right">מרחב מרכז - הר חברון</h1>
+                    <h1 class="pull-right"></h1>
                     <nav id="issue-nav" class="nav nav-tabs">
                         <li><a href="#" class="active">תקציר</a></li>
                         <li><a href="#">שינויים בתקציב</a></li>
                         <li><a href="#">לאן הולך הכסף?</a></li>
                     </nav>
                     <div id="issue-num">
-                        <a href="#" class="home">#</a><a href="#">20</a><a href="#">38</a><a href="#" class="active">04</a>
+                        <a href="#" class="home">#</a><a href="#"></a><a href="#"></a><a href="#" class="active"></a>
                     </div>
                 </header>
 
                 <section id="brief">
-                  <p>פה יופיע סיכום אוטומטי של הסעיף המשלב מידע הסטורי ועדכני</p>
+                  <p>&lt;פה יופיע סיכום אוטומטי של הסעיף המשלב מידע הסטורי ועדכני&gt;</p>
                     <!-- <p>ב-4 חודשים מאז אישור <strong>תקציב 2013</strong>, הוגדל התקציב מ-<strong class="approved">1,298,000 ₪</strong> ל-<strong class="increased">5,555,440 ₪</strong><br
 הועברו <strong class="increased">4,257,440+ ₪</strong> ב-8 העברות שונות, שינוי של <strong class="increased">428%</strong> מהתקציב המקורי<br>
 בשנים האחרונות <strong class="increased">כמעט בכל שנה גדלה ההקצאה</strong> לסעיף, בשיעור שבין <strong class="increased">120%-530%</strong><br>
@@ -99,86 +99,27 @@
 
 
                 <section id="vis">
-                    <h2>שינויים בתקציב</h2>
-                    <div id="vis-controls">
+                    <h2 id="vis-title"></h2>
+                    <div id="vis-controls" style='display:none'>
 
                     </div>
-            	    <div id="overview-widget">
+            	    <div id="overview-widget" style='display:none'>
             	    </div>
 
-        		    <div id="indepth-widget">
+        		    <div id="indepth-widget" style='display:none'>
         		    </div>
 
-                    <div id="change-list">
-                        <table>
-                            <tr>
-                                <th>תאריך</th>
-                                <th>תוכן ההעברה</th>
-                                <th>ההעברה בוצעה מול</th>
-                                <th>מידע נוסף</th>
-                            </tr>
-                            <tr class="table-increased">
-                                <td class="table-date">29.12.2013</td>
-                                <td class="table-trans">
-                                    <span class="table-change">64,000,000+ ₪</span>
-                                    <span class="table-total">68,698,000 ₪</span>
-                                </td>
-                                <td class="table-from">
-                                    <span class="table-from-num">#107493</span>
-                                    <span class="table-from-name">רזרבה כללית</span>
-                                </td>
-                                <td class="table-more">
-                                    <a href="#" class="table-finance-story">דברי הסבר של אגף תקציבים</a>
-                                    <a href="#" class="table-committee-protocol">פרוטוקול הועדה</a>
-                                </td>
-                            </tr>
-                            <tr class="table-decreased">
-                                <td class="table-date">29.12.2013</td>
-                                <td class="table-trans">
-                                    <span class="table-change">64,000,000- ₪</span>
-                                    <span class="table-total">68,698,000 ₪</span>
-                                </td>
-                                <td class="table-from">
-                                    <span class="table-from-num">#107493</span>
-                                    <span class="table-from-name">רזרבה כללית</span>
-                                </td>
-                                <td class="table-more">
-                                    <a href="#" class="table-finance-story">דברי הסבר של אגף תקציבים</a>
-                                    <a href="#" class="table-committee-protocol">פרוטוקול הועדה</a>
-                                </td>
-                            </tr>
-                            <tr class="table-yearly-budget">
-                                <td class="table-date">29.12.2013</td>
-                                <td class="table-trans">
-                                    <span class="table-total">64,000,000+ ₪</span>
-                                </td>
-                                <td class="table-from">
-                                    <span class="table-from-name">תקציב 2013</span>
-                                </td>
-                                <td class="table-more">
-                                    <a href="#" class="table-finance-story">דברי הסבר של אגף תקציבים</a>
-                                </td>
-                            </tr>
-                            <tr class="table-year-folded">
-                                <td class="table-date">2012</td>
-                                <td class="table-trans" colspan="3">
-                                    4 העברות: 1,298,000 <span class="table-year-incresed">&#11014; 1,298,000 ₪</span>
-                                </td>
-                            </tr>
-                            <tr class="table-year-folded">
-                                <td class="table-date">2011</td>
-                                <td class="table-trans" colspan="3">
-                                    4 העברות: 1,298,000 <span class="table-year-decresed">&#11015; 1,298,000 ₪</span>
-                                </td>
-                            </tr>
-                        </table>
+                    <div id="change-list" style='display:none'>
+                    </div>
+
+                    <div id="single-changegroup" style='display:none'>
                     </div>
                 </section>
 
             </article>
 
             <div class="footer">
-                <p>♥ from the Yeoman team</p>
+                <p>♥ מושון ואדם</p>
             </div>
 
             <div id="popups">
@@ -240,6 +181,7 @@
         <script src="scripts/indepth_widget.js"></script>
         <script src="scripts/views.js"></script>
         <script src="scripts/detailed_history.js"></script>
+        <script src="scripts/single_changegroup.js"></script>
         <script src="scripts/subscribe.js"></script>
         <script src="scripts/hello.js"></script>
         <!-- endbuild -->

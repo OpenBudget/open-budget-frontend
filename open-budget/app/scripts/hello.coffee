@@ -1,5 +1,3 @@
-console.log "'Allo from CoffeeScript!"
-
 window.format_number = (num,is_shekels) ->
         num_to_str = (x) ->
                 if x > 0
@@ -66,5 +64,5 @@ $( ->
         $("#search-form").submit( ->
                 false
                 )
-
+        window.onhashchange = -> window.location.reload()
 )

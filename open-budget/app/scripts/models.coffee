@@ -4,7 +4,25 @@ class ChangeExplanation extends Backbone.Model
                 year: null
                 leading_item: null
                 req_code: null
+                req_id: null
                 explanation: null
+
+        requestId: ->
+            if @get('req_id')?
+                @get('req_id')
+            else
+                ret = ""+@get('req_code')
+                while ret.length < 3
+                        ret = "0"+ret
+                ret = @get('leading_item')+'-'+ret
+                while ret.length < 6
+                        ret = "0"+ret
+                ret
+
+        doFetch: ->
+                @fetch(dataType: window.pageModel.get('dataType'))
+
+        url: () => "#{window.pageModel.get('baseURL')}/api/change_expl/#{@requestId()}/#{@get('year')}"
 
 class ChangeLine extends Backbone.Model
 
@@ -120,7 +138,6 @@ class ChangeGroup extends Backbone.Model
                 @set 'timestamp', date.valueOf()
 
         getCodeChanges: (code) =>
-                console.log "getting code changes for ",code
                 _.filter(@get('changes'),(c)->c.budget_code==code)[0]
 
         getDateType: () =>
@@ -130,7 +147,7 @@ class ChangeGroup extends Backbone.Model
                 @fetch(dataType: @pageModel.get('dataType'))
 
         url: ->
-                "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('transferCode')}/#{@pageModel.get('year')}"
+                "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('changeGroupId')}/#{@pageModel.get('year')}"
 
 class ChangeGroups extends Backbone.Collection
 
@@ -168,7 +185,7 @@ class PageModel extends Backbone.Model
         defaults:
                 budgetCode: null
                 year: null
-                transferCode: null
+                changeGroupId: null
                 baseURL: "http://the.open-budget.org.il"
                 selection: [ 0, 0 ]
                 currentItem: null
@@ -186,17 +203,22 @@ class PageModel extends Backbone.Model
                                       () =>
                                           @set('currentItem', @budgetHistory.getLast())
                     readyItems = [@changeLines,@changeGroups,@budgetHistory]
-                    @setupReadyEvent readyItems
-                @on 'change:transferCode', ->
-                    @changeGroup = new ChangeGroup([], pageModel: @)
-                    readyItems = [@changeGroup]
-                    @setupReadyEvent readyItems
+                    @setupReadyEvent readyItems, []
+                @on 'change:changeGroupId', ->
+                    @changeGroup = new ChangeGroup(pageModel: @)
+                    @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))
+                    readyItems = [@changeGroup, @changeGroupExplanation]
+                    @setupReadyEvent [], readyItems
+                    @changeGroup.doFetch()
+                    @changeGroupExplanation.doFetch()
 
-        setupReadyEvent: (readyItems) ->
-                @readyCount = readyItems.length
+        setupReadyEvent: (collections,models) ->
+                @readyCount = collections.length + models.length
                 console.log 'readyCount ',@readyCount
-                for i in readyItems
+                for i in collections
                     i.on 'reset',() => @checkIfReady()
+                for i in models
+                    i.on 'change',() => @checkIfReady()
 
         checkIfReady: ->
             if @get('ready')
@@ -226,8 +248,10 @@ $( ->
 
         if kind == "budget"
             pageModel.set("budgetCode",identifier)
+            $("#vis-title").html('שינויים בתקציב')
         else if kind == "transfer"
-            pageModel.set("transferCode",identifier)
+            pageModel.set("changeGroupId",identifier)
+            $("#vis-title").html('פרטי העברה')
         else
             window.location.hash = "#budget/00203804/2014"
             window.location.reload()

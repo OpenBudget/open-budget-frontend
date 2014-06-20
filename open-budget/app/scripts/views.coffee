@@ -26,10 +26,8 @@ class IssueTitle extends IssueView
         render: ->
                 title = @currentItem.get('title')
                 $(@el).text(title)
-                        
+
 $( ->
         window.issueNumber = new IssueNumber(el: $("#issue-num"))
         window.issueTitle = new IssueTitle(el: $("header > h1"))
-)          
-                        
-              
+)
