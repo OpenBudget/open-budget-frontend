@@ -29,7 +29,7 @@ do_render = function(items) {
                 rendered_item = jinja.render(item_template,item);
                 rendered_items.push({
                     description: rendered_item,
-                    title: item.title,
+                    title: item.title + " ("+item.date+")",
                     index: parseInt(_item)+1
                 });
             }

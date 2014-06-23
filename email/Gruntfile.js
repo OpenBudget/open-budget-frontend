@@ -58,7 +58,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= config.app %>/{,*/}*.html',
                     '.tmp/styles/{,*/}*.css',
-                    '<%= config.app %>/images/{,*/}*'
+                    '<%= config.app %>/img/{,*/}*'
                 ]
             }
         },
@@ -174,7 +174,6 @@ module.exports = function (grunt) {
                     src: [
                         '<%= config.dist %>/scripts/{,*/}*.js',
                         '<%= config.dist %>/styles/{,*/}*.css',
-                        '<%= config.dist %>/images/{,*/}*.*',
                         '<%= config.dist %>/styles/fonts/{,*/}*.*',
                         '<%= config.dist %>/*.{ico,png}'
                     ]
@@ -195,7 +194,7 @@ module.exports = function (grunt) {
         // Performs rewrites based on rev and the useminPrepare configuration
         usemin: {
             options: {
-                assetsDirs: ['<%= config.dist %>', '<%= config.dist %>/images']
+                assetsDirs: ['<%= config.dist %>', '<%= config.dist %>/img']
             },
             html: ['<%= config.dist %>/{,*/}*.html'],
             css: ['<%= config.dist %>/styles/{,*/}*.css']
@@ -206,9 +205,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= config.app %>/images',
-                    src: '{,*/}*.{gif,jpeg,jpg,png}',
-                    dest: '<%= config.dist %>/images'
+                    cwd: '<%= config.app %>/img',
+                    src: '{,*/}*.{gif,jpeg,jpg}',
+                    dest: '<%= config.dist %>/img'
                 }]
             }
         },
@@ -217,9 +216,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= config.app %>/images',
+                    cwd: '<%= config.app %>/img',
                     src: '{,*/}*.svg',
-                    dest: '<%= config.dist %>/images'
+                    dest: '<%= config.dist %>/img'
                 }]
             }
         },
@@ -282,7 +281,7 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt}',
                         '.htaccess',
-                        'images/{,*/}*.webp',
+                        'img/{,*/}*.{webp,png}',
                         '{,*/}*.html',
                         'styles/fonts/{,*/}*.*'
                     ]
