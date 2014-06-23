@@ -560,12 +560,10 @@ table.history-table {
 	tr{
 		color: @darkgray;
 		vertical-align: top;
-		display: none;
-		&.active {
-		    border-bottom: 1px solid @lightgray;
-		    line-height: 20px;
-		    display: block;
-		}
+        line-height: 20px;
+        border-bottom: 1px solid @lightgray;
+		display: block;
+
 		&.table-year-folded {
 			height: 45px;
 			.table-date {
@@ -609,7 +607,7 @@ table.history-table {
 			}
 		}
 		.table-more {
-			.table-finance-story{
+			a {
 				display: block;
 			}
 		}
@@ -652,7 +650,6 @@ table.history-table {
 		}
 		&.table-single-transfer, &.table-yearly-budget {
 		    td > div {
-			height: 0;
 			padding: 0;
 		    }
 		}

@@ -160,8 +160,6 @@ class ChangeGroups extends Backbone.Collection
         url: ->
                 "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('budgetCode')}?limit=1000"
 
-        comparator: 'group_id'
-
 
 class BudgetHistory extends Backbone.Collection
 

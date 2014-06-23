@@ -62,6 +62,7 @@ class GlobalHistoryItem extends Backbone.Model
 
         processChangeLines: ->
                 yearlyTransfers = @pageModel.changeGroups.where({ year: @get('year')})
+                yearlyTransfers.reverse()
                 amount = @get('amount')
                 for transfer in yearlyTransfers
                         diff = transfer.getCodeChanges(@pageModel.get('budgetCode')).expense_change
@@ -133,28 +134,6 @@ class HistoryTableYearSummary extends Backbone.View
                 el = @el
                 @el = $( window.JST.year_summary( @model.toJSON() ) )
                 $(el).replaceWith(  @el )
-                $(@el).find('.table-date').click( () => @updateRowVisibility() )
-
-        updateRowVisibility: ->
-                year = @model.get('year')
-                $(".history-table tbody tr").each( ->
-                        row = $(@)
-                        row_year = parseInt(row.attr('data-year'))
-                        if (row.hasClass('table-single-transfer') or row.hasClass('table-yearly-budget'))
-                                if (year != row_year)
-                                        row.toggleClass('active',false)
-                                        row.find('td > div').css('height',0)
-                                        row.find('td > div').css('padding',0)
-                                else
-                                        row.toggleClass('active',true)
-                                        row.find('td > div').css('height','auto')
-                                        row.find('td > div').css('padding','10px 0')
-                        )
-                window.setTimeout(  () =>
-                                        $('html, body').animate({ scrollTop: $(@el).position().top  },1000);#                                         $(@el)[0].scrollIntoView()
-                                  ,
-                                    1000)
-
 
 class HistoryTableSingleTransfer extends Backbone.View
 
@@ -191,8 +170,6 @@ class HistoryTableYear extends Backbone.View
                 @summaryView = new HistoryTableYearSummary({model: @model, el: @el})
 
         addTransferItem: (model) ->
-                if ((model.get('kind') == 1) and (model.get('amount_transferred') == 0))
-                        return
                 if not model.get('amount_transferred')?
                         return
                 htst = new HistoryTableSingleTransfer({model: model, el: @summaryView.el})
