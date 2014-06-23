@@ -413,14 +413,16 @@ svg rect{
 	}
 
      .changeBar-last {
-            stroke-width: 2;
+            stroke-width: 0;
             &.increase {
                 stroke: @increased;
                 stroke-dasharray: 3,1;
+                fill: fadeout(@increased, 92%);
             }
             &.reduce {
                 stroke: @decreased;
                 stroke-dasharray: 3,1;
+                fill: fadeout(@decreased, 92%);
             }
     }
 
