@@ -1,6 +1,7 @@
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import "../bower_components/bootstrap-rtl/less/bootstrap-rtl.less";
 @import url("http://fonts.googleapis.com/earlyaccess/alefhebrew.css");
+@import url("http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
 @icon-font-path: "../fonts/glyphicons/";
 
 
@@ -31,13 +32,24 @@
 
 /* Space out content a bit */
 body {
-    padding-top: 20px;
+    //padding-top: 20px;
     padding-bottom: 20px;
     background: @background;
 }
 
 body, h1, h2, h3, h4, h5, h6 {
     font-family: "Alef Hebrew","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+header{
+  .navbar{
+    background: #fff;
+  }
+}
+
+.form-control{
+  color: @text;
+  text-align: right;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -49,12 +61,6 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 /* Make the masthead heading the same height as the navigation */
-.header h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 40px;
-    padding-bottom: 19px;
-}
 
 strong.increased {
 	color: @increased;
@@ -159,15 +165,39 @@ strong.approved {
 
 /////// HEADER ///////////
 
-header.site-nav{
-  nav {
-    li>button{
-      margin-top: 8px;
+header {
+
+  .navbar-default .navbar-nav > li > a.btn{
+    margin-top: 8px;
+    padding: 6px 10px;
+    //color: #fff;
+    border-radius: 20px;
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+
+
+}
+
+#search-form{
+  // position: relative;
+  margin: 0 auto;
+  max-width: 600px;
+  input{
+    border-radius: 0 20px 20px 0;
+  }
+  button{
+    border-radius: 20px 0 0 20px;
+    .glyphicon {
+      top: 3px;
     }
   }
 }
-
-
 /////// ARTICLE ///////////
 
 article {
@@ -177,7 +207,8 @@ article {
 	}
 
 	background: #FFFFFF;
-	.box-shadow(-4px 2px 5px 0px rgba(0,0,0,0.10));
+	//.box-shadow(-4px 2px 5px 0px rgba(0,0,0,0.10));
+  margin: 20px;
 
 	header {
 
@@ -673,6 +704,7 @@ table.history-table {
     line-height: 1.428571429;
     border: 1px solid transparent;
     border-radius:4px;
+    width: 100%;
 }
 
 .twitter-typeahead .hint-small
