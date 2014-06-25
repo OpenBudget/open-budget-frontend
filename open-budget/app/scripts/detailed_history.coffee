@@ -181,7 +181,6 @@ class HistoryTable extends Backbone.View
                 @model.on 'reset', => @render()
 
         render: ->
-                @$el.css('display','inherit')
                 @items = []
                 for model in @model.models
                     item = new HistoryItem({model: model})

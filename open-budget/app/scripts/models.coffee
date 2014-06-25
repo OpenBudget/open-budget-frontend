@@ -246,12 +246,14 @@ $( ->
 
         if kind == "budget"
             pageModel.set("budgetCode",identifier)
-            $("#vis-title").html('שינויים בתקציב')
+            pageModel.article = $("article#budget-item-article")
         else if kind == "transfer"
+            pageModel.article = $("article#change-group-article")
             pageModel.set("changeGroupId",identifier)
-            $("#vis-title").html('פרטי העברה')
         else
             window.location.hash = "#budget/00203804/2014"
             window.location.reload()
+        $("article.single-page-article").css("display","none")
+        pageModel.article.css("display","inherit")
 
 )

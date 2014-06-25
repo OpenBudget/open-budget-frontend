@@ -89,7 +89,6 @@ class OverviewWidget extends Backbone.View
 
 
         render: ->
-                @$el.css('display','inherit')
                 @maxWidth = $(@el).width()
                 @maxHeight = $(@el).height() - 2*MARGIN
 

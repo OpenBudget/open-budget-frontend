@@ -19,7 +19,6 @@ class IndepthWidget extends Backbone.View
                 @bars = @svg.append('g').attr('class','bar')
 
         render: ->
-                @$el.css('display','inherit')
                 @maxWidth = $(@el).width()
                 @maxHeight = $(@el).height()
 

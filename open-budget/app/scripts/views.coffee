@@ -28,6 +28,6 @@ class IssueTitle extends IssueView
                 $(@el).text(title)
 
 $( ->
-        window.issueNumber = new IssueNumber(el: $("#issue-num"))
-        window.issueTitle = new IssueTitle(el: $("header > h1"))
+        window.issueNumber = new IssueNumber(el: window.pageModel.article.find("#issue-num"))
+        window.issueTitle = new IssueTitle(el: window.pageModel.article.find("header > h1"))
 )
