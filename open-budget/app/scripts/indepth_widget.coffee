@@ -115,7 +115,7 @@ class IndepthWidget extends Backbone.View
                                 .datum( (d) => d)
 
                 @chart.selectAll('.approvedLine').data(approvedModels)
-                        .attr("class", (d) => dby = d.get('diff-yearly'); if dby < 0 then "approvedLine reduce" else if dby > 0 then "approvedLine increase" else "approvedLine" )
+                        .attr("class", (d) => dby = d.get('diff_yearly'); if dby < 0 then "approvedLine reduce" else if dby > 0 then "approvedLine increase" else "approvedLine" )
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
@@ -154,7 +154,7 @@ class IndepthWidget extends Backbone.View
                                .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
                 @chart.call( change_tip )
                 @chart.selectAll('.changeBar').data(changeModels)
-                        .attr("class", (d) => dbl = d.get('diff-baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar increase #{subkind}" else if dbl < 0 then "changeBar reduce #{subkind}" else "changeBar  #{subkind}")
+                        .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar increase #{subkind}" else if dbl < 0 then "changeBar reduce #{subkind}" else "changeBar  #{subkind}")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
@@ -168,11 +168,11 @@ class IndepthWidget extends Backbone.View
                         .on('mouseover', change_tip.show)
                         .on('mouseout', change_tip.hide)
                 @chart.selectAll('.changeLine').data(changeModels)
-                        .attr("class", (d) => if d.get('diff-value') > 0 then "changeLine increase" else "changeLine reduce")
+                        .attr("class", (d) => if d.get('diff_value') > 0 then "changeLine increase" else "changeLine reduce")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y1", (d) => @valueScale( d.get('value') + _.max([0, -d.get('diff-value')]) ) )
-                        .attr("y2", (d) => if d.get('source') == "dummy" then @valueScale( d.get('value') + _.max([0, -d.get('diff-value')]) ) else @valueScale(@minValue) + CHANGE_LINE_HANG_LENGTH )
+                        .attr("y1", (d) => @valueScale( d.get('value') + _.max([0, -d.get('diff_value')]) ) )
+                        .attr("y2", (d) => if d.get('source') == "dummy" then @valueScale( d.get('value') + _.max([0, -d.get('diff_value')]) ) else @valueScale(@minValue) + CHANGE_LINE_HANG_LENGTH )
 
                 lastChanges = _.filter(changeModels,(x)->x.get("last"))
                 @chart.selectAll(".changeBar-last").data(lastChanges)
@@ -181,7 +181,7 @@ class IndepthWidget extends Backbone.View
                        .attr("class","changeBar-last")
                        .datum( (d) => d)
                 @chart.selectAll(".changeBar-last").data(lastChanges)
-                            .attr("class", (d) => dbl = d.get('diff-baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar-last increase #{subkind}" else if dbl < 0 then "changeBar-last reduce #{subkind}" else "changeBar-last  #{subkind}")
+                            .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar-last increase #{subkind}" else if dbl < 0 then "changeBar-last reduce #{subkind}" else "changeBar-last  #{subkind}")
                             .attr("x1", (d) => @timeScale( @roundToYearStart( d.get('timestamp') ) ) )
                             .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
                             .attr("y1", (d) => @valueScale( d.get('value') ) )
@@ -259,5 +259,5 @@ class IndepthWidget extends Backbone.View
 
 $( ->
         console.log "indepth_widget"
-        window.indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.widgetData});
+        window.indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.combinedHistory});
 )

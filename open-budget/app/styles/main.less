@@ -560,15 +560,12 @@ table.history-table {
 	tr{
 		color: @darkgray;
 		vertical-align: top;
-        line-height: 20px;
-        border-bottom: 1px solid @lightgray;
-		display: block;
-
+		&.active {
+		    border-bottom: 1px solid @lightgray;
+		    line-height: 20px;
+		}
 		&.table-year-folded {
 			height: 45px;
-			.table-date {
-				width: 43.5%;;
-			}
 			.table-trans {
 				width: auto;
 			}

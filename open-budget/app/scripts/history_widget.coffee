@@ -155,7 +155,7 @@ class OverviewWidget extends Backbone.View
                     .data(_.filter(@model.models, (p) -> p.get('kind') == 'change'))
                     .enter()
                         .append("line")
-                        .attr("class", (d) => dbl = d.get('diff-baseline'); if dbl > 0 then "changeBar widgetElement increase" else if dbl < 0 then "changeBar widgetElement reduce" else "changeBar widgetElement")
+                        .attr("class", (d) => dbl = d.get('diff_baseline'); if dbl > 0 then "changeBar widgetElement increase" else if dbl < 0 then "changeBar widgetElement reduce" else "changeBar widgetElement")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
@@ -180,5 +180,5 @@ class OverviewWidget extends Backbone.View
 $( ->
     if window.pageModel.get('budgetCode')?
         console.log "history_widget"
-        window.overviewWidget = new OverviewWidget({el: $("#overview-widget"),model: window.widgetData});
+        window.overviewWidget = new OverviewWidget({el: $("#overview-widget"),model: window.combinedHistory});
 )

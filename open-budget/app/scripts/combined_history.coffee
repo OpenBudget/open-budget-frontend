@@ -1,5 +1,5 @@
 
-class WidgetDataPoint extends Backbone.Model
+class CombinedHistoryPoint extends Backbone.Model
 
         defaults:
                 kind: null
@@ -11,10 +11,12 @@ class WidgetDataPoint extends Backbone.Model
                 date: null
                 last: false
 
+                diff_value: null
 
-class WidgetData extends Backbone.Collection
 
-        model: WidgetDataPoint
+class CombinedHistory extends Backbone.Collection
+
+        model: CombinedHistoryPoint
 
         comparator: 'timestamp'
 
@@ -22,32 +24,37 @@ class WidgetData extends Backbone.Collection
                 @pageModel = options.pageModel
                 @changeGroups = @pageModel.changeGroups
                 @budgetHistory = @pageModel.budgetHistory
-                @changeGroups.on "reset", => @processChangeLines(@changeGroups.models)
-                @budgetHistory.on "reset", => @processBudgetHistory(@budgetHistory.models)
+                @pageModel.on "ready", =>
+                    @processChangeLines(@changeGroups.models)
+                    @processBudgetHistory(@budgetHistory.models)
+                    @postProcess()
                 @minValue = @maxValue = @minTime = @maxTime = null
-                @gotAllEvents = 2
 
         postProcess: () ->
-                if @gotAllEvents > 0
-                        return
                 last_baseline = null
                 baseline = null
                 lastPoint = null
+                changes = 0
                 for point in @models
                         time = point.get('timestamp')
                         point.set('date', new Date(time) )
                         kind = point.get('kind')
                         if kind  == 'approved'
                                 last_baseline = original_baseline
-                                baseline = point.get('value')
-                                original_baseline = baseline
+                                original_baseline = point.get('value')
+                                if baseline != null && changes > 1
+                                    point.set('diff_value',original_baseline - baseline)
+                                baseline = original_baseline
                                 lastPoint = null
                                 if last_baseline != null
-                                        point.set('diff-yearly', baseline-last_baseline)
+                                        point.set('diff_yearly', baseline-last_baseline)
+                                changes = 0
                         else if kind == 'change'
+                                changes += 1
                                 if baseline != null
-                                        baseline += point.get('diff-value')
-                                        point.set('diff-baseline',baseline - original_baseline)
+                                        baseline += point.get('diff_value')
+                                        point.set('diff_baseline',baseline - original_baseline)
+                                        point.set('original_baseline', original_baseline)
                                         point.set('value', baseline)
                                         if lastPoint != null
                                                 lastPoint.set('width',time - lastPoint.get('timestamp'))
@@ -69,13 +76,10 @@ class WidgetData extends Backbone.Collection
                 @reset(@models)
 
         processBudgetHistory: (models) ->
-                @remove(@where(src: 'budgetline'))
-                @gotAllEvents -= 1
-
                 for m in models
                         value = m.get("net_allocated")
                         if value?
-                                point = new WidgetDataPoint()
+                                point = new CombinedHistoryPoint()
                                 point.set("source", m)
                                 point.set("kind", "approved")
                                 point.set("value", m.get("net_allocated"))
@@ -87,10 +91,10 @@ class WidgetData extends Backbone.Collection
                                 @add point
 
                                 # period between start of year and first committee
-                                point = new WidgetDataPoint()
-                                point.set("source","dummy")
+                                point = new CombinedHistoryPoint()
+                                point.set("source",m)
                                 point.set('kind','change')
-                                point.set('diff-value',0)
+                                point.set('diff_value',0)
                                 point.set('timestamp',startYear+1)
                                 point.set('width',endYear-startYear-1)
                                 point.set('src','budgetline')
@@ -98,7 +102,7 @@ class WidgetData extends Backbone.Collection
 
                         value = m.get("net_used")
                         if value?
-                                point = new WidgetDataPoint()
+                                point = new CombinedHistoryPoint()
                                 point.set("source", m)
                                 point.set("kind", "used")
                                 point.set("value", m.get("net_used"))
@@ -109,13 +113,7 @@ class WidgetData extends Backbone.Collection
                                 point.set('src','budgetline')
                                 @add point
 
-
-                @postProcess()
-
         processChangeLines: (models) ->
-                @remove(@where(src: 'changeline'))
-                @gotAllEvents -= 1
-
                 changesPerYear = _.groupBy( models, (m) => m.get('year') )
                 changesPerYear = _.pairs( changesPerYear )
                 changesPerYear = _.sortBy( changesPerYear, (pair) => pair[0] )
@@ -131,10 +129,10 @@ class WidgetData extends Backbone.Collection
                         for m, i in yearly
                                 value = m.getCodeChanges(@pageModel.get("budgetCode")).expense_change
                                 if value? and value != 0
-                                        point = new WidgetDataPoint()
+                                        point = new CombinedHistoryPoint()
                                         point.set("source",m)
                                         point.set('kind','change')
-                                        point.set('diff-value',value)
+                                        point.set('diff_value',value)
                                         point.set('subkind',m.getDateType())
                                         date = m.get('timestamp')
                                         diff = date - timestamp
@@ -145,7 +143,7 @@ class WidgetData extends Backbone.Collection
                                         lastPoint = point
 
                                 else
-                                        point = new WidgetDataPoint()
+                                        point = new CombinedHistoryPoint()
                                         point.set("source",m)
                                         point.set('kind','change-misc')
 
@@ -156,10 +154,8 @@ class WidgetData extends Backbone.Collection
                         if lastPoint?
                                 lastPoint.set('width', yearEnd - timestamp)
                                 lastPoint.set('last', true)
-                @postProcess()
-
 
 $( ->
     if window.pageModel.get('budgetCode')?
-        window.widgetData = new WidgetData([], pageModel: window.pageModel)
+        window.combinedHistory = new CombinedHistory([], pageModel: window.pageModel)
 )
