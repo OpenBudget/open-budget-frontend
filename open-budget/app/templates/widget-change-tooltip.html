@@ -1,4 +1,4 @@
-<div id="trans-tip" class="widget-popover fade in bottom trans-<%= color_classname(get("diff-value")) %>">
+<div id="trans-tip" class="widget-popover fade in bottom trans-<%= color_classname(get("diff_value")) %>">
 <% if ( get("src") == "changeline" ) { %>
   <div class="date"><%= get("source").get('date') %></div>
   <div class="arrow"></div>
@@ -14,18 +14,18 @@
     <h2><%= format_number( expense_diff ) %></h2>
   </div>
   <div class="widget-popover-content">
-<% if ( get("diff-baseline") > 0 ) { %>
+<% if ( get("diff_baseline") > 0 ) { %>
 עליות של
 <% } else { %>
 ירידות של
  <% } %>
-    <strong class="<%= color_classname(get("diff-baseline")) %>">
-        <%= format_number( get("diff-baseline") ) %>
+    <strong class="<%= color_classname(get("diff_baseline")) %>">
+        <%= format_number( get("diff_baseline") ) %>
     </strong>
      מתחילת
       <%= get("source").get("year") %>
        לסה״כ של
-     <strong class="<%= color_classname(get("diff-baseline")) %>">
+     <strong class="<%= color_classname(get("diff_baseline")) %>">
          <%= format_number( get("value") ) %>
      </strong>
   </div>
