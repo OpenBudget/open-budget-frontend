@@ -163,11 +163,16 @@
 class HistoryItem extends Backbone.View
 
         initialize: ->
+            @render()
+            if @model.get('src') == 'changeline' and @model.get('source') != 'dummy'
+                s = @model.get('source')
+                @explanation = new window.models.ChangeExplanation(req_id: s.get('group_id'), year: s.get('year'))
+                @explanation.on 'change:explanation', =>
+                    @$el.find(".transfer-list-explanation-text").html(@explanation.get('explanation').replace(/\n/g,'<br/>'))
+                @explanation.doFetch()
 
         render: ->
-            console.log "XXX",@model.toJSON()
             @$el.html( window.JST.single_transfer( @model.toJSON() ) )
-            this
 
 class HistoryTable extends Backbone.View
 
@@ -181,7 +186,7 @@ class HistoryTable extends Backbone.View
                 for model in @model.models
                     item = new HistoryItem({model: model})
                     @items.push( item )
-                    @$el.prepend( item.render().el )
+                    @$el.prepend( item.el )
 
 $( ->
     if window.pageModel.get('budgetCode')?

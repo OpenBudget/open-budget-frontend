@@ -1,3 +1,4 @@
+<% /* Template for a single transfer line */ %>
 <% var cls = diff_value < 0 ? 'decreased' : 'increased'; %>
 <% if (kind == "change" && src == "changeline") { %>
 <span class="transfer-list-date"><%= date.getDate() %>.<%= date.getMonth()+1 %></span>
@@ -7,8 +8,10 @@
 <span class="transfer-list-diff-percent"><%= 100*(value / original_baseline) %>%</span>
 <span class="transfer-list-explanation-title"><%= source.get('req_titles')[0] %></span>
 <a href="#transfer/<%= source.get('group_id') %>/<%= source.get('year') %>">more</a>
-
+<span class="transfer-list-explanation-text"></span>
 <% } %>
+
+<% /* Template for approved budget line */ %>
 <% if (kind == "approved" && src == "budgetline") { %>
 <span class="transfer-list-year"><%= date.getFullYear() %></span>
 <% if ( diff_value != null ) { %>
