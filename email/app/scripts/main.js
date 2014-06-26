@@ -2,13 +2,13 @@ console.log('\'Allo \'Allo!');
 
 var rss_items = [];
 
-get_item = function(item_index,total_num) {
-    $.get('http://the.open-budget.org.il/api/sysprop/rss_items['+item_index+']', function (data) {
+get_item = function(item_index,rss_item_ids) {
+    $.get('http://the.open-budget.org.il/api/sysprop/rss_items['+rss_item_ids[item_index]+']', function (data) {
         var item = data.value;
         rss_items.push(item);
         item_index += 1;
-        if (item_index < total_num) {
-            get_item(item_index,total_num);
+        if (item_index < rss_item_ids.length) {
+            get_item(item_index,rss_item_ids);
         } else {
             do_render(rss_items);
         }
@@ -29,7 +29,7 @@ do_render = function(items) {
                 rendered_item = jinja.render(item_template,item);
                 rendered_items.push({
                     description: rendered_item,
-                    title: item.title + " ("+item.date+")",
+                    title: item.title,
                     index: parseInt(_item)+1
                 });
             }
@@ -38,7 +38,8 @@ do_render = function(items) {
                 var template_data = {
                     entries: rendered_items,
                     feed: {
-                        'title': feed_title
+                        'title': 'על שולחן ועדת הכספים',
+                        'subtitle': feed_title
                     }
                 };
                 var full = Mustache.render(feed_template,template_data);
@@ -51,8 +52,8 @@ do_render = function(items) {
 
 $( function() {
     $.get('http://the.open-budget.org.il/api/sysprop/rss_items', function (data) {
-        var rss_items_len = data.value;
-        console.log("got "+rss_items_len);
-        get_item(0,rss_items_len);
+        var rss_item_ids = data.value;
+        console.log("got "+rss_item_ids);
+        get_item(0,rss_item_ids);
     }, "jsonp");
 });
