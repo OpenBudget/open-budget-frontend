@@ -598,113 +598,157 @@ svg rect{
 
 #change-list {
 	padding: 10px;
+
+  .row {
+
+    > div {
+      border-bottom: 1px solid @approved;
+      height: 86px;
+      overflow: hidden;
+      font-size: 12px;
+
+      &.transfer-list-dates{
+        padding-top: 25px;
+        text-align: center;
+        font-weight: 700;
+        span{
+          display: block;
+        }
+      }
+
+      &.transfer-list-nums{
+        padding-top: 10px;
+        line-height: 1.8em;
+        span{
+          display: block;
+
+          &.transfer-list-amount-transferred {
+            font-weight: 700;
+            margin-right: -10px;
+            &.increased{
+              color: @increased
+            }
+
+            &.decreased{
+              color: @decreased
+            }
+          }
+          &.transfer-list-total {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+
+
+  }
 }
 
-table.history-table {
-	width: 100%;
-	font-size: 15px;
-	border-collapse: collapse;
-	border-spacing: 0;
-	th {
-		font-weight: 700;
-		color: @text;
-		padding: 10px 0;
-	}
-	tr{
-		color: @darkgray;
-		vertical-align: top;
-		&.active {
-		    border-bottom: 1px solid @lightgray;
-		    line-height: 20px;
-		}
-		&.table-year-folded {
-			height: 45px;
-			.table-trans {
-				width: auto;
-			}
-		}
-		td {
-	    padding: 0;
-	    div {
-				padding: 10px 0 0;
-				overflow: hidden;
-				transition: padding 1s, height 1s;
-	    }
-		}
-
-		.table-date {
-			width: 10%;
-		}
-		.table-trans {
-			width: 23%;
-			.table-change{
-				font-size: 24px;
-				display: block;
-			}
-		}
-		.table-from {
-			width: 45%;
-			.table-from-num{
-				display: block;
-			}
-			.table-from-name{
-				font-weight: 700;
-				margin-bottom: 10px;
-				display: block;
-				&:last-child {
-					margin-bottom: 0;
-				}
-			}
-		}
-		.table-more {
-			a {
-				display: block;
-			}
-		}
-		&.table-increased {
-			.table-change {color: @increased;}
-			.table-from {color: @decreased;}
-		}
-		&.table-decreased {
-			.table-change {color: @decreased;}
-			.table-from {color: @increased;}
-		}
-		&.table-yearly-budget {
-			.table-date, .table-total, .table-from {color: @approved;}
-			.table-total { font-size: 24px; }
-			border-bottom-color: @approved;
-			background: url(assets/diagonal-green.png);
-		}
-		&.table-year-folded {
-			font-weight: 700;
-			.table-date { font-size: 24px; }
-			span { opacity: 0.5;}
-			.table-year-incresed {
-			    color: @increased;
-			    &:before {
-				content: "\2b06";
-			    }
-			}
-			.table-year-decresed {
-			    color: @decreased;
-			    &:before {
-				content: "\2b07";
-			    }
-			}
-			&:hover {
-				.table-date { color: @link }
-				color: @text;
-				cursor: pointer;
-				span { opacity: 1;}
-			}
-		}
-		&.table-single-transfer, &.table-yearly-budget {
-		    td > div {
-			padding: 0;
-		    }
-		}
-	}
-}
+// table.history-table {
+// 	width: 100%;
+// 	font-size: 15px;
+// 	border-collapse: collapse;
+// 	border-spacing: 0;
+// 	th {
+// 		font-weight: 700;
+// 		color: @text;
+// 		padding: 10px 0;
+// 	}
+// 	tr{
+// 		color: @darkgray;
+// 		vertical-align: top;
+// 		&.active {
+// 		    border-bottom: 1px solid @lightgray;
+// 		    line-height: 20px;
+// 		}
+// 		&.table-year-folded {
+// 			height: 45px;
+// 			.table-trans {
+// 				width: auto;
+// 			}
+// 		}
+// 		td {
+// 	    padding: 0;
+// 	    div {
+// 				padding: 10px 0 0;
+// 				overflow: hidden;
+// 				transition: padding 1s, height 1s;
+// 	    }
+// 		}
+//
+// 		.table-date {
+// 			width: 10%;
+// 		}
+// 		.table-trans {
+// 			width: 23%;
+// 			.table-change{
+// 				font-size: 24px;
+// 				display: block;
+// 			}
+// 		}
+// 		.table-from {
+// 			width: 45%;
+// 			.table-from-num{
+// 				display: block;
+// 			}
+// 			.table-from-name{
+// 				font-weight: 700;
+// 				margin-bottom: 10px;
+// 				display: block;
+// 				&:last-child {
+// 					margin-bottom: 0;
+// 				}
+// 			}
+// 		}
+// 		.table-more {
+// 			a {
+// 				display: block;
+// 			}
+// 		}
+// 		&.table-increased {
+// 			.table-change {color: @increased;}
+// 			.table-from {color: @decreased;}
+// 		}
+// 		&.table-decreased {
+// 			.table-change {color: @decreased;}
+// 			.table-from {color: @increased;}
+// 		}
+// 		&.table-yearly-budget {
+// 			.table-date, .table-total, .table-from {color: @approved;}
+// 			.table-total { font-size: 24px; }
+// 			border-bottom-color: @approved;
+// 			background: url(assets/diagonal-green.png);
+// 		}
+// 		&.table-year-folded {
+// 			font-weight: 700;
+// 			.table-date { font-size: 24px; }
+// 			span { opacity: 0.5;}
+// 			.table-year-incresed {
+// 			    color: @increased;
+// 			    &:before {
+// 				content: "\2b06";
+// 			    }
+// 			}
+// 			.table-year-decresed {
+// 			    color: @decreased;
+// 			    &:before {
+// 				content: "\2b07";
+// 			    }
+// 			}
+// 			&:hover {
+// 				.table-date { color: @link }
+// 				color: @text;
+// 				cursor: pointer;
+// 				span { opacity: 1;}
+// 			}
+// 		}
+// 		&.table-single-transfer, &.table-yearly-budget {
+// 		    td > div {
+// 			padding: 0;
+// 		    }
+// 		}
+// 	}
+// }
 
 /* Typeahead Styles */
 .twitter-typeahead .tt-query,

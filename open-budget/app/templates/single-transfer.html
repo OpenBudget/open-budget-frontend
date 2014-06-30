@@ -1,21 +1,56 @@
 <% /* Template for a single transfer line */ %>
 <% var cls = diff_value < 0 ? 'decreased' : 'increased'; %>
 <% if (kind == "change" && src == "changeline") { %>
-<span class="transfer-list-date"><%= date.getDate() %>.<%= date.getMonth()+1 %></span>
-<span class="transfer-list-year"><%= date.getFullYear() %></span>
-<span class="transfer-list-amount-transferred <%= cls %>" title="<%= value %>"><%= diff_value %></span>
-<span class="transfer-list-total"><%= value %></span>
-<span class="transfer-list-diff-percent"><%= 100*(value / original_baseline) %>%</span>
-<span class="transfer-list-explanation-title"><%= source.get('req_titles')[0] %></span>
-<a href="#transfer/<%= source.get('group_id') %>/<%= source.get('year') %>">more</a>
-<span class="transfer-list-explanation-text"></span>
+<div class="row trans">
+  <div class="col-sm-1 transfer-list-dates">
+    <span class="transfer-list-date"><%= date.getDate() %>.<%= date.getMonth()+1 %></span>
+    <span class="transfer-list-year"><%= date.getFullYear() %></span>
+  </div>
+  <div class="col-sm-5 transfer-list-nums">
+    <span class="transfer-list-amount-transferred <%= cls %>" title="<%= value %>">
+      <% if (diff_value>0){ %>
+        + <%= diff_value %> ₪ אושרו כתוספת לכדי סך:
+      <% } else { %>
+        - <%= diff_value*-1 %> ₪ אושרו כקיצוץ לכדי סך:
+      <% } %>
+      </span>
+    <span class="transfer-list-total"><%= value %> ₪</span>
+    <span class="transfer-list-diff-percent">
+      <% if ((value / original_baseline)>1){ %>
+        (גידול לכדי
+      <% } else { %>
+        (קיצוץ לכדי
+      <% } %>
+      <%= Math.floor(100*(value / original_baseline)) %>% מבסיס תקציב <%= source.get('year') %>)
+    </span>
+  </div>
+  <div class="col-sm-5 transfer-list-docs">
+    <span class="transfer-list-explanation-title">הנדון: <%= source.get('req_titles')[0] %></span>
+    <span class="transfer-list-explanation-text"></span>
+  </div>
+  <div class="col-sm-1 transfer-list-more">
+    <a href="#transfer/<%= source.get('group_id') %>/<%= source.get('year') %>">more</a>
+  </div>
+</div>
 <% } %>
 
 <% /* Template for approved budget line */ %>
 <% if (kind == "approved" && src == "budgetline") { %>
-<span class="transfer-list-year"><%= date.getFullYear() %></span>
-<% if ( diff_value != null ) { %>
-<span class="transfer-list-diff-approved"><%= diff_value %></span>
-<% } %>
-<span class="transfer-list-amount-approved"><%= value %></span>
+<div class="row yearly">
+  <div class="col-sd-1">
+    <span class="transfer-list-year"><%= date.getFullYear() %></span>
+  </div>
+  <div class="col-sd-5">
+    <% if ( diff_value != null ) { %>
+    <span class="transfer-list-diff-approved"><%= diff_value %></span>
+    <% } %>
+    <span class="transfer-list-amount-approved"><%= value %></span>
+  </div>
+  <div class="col-sd-5">
+    תקציב המדינה
+  </div>
+  <div class="col-sd-1">
+    <a href="#transfer/<%= source.get('group_id') %>/<%= source.get('year') %>">more</a>
+  </div>
+</div>
 <% } %>
