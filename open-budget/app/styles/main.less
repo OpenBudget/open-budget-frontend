@@ -438,7 +438,7 @@ svg rect{
 	    }
 
 	    .changeBar {
-				stroke-width: 4;
+				stroke-width: 2;
 				&.increase {
 				    stroke: @increased;
 	    			stroke-dasharray: 3,1;
@@ -451,21 +451,33 @@ svg rect{
 	}
 
      .changeBar-last {
-            stroke-width: 0;
-            fill: fadeout(@approved, 92%);
-            &.increase {
-                stroke: @increased;
-                stroke-dasharray: 3,1;
-                fill: fadeout(@increased, 92%);
-            }
-            &.reduce {
-                stroke: @decreased;
-                stroke-dasharray: 3,1;
-                fill: fadeout(@decreased, 92%);
-            }
-    }
+        stroke-width: 0;
+        fill: fadeout(@approved, 92%);
+        &.increase {
+            stroke: @increased;
+            stroke-dasharray: 3,1;
+            fill: fadeout(@increased, 92%);
+        }
+        &.reduce {
+            stroke: @decreased;
+            stroke-dasharray: 3,1;
+            fill: fadeout(@decreased, 92%);
+        }
+  }
 
-	.graphPartUsed {
+      .changeBar-last-line {
+             stroke-width: 1;
+             stroke: @approved;
+             stroke-opacity: 0.5;
+             &.increase {
+                 stroke: @increased;
+             }
+             &.reduce {
+                 stroke: @decreased;
+             }
+      }
+
+.graphPartUsed {
 	    line { stroke: @spent;}
 	    text { fill: @spent;}
 	}
