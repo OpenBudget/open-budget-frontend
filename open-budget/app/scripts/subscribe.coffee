@@ -56,13 +56,16 @@ class SubscribeView extends Backbone.View
     if @model.get('state') == "not-logged-in"
       @$el.toggleClass('loggedout',true)
       @$el.toggleClass('subscribed',false)
+      @$el.toggleClass('notsubscribed',false)
       @renderLogin(@model.get('loginURL'))
     else if @model.get('state') == "not-subscribed"
       @$el.toggleClass('loggedout',false)
       @$el.toggleClass('subscribed',false)
+      @$el.toggleClass('notsubscribed',true)
     else if @model.get('state') == "subscribed"
       @$el.toggleClass('loggedout',false)
       @$el.toggleClass('subscribed',true)
+      @$el.toggleClass('notsubscribed',false)
     @attempting = false
 
   renderLogin: (loginUrl) ->
@@ -85,11 +88,16 @@ class SubscribeView extends Backbone.View
 
 class SubscribeModalButtonView extends SubscribeView
 
+  initialize: (options) ->
+    @modal = options.modal
+    super
+
   renderLogin: (loginUrl) ->
     @$el.attr('href',@model.get('loginURL'))
     @$el.attr('target','_blank')
 
   onLogin: ->
+    @modal.modal('hide')
     window.open(@$el.attr('href'),"_blank")
     false
 
@@ -106,6 +114,7 @@ class SubscribeMainButtonView extends SubscribeView
 
 $( ->
   subscribeModel = new SubscribeModel()
-  window.subscribeModalButtonView = new SubscribeModalButtonView(model: subscribeModel,el: $("#subscribeModal .btn-primary"))
-  window.subscribeMainButtonView = new SubscribeMainButtonView(model: subscribeModel,el: $("#subscribeWidget"), modal: $("#subscribeModal"))
+  modal = $("#subscribeModal")
+  window.subscribeModalButtonView = new SubscribeModalButtonView(model: subscribeModel,el: $("#subscribeModal .btn-primary"), modal: modal)
+  window.subscribeMainButtonView = new SubscribeMainButtonView(model: subscribeModel,el: $("#subscribeWidget"), modal: modal)
 )

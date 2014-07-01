@@ -904,3 +904,16 @@ svg rect{
     -webkit-transform: scaleY(1.0);
   }
 }
+
+/// Subscribe widget
+#subscribeWidget {
+    &.notsubscribed::before {
+        content: 'הרשמה לעדכונים';
+    }
+    &.subscribed::before {
+        content: 'הסרת הרשמה לעדכונים';
+    }
+    &.loggedout::before {
+        content: 'כניסה והרשמה לעדכונים';
+    }
+}
