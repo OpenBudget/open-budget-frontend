@@ -599,7 +599,8 @@ svg rect{
 #change-list {
 	padding: 10px;
 
-  .row {
+  .trans,
+  .yearly {
 
     > div {
       border-bottom: 1px solid @approved;
@@ -635,6 +636,29 @@ svg rect{
           }
           &.transfer-list-total {
             font-size: 24px;
+          }
+        }
+      }
+
+      &.transfer-list-docs {
+        >div {
+          background: #F8F7F0;
+          border: 1px solid #C7C7CC;
+          border-bottom: 0;
+          margin-top: 10px;
+          height: 76px;
+
+          div.transfer-list-explanation-label{
+            font-size: 12;
+            color: #9B9B9B;
+            margin: 7px 0 3px;
+            text-align: center;
+          }
+
+          h4{
+            margin: 0 10px 0;
+            font-size: 15px;
+            color: #131973;
           }
         }
       }
