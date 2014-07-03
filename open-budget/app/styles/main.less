@@ -287,8 +287,14 @@ article {
     background: lighten(@increased, 40%);
   }
 
-  section {
-
+  ol.breadcrumb {
+    .dropdown{
+      &:hover{
+        .dropdown-menu{
+          display: block;
+        }
+      }
+    }
   }
 
   #brief {
