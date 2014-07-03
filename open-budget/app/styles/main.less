@@ -67,15 +67,15 @@ header{
 /* Make the masthead heading the same height as the navigation */
 
 strong.increased {
-	color: @increased;
+  color: @increased;
 }
 
 strong.decreased {
-	color: @decreased;
+  color: @decreased;
 }
 
 strong.approved {
-	color: @approved;
+  color: @approved;
 }
 
 /* Popover */
@@ -209,101 +209,101 @@ header {
 
 article {
 
-	&.six-fig{
-		//margin-left: 72px;
-	}
+  &.six-fig{
+    //margin-left: 72px;
+  }
 
-	background: #FFFFFF;
-	//.box-shadow(-4px 2px 5px 0px rgba(0,0,0,0.10));
+  background: #FFFFFF;
+  //.box-shadow(-4px 2px 5px 0px rgba(0,0,0,0.10));
   margin: 20px;
 
-	header {
+  header {
 
-		position: relative;
+    position: relative;
 
-		h1 {
-			margin: 0 0 0 15px;
-			font-size: 24px;
-			padding: 15px;
-			font-weight: bold;
-		}
+    h1 {
+      margin: 0 0 0 15px;
+      font-size: 24px;
+      padding: 15px;
+      font-weight: bold;
+    }
 
-		.nav {
-			font-size: 18px;
-			border-bottom: 0;
+    .nav {
+      font-size: 18px;
+      border-bottom: 0;
 
-			>li>a {
-				padding: 17px 15px 15px;
+      >li>a {
+        padding: 17px 15px 15px;
 
-				&.active{
+        &.active{
 
-				}
-				&:hover{
-					border-color: rgba(0,0,0,0);
-				}
-			}
-		}
-		#issue-num {
-			position: absolute;
-			left: 0px;
-			top: 4px;
-			direction: ltr;
-			font-size: 36px;
+        }
+        &:hover{
+          border-color: rgba(0,0,0,0);
+        }
+      }
+    }
+    #issue-num {
+      position: absolute;
+      left: 0px;
+      top: 4px;
+      direction: ltr;
+      font-size: 36px;
 
-			a {
-				padding: 5px 0;
-				//margin-right: -12px;
-				//background: @lightgray;
-				//.box-shadow(-4px 0px 5px 0px rgba(0,0,0,0.10));
+      a {
+        padding: 5px 0;
+        //margin-right: -12px;
+        //background: @lightgray;
+        //.box-shadow(-4px 0px 5px 0px rgba(0,0,0,0.10));
 
-				&.active, &.home {
-					background: none;
-				}
+        &.active, &.home {
+          background: none;
+        }
 
-				&.home {.box-shadow(none);}
-			}
-		}
-	}
+        &.home {.box-shadow(none);}
+      }
+    }
+  }
 
-	&.increased header {
-		background: lighten(@increased, 40%);
+  &.increased header {
+    background: lighten(@increased, 40%);
 
-		h1, .nav>li>a.active, .nav>li>a:hover, div>a {
-			color: @increased;
-		}
-		.nav>li>a {
-			color: lighten(@increased, 25%);
-			&:hover{
-				background: none;
-			}
-			&.active {
-				background: lighten(@increased, 35%);
-				border-radius: 0;
-				border: 0;
-			}
-		}
-	}
-	&.decreased header {
-		background: lighten(@increased, 40%);
-	}
+    h1, .nav>li>a.active, .nav>li>a:hover, div>a {
+      color: @increased;
+    }
+    .nav>li>a {
+      color: lighten(@increased, 25%);
+      &:hover{
+        background: none;
+      }
+      &.active {
+        background: lighten(@increased, 35%);
+        border-radius: 0;
+        border: 0;
+      }
+    }
+  }
+  &.decreased header {
+    background: lighten(@increased, 40%);
+  }
 
-	section {
+  section {
 
-	}
+  }
 
-	#brief {
-		padding: 40px;
-		font-size: 24px;
-	}
+  #brief {
+    padding: 40px;
+    font-size: 24px;
+  }
 
-	h2 {
-		margin: 0 0 10px;
-		font-size: 18px;
-		padding: 0 13px 5px;
-		border-bottom: 1px solid @link;
-		color: @link;
-		display: inline-block;
-	}
+  h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    padding: 0 13px 5px;
+    border-bottom: 1px solid @link;
+    color: @link;
+    display: inline-block;
+  }
 }
 
 
@@ -342,7 +342,7 @@ article {
 // VISUALIZTION ///////////////////////////////
 
 svg rect{
-	shape-rendering:crispEdges;
+  shape-rendering:crispEdges;
 }
 
 @keyframes  dash-up {
@@ -376,79 +376,79 @@ svg rect{
   height: 440px;
 
   #backgroundPattern {
-		stroke: @lightgray;
+    stroke: @lightgray;
   }
 
   .chart {
-		.background {
-			fill: @ultralightgray !important;
-		}
-		.graduationLabel {
-		    font-size: 11px;
-		    font-weight: 700;
-		    fill: @darkgray;
-		}
-		.graduationLine {
-		    &.major {
-					stroke: @gray;
-		    }
-		    &.minor {
-					stroke: @lightgray;
-		    }
-		}
-		.graphPartApproved {
-		    text {
-				fill: @approved;
-		    }
-		    .approvedBar {
-		    	stroke: @approved;
-		    }
-		    .approvedLine {
-		    	stroke: @approved;
-		    	stroke-dasharray: 1,4;
-				&.increase {
-				    stroke: @increased;
-				}
-				&.reduce {
-				    stroke: @decreased;
-				}
-	    }
-	}
+    .background {
+      fill: @ultralightgray !important;
+    }
+    .graduationLabel {
+        font-size: 11px;
+        font-weight: 700;
+        fill: @darkgray;
+    }
+    .graduationLine {
+        &.major {
+          stroke: @gray;
+        }
+        &.minor {
+          stroke: @lightgray;
+        }
+    }
+    .graphPartApproved {
+        text {
+        fill: @approved;
+        }
+        .approvedBar {
+          stroke: @approved;
+        }
+        .approvedLine {
+          stroke: @approved;
+          stroke-dasharray: 1,4;
+        &.increase {
+            stroke: @increased;
+        }
+        &.reduce {
+            stroke: @decreased;
+        }
+      }
+  }
 
-	.graphPartChanged {
+  .graphPartChanged {
 
-	    stroke: @approved;
+      stroke: @approved;
 
-	    .changeLine {
-	    	stroke-dasharray: 1,4;
-				&.increase {
-				    stroke: @increased;
-				    -webkit-animation: dash-up 0.5s linear infinite;
-				    -moz-animation: dash-up 0.5s linear infinite;
-				    -0-animation: dash-up 0.5s linear infinite;
-				    animation: dash-up 0.5s linear infinite;
-				}
-				&.reduce {
-				    stroke: @decreased;
-				    -webkit-animation: dash-down 0.5s linear infinite;
-				    -moz-animation: dash-down 0.5s linear infinite;
-				    -o-animation: dash-down 0.5s linear infinite;
-				    -webkit-animation: dash-down 0.5s linear infinite;
-				}
-	    }
+      .changeLine {
+        stroke-dasharray: 1,4;
+        &.increase {
+            stroke: @increased;
+            -webkit-animation: dash-up 0.5s linear infinite;
+            -moz-animation: dash-up 0.5s linear infinite;
+            -0-animation: dash-up 0.5s linear infinite;
+            animation: dash-up 0.5s linear infinite;
+        }
+        &.reduce {
+            stroke: @decreased;
+            -webkit-animation: dash-down 0.5s linear infinite;
+            -moz-animation: dash-down 0.5s linear infinite;
+            -o-animation: dash-down 0.5s linear infinite;
+            -webkit-animation: dash-down 0.5s linear infinite;
+        }
+      }
 
-	    .changeBar {
-				stroke-width: 2;
-				&.increase {
-				    stroke: @increased;
-	    			stroke-dasharray: 3,1;
-				}
-				&.reduce {
-				    stroke: @decreased;
-	    			stroke-dasharray: 3,1;
-				}
-	    }
-	}
+      .changeBar {
+        stroke-width: 2;
+        &.increase {
+            stroke: @increased;
+            stroke-dasharray: 3,1;
+        }
+        &.reduce {
+            stroke: @decreased;
+            stroke-dasharray: 3,1;
+        }
+      }
+  }
 
      .changeBar-last {
         stroke-width: 0;
@@ -478,9 +478,9 @@ svg rect{
       }
 
 .graphPartUsed {
-	    line { stroke: @spent;}
-	    text { fill: @spent;}
-	}
+      line { stroke: @spent;}
+      text { fill: @spent;}
+  }
     }
 }
 
@@ -490,54 +490,54 @@ svg rect{
     height: 60px;
 
     .changeBar line {
-			stroke: @gray;
-			&.increase {stroke: @increased;stroke-dasharray: 1;}
-			&.reduce {stroke: @decreased;stroke-dasharray: 1;}
+      stroke: @gray;
+      &.increase {stroke: @increased;stroke-dasharray: 1;}
+      &.reduce {stroke: @decreased;stroke-dasharray: 1;}
     }
 
     .approvedBar {
-    	rect {fill: @ultralightgray;}
-			line {stroke: @approved;}
-			rect.upper {fill-color: lighten(@ultralightgray, 2%);}
+      rect {fill: @ultralightgray;}
+      line {stroke: @approved;}
+      rect.upper {fill-color: lighten(@ultralightgray, 2%);}
     }
 
   .yearNumberText {
-		font-size: 11px;
-		font-weight: 700;
-		fill: @darkgray;
+    font-size: 11px;
+    font-weight: 700;
+    fill: @darkgray;
   }
 
   #upperApprovedRect {
-		stroke: @lightgray;
+    stroke: @lightgray;
   }
 
   #lowerApprovedRect {
-		stroke: @approved;
+    stroke: @approved;
   }
 
   .selectionBar {
-		.selectionLine {
-	  stroke: @selection;
-	}
+    .selectionLine {
+    stroke: @selection;
+  }
 
-	.selectionShade {
-	    fill: @selection;
-	    opacity: 0.3;
-	}
+  .selectionShade {
+      fill: @selection;
+      opacity: 0.3;
+  }
 
-	.selectionHandle {
-	    fill: @selection;
-	}
+  .selectionHandle {
+      fill: @selection;
+  }
     }
 
 }
 
 #indepth-widget {
-	.approvedBar {
-		//stroke-dasharray: 2px, 4px !important;
-		stroke-width: 2px;
-		stroke: fadeout(@approved, 70%) !important;
-	}
+  .approvedBar {
+    //stroke-dasharray: 2px, 4px !important;
+    stroke-width: 2px;
+    stroke: fadeout(@approved, 70%) !important;
+  }
 }
 
 // Breath in/out for pending transactions
@@ -588,16 +588,16 @@ svg rect{
 }
 
 .pending {
-	animation:         pending 1s infinite; /* IE 10+ */
-	-webkit-animation: pending 1s infinite; /* Safari 4+ */
-	-moz-animation:    pending 1s infinite; /* Fx 5+ */
-	-o-animation:      pending 1s infinite; /* Opera 12+ */
+  animation:         pending 1s infinite; /* IE 10+ */
+  -webkit-animation: pending 1s infinite; /* Safari 4+ */
+  -moz-animation:    pending 1s infinite; /* Fx 5+ */
+  -o-animation:      pending 1s infinite; /* Opera 12+ */
 }
 
 // TABLE ///////////////////////////////
 
 #change-list {
-	padding: 10px;
+  padding: 10px;
 
   >div{
     position: relative;
@@ -606,6 +606,9 @@ svg rect{
   .yearly {
     border-bottom: 1px solid @approved;
     height: 86px;
+
+    &.inc {border-bottom-color: @increased;}
+    &.dec {border-bottom-color: @decreased;}
 
     > div {
       font-size: 12px;
@@ -622,15 +625,17 @@ svg rect{
       }
 
       &.transfer-list-nums{
-        padding-top: 10px;
+        padding-top: 16px;
         line-height: 1.8em;
         span{
           display: block;
+          line-height: 1.5em;
 
           &.transfer-list-amount-transferred,
           &.transfer-list-diff-approved {
             //font-weight: 700;
             margin-right: -10px;
+            line-height: 1em;
             &.increased{
               color: @increased
             }
@@ -638,10 +643,13 @@ svg rect{
             &.decreased{
               color: @decreased
             }
+            .transparent{
+              color: transparent;
+            }
           }
         }
         h4 {
-          font-size: 24px;
+          font-size: 26px;
           margin: 0;
         }
       }
@@ -862,21 +870,21 @@ svg rect{
 
 .twitter-typeahead .hint-small
 {
-	height: 30px;
-	padding: 5px 10px;
-	font-size: 12px;
-	border-radius: 3px;
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
     line-height: 1.5;
 }
 
 .twitter-typeahead .hint-large
 {
-	height: 45px;
-	padding: 10px 16px;
-	font-size: 18px;
-	border-radius: 6px;
-	line-height: 1.33;
-	width:100%;
+  height: 45px;
+  padding: 10px 16px;
+  font-size: 18px;
+  border-radius: 6px;
+  line-height: 1.33;
+  width:100%;
 }
 
 .tt-dropdown-menu {
