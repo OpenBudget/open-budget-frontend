@@ -28,7 +28,9 @@ window.format_number = (num,is_shekels) ->
 window.format_full_number = (num) ->
         if not num or num == 0
                 "—"
-        num.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        num = num.toString()
+        num = num.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        "&lrm;" + num  + "&rlm;"
 
 window.color_classname = (value) ->
     if value == 0 then ""

@@ -9,16 +9,14 @@
     <div class="col-sm-5 transfer-list-nums">
       <span class="transfer-list-amount-transferred <%= cls %>" title="<%= value %>">
         <% if (diff_value>0){ %>
-          <strong>+ <%= format_full_number(diff_value) %>
-               ₪</strong>
+          <strong>- <%= format_full_number(diff_value*1000) %> ₪</strong>
            אושרו כתוספת לכדי סך:
         <% } else { %>
-          <strong>- <%= -format_full_number(diff_value) %>
-               ₪</strong>
+          <strong>+ <%= format_full_number(-diff_value*1000) %> ₪</strong>
            אושרו כקיצוץ לכדי סך:
         <% } %>
         </span>
-      <h4 class="transfer-list-total"><%= value %> ₪</h4>
+      <h4 class="transfer-list-total"><%= format_full_number(value*1000) %> ₪</h4>
       <span class="transfer-list-diff-percent">
         (<%= Math.floor(100*(value / original_baseline)) %>% מבסיס תקציב <%= source.get('year') %>)
       </span>
