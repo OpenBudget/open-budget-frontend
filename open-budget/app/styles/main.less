@@ -599,21 +599,25 @@ svg rect{
 #change-list {
 	padding: 10px;
 
+  >div{
+    position: relative;
+  }
   .trans,
   .yearly {
+    border-bottom: 1px solid @approved;
+    height: 86px;
 
     > div {
-      border-bottom: 1px solid @approved;
-      height: 86px;
-      overflow: hidden;
       font-size: 12px;
 
       &.transfer-list-dates{
-        padding-top: 25px;
+        padding-top: 30px;
         text-align: center;
-        font-weight: 700;
-        span{
+        line-height: 12px;
+        // font-weight: 700;
+        span:first-child{
           display: block;
+          font-weight: 700;
         }
       }
 
@@ -623,8 +627,9 @@ svg rect{
         span{
           display: block;
 
-          &.transfer-list-amount-transferred {
-            font-weight: 700;
+          &.transfer-list-amount-transferred,
+          &.transfer-list-diff-approved {
+            //font-weight: 700;
             margin-right: -10px;
             &.increased{
               color: @increased
@@ -634,19 +639,22 @@ svg rect{
               color: @decreased
             }
           }
-          &.transfer-list-total {
-            font-size: 24px;
-          }
+        }
+        h4 {
+          font-size: 24px;
+          margin: 0;
         }
       }
 
       &.transfer-list-docs {
         >div {
-          background: #F8F7F0;
+          background: #F8F7F0 url(assets/gov_symbol-fax.png) no-repeat 10px 10px;
           border: 1px solid #C7C7CC;
           border-bottom: 0;
           margin-top: 10px;
-          height: 76px;
+          height: 75px;
+          overflow: hidden;
+          transition: margin 0.3s, height 0.3s;
 
           div.transfer-list-explanation-label{
             font-size: 12;
@@ -656,17 +664,77 @@ svg rect{
           }
 
           h4{
-            margin: 0 10px 0;
+            margin: 14px 10px 0;
             font-size: 15px;
             color: #131973;
+            font-weight: 700;
+          }
+
+          div.transfer-list-explanation-text{
+            display: none;
+            padding: 0 10px;
+          }
+        }
+
+        &:hover{
+          z-index: 1000;
+          position: relative;
+          overflow: visible;
+          >div {
+            overflow: scroll;
+            margin: -150px -10px 0;
+            height: 235px;
+            transition: margin 0.7s, height 0.7s;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.1);
+            div.transfer-list-explanation-text{
+              display: block;
+            }
           }
         }
       }
+
+      &.transfer-list-more{
+        a {
+          height: 26px;
+          width: 26px;
+          display: block;
+          overflow: hidden;
+          text-indent: -100000px;
+          background: url(assets/drill-arrow.png) 45% center no-repeat;
+          margin: 32px auto 0;
+          border: 1px solid @lightgray;
+          border-radius: 26px;
+        }
+      }
+
+
+    } // >div
+
+  } //.trans, .yearly
+
+  .yearly {
+    .transfer-list-dates{
+      color: @approved;
+      padding-top: 40px;
     }
-
-
+    h4 {
+      color: @approved;
+    }
+    > div.transfer-list-docs{
+      > div{
+        background: #0087C0;
+        h4 {
+          background: #F8F8F8 url(assets/gov_symbol.png) center 5px no-repeat;
+          padding: 42px 0 8px;
+          color: #0087C0;
+          text-align: center;
+          margin: 0 0 10px;
+        }
+      }
+    }
   }
-}
+
+} //.change-list
 
 // table.history-table {
 // 	width: 100%;
