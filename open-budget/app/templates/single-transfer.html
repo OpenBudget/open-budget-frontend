@@ -1,7 +1,7 @@
 <% /* Template for a single transfer line */ %>
 <% var cls = diff_value < 0 ? 'decreased' : 'increased'; %>
 <% if (kind == "change" && src == "changeline") { %>
-<div class="trans">
+<div class="trans <%= value < original_baseline ? 'dec' : 'inc' %>">
     <div class="col-sm-1 transfer-list-dates">
       <span class="transfer-list-date"><%= date.getDate() %>.<%= date.getMonth()+1 %></span>
       <span class="transfer-list-year"><%= date.getFullYear() %></span>
@@ -42,8 +42,10 @@
       <span class="transfer-list-diff-approved <%= cls %>" title="<%= value %>">
         <% if (diff_value>0){ %>
           <strong>+ <%= diff_value %> ₪</strong> יותר מתקציב מעודכן <%= date.getFullYear()-1 %>
-        <% } else { %>
+        <% } else if (diff_value< 0){ %>
           <strong>- <%= diff_value*-1 %> ₪</strong>  פחות מתקציב מעודכן <%= date.getFullYear()-1 %>
+        <% } else { %>
+            <span class="transparent">…</span>
         <% } %>
       </span>
       <h4 class="transfer-list-amount-approved"><%= value %></h4>
