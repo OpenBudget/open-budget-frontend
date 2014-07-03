@@ -662,7 +662,7 @@ svg rect{
           margin-top: 10px;
           height: 75px;
           overflow: hidden;
-          transition: margin 0.3s, height 0.3s;
+          transition: padding 0.3s, margin 0.3s, height 0.3s;
 
           div.transfer-list-explanation-label{
             font-size: 12;
@@ -680,7 +680,7 @@ svg rect{
 
           div.transfer-list-explanation-text{
             display: none;
-            padding: 0 10px;
+            padding: 0 10px 30px;
           }
         }
 
@@ -692,7 +692,8 @@ svg rect{
             overflow: scroll;
             margin: -150px -10px 0;
             height: 235px;
-            transition: margin 0.7s, height 0.7s;
+            padding: 0 10px;
+            transition: padding 0.7s, margin 0.7s, height 0.7s;
             box-shadow: 0 -5px 10px rgba(0,0,0,0.1);
             div.transfer-list-explanation-text{
               display: block;
@@ -737,6 +738,10 @@ svg rect{
           color: #0087C0;
           text-align: center;
           margin: 0 0 10px;
+        }
+
+        &:hover {
+          padding: 0;
         }
       }
     }
