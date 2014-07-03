@@ -1,13 +1,15 @@
+window.num_to_str = (x) ->
+            if x > 0
+                    x = "+"+x
+            else
+                    x = ""+x
+            x=x.substring(0,4)
+            if x.indexOf(".") == 3
+                    x=x.substring(0,3)
+            "&lrm;" + x  + "&rlm;"
+
+
 window.format_number = (num,is_shekels) ->
-        num_to_str = (x) ->
-                if x > 0
-                        x = "+"+x
-                else
-                        x = ""+x
-                x=x.substring(0,4)
-                if x.indexOf(".") == 3
-                        x=x.substring(0,3)
-                "&lrm;" + x  + "&rlm;"
 
         if is_shekels == true
                 num = num / 1000
@@ -22,6 +24,11 @@ window.format_number = (num,is_shekels) ->
                 num_to_str(num / 1000000) + " מיליארד ש״ח "
         else
                 "—"
+
+window.format_full_number = (num) ->
+        if not num or num == 0
+                "—"
+        num.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
 window.color_classname = (value) ->
     if value == 0 then ""

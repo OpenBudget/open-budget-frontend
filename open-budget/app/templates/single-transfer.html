@@ -9,9 +9,13 @@
     <div class="col-sm-5 transfer-list-nums">
       <span class="transfer-list-amount-transferred <%= cls %>" title="<%= value %>">
         <% if (diff_value>0){ %>
-          <strong>+ <%= diff_value %> ₪</strong> אושרו כתוספת לכדי סך:
+          <strong>+ <%= format_full_number(diff_value) %>
+               ₪</strong>
+           אושרו כתוספת לכדי סך:
         <% } else { %>
-          <strong>- <%= diff_value*-1 %> ₪</strong> אושרו כקיצוץ לכדי סך:
+          <strong>- <%= -format_full_number(diff_value) %>
+               ₪</strong>
+           אושרו כקיצוץ לכדי סך:
         <% } %>
         </span>
       <h4 class="transfer-list-total"><%= value %> ₪</h4>
