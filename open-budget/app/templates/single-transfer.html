@@ -43,14 +43,14 @@
     <div class="col-sm-5 transfer-list-nums">
       <span class="transfer-list-diff-approved <%= cls %>" title="<%= value %>">
         <% if (diff_value>0){ %>
-          <strong>+ <%= diff_value %> ₪</strong> יותר מתקציב מעודכן <%= date.getFullYear()-1 %>
+          <strong>+ <%= format_full_number(diff_value) %> ₪</strong> יותר מתקציב מעודכן <%= date.getFullYear()-1 %>
         <% } else if (diff_value< 0){ %>
-          <strong>- <%= diff_value*-1 %> ₪</strong>  פחות מתקציב מעודכן <%= date.getFullYear()-1 %>
+          <strong>- <%= -format_full_number(diff_value) %> ₪</strong>  פחות מתקציב מעודכן <%= date.getFullYear()-1 %>
         <% } else { %>
             <span class="transparent">…</span>
         <% } %>
       </span>
-      <h4 class="transfer-list-amount-approved"><%= value %></h4>
+      <h4 class="transfer-list-amount-approved"><%= format_full_number(value) %></h4>
     </div>
     <div class="col-sm-5 transfer-list-docs">
       <div>
