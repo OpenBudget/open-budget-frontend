@@ -95,6 +95,29 @@ class BudgetItem extends Backbone.Model
                 year: null
                 net_used: null
 
+        initialize: (options) ->
+            @pageModel = options.pageModel
+
+        do_fetch: ->
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+        url: ->
+            "#{pageModel.get('baseURL')}/api/budget/#{@get('code')}/#{@get('year')}"
+
+
+class BudgetItemKids extends Backbone.Collection
+
+        model: BudgetItem
+
+        initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @year = options.year
+            @code = options.code
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+        url: ->
+            "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/kids"
+
 
 class ChangeLines extends Backbone.Collection
 
@@ -194,14 +217,27 @@ class PageModel extends Backbone.Model
                 if window.location.origin == @get('baseURL')
                     @set('dataType','json')
                 @on 'change:budgetCode', ->
+                    budgetCode = @get('budgetCode')
                     @changeLines = new ChangeLines([], pageModel: @)
                     @changeGroups = new ChangeGroups([], pageModel: @)
                     @budgetHistory = new BudgetHistory([], pageModel: @)
                     @budgetHistory.on 'reset',
                                       () =>
                                           @set('currentItem', @budgetHistory.getLast())
-                    readyItems = [@changeLines,@changeGroups,@budgetHistory]
-                    @setupReadyEvent readyItems, []
+                    readyCollections = [@changeLines,@changeGroups,@budgetHistory]
+                    readyModels = []
+                    @breadcrumbs = []
+                    for i in [1...(budgetCode.length/2)]
+                        main = new BudgetItem(year: @get('year'), code: budgetCode.slice(0,(i+1)*2), pageModel: @)
+                        main.do_fetch()
+                        kids = new BudgetItemKids([], year: @get('year'), code: budgetCode.slice(0,i*2), pageModel: @)
+                        @breadcrumbs.push
+                            main: main
+                            kids: kids
+                            last: i == budgetCode.length/2-1
+                        readyModels.push(main)
+                        readyCollections.push(kids)
+                    @setupReadyEvent readyCollections, readyModels
                 @on 'change:changeGroupId', ->
                     @changeGroup = new ChangeGroup(pageModel: @)
                     @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))

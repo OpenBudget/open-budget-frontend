@@ -12,6 +12,7 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/spinner.css">
         <!-- endbuild -->
 
         <!-- build:js scripts/vendor/modernizr.js -->
@@ -91,7 +92,7 @@
                     </div>
                 </header>
 
-                <ol class="breadcrumb">
+                <ol id="budgetBreadcrumbs" class="breadcrumb">
                 <!-- <ul class="nav nav-tabs" role="tablist"> -->
                   <li class="dropdown">
                     <a class="dropdown-toggle" href="#">
@@ -127,7 +128,7 @@
                 <!-- </ul> -->
                 </ol>
 
-                <section id="brief">
+                <section class="brief spinner-container">
                   <p>&lt;פה יופיע סיכום אוטומטי של הסעיף המשלב מידע הסטורי ועדכני&gt;</p>
                     <!-- <p>ב-4 חודשים מאז אישור <strong>תקציב 2013</strong>, הוגדל התקציב מ-<strong class="approved">1,298,000 ₪</strong> ל-<strong class="increased">5,555,440 ₪</strong><br
 הועברו <strong class="increased">4,257,440+ ₪</strong> ב-8 העברות שונות, שינוי של <strong class="increased">428%</strong> מהתקציב המקורי<br>
@@ -161,7 +162,7 @@
                     </div>
                 </header>
 
-                <section id="brief">
+                <section class="brief spinner-container">
                   <p>&lt;פה יופיע סיכום אוטומטי של הסעיף המשלב מידע הסטורי ועדכני&gt;</p>
                     <!-- <p>ב-4 חודשים מאז אישור <strong>תקציב 2013</strong>, הוגדל התקציב מ-<strong class="approved">1,298,000 ₪</strong> ל-<strong class="increased">5,555,440 ₪</strong><br
             הועברו <strong class="increased">4,257,440+ ₪</strong> ב-8 העברות שונות, שינוי של <strong class="increased">428%</strong> מהתקציב המקורי<br>
@@ -257,6 +258,7 @@
         <!-- build:js scripts/main.js -->
         <script src="scripts/templates.js"></script>
         <script src="scripts/models.js"></script>
+        <script src="scripts/spinner.js"></script>
         <script src="scripts/combined_history.js"></script>
         <script src="scripts/history_widget.js"></script>
         <script src="scripts/indepth_widget.js"></script>
@@ -264,6 +266,7 @@
         <script src="scripts/detailed_history.js"></script>
         <script src="scripts/single_changegroup.js"></script>
         <script src="scripts/analysis_header.js"></script>
+        <script src="scripts/budget_breadcrumbs.js"></script>
         <script src="scripts/subscribe.js"></script>
         <script src="scripts/hello.js"></script>
         <!-- endbuild -->
