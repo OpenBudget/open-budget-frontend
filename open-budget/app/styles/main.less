@@ -35,6 +35,13 @@ body {
     //padding-top: 20px;
     padding-bottom: 20px;
     background: @background;
+
+    &.kind-cutbacks {
+        background-color: @decreased;
+    }
+    &.kind-enlargement {
+        background-color: @increased;
+    }
 }
 
 body, h1, h2, h3, h4, h5, h6 {
@@ -950,8 +957,7 @@ svg rect{
 
 #change-group-article {
   width: 100%;
-  &.increased {background-color: @increased;}
-  &.decreased {background-color: @decreased;}
+  background-color: inherit;
   padding: 30px 0;
 
   #changegroup-status{

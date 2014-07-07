@@ -212,6 +212,7 @@ class PageModel extends Backbone.Model
                 currentItem: null
                 dataType: "jsonp"
                 ready: false
+                kinds: []
 
         initialize: ->
                 if window.location.origin == @get('baseURL')
@@ -249,6 +250,15 @@ class PageModel extends Backbone.Model
                     @setupReadyEvent [], readyItems
                     @changeGroup.doFetch()
                     @changeGroupExplanation.doFetch()
+                    @changeGroup.on 'change:title_template', =>
+                        title_template = @changeGroup.get('title_template')
+                        title_template = title_template.split('-')
+                        for part in title_template
+                            @addKind(part)
+
+                @on 'change:kinds', =>
+                    for kind in @get('kinds')
+                        $('body').toggleClass("kind-#{kind}",true)
 
         setupReadyEvent: (collections,models) ->
                 @readyCount = collections.length + models.length
@@ -266,6 +276,11 @@ class PageModel extends Backbone.Model
             if @readyCount == 0
                 @set('ready',true)
                 @trigger('ready')
+
+        addKind: (kind) ->
+            kinds = _.clone(@get('kinds'))
+            kinds.push(kind)
+            @set('kinds',kinds)
 
 window.models =
         ChangeLine: ChangeLine
@@ -295,5 +310,6 @@ $( ->
             window.location.reload()
         $("article.single-page-article").css("display","none")
         pageModel.article.css("display","inherit")
+        pageModel.addKind(kind)
 
 )
