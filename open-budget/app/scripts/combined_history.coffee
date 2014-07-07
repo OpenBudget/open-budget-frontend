@@ -73,6 +73,9 @@ class CombinedHistory extends Backbone.Collection
                                 @minTime = time
                         if @maxTime == null or @maxTime < time + width
                                 @maxTime = time + width
+                for model in @models
+                    model.set('max_value',@maxValue)
+                    model.set('min_value',@minValue)
                 @reset(@models)
 
         processBudgetHistory: (models) ->
