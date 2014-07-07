@@ -946,6 +946,73 @@ svg rect{
   margin: 0;
 }
 
+/* Single Changegroup */
+
+#change-group-article {
+  width: 100%;
+  &.increased {background-color: @increased;}
+  &.decreased {background-color: @decreased;}
+  padding: 30px 0;
+
+  #changegroup-status{
+
+    &.approved {
+      text-align: center;
+    }
+    &.alert {
+      margin-bottom: 20px;
+      padding: 5px;
+      span {
+        top: 3px;
+      }
+    }
+  }
+
+  #single-changegroup{
+    max-width: 600px;
+    background-color: white;
+    padding: 30px 20px;
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      border-bottom: none;
+      &.increased{
+        color: @increased;
+      }
+      &.decreased{
+        color: @decreased;
+      }
+    }
+
+    #changegroup-request{
+      background: #f8f7f0 url(assets/gov_symbol-fax.png) no-repeat 10px 10px;
+      border: 1px solid #C7C7CC;
+      margin: 0 -30px;
+      color: #131973;
+
+      h4, h3, p{
+        margin: auto 30px;
+      }
+
+      h4 {
+        text-align: center;
+        color: @darkgray;
+        font-size: 15px;
+        margin: 50px auto 15px;
+      }
+
+      &:after{
+        content: "";
+        background-image: url('assets/paper-edge.png');
+        display: block;
+        margin-top: 30px;
+        border-top: 0;
+        height: 52px;
+      }
+    }
+  }
+}
+
 /* My stuff */
 
 .item-title {
