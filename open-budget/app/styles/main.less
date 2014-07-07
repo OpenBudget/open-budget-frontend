@@ -177,6 +177,12 @@ strong.approved {
 /////// HEADER ///////////
 
 header {
+  &.affix{
+    width: 100%;
+    right: 0;
+    top:0;
+    z-index: 1000000;
+  }
 
   .navbar-left{
     margin-left: -10px;
@@ -200,7 +206,7 @@ header {
 
 #search-form{
   // position: relative;
-  margin: 0 auto;
+  margin: 70px auto 0;
   max-width: 600px;
   input{
     border-radius: 0 20px 20px 0;
@@ -227,6 +233,14 @@ article {
   header {
 
     position: relative;
+
+    &.affix{
+      top: 50px;
+      height: 40px;
+      h1 {padding: 10px;font-size:18px;}
+      .nav>li>a{padding:10px 15px 9px;font-size:15px;}
+      #issue-num{font-size:20px;}
+    }
 
     h1 {
       margin: 0 0 0 15px;
