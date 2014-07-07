@@ -227,16 +227,20 @@ class PageModel extends Backbone.Model
                     readyCollections = [@changeLines,@changeGroups,@budgetHistory]
                     readyModels = []
                     @breadcrumbs = []
-                    for i in [1...(budgetCode.length/2)]
-                        main = new BudgetItem(year: @get('year'), code: budgetCode.slice(0,(i+1)*2), pageModel: @)
-                        main.do_fetch()
-                        kids = new BudgetItemKids([], year: @get('year'), code: budgetCode.slice(0,i*2), pageModel: @)
-                        @breadcrumbs.push
-                            main: main
-                            kids: kids
-                            last: i == budgetCode.length/2-1
-                        readyModels.push(main)
-                        readyCollections.push(kids)
+                    for i in [1..(budgetCode.length/2)]
+                        main = null
+                        kids = null
+
+                        if i < 5
+                            main = new BudgetItem(year: @get('year'), code: budgetCode.slice(0,(i+1)*2), pageModel: @)
+                            main.do_fetch()
+                            kids = new BudgetItemKids([], year: @get('year'), code: budgetCode.slice(0,i*2), pageModel: @)
+                            readyModels.push(main)
+                            readyCollections.push(kids)
+                            @breadcrumbs.push
+                                main: main
+                                kids: kids
+                                last: i == budgetCode.length/2
                     @setupReadyEvent readyCollections, readyModels
                 @on 'change:changeGroupId', ->
                     @changeGroup = new ChangeGroup(pageModel: @)
