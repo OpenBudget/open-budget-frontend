@@ -1,22 +1,42 @@
-<h4>כותרת</h4>
+<!-- Transfer Date -->
+<% if ( pending ) { %>
+  <div id="changegroup-status" class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign"></span> בקשה זו טרם אושרה. היא הוגשה לועדת הכספים
+<% } else { %>
+  <div id="changegroup-status" class="approved">
+    בקשה זו אושרה
+<% } %>
+    ב-
+<%= date %>
+</div>
+
 <!-- Analyzed Title -->
 <% if ( title_template === "cutbacks-expense" ) { %>
+  <h1 class="decreased">
     הפחתה של <%= format_number( title_value ) %> בתקציב <%= titles[0] %>
 <% } else if ( title_template === "enlargement-expense" ) { %>
+  <h1 class="increased">
     הגדלה של <%= format_number( title_value ) %> בתקציב <%= titles[0] %>
 <% } else if ( title_template === "cutbacks-commitment" ) { %>
+  <h1 class="decreased">
     הפחתה של <%= format_number( title_value ) %> בהרשאה להתחייב של <%= titles[0] %>
 <% } else if ( title_template === "enlargement-commitment" ) { %>
+  <h1 class="increased">
     הגדלה של <%= format_number( title_value ) %> בהרשאה להתחייב של <%= titles[0] %>
 <% } else if ( title_template === "cutbacks-personnel" ) { %>
+  <h1 class="decreased">
     הפחתה של <%= title_value %> בתקני כח האדם של <%= titles[0] %>
 <% } else if ( title_template === "enlargement-personnel" ) { %>
+  <h1 class="increased">
     הגדלה של <%= title_value %> בתקני כח האדם של <%= titles[0] %>
 <% } else if ( title_template === "internal-change" ) { %>
+  <h1>
     שינוי פנימי של <%= title_value %> בתקציב <%= titles[0] %>
 <% } else if ( title_template === "transfer-expenses" ) { %>
+  <h1>
     העברה של <%= format_number( title_value ) %> מתקציב <%= titles[0].join(", ") %> לתקציב <%= titles[1].join(", ") %>
 <% } %>
+</h1>
 
 <!-- Original Titles -->
 <ul>
@@ -26,18 +46,12 @@
         </li>
     <% } %>
 </ul>
+<div id="changegroup-request">
+  <h4>- דברי הסבר -</h4>
+  <h3>הנדון: _____</h3>
 
-<!-- Transfer Date -->
-<% if ( pending ) { %>
-    הוגשה לוועדה
-<% } else { %>
-    אושרה
-<% } %>
-    ב-
-<%= date %>
-<h4>דברי הסבר</h4>
-
-<p><%= explanation.replace(/\n/g,'<br/>') %></p>
+  <p><%= explanation.replace(/\n/g,'<br/>') %></p>
+</div>
 
 <h4>סעיפים משתתפים</h4>
 <!-- Transfer Details -->
