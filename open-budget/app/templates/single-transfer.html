@@ -33,7 +33,7 @@
     </div>
     <% var MAX_WIDTH = 90; var MIN_WIDTH = 10; %>
     <% var width_percent = value/max_value*(MAX_WIDTH-MIN_WIDTH)+MIN_WIDTH; %>
-    <div style="height:10px;background-color:#123;width:<%= width_percent %>%;border:1px,solid,black;top:76px;position:relative;">&nbsp</div>
+    <div class="transfer-list-bar <%= cls %>" style="width:<%= width_percent %>%">&nbsp</div>
 </div>
 <% } %>
 
@@ -69,5 +69,6 @@
     <div class="col-sd-1 transfer-list-more">
       <!-- <a href="#transfer/<%= source.get('group_id') %>/<%= source.get('year') %>">more</a> -->
     </div>
+    <div class="transfer-list-bar" style="width:<%= width_percent %>%">&nbsp</div>
 </div>
 <% } %>
