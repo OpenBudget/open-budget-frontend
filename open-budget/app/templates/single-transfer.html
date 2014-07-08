@@ -1,5 +1,7 @@
 <% /* Template for a single transfer line */ %>
 <% var cls = diff_value < 0 ? 'decreased' : 'increased'; %>
+<% var MAX_WIDTH = 90; var MIN_WIDTH = 10; %>
+<% var width_percent = value/max_value*(MAX_WIDTH-MIN_WIDTH)+MIN_WIDTH; %>
 <% if (kind == "change" && src == "changeline") { %>
 <div class="trans <%= value < original_baseline ? 'dec' : 'inc' %>">
     <div class="col-sm-1 transfer-list-dates">
@@ -31,8 +33,6 @@
     <div class="col-sm-1 transfer-list-more">
       <a href=" <%= linkToTransfer(source.get('group_id'),source.get('year')) %>">></a>
     </div>
-    <% var MAX_WIDTH = 90; var MIN_WIDTH = 10; %>
-    <% var width_percent = value/max_value*(MAX_WIDTH-MIN_WIDTH)+MIN_WIDTH; %>
     <div class="transfer-list-bar <%= cls %>" style="width:<%= width_percent %>%">&nbsp</div>
 </div>
 <% } %>

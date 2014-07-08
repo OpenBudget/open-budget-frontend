@@ -40,15 +40,15 @@
 
 <!-- Original Titles -->
 <ul>
-    <% for ( var _req_title in req_titles ) { var req_title = req_titles[_req_title]; %>
-        <li>
-            <%= req_title %>
-        </li>
-    <% } %>
+    <li>
+        בקשות: <%= transfer_ids.join(", ") %>
+    </li>
 </ul>
 <div id="changegroup-request">
   <h4>- דברי הסבר -</h4>
-  <h3>הנדון: _____</h3>
+  <h3>הנדון:
+ <%= _.uniq(req_titles).join(" / ") %>
+  </h3>
 
   <p><%= explanation.replace(/\n/g,'<br/>') %></p>
 </div>
