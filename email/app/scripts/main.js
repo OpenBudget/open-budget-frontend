@@ -9,6 +9,7 @@ get_item = function(item_index,rss_item_ids) {
         item_index += 1;
         if (item_index < rss_item_ids.length) {
             get_item(item_index,rss_item_ids);
+            $("#percent").html(Math.floor(100*item_index/rss_item_ids.length)+"%");
         } else {
             do_render(rss_items);
         }
@@ -30,6 +31,7 @@ do_render = function(items) {
                 rendered_items.push({
                     description: rendered_item,
                     title: item.title,
+                    link: "http://the.open-budget.org.il/stg/#transfer/"+item['group_id']+"/"+item['group'][0][0],
                     index: parseInt(_item)+1
                 });
             }
