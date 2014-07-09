@@ -176,13 +176,11 @@ strong.approved {
 
 /////// HEADER ///////////
 
-header {
-  &.affix{
-    width: 100%;
-    right: 0;
-    top:0;
-    z-index: 1000000;
-  }
+.site-nav {
+  width: 100%;
+  right: 0;
+  top:0;
+  z-index: 1000000;
 
   .navbar-left{
     margin-left: -10px;
@@ -233,13 +231,17 @@ article {
   header {
 
     position: relative;
-
+    top: 0;
     &.affix{
       top: 50px;
       height: 40px;
+      z-index: 900000;
+      width: 100%;
+      right: 0;
       h1 {padding: 10px;font-size:18px;}
       .nav>li>a{padding:10px 15px 9px;font-size:15px;}
       #issue-num{font-size:20px;}
+      transition: top 0.3s;
     }
 
     h1 {
