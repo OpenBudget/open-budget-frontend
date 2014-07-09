@@ -137,6 +137,7 @@ class ChangeGroup extends Backbone.Model
         defaults:
                 req_titles: []
                 transfer_ids: []
+                committee_ids: []
                 budget_codes: []
                 prefixes: []
                 year: null

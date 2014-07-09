@@ -248,7 +248,7 @@ class IndepthWidget extends Backbone.View
                         w)
 
         setValueRange: () ->
-                @valueRange = @model.maxValue - @model.minValue
+                @valueRange = @model.maxValue #- @model.minValue
                 scale = 1
                 valueRange = @valueRange
                 RATIO = (TICKS-1) / TICKS
@@ -258,13 +258,14 @@ class IndepthWidget extends Backbone.View
                 if valueRange < 0.25*RATIO
                         @tickValue = 0.025*scale
                         @labelValue = 0.1*scale
-                if valueRange < 0.5*RATIO
+                else if valueRange < 0.5*RATIO
                         @tickValue = 0.05*scale
                         @labelValue = 0.2*scale
-                if valueRange <=1*RATIO
+                else if valueRange <=1*RATIO
                         @tickValue = 0.1*scale
                         @labelValue = 0.2*scale
-                @minValue = Math.floor(@model.minValue / @tickValue) * @tickValue
+                #console.log "SVR",@valueRange,valueRange,scale,@tickValue,@labelValue
+                @minValue = 0 # Math.floor(@model.minValue / @tickValue) * @tickValue
                 @maxValue = @minValue + TICKS * @tickValue
 
 

@@ -41,6 +41,9 @@
 <!-- Original Titles -->
 <ul>
     <li>
+        מספרי פניה: <%= committee_ids.join(", ") %>
+    </li>
+    <li>
         בקשות: <%= transfer_ids.join(", ") %>
     </li>
 </ul>
@@ -64,7 +67,7 @@
         <ul>
     <% } %>
     <li>
-        <%= change.budget_code.slice(2) %> - <%= change.budget_title %>
+        <a href="<%= linkToBudget(change.budget_code,year)%>"><%= change.budget_code.slice(2) %> - <%= change.budget_title %></a>
         <ul>
             <li>שינוי בתקציב הוצאות: <%= format_number( change.expense_change ) %></li>
             <li>שינוי בהרשאה להתחייב: <%= format_number( change.commitment_change ) %></li>
