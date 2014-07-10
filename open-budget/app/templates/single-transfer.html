@@ -4,11 +4,12 @@
 <% var width_percent = value/max_value*(MAX_WIDTH-MIN_WIDTH)+MIN_WIDTH; %>
 <% if (kind == "change" && src == "changeline") { %>
 <div class="trans <%= value < original_baseline ? 'dec' : 'inc' %>">
-    <div class="col-sm-1 transfer-list-dates">
+  <div class="row">
+    <div class="col-xs-2 col-sm-1 transfer-list-dates">
       <span class="transfer-list-date"><%= date.getDate() %>.<%= date.getMonth()+1 %></span>
       <span class="transfer-list-year"><%= date.getFullYear() %></span>
     </div>
-    <div class="col-sm-5 transfer-list-nums">
+    <div class="col-xs-8 col-sm-5 transfer-list-nums">
       <span class="transfer-list-amount-transferred <%= cls %>" title="<%= value %>">
         <% if (diff_value>0){ %>
           <strong>+ <%= format_full_number(diff_value*1000) %> ₪</strong>
@@ -30,20 +31,22 @@
         <div class="transfer-list-explanation-text"></div>
       </div>
     </div>
-    <div class="col-sm-1 transfer-list-more">
+    <div class="col-xs-2 col-sm-1 transfer-list-more">
       <a href=" <%= linkToTransfer(source.get('group_id'),source.get('year')) %>">></a>
     </div>
     <div class="transfer-list-bar <%= cls %>" style="width:<%= width_percent %>%">&nbsp</div>
+  </div>
 </div>
 <% } %>
 
 <% /* Template for approved budget line */ %>
 <% if (kind == "approved" && src == "budgetline") { %>
 <div class="yearly">
-    <div class="col-sm-1 transfer-list-dates">
+  <div class="row">
+    <div class="col-xs-2 col-sm-1 transfer-list-dates">
       <span class="transfer-list-year"><%= date.getFullYear() %></span>
     </div>
-    <div class="col-sm-5 transfer-list-nums">
+    <div class="col-xs-10 col-sm-5 transfer-list-nums">
       <span class="transfer-list-diff-approved <%= cls %>" title="<%= value %>">
         <% if (diff_value>0){ %>
           <strong>+ <%= format_full_number(diff_value*1000) %> ₪</strong>
@@ -66,9 +69,10 @@
         <h4>תקציב המדינה <%= date.getFullYear() %></h4>
       </div>
     </div>
-    <div class="col-sd-1 transfer-list-more">
+    <div class="col-xs-0 col-sd-1 transfer-list-more">
       <!-- <a href="#transfer/<%= source.get('group_id') %>/<%= source.get('year') %>">more</a> -->
     </div>
     <div class="transfer-list-bar" style="width:<%= width_percent %>%">&nbsp</div>
+  </div>
 </div>
 <% } %>
