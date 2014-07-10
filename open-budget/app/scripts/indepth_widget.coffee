@@ -27,8 +27,8 @@ class IndepthWidget extends Backbone.View
                                 newX = that.baseTimeScale.invert(x)
                                 dx = d3.event.dx
                                 dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
-                                selection[0] += dx
-                                selection[1] += dx
+                                selection[0] -= dx
+                                selection[1] -= dx
                                 that.pageModel.set('selection', selection)
                             )
 
