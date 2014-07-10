@@ -18,6 +18,21 @@ class IndepthWidget extends Backbone.View
                 @chart = @svg.append('g').attr('class','chart')
                 @bars = @svg.append('g').attr('class','bar')
 
+                that = @
+                @drag = d3.behavior.drag()
+                        .on("drag", (d) ->
+                                selection_orig = that.pageModel.get('selection')
+                                selection = selection_orig[0..1]
+                                x = d3.event.x
+                                newX = that.baseTimeScale.invert(x)
+                                dx = d3.event.dx
+                                dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
+                                selection[0] += dx
+                                selection[1] += dx
+                                that.pageModel.set('selection', selection)
+                            )
+
+
         render: ->
                 @maxWidth = $(@el).width()
                 @maxHeight = $(@el).height()
@@ -55,6 +70,7 @@ class IndepthWidget extends Backbone.View
                                 .attr("class", "background")
                                 .style("fill", "url(#backgroundPattern)")
                                 .style("stroke", null)
+                                .call(@drag)
 
                 @chart.selectAll('.background').data([1])
                         .attr("x", (d) => @timeScale( @minTime ) )
