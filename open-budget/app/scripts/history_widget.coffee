@@ -116,8 +116,11 @@ class OverviewWidget extends Backbone.View
                 @valueScale = (t) =>
                         @pixelPerfecter(@baseValueScale(t))
 
-                selectionStart = @model.minTime * 0.5 + @model.maxTime * 0.5
-                selectionEnd = @model.minTime * 0.25 + @model.maxTime * 0.75
+                console.log @model.minTime, @model.maxTime
+                selectionStart = @model.maxTime - 3500 * 365 * 86400
+                if selectionStart < @model.minTime
+                    selectionStart = @model.minTime
+                selectionEnd = @model.maxTime
                 @pageModel.set('selection', [ selectionStart, selectionEnd ] )
 
                 console.log 'OverviewWidget',@maxWidth,@maxHeight
