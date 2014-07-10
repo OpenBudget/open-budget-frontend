@@ -99,79 +99,95 @@ strong.approved {
     .popover;
 }
 
-.widget-popover {
-    position: static;
-    top: auto;
-    left: auto;
-    display: inherit;
-    text-align:right;
-    direction:rtl;
 
-    .date {
-        margin-top: -35px;
-        text-align: center;
-        position: absolute;
-        width: 100%;
-        color: @darkgray;
-    }
-    h2 {
-        margin: 0;
-        padding-bottom: 0.1em;
-    }
-    &.trans-increased .widget-popover-title{ background-color: @increased }
-    &.trans-decreased .widget-popover-title{ background-color: @decreased }
-    .widget-popover-title {
-        color: @background;
-        text-align: center;
-        background: none;
-        padding: 8px 0;
-        p {
-            margin-bottom: 0em;
-        }
-    }
-    .widget-popover-content .trans-description {
-        display: none;
-        color: @gray;
-        span.increased { color: @increased}
-        span.decreased { color: @decreased}
-    }
-
-    &.bottom,&.bottom{
-      .arrow:after {
-        margin-right: -10px; //RTL fix
+.d3-tip{
+  margin-top: -45px;
+  .date {
+      // margin-top: -35px;
+      text-align: left;
+      color: @darkgray;
+      padding-left: 50%;
+      direction: ltr;
+      margin-left: -5px;
+      &:before{
+        content: "● "
       }
-    }
-}
+  }
 
+  .widget-popover {
+      position: static;
+      top: auto;
+      left: auto;
+      display: inherit;
+      text-align:center;
+      direction:rtl;
+      padding: 0 20px;
+      h2 {
+          margin: 0;
+          padding-bottom: 0.1em;
+      }
+      .widget-popover-title {
+          text-align: center;
+          background: none;
+          padding: 8px 0;
+          p {
+              margin-bottom: 0em;
+          }
+      }
+      .widget-popover-content .trans-description {
+          display: none;
+          color: @gray;
+          span.increased { color: @increased}
+          span.decreased { color: @decreased}
+      }
+
+      &.bottom{
+        margin-top: 0;
+        .arrow:after {
+          margin-right: -10px; //RTL fix
+        }
+      }
+  }
+  .trans-increased{
+    .widget-popover-title p,
+    .date:before
+      { color: @increased }
+    }
+  .trans-decreased{
+    .widget-popover-title p,
+    .date:before
+    { color: @decreased }
+  }
+}
 /* Tooltip for visualzations */
-/*.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}*/
+// .d3-tip {
+//   line-height: 1;
+//   font-weight: bold;
+//   padding: 12px;
+//   background: rgba(0, 0, 0, 0.8);
+//   color: #fff;
+//   border-radius: 2px;
+// }
 
 /* Creates a small triangle extender for the tooltip */
-/*.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}*/
+// .d3-tip:after {
+//   box-sizing: border-box;
+//   display: inline;
+//   font-size: 10px;
+//   width: 100%;
+//   line-height: 1;
+//   color: rgba(0, 0, 0, 0.8);
+//   content: "\25BC";
+//   position: absolute;
+//   text-align: center;
+// }
 
 /* Style northward tooltips differently */
-/*.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}*/
+// .d3-tip.n:after {
+//   margin: -1px 0 0 0;
+//   top: 100%;
+//   left: 0;
+// }
 
 
 /////// HEADER ///////////
