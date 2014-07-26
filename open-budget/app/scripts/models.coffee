@@ -95,6 +95,29 @@ class BudgetItem extends Backbone.Model
                 year: null
                 net_used: null
 
+        initialize: (options) ->
+            @pageModel = options.pageModel
+
+        do_fetch: ->
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+        url: ->
+            "#{pageModel.get('baseURL')}/api/budget/#{@get('code')}/#{@get('year')}"
+
+
+class BudgetItemKids extends Backbone.Collection
+
+        model: BudgetItem
+
+        initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @year = options.year
+            @code = options.code
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+        url: ->
+            "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/kids"
+
 
 class ChangeLines extends Backbone.Collection
 
@@ -114,6 +137,7 @@ class ChangeGroup extends Backbone.Model
         defaults:
                 req_titles: []
                 transfer_ids: []
+                committee_ids: []
                 budget_codes: []
                 prefixes: []
                 year: null
@@ -189,19 +213,37 @@ class PageModel extends Backbone.Model
                 currentItem: null
                 dataType: "jsonp"
                 ready: false
+                kinds: []
 
         initialize: ->
                 if window.location.origin == @get('baseURL')
                     @set('dataType','json')
                 @on 'change:budgetCode', ->
+                    budgetCode = @get('budgetCode')
                     @changeLines = new ChangeLines([], pageModel: @)
                     @changeGroups = new ChangeGroups([], pageModel: @)
                     @budgetHistory = new BudgetHistory([], pageModel: @)
                     @budgetHistory.on 'reset',
                                       () =>
                                           @set('currentItem', @budgetHistory.getLast())
-                    readyItems = [@changeLines,@changeGroups,@budgetHistory]
-                    @setupReadyEvent readyItems, []
+                    readyCollections = [@changeLines,@changeGroups,@budgetHistory]
+                    readyModels = []
+                    @breadcrumbs = []
+                    for i in [1..(budgetCode.length/2)]
+                        main = null
+                        kids = null
+
+                        if i < 5
+                            main = new BudgetItem(year: @get('year'), code: budgetCode.slice(0,(i+1)*2), pageModel: @)
+                            main.do_fetch()
+                            kids = new BudgetItemKids([], year: @get('year'), code: budgetCode.slice(0,i*2), pageModel: @)
+                            readyModels.push(main)
+                            readyCollections.push(kids)
+                            @breadcrumbs.push
+                                main: main
+                                kids: kids
+                                last: i == budgetCode.length/2
+                    @setupReadyEvent readyCollections, readyModels
                 @on 'change:changeGroupId', ->
                     @changeGroup = new ChangeGroup(pageModel: @)
                     @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))
@@ -209,6 +251,15 @@ class PageModel extends Backbone.Model
                     @setupReadyEvent [], readyItems
                     @changeGroup.doFetch()
                     @changeGroupExplanation.doFetch()
+                    @changeGroup.on 'change:title_template', =>
+                        title_template = @changeGroup.get('title_template')
+                        title_template = title_template.split('-')
+                        for part in title_template
+                            @addKind(part)
+
+                @on 'change:kinds', =>
+                    for kind in @get('kinds')
+                        $('body').toggleClass("kind-#{kind}",true)
 
         setupReadyEvent: (collections,models) ->
                 @readyCount = collections.length + models.length
@@ -226,6 +277,11 @@ class PageModel extends Backbone.Model
             if @readyCount == 0
                 @set('ready',true)
                 @trigger('ready')
+
+        addKind: (kind) ->
+            kinds = _.clone(@get('kinds'))
+            kinds.push(kind)
+            @set('kinds',kinds)
 
 window.models =
         ChangeLine: ChangeLine
@@ -255,5 +311,6 @@ $( ->
             window.location.reload()
         $("article.single-page-article").css("display","none")
         pageModel.article.css("display","inherit")
+        pageModel.addKind(kind)
 
 )

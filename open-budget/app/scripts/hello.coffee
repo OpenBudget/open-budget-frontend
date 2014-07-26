@@ -36,6 +36,9 @@ window.color_classname = (value) ->
     if value == 0 then ""
     return if value > 0 then "increased" else "decreased"
 
+window.linkToBudget = (code,year) -> "#budget/#{code}/#{year}"
+window.linkToTransfer = (code,year) -> "#transfer/#{code}/#{year}"
+
 get_program = (obj,datum,name) ->
         console.log "selected:", obj, datum, name
         console.log "selected2:", $("#search-item").val()

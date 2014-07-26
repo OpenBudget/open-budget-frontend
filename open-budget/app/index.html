@@ -12,6 +12,7 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/spinner.css">
         <!-- endbuild -->
 
         <!-- build:js scripts/vendor/modernizr.js -->
@@ -25,7 +26,7 @@
         <![endif]-->
 
 
-          <header class="site-nav">
+          <header class="site-nav affix">
             <nav class="navbar navbar-default" role="navigation">
               <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -79,7 +80,7 @@
 
             <article id="budget-item-article" class="six-fig increased single-page-article">
 
-                <header>
+                <header data-spy="affix" data-offset-top="140">
                     <h1 class="pull-right"></h1>
                     <nav id="issue-nav" class="nav nav-tabs">
                         <li><a href="#" class="active">תקציר</a></li>
@@ -91,43 +92,10 @@
                     </div>
                 </header>
 
-                <ol class="breadcrumb">
-                <!-- <ul class="nav nav-tabs" role="tablist"> -->
-                  <li class="dropdown">
-                    <a class="dropdown-toggle" href="#">
-                      #20 - משרד החינוך <span class="caret">
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">#10 - שם משרד</a></li>
-                      <li><a href="#">#30 - שם משרד</a></li>
-                      <li><a href="#">#40 - שם משרד</a></li>
-                      <li><a href="#">#50 - שם משרד</a></li>
-                    </ul>
-                  </li>
-                  <li class="dropdown">
-                    <a class="dropdown-toggle" href="#">
-                      #2038 - העברות למוסדות תורניים <span class="caret">
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">#2001 - שם תכנית</a></li>
-                      <li><a href="#">#2002 - שם תכנית</a></li>
-                      <li><a href="#">#2003 - שם תכנית</a></li>
-                      <li><a href="#">#2004 - שם תכנית</a></li>
-                    </ul>
-                  </li>
-                  <li class="dropdown active">
-                    #203804 - תמיכה בכוללים <span class="caret">
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">#203801 - שם סעיף</a></li>
-                      <li><a href="#">#203802 - שם סעיף</a></li>
-                      <li><a href="#">#203803 - שם סעיף</a></li>
-                      <li><a href="#">#203805 - שם סעיף</a></li>
-                    </ul>
-                  </li>
-                <!-- </ul> -->
+                <ol id="budgetBreadcrumbs" class="breadcrumb">
                 </ol>
 
-                <section id="brief">
+                <section class="brief spinner-container">
                   <p>&lt;פה יופיע סיכום אוטומטי של הסעיף המשלב מידע הסטורי ועדכני&gt;</p>
                     <!-- <p>ב-4 חודשים מאז אישור <strong>תקציב 2013</strong>, הוגדל התקציב מ-<strong class="approved">1,298,000 ₪</strong> ל-<strong class="increased">5,555,440 ₪</strong><br
 הועברו <strong class="increased">4,257,440+ ₪</strong> ב-8 העברות שונות, שינוי של <strong class="increased">428%</strong> מהתקציב המקורי<br>
@@ -147,34 +115,11 @@
 
             </article>
 
-            <article id="change-group-article" class="six-fig increased single-page-article">
+            <article id="change-group-article" class="single-page-article increased">
 
-                <header>
-                    <h1 class="pull-right"></h1>
-                    <nav id="issue-nav" class="nav nav-tabs">
-                        <li><a href="#" class="active">תקציר</a></li>
-                        <li><a href="#">שינויים בתקציב</a></li>
-                        <li><a href="#">לאן הולך הכסף?</a></li>
-                    </nav>
-                    <div id="issue-num">
-                        <a href="#" class="home">#</a><a href="#"></a><a href="#"></a><a href="#" class="active"></a>
-                    </div>
-                </header>
-
-                <section id="brief">
-                  <p>&lt;פה יופיע סיכום אוטומטי של הסעיף המשלב מידע הסטורי ועדכני&gt;</p>
-                    <!-- <p>ב-4 חודשים מאז אישור <strong>תקציב 2013</strong>, הוגדל התקציב מ-<strong class="approved">1,298,000 ₪</strong> ל-<strong class="increased">5,555,440 ₪</strong><br
-            הועברו <strong class="increased">4,257,440+ ₪</strong> ב-8 העברות שונות, שינוי של <strong class="increased">428%</strong> מהתקציב המקורי<br>
-            בשנים האחרונות <strong class="increased">כמעט בכל שנה גדלה ההקצאה</strong> לסעיף, בשיעור שבין <strong class="increased">120%-530%</strong><br>
-            הסעיף מתוייג: <a href="#" class="tag">#התנחלויות</a>    <a href="#" class="tag">#רשויות מקומיות</a>    <a href="#" class="tag">#סקטוריאלי</a>    #</p> -->
-                </section>
-
-
-                <section id="vis">
-                    <h2 id="vis-title">פרטי העברה</h2>
-                    <div id="single-changegroup">
-                    </div>
-                </section>
+                <!-- Transaction details -->
+                <div id="single-changegroup" class="center-block">
+                </div>
 
             </article>
 
@@ -257,6 +202,7 @@
         <!-- build:js scripts/main.js -->
         <script src="scripts/templates.js"></script>
         <script src="scripts/models.js"></script>
+        <script src="scripts/spinner.js"></script>
         <script src="scripts/combined_history.js"></script>
         <script src="scripts/history_widget.js"></script>
         <script src="scripts/indepth_widget.js"></script>
@@ -264,6 +210,7 @@
         <script src="scripts/detailed_history.js"></script>
         <script src="scripts/single_changegroup.js"></script>
         <script src="scripts/analysis_header.js"></script>
+        <script src="scripts/budget_breadcrumbs.js"></script>
         <script src="scripts/subscribe.js"></script>
         <script src="scripts/hello.js"></script>
         <!-- endbuild -->

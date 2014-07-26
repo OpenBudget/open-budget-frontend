@@ -1,0 +1,16 @@
+<li class="dropdown <%= last?'active':'' %>">
+  <% if (last) { %>
+        תחת סעיף זה
+        <span class="caret">
+  <% } else { %>
+    <a class="dropdown-toggle" href="#">
+        #<%= main.get('code').slice(2) %> - <%= main.get('title') %>
+        <span class="caret">
+    </a>
+  <% } %>
+  <ul class="dropdown-menu" role="menu">
+    <% console.log(kids); for ( var _kid in kids.models ) { var kid=kids.models[_kid];  %>
+        <li><a href="<%= linkToBudget(kid.get('code'),main.get('year')) %>">#<%= kid.get('code').slice(2) %>  - <%= kid.get('title')%></a></li>
+    <% } %>
+  </ul>
+</li>

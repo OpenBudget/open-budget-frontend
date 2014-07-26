@@ -35,6 +35,13 @@ body {
     //padding-top: 20px;
     padding-bottom: 20px;
     background: @background;
+
+    &.kind-cutbacks {
+        background-color: @decreased;
+    }
+    &.kind-enlargement {
+        background-color: @increased;
+    }
 }
 
 body, h1, h2, h3, h4, h5, h6 {
@@ -62,6 +69,10 @@ header{
 .footer {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+@media (max-width: @screen-xs-max) {
+  .container{ padding: 0}
 }
 
 /* Make the masthead heading the same height as the navigation */
@@ -92,84 +103,104 @@ strong.approved {
     .popover;
 }
 
-.widget-popover {
-    position: static;
-    top: auto;
-    left: auto;
-    display: inherit;
-    text-align:right;
-    direction:rtl;
 
-    .date {
-        margin-top: -35px;
-        text-align: center;
-        position: absolute;
-        width: 100%;
-        color: @darkgray;
-    }
-    h2 {
-        margin: 0;
-        padding-bottom: 0.1em;
-    }
-    &.trans-increased .widget-popover-title{ background-color: @increased }
-    &.trans-decreased .widget-popover-title{ background-color: @decreased }
-    .widget-popover-title {
-        color: @background;
-        text-align: center;
-        background: none;
-        padding: 8px 0;
-        p {
-            margin-bottom: 0em;
-        }
-    }
-    .widget-popover-content .trans-description {
-        display: none;
-        color: @gray;
-        span.increased { color: @increased}
-        span.decreased { color: @decreased}
-    }
-
-    &.bottom,&.bottom{
-      .arrow:after {
-        margin-right: -10px; //RTL fix
+.d3-tip{
+  margin-top: -45px;
+  .date {
+      // margin-top: -35px;
+      text-align: left;
+      color: @darkgray;
+      padding-left: 50%;
+      direction: ltr;
+      margin-left: -5px;
+      &:before{
+        content: "● "
       }
-    }
-}
+  }
 
+  .widget-popover {
+      position: static;
+      top: auto;
+      left: auto;
+      display: inherit;
+      text-align:center;
+      direction:rtl;
+      padding: 0 20px;
+      h2 {
+          margin: 0;
+          padding-bottom: 0.1em;
+      }
+      .widget-popover-title {
+          text-align: center;
+          background: none;
+          padding: 8px 0;
+          p {
+              margin-bottom: 0em;
+          }
+      }
+      .widget-popover-content .trans-description {
+          display: none;
+          color: @gray;
+          span.increased { color: @increased}
+          span.decreased { color: @decreased}
+      }
+
+      &.bottom{
+        margin-top: 0;
+        .arrow:after {
+          margin-right: -10px; //RTL fix
+        }
+      }
+  }
+  .trans-increased{
+    .widget-popover-title p,
+    .date:before
+      { color: @increased }
+    }
+  .trans-decreased{
+    .widget-popover-title p,
+    .date:before
+    { color: @decreased }
+  }
+}
 /* Tooltip for visualzations */
-/*.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}*/
+// .d3-tip {
+//   line-height: 1;
+//   font-weight: bold;
+//   padding: 12px;
+//   background: rgba(0, 0, 0, 0.8);
+//   color: #fff;
+//   border-radius: 2px;
+// }
 
 /* Creates a small triangle extender for the tooltip */
-/*.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}*/
+// .d3-tip:after {
+//   box-sizing: border-box;
+//   display: inline;
+//   font-size: 10px;
+//   width: 100%;
+//   line-height: 1;
+//   color: rgba(0, 0, 0, 0.8);
+//   content: "\25BC";
+//   position: absolute;
+//   text-align: center;
+// }
 
 /* Style northward tooltips differently */
-/*.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}*/
+// .d3-tip.n:after {
+//   margin: -1px 0 0 0;
+//   top: 100%;
+//   left: 0;
+// }
 
 
 /////// HEADER ///////////
 
-header {
+.site-nav {
+  width: 100%;
+  right: 0;
+  top:0;
+  z-index: 1000000;
 
   .navbar-left{
     margin-left: -10px;
@@ -193,7 +224,7 @@ header {
 
 #search-form{
   // position: relative;
-  margin: 0 auto;
+  margin: 70px auto 0;
   max-width: 600px;
   input{
     border-radius: 0 20px 20px 0;
@@ -215,11 +246,23 @@ article {
 
   background: #FFFFFF;
   //.box-shadow(-4px 2px 5px 0px rgba(0,0,0,0.10));
-  margin: 20px;
+  margin: 20px 0;
 
   header {
 
     position: relative;
+    top: 0;
+    &.affix{
+      top: 50px;
+      height: 40px;
+      z-index: 900000;
+      width: 100%;
+      right: 0;
+      h1 {padding: 10px;font-size:18px;}
+      .nav>li>a{padding:10px 15px 9px;font-size:15px;}
+      #issue-num{font-size:20px;}
+      transition: top 0.3s;
+    }
 
     h1 {
       margin: 0 0 0 15px;
@@ -297,7 +340,7 @@ article {
     }
   }
 
-  #brief {
+  .brief {
     padding: 40px;
     font-size: 24px;
   }
@@ -611,144 +654,168 @@ svg rect{
   .trans,
   .yearly {
     border-bottom: 1px solid @approved;
-    height: 86px;
+    @media (min-width: @screen-md-min) {height: 86px;}
 
     &.inc {border-bottom-color: @increased;}
     &.dec {border-bottom-color: @decreased;}
 
-    > div {
-      font-size: 12px;
+    >.row {
+      > div {
+        font-size: 12px;
 
-      &.transfer-list-dates{
-        padding-top: 30px;
-        text-align: center;
-        line-height: 12px;
-        // font-weight: 700;
-        span:first-child{
-          display: block;
-          font-weight: 700;
-        }
-      }
-
-      &.transfer-list-nums{
-        padding-top: 16px;
-        line-height: 1.8em;
-        span{
-          display: block;
-          line-height: 1.5em;
-
-          &.transfer-list-amount-transferred,
-          &.transfer-list-diff-approved {
-            //font-weight: 700;
-            margin-right: -10px;
-            line-height: 1em;
-            &.increased{
-              color: @increased
-            }
-
-            &.decreased{
-              color: @decreased
-            }
-            .transparent{
-              color: transparent;
-            }
-          }
-        }
-        h4 {
-          font-size: 26px;
-          margin: 0;
-        }
-      }
-
-      &.transfer-list-docs {
-        >div {
-          background: #F8F7F0 url(assets/gov_symbol-fax.png) no-repeat 10px 10px;
-          border: 1px solid #C7C7CC;
-          border-bottom: 0;
-          margin-top: 10px;
-          height: 75px;
-          overflow: hidden;
-          transition: padding 0.3s, margin 0.3s, height 0.3s;
-
-          div.transfer-list-explanation-label{
-            font-size: 12;
-            color: #9B9B9B;
-            margin: 7px 0 3px;
-            text-align: center;
-          }
-
-          h4{
-            margin: 14px 10px 0;
-            font-size: 15px;
-            color: #131973;
+        &.transfer-list-dates{
+          padding-top: 30px;
+          text-align: center;
+          line-height: 12px;
+          // font-weight: 700;
+          span:first-child{
+            display: block;
             font-weight: 700;
           }
+        }
 
-          div.transfer-list-explanation-text{
-            display: none;
-            padding: 0 10px 30px;
+        &.transfer-list-nums{
+          padding-top: 16px;
+          padding-bottom: 10px;
+          line-height: 1.8em;
+          span{
+            display: block;
+            line-height: 1.5em;
+
+            &.transfer-list-amount-transferred,
+            &.transfer-list-diff-approved {
+              //font-weight: 700;
+              text-indent: -10px;
+              line-height: 1em;
+              &.increased{
+                color: @increased
+              }
+
+              &.decreased{
+                color: @decreased
+              }
+              .transparent{
+                color: transparent;
+              }
+            }
+          }
+          h4 {
+            font-size: 26px;
+            margin: 0;
+            @media (max-width: @screen-xs-max) {font-size: 20px;}
           }
         }
 
-        &:hover{
-          z-index: 1000;
-          position: relative;
-          overflow: visible;
+        &.transfer-list-docs {
+          @media (max-width: @screen-xs-max) {display: none;}
           >div {
-            overflow: scroll;
-            margin: -150px -10px 0;
-            height: 235px;
-            padding: 0 10px;
-            transition: padding 0.7s, margin 0.7s, height 0.7s;
-            box-shadow: 0 -5px 10px rgba(0,0,0,0.1);
+            background: #F8F7F0 url(assets/gov_symbol-fax.png) no-repeat 10px 10px;
+            border: 1px solid #C7C7CC;
+            border-bottom: 0;
+            margin-top: 10px;
+            height: 75px;
+            overflow: hidden;
+            transition: padding 0.3s, margin 0.3s, height 0.3s;
+
+            div.transfer-list-explanation-label{
+              font-size: 12;
+              color: #9B9B9B;
+              margin: 7px 0 3px;
+              text-align: center;
+            }
+
+            h4{
+              margin: 14px 10px 0;
+              font-size: 15px;
+              color: #131973;
+              font-weight: 700;
+            }
+
             div.transfer-list-explanation-text{
-              display: block;
+              display: none;
+              padding: 0 10px 30px;
+            }
+          }
+
+          &:hover{
+            z-index: 1000;
+            position: relative;
+            overflow: visible;
+            >div {
+              overflow: scroll;
+              margin: -150px -10px 0;
+              height: 235px;
+              padding: 0 10px;
+              transition: padding 0.7s, margin 0.7s, height 0.7s;
+              box-shadow: 0 -5px 10px rgba(0,0,0,0.1);
+              div.transfer-list-explanation-text{
+                display: block;
+              }
             }
           }
         }
-      }
 
-      &.transfer-list-more{
-        a {
-          height: 26px;
-          width: 26px;
-          display: block;
-          overflow: hidden;
-          text-indent: -100000px;
-          background: url(assets/drill-arrow.png) 45% center no-repeat;
-          margin: 32px auto 0;
-          border: 1px solid @lightgray;
-          border-radius: 26px;
+        &.transfer-list-more{
+          a {
+            height: 26px;
+            width: 26px;
+            display: block;
+            overflow: hidden;
+            text-indent: -100000px;
+            background: url(assets/drill-arrow.png) 45% center no-repeat;
+            margin: 32px auto 0;
+            border: 1px solid @lightgray;
+            border-radius: 26px;
+          }
         }
-      }
 
+        &.transfer-list-bar{
+          background-color: @gray;
+          height:4px;
+          bottom: 0;
+          right: 0;
+          position: absolute;
+          &.increased { background-color: @increased }
+          &.decreased { background-color: @decreased }
+        }
 
-    } // >div
+      } // >div
+
+    } // .row
 
   } //.trans, .yearly
 
   .yearly {
-    .transfer-list-dates{
-      color: @approved;
-      padding-top: 40px;
-    }
-    h4 {
-      color: @approved;
-    }
-    > div.transfer-list-docs{
-      > div{
-        background: #0087C0;
-        h4 {
-          background: #F8F8F8 url(assets/gov_symbol.png) center 5px no-repeat;
-          padding: 42px 0 8px;
-          color: #0087C0;
-          text-align: center;
-          margin: 0 0 10px;
-        }
+    .row {
+      > div.transfer-list-dates{
+        color: @approved;
+        padding-top: 40px;
+      }
+      > div.transfer-list-nums {
+        padding-top: 20px;
+      }
+      h4 {
+        color: @approved;
+      }
+      > div.transfer-list-docs{
+        > div{
+          background: #0087C0;
+          h4 {
+            background: #F8F8F8 url(assets/gov_symbol.png) center 5px no-repeat;
+            padding: 42px 0 8px;
+            color: #0087C0;
+            text-align: center;
+            margin: 0 0 10px;
+          }
 
-        &:hover {
-          padding: 0;
+          &:hover {
+            padding: 0;
+          }
         }
+      }
+
+      > div.transfer-list-bar{
+        background-color: @approved;
       }
     }
   }
@@ -943,6 +1010,73 @@ svg rect{
   margin: 0;
 }
 
+/* Single Changegroup */
+
+#change-group-article {
+  width: 100%;
+  background-color: inherit;
+  padding: 30px 0;
+  margin: 0;
+
+  #changegroup-status{
+
+    &.approved {
+      text-align: center;
+    }
+    &.alert {
+      margin-bottom: 20px;
+      padding: 5px;
+      span {
+        top: 3px;
+      }
+    }
+  }
+
+  #single-changegroup{
+    max-width: 600px;
+    background-color: white;
+    padding: 30px 20px;
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      border-bottom: none;
+      &.increased{
+        color: @increased;
+      }
+      &.decreased{
+        color: @decreased;
+      }
+    }
+
+    #changegroup-request{
+      background: #f8f7f0 url(assets/gov_symbol-fax.png) no-repeat 10px 10px;
+      border: 1px solid #C7C7CC;
+      margin: 0 -30px;
+      color: #131973;
+
+      h4, h3, p{
+        margin: auto 30px;
+      }
+
+      h4 {
+        text-align: center;
+        color: @darkgray;
+        font-size: 15px;
+        margin: 50px auto 15px;
+      }
+
+      &:after{
+        content: "";
+        background-image: url('assets/paper-edge.png');
+        display: block;
+        margin-top: 30px;
+        border-top: 0;
+        height: 52px;
+      }
+    }
+  }
+}
+
 /* My stuff */
 
 .item-title {
@@ -960,60 +1094,6 @@ svg rect{
 .twitter-typeahead {
     width: 100%;
     direction: rtl;
-}
-
-/* spinner */
-.spinner {
-  margin: 0px;
-  width: 60px;
-  height: 20px;
-  text-align: center;
-  font-size: 10px;
-}
-
-.spinner > div {
-  background-color: #333;
-  height: 100%;
-  width: 6px;
-  display: inline-block;
-
-  -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
-  animation: stretchdelay 1.2s infinite ease-in-out;
-}
-
-.spinner .rect2 {
-  -webkit-animation-delay: -1.1s;
-  animation-delay: -1.1s;
-}
-
-.spinner .rect3 {
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
-}
-
-.spinner .rect4 {
-  -webkit-animation-delay: -0.9s;
-  animation-delay: -0.9s;
-}
-
-.spinner .rect5 {
-  -webkit-animation-delay: -0.8s;
-  animation-delay: -0.8s;
-}
-
-@-webkit-keyframes stretchdelay {
-  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
-  20% { -webkit-transform: scaleY(1.0) }
-}
-
-@keyframes stretchdelay {
-  0%, 40%, 100% {
-    transform: scaleY(0.4);
-    -webkit-transform: scaleY(0.4);
-  }  20% {
-    transform: scaleY(1.0);
-    -webkit-transform: scaleY(1.0);
-  }
 }
 
 /// Subscribe widget

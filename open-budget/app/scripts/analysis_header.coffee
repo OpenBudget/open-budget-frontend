@@ -77,6 +77,6 @@ class HeaderView extends Backbone.View
 
 $( ->
     window.pageModel.on('ready', ->
-        window.headerView = new HeaderView(el: $("#brief"))
+        window.headerView = new HeaderView(el: window.pageModel.article.find(".brief"))
     )
 )

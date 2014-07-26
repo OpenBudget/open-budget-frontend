@@ -42,7 +42,7 @@
                 <li>{{gi.group }} (+{{gi.value_str}})<br/>
                 <ul>
                     {%for item in gi.changes %}
-                    <li>{{item.budget_code}}: {{item.budget_title}}
+                    <li><a href="http://the.open-budget.org.il/stg/#budget/{{item.budget_code}}/{{item.year}}" target="_blank">{{item.budget_code}}: {{item.budget_title}}</a>
                     </li>
                     {%endfor%}
                 </ul>
@@ -57,7 +57,7 @@
                 <li>{{gi.group }} ({{gi.value_str}})<br/>
                 <ul>
                     {%for item in gi.changes %}
-                    <li>{{item.budget_code}}: {{item.budget_title}}
+                    <li><a href="http://the.open-budget.org.il/stg/#budget/{{item.budget_code}}/{{item.year}}" target="_blank">{{item.budget_code}}: {{item.budget_title}}</a>
                     </li>
                     {%endfor%}
                 </ul>
@@ -68,7 +68,7 @@
             <table class="button">
                 <tr>
                     <td>
-                        <a href="#">עוד אודות העברה זו</a>
+                        <a href="http://the.open-budget.org.il/stg/#transfer/{{group_id}}/{{group[0][0]}}" target="_blank">עוד אודות העברה זו</a>
                     </td>
                 </tr>
             </table>

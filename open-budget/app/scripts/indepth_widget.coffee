@@ -18,6 +18,21 @@ class IndepthWidget extends Backbone.View
                 @chart = @svg.append('g').attr('class','chart')
                 @bars = @svg.append('g').attr('class','bar')
 
+                that = @
+                @drag = d3.behavior.drag()
+                        .on("drag", (d) ->
+                                selection_orig = that.pageModel.get('selection')
+                                selection = selection_orig[0..1]
+                                x = d3.event.x
+                                newX = that.baseTimeScale.invert(x)
+                                dx = d3.event.dx
+                                dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
+                                selection[0] -= dx
+                                selection[1] -= dx
+                                that.pageModel.set('selection', selection)
+                            )
+
+
         render: ->
                 @maxWidth = $(@el).width()
                 @maxHeight = $(@el).height()
@@ -55,6 +70,7 @@ class IndepthWidget extends Backbone.View
                                 .attr("class", "background")
                                 .style("fill", "url(#backgroundPattern)")
                                 .style("stroke", null)
+                                .call(@drag)
 
                 @chart.selectAll('.background').data([1])
                         .attr("x", (d) => @timeScale( @minTime ) )
@@ -248,7 +264,7 @@ class IndepthWidget extends Backbone.View
                         w)
 
         setValueRange: () ->
-                @valueRange = @model.maxValue - @model.minValue
+                @valueRange = @model.maxValue #- @model.minValue
                 scale = 1
                 valueRange = @valueRange
                 RATIO = (TICKS-1) / TICKS
@@ -258,13 +274,14 @@ class IndepthWidget extends Backbone.View
                 if valueRange < 0.25*RATIO
                         @tickValue = 0.025*scale
                         @labelValue = 0.1*scale
-                if valueRange < 0.5*RATIO
+                else if valueRange < 0.5*RATIO
                         @tickValue = 0.05*scale
                         @labelValue = 0.2*scale
-                if valueRange <=1*RATIO
+                else if valueRange <=1*RATIO
                         @tickValue = 0.1*scale
                         @labelValue = 0.2*scale
-                @minValue = Math.floor(@model.minValue / @tickValue) * @tickValue
+                #console.log "SVR",@valueRange,valueRange,scale,@tickValue,@labelValue
+                @minValue = 0 # Math.floor(@model.minValue / @tickValue) * @tickValue
                 @maxValue = @minValue + TICKS * @tickValue
 
 
