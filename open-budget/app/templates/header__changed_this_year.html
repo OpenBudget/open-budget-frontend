@@ -1,3 +1,7 @@
 <p>
-במהלך השנה התקציב השתנה ב <%= format_number( net_revised - net_allocated ) %>.
+מאז <%= up_or_down(net_allocated,net_revised) %> ב- <%= format_number(net_revised - net_allocated) %> ל- <%= format_number(net_revised) %>. <%= increase_or_cut(net_allocated,net_revised) %> מהווה שינוי של  <%= parseInt(Math.abs(1 - (net_revised/net_allocated)) * 100) %> %.
+</p>
+
+<p>
+סכום זה הועבר ב-  <%= num_of_transfers_in_year_text(year) %>.
 </p>

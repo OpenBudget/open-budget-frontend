@@ -1,3 +1,28 @@
+window.up_or_down = (allocated,revised ) ->
+            if allocated > revised
+                return "קטן"
+            else
+                return "גדל"
+
+window.increase_or_cut = (allocated,revised ) ->
+            if allocated > revised
+                return "קיצוץ זה"
+            else
+                return "תוספת זו"
+
+window.transfers_by_year = (year) ->
+            return arr = $.grep(pageModel.changeGroups.models, (el,i) ->
+                el.attributes.year is year)
+
+window.num_of_transfers_in_year_text = (year) ->
+            arr = transfers_by_year(year)
+            if arr.length > 1
+                return String(arr.length) + " העברות"
+            else
+                return "העברה אחת"
+
+
+
 class HeaderAnalyzer
 
     shouldParticipate: () ->
@@ -13,13 +38,21 @@ class BudgetAnalyzer extends HeaderAnalyzer
 
 class CurrentBudgetAnalyzer extends BudgetAnalyzer
 
+    shouldParticipate: () ->
+        window.pageModel.get('currentItem').attributes.net_allocated?
+
     analyze: () ->
         window.JST.header__current_budget( pageModel.get('currentItem').toJSON() )
 
 class ChangedThisYearAnalyzer extends BudgetAnalyzer
 
+    shouldParticipate: () ->
+        year = window.pageModel.get('currentItem').attributes.year
+        transfers_by_year(year).length > 0
+
     analyze: () ->
-        window.JST.header__changed_this_year( pageModel.get('currentItem').toJSON() )
+        window.JST.header__changed_this_year( pageModel.get('currentItem').toJSON())
+
 
 
 class HeaderView extends Backbone.View
