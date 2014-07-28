@@ -32,8 +32,8 @@ class IndepthWidget extends Backbone.View
                                 that.pageModel.set('selection', selection)
                             )
 
-
         render: ->
+                @svg.call(@drag)
                 @maxWidth = $(@el).width()
                 @maxHeight = $(@el).height()
 
@@ -70,7 +70,6 @@ class IndepthWidget extends Backbone.View
                                 .attr("class", "background")
                                 .style("fill", "url(#backgroundPattern)")
                                 .style("stroke", null)
-                                .call(@drag)
 
                 @chart.selectAll('.background').data([1])
                         .attr("x", (d) => @timeScale( @minTime ) )
@@ -164,6 +163,13 @@ class IndepthWidget extends Backbone.View
                                 .attr('class', 'changeBar')
                                 .datum( (d) => d)
                 newGraphParts
+                        .append('circle')
+                                .attr('class', 'tipFocus')
+                                .datum( (d) => d)
+                                .style("stroke-width",2)
+                                .style("stroke-color","#fff")
+                                .style("opacity",0)
+                newGraphParts
                         .append('rect')
                                 .attr('class', 'changeLine-background')
                                 .datum( (d) => d)
@@ -200,6 +206,7 @@ class IndepthWidget extends Backbone.View
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
                         .attr("y2", (d) => @valueScale( d.get('value') ) )
+
                 @chart.selectAll('.changeLine-background').data(changeModels)
                         .attr("class", (d) => "changeLine-background")
                         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
@@ -208,12 +215,20 @@ class IndepthWidget extends Backbone.View
                         .attr("height", (d) => CHANGE_LINE_HANG_LENGTH + @valueScale(0) - @valueScale( d.get('value') ) )
                         .on('mouseover', change_tip.show)
                         .on('mouseout', change_tip.hide)
+
                 @chart.selectAll('.changeLine').data(changeModels)
                         .attr("class", (d) => if d.get('diff_value') > 0 then "changeLine increase" else "changeLine reduce")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') + _.max([0, -d.get('diff_value')]) ) )
                         .attr("y2", (d) => if d.get('source') == "dummy" then @valueScale( d.get('value') + _.max([0, -d.get('diff_value')]) ) else @valueScale(@minValue) + CHANGE_LINE_HANG_LENGTH )
+
+                @chart.selectAll('circle.tipFocus').data(changeModels)
+                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "tipFocus increase #{subkind}" else if dbl < 0 then "tipFocus reduce #{subkind}" else "tipFocus  #{subkind}")
+                      .attr("cx", (d) => @timeScale( d.get('timestamp') ) )
+                      .attr("cy", (d) => @valueScale( d.get('value') ) )
+                      .attr("r", 10 )
+                      .attr("fill", "none" )
 
                 usedModels = _.filter(@model.models, (x)->x.get('kind')=='used')
                 newGraphParts = @chart.selectAll('.graphPartUsed').data(usedModels)

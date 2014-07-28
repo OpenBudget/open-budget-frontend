@@ -468,6 +468,12 @@ svg rect{
 
       stroke: @approved;
 
+      &:hover circle {
+        opacity: 1 !important;
+        &.increase {stroke: @increased}
+        &.reduce   {stroke: @decreased}
+      }
+
       .changeLine {
         stroke-dasharray: 1,4;
         &.increase {
