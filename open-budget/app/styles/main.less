@@ -37,10 +37,10 @@ body {
     background: @background;
 
     &.kind-cutbacks {
-        background-color: @decreased;
+        background-color: fadeout(@decreased, 50%);
     }
     &.kind-enlargement {
-        background-color: @increased;
+        background-color: fadeout(@increased, 50%);
     }
 }
 
@@ -50,7 +50,8 @@ body, h1, h2, h3, h4, h5, h6 {
 
 header{
   .navbar{
-    background: #fff;
+    background: @background;
+    border-radius: 0;
   }
 }
 
@@ -202,6 +203,14 @@ strong.approved {
   top:0;
   z-index: 1000000;
 
+  .navbar-brand {
+    color: #222;
+  }
+
+  .navbar-nav > li > a {
+    color: #555;
+  }
+
   .navbar-left{
     margin-left: -10px;
     a.btn{
@@ -343,6 +352,7 @@ article {
   .brief {
     padding: 40px;
     font-size: 24px;
+    text-align: center;
   }
 
   h2 {
@@ -1118,4 +1128,11 @@ svg rect{
     &.loggedout::before {
         content: 'כניסה והרשמה לעדכונים';
     }
+}
+
+#subscribeModal{
+  z-index: 999999;
+  .modal-dialog {
+    margin: 60px auto 0;
+  }
 }
