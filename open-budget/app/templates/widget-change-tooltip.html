@@ -33,14 +33,28 @@
 
     </div>
   <% } else { %>
-      <!-- <div class="arrow"></div> -->
-      <div class="widget-popover-title">
-        <p> תקציב <%= get("source").get("year") %>
-        </p>
-        <h2><%= format_full_number( get("value")*1000 ) %>₪</h2>
-      </div>
-      <div class="widget-popover-content">
-      </div>
+      <% if ( get('kind') == 'change' ) { %>
+        <!-- <div class="arrow"></div> -->
+        <div class="widget-popover-title">
+          <p> תקציב <%= get("source").get("year") %>
+          </p>
+          <h2><%= format_full_number( get("value")*1000 ) %>₪</h2>
+        </div>
+        <div class="widget-popover-content">
+        </div>
+      <% } else if ( get('kind') == 'used' ) { %>
+        <!-- <div class="arrow"></div> -->
+        <div class="widget-popover-title">
+            <p> תקציב מאושר <%= get("source").get("year") %></p>
+            <h2><%= format_full_number( get("source").get('net_allocated')*1000 ) %>₪</h2>
+            <p> אחרי העברות תקציביות </p>
+            <h2><%= format_full_number( get("source").get('net_revised')*1000 ) %>₪</h2>
+            <p> הסכום בו נעשה שימוש </p>
+            <h2><%= format_full_number( get("source").get('net_used')*1000 ) %>₪</h2>
+        </div>
+        <div class="widget-popover-content">
+        </div>
+      <% } %>
   <% } %>
   </div>
 </div>

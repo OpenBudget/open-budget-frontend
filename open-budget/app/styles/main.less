@@ -478,15 +478,19 @@ svg rect{
       }
   }
 
+  .graphPartChanged, .graphPartUsed {
+      &:hover {
+          circle, path {
+                opacity: 1 !important;
+                &.increase {stroke: @increased}
+                &.reduce   {stroke: @decreased}
+            }
+      }
+  }
+
   .graphPartChanged {
 
       stroke: @approved;
-
-      &:hover circle {
-        opacity: 1 !important;
-        &.increase {stroke: @increased}
-        &.reduce   {stroke: @decreased}
-      }
 
       .changeLine {
         stroke-dasharray: 1,4;
@@ -547,7 +551,7 @@ svg rect{
       }
 
 .graphPartUsed {
-      line { stroke: @spent;}
+      circle, path, line { stroke: @spent;}
       text { fill: @spent;}
   }
     }
