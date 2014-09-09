@@ -231,18 +231,41 @@ strong.approved {
 
 }
 
+//////// SEARCH & TREE //////////////
+
 #search-form{
-  // position: relative;
+  position: relative;
   margin: 70px auto 0;
-  max-width: 600px;
-  input{
-    border-radius: 0 20px 20px 0;
+  //max-width: 600px;
+  input, .btn-search{
+    border-radius: 0;
+    border: 0;
+    border-bottom: 2px solid #cccccc;
+    background: none;
+    box-shadow: none;
+    font-size: 20px;
   }
-  button{
-    border-radius: 20px 0 0 20px;
+  .btn-search{
+    padding: 2px 8px;
+    color: #bbb;
     .glyphicon {
-      top: 3px;
+      //top: 3px;
     }
+  }
+  > div{
+    margin-left: 86px
+  }
+
+  #btn-tree{
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width: 66px;
+    height: 30px;
+    text-indent: -99999px;
+    overflow: hidden;
+    display: block;
+    padding: 0;
   }
 }
 /////// ARTICLE ///////////
