@@ -61,6 +61,17 @@ class CombinedHistory extends Backbone.Collection
                                         lastPoint = point
                                 else
                                         continue
+                        else if kind == 'revised'
+                                point.set('disabled',changes > 1)
+                                if baseline != null
+                                        point.set('diff_baseline',point.get('value') - original_baseline)
+                                        point.set('original_baseline', original_baseline)
+                                        point.set('value', point.get('value'))
+                                        if lastPoint != null
+                                                lastPoint.set('width',time - lastPoint.get('timestamp'))
+                                        lastPoint = point
+                                else
+                                        continue
                         else
                                 continue
                         value = point.get('value')
@@ -109,9 +120,22 @@ class CombinedHistory extends Backbone.Collection
                                 point.set("source", m)
                                 point.set("kind", "used")
                                 point.set("value", m.get("net_used"))
-                                startYear = new Date(m.get('year'),11,20).valueOf()
-                                endYear = new Date(m.get('year'),11,31).valueOf()
+                                startYear = new Date(m.get('year'),11,31).valueOf()
+                                endYear = new Date(m.get('year')+1,0).valueOf()
                                 point.set('timestamp',startYear)
+                                point.set('width', endYear - startYear)
+                                point.set('src','budgetline')
+                                @add point
+
+                        value = m.get("net_revised")
+                        if value?
+                                point = new CombinedHistoryPoint()
+                                point.set("source", m)
+                                point.set("kind", "revised")
+                                point.set("value", value)
+                                startYear = new Date(m.get('year'),0).valueOf()
+                                endYear = new Date(m.get('year'),11,31).valueOf()
+                                point.set('timestamp',endYear)
                                 point.set('width', endYear - startYear)
                                 point.set('src','budgetline')
                                 @add point

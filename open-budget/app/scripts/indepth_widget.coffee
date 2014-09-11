@@ -30,7 +30,15 @@ class IndepthWidget extends Backbone.View
                                 selection[0] -= dx
                                 selection[1] -= dx
                                 that.pageModel.set('selection', selection)
-                            )
+                )
+                @change_tip = d3.tip()
+                               .attr('class', 'd3-tip')
+                                   #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
+                               .direction("n")
+                               .offset((d) => [-100,150-(@timeScale( d.get('width')/2 ) - @timeScale(0))])
+                               .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
+                @chart.call( @change_tip )
+
 
         render: ->
                 @svg.call(@drag)
@@ -143,6 +151,42 @@ class IndepthWidget extends Backbone.View
                         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
 
+                revisedModels = _.filter(@model.models, (x)->x.get('kind')=='revised' and !x.get('disabled'))
+                newGraphParts = @chart.selectAll('.graphPartRevised').data(revisedModels)
+                        .enter().append("g")
+                        .attr('class','graphPartRevised')
+                # newGraphParts
+                #         .append('line')
+                #                 .attr('class', 'revisedLine')
+                #                 .datum( (d) => d)
+                newGraphParts
+                        .append('line')
+                                .attr('class', 'revisedBar')
+                                .datum( (d) => d)
+                # newGraphParts
+                #         .append('text')
+                #                 .attr('class', 'revisedLabel')
+                #                 .style("font-size", 12)
+                #                 .attr("dx",3)
+                #                 .text((d) => d.get('date').getFullYear())
+                #                 .style("text-anchor", "end")
+                #                 .datum( (d) => d)
+
+                # @chart.selectAll('.revisedLine').data(revisedModels)
+                #         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                #         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                #         .attr("y1", (d) => @valueScale( d.get('value') ) )
+                #         .attr("y2", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+                @chart.selectAll('.revisedBar').data(revisedModels)
+                        .attr("class", (d) => dby = d.get('diff_baseline'); if dby < 0 then "revisedBar reduce" else if dby > 0 then "revisedBar increase" else "revisedBAr" )
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') - d.get('width')) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y1", (d) => @valueScale( d.get('original_baseline') ) )
+                        .attr("y2", (d) => @valueScale( d.get('value') ) )
+                # @chart.selectAll('.revisedLabel').data(revisedModels)
+                #         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                #         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+
                 changeModels = _.filter(@model.models, (x)->x.get('kind')=='change')
                 lastChanges = _.filter(changeModels,(x)->x.get("last"))
                 @chart.selectAll(".changeBar-last").data(lastChanges)
@@ -187,13 +231,6 @@ class IndepthWidget extends Backbone.View
                         .append('line')
                                 .attr('class', 'changeLine')
                                 .datum( (d) => d)
-                change_tip = d3.tip()
-                               .attr('class', 'd3-tip')
-                                   #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
-                               .direction("n")
-                               .offset((d) => [-100,150-(@timeScale( d.get('width')/2 ) - @timeScale(0))])
-                               .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
-                @chart.call( change_tip )
 
                 @chart.selectAll(".changeBar-last").data(lastChanges)
                             .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar-last increase #{subkind}" else if dbl < 0 then "changeBar-last reduce #{subkind}" else "changeBar-last  #{subkind}")
@@ -222,8 +259,8 @@ class IndepthWidget extends Backbone.View
                         .attr("width", (d) => @timeScale( d.get('width') ) - @timeScale( 0 ))
                         .attr("y", (d) => @valueScale( d.get('value') ) )
                         .attr("height", (d) => CHANGE_LINE_HANG_LENGTH + @valueScale(0) - @valueScale( d.get('value') ) )
-                        .on('mouseover', change_tip.show)
-                        .on('mouseout', change_tip.hide)
+                        .on('mouseover', @change_tip.show)
+                        .on('mouseout', @change_tip.hide)
 
                 @chart.selectAll('.changeLine').data(changeModels)
                         .attr("class", (d) => if d.get('diff_value') > 0 then "changeLine increase" else "changeLine reduce")
@@ -290,12 +327,12 @@ class IndepthWidget extends Backbone.View
                                 .style("fill","none")
 
                 @chart.selectAll('.usedBackground').data(usedModels)
-                        .attr("x", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
+                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y", (d) => @valueScale( d.get('value') ) )
-                        .attr("width", (d) =>  @timeScale(0) - @timeScale( d.get('width') ) )
+                        .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width')) - @timeScale(d.get('timestamp')) )
                         .attr("height", (d) => @valueScale( @minValue ) - @valueScale( d.get('value') ) )
-                        .on('mouseover', change_tip.show)
-                        .on('mouseout', change_tip.hide)
+                        .on('mouseover', @change_tip.show)
+                        .on('mouseout', @change_tip.hide)
 
                 @chart.selectAll('.usedBar').data(usedModels)
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
@@ -304,21 +341,21 @@ class IndepthWidget extends Backbone.View
                         .attr("y2", (d) => @valueScale( d.get('value') ) )
 
                 @chart.selectAll('.usedLine').data(usedModels)
-                        .attr("x1", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
-                        .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
+                        .attr("x1", (d) => @timeScale( d.get('timestamp')) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp')) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
                         .attr("y2", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH  )
                 @chart.selectAll('.usedLabel').data(usedModels)
-                        .attr("x", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
+                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
 
                 @chart.selectAll('circle.usedTipFocus').data(usedModels)
-                      .attr("cx", (d) => @timeScale( d.get('timestamp') + d.get('width')) )
+                      .attr("cx", (d) => @timeScale( d.get('timestamp')) )
                       .attr("cy", (d) => @valueScale( d.get('value') ) )
 
                 @chart.selectAll('path.usedTipFocus').data(usedModels)
                       .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "tipFocus increase #{subkind}" else if dbl < 0 then "tipFocus reduce #{subkind}" else "tipFocus  #{subkind}")
-                      .attr("d", (d) => "M#{@timeScale( d.get('timestamp') + d.get('width') )},#{@valueScale( d.get('value') )} c0,-100,150,-50,150,-150" )
+                      .attr("d", (d) => "M#{@timeScale( d.get('timestamp') )},#{@valueScale( d.get('value') )} c0,-100,150,-50,150,-150" )
 
         formatNumber: (n) ->
                 rx=  /(\d+)(\d{3})/

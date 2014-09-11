@@ -492,14 +492,24 @@ svg rect{
         .approvedLine {
           stroke: @approved;
           stroke-dasharray: 1,4;
-        &.increase {
-            stroke: @increased;
+            &.increase {
+                stroke: @increased;
+            }
+            &.reduce {
+                stroke: @decreased;
+            }
         }
-        &.reduce {
-            stroke: @decreased;
+     }
+    .graphPartRevised {
+        .revisedBar {
+            &.increase {
+                stroke: @increased;
+            }
+            &.reduce {
+                stroke: @decreased;
+            }
         }
-      }
-  }
+     }
 
   .graphPartChanged, .graphPartUsed {
       &:hover {
