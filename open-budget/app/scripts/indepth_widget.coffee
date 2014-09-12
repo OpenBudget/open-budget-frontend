@@ -199,6 +199,7 @@ class IndepthWidget extends Backbone.View
                        .append("line")
                        .attr("class","changeBar-last-line")
                        .datum( (d) => d)
+
                 newGraphParts = @chart.selectAll('.graphPartChanged').data(changeModels)
                         .enter().append("g")
                         .attr('class','graphPartChanged')
@@ -230,6 +231,10 @@ class IndepthWidget extends Backbone.View
                 newGraphParts
                         .append('line')
                                 .attr('class', 'changeLine')
+                                .datum( (d) => d)
+                newGraphParts
+                        .append('line')
+                                .attr('class', 'changeLineWaterfall')
                                 .datum( (d) => d)
 
                 @chart.selectAll(".changeBar-last").data(lastChanges)
@@ -266,9 +271,15 @@ class IndepthWidget extends Backbone.View
                         .attr("class", (d) => if d.get('diff_value') > 0 then "changeLine increase" else "changeLine reduce")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y1", (d) => @valueScale( d.get('value') + _.max([0, -d.get('diff_value')]) ) )
-                        .attr("y2", (d) => if d.get('source') == "dummy" then @valueScale( d.get('value') + _.max([0, -d.get('diff_value')]) ) else @valueScale(@minValue) + CHANGE_LINE_HANG_LENGTH )
-
+                        .attr("y1", (d) => @valueScale( d.get('value') + _.min([0, d.get('diff_value')]) ) )
+                        .attr("y2", (d) => @valueScale(@minValue) + CHANGE_LINE_HANG_LENGTH )
+                @chart.selectAll('.changeLineWaterfall').data(changeModels)
+                        .attr("class", (d) => if d.get('diff_value') > 0 then "changeLineWaterfall increase" else "changeLineWaterfall reduce")
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y1", (d) => @valueScale( d.get('value') - d.get('diff_value') ) )
+                        .attr("y2", (d) => @valueScale( d.get('value') ) )
+                        .style('stroke-width','10')
 
                 @chart.selectAll('circle.tipFocus').data(changeModels)
                       .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "tipFocus increase #{subkind}" else if dbl < 0 then "tipFocus reduce #{subkind}" else "tipFocus  #{subkind}")

@@ -525,7 +525,7 @@ svg rect{
 
       stroke: @approved;
 
-      .changeLine {
+      .changeLine, .changeLineWaterfall {
         stroke-dasharray: 1,4;
         &.increase {
             stroke: @increased;
@@ -569,7 +569,7 @@ svg rect{
             stroke-dasharray: 3,1;
             fill: fadeout(@decreased, 92%);
         }
-  }
+      }
 
       .changeBar-last-line {
              stroke-width: 1;
@@ -583,10 +583,10 @@ svg rect{
              }
       }
 
-.graphPartUsed {
+    }
+    .graphPartUsed {
       circle, path, line { stroke: @spent;}
       text { fill: @spent;}
-  }
     }
 }
 
