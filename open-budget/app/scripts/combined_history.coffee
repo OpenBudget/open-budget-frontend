@@ -22,7 +22,10 @@ class CombinedHistory extends Backbone.Collection
 
         initialize: (models, options) ->
                 @pageModel = options.pageModel
-                @changeGroups = @pageModel.changeGroups
+                if @pageModel.get('digits') >= 4
+                    @changeGroups = @pageModel.changeGroups
+                else
+                    @changeGroups = { models: [] }
                 @budgetHistory = @pageModel.budgetHistory
                 @pageModel.on "ready", =>
                     @processChangeLines(@changeGroups.models)

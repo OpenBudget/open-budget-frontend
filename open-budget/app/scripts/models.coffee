@@ -184,6 +184,34 @@ class ChangeGroups extends Backbone.Collection
         url: ->
                 "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('budgetCode')}?limit=1000"
 
+class SupportLine extends Backbone.Model
+
+    defaults:
+        kind: null
+        code: null
+        title: null
+        amount_allocated: null
+        amount_supported: null
+        num_used: 1
+        company_id: null
+        ngo_id: null
+        year: null
+        recipient: null
+        subject: null
+
+class TakanaSupports extends Backbone.Collection
+
+    model: SupportLine
+
+    comparator: (m) -> "#{m.get('year')} #{m.get('recipient')}"
+
+    initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+    url: ->
+            "#{pageModel.get('baseURL')}/api/supports/#{@pageModel.get('budgetCode')}?limit=2000"
+
 
 class BudgetHistory extends Backbone.Collection
 
@@ -220,6 +248,10 @@ class PageModel extends Backbone.Model
                     @set('dataType','json')
                 @on 'change:budgetCode', ->
                     budgetCode = @get('budgetCode')
+                    digits = budgetCode.length - 2
+                    @set('digits',digits)
+                    @article.find(".2digits,.4digits,.6digits,.8digits").css('display','none')
+                    @article.find(".#{digits}digits").css('display','inherit')
                     @changeLines = new ChangeLines([], pageModel: @)
                     @changeGroups = new ChangeGroups([], pageModel: @)
                     @budgetHistory = new BudgetHistory([], pageModel: @)
@@ -227,6 +259,9 @@ class PageModel extends Backbone.Model
                                       () =>
                                           @set('currentItem', @budgetHistory.getLast())
                     readyCollections = [@changeLines,@changeGroups,@budgetHistory]
+                    if digits == 8
+                        @takanot = new TakanaSupports([], pageModel: @)
+                        readyCollections.push(@takanot)
                     readyModels = []
                     @breadcrumbs = []
                     for i in [1..(budgetCode.length/2)]
@@ -301,8 +336,8 @@ $( ->
             window.location.reload()
 
         if kind == "budget"
-            pageModel.set("budgetCode",identifier)
             pageModel.article = $("article#budget-item-article")
+            pageModel.set("budgetCode",identifier)
         else if kind == "transfer"
             pageModel.article = $("article#change-group-article")
             pageModel.set("changeGroupId",identifier)
