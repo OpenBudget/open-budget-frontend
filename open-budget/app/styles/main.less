@@ -525,7 +525,7 @@ svg rect{
 
       stroke: @approved;
 
-      .changeLine, .changeLineWaterfall {
+      .changeLine {
         stroke-dasharray: 1,4;
         &.increase {
             stroke: @increased;
@@ -543,15 +543,24 @@ svg rect{
         }
       }
 
+      .changeLineWaterfall{
+        &.increase {
+            stroke: @increased;
+        }
+        &.reduce {
+            stroke: @decreased;
+        }
+      }
+
       .changeBar {
         stroke-width: 2;
         &.increase {
             stroke: @increased;
-            stroke-dasharray: 3,1;
+            //stroke-dasharray: 3,1;
         }
         &.reduce {
             stroke: @decreased;
-            stroke-dasharray: 3,1;
+            //stroke-dasharray: 3,1;
         }
       }
   }
