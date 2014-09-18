@@ -60,7 +60,7 @@ $( ->
                 engine: { compile: (x) -> { render: JST[x]} }
 
                 template: 'search_dropdown_item'
-                footer: '<div id="search-footer"></div>'
+                footer: '<div class="tt-search-footer"></div>'
 
                 remote:
                         url: window.pageModel.get('baseURL')+"/api/search/budget/#{pageModel.get('year')}?q=%QUERY&limit=20"
