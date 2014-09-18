@@ -7,11 +7,12 @@ class SupportList extends Backbone.View
 
     render: ->
         console.log 'support-list render'
-        jsons = _.map(@pageModel.takanot.models, (x) -> x.toJSON())
-        console.log jsons[0]
-        htmls = _.map(jsons, JST.single_support_item )
-        for html in htmls
-            @$el.append( html )
+        if @pageModel.takanot?
+            jsons = _.map(@pageModel.takanot.models, (x) -> x.toJSON())
+            console.log jsons[0]
+            htmls = _.map(jsons, JST.single_support_item )
+            for html in htmls
+                @$el.append( html )
 
 $( ->
         console.log "support_list"

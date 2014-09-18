@@ -57,12 +57,16 @@ $( ->
         $("#search-item").typeahead(
                 name: 'budgets'
                 limit: 20
-                engine: Hogan
-                template: [ '<p class="item-code">{{code}}</p>'
-                            '<p class="item-title">{{title}}</p>' ].join('')
+                engine: { compile: (x) -> { render: JST[x]} }
+
+                template: 'search_dropdown_item'
+                footer: '<div id="search-footer"></div>'
+
                 remote:
                         url: window.pageModel.get('baseURL')+"/api/search/budget/#{pageModel.get('year')}?q=%QUERY&limit=20"
                         dataType: 'jsonp'
+                        cache: true
+                        timeout: 3600
                         filter: (l) ->
                                 for x in l
                                         x._code = x.code.substring(2)

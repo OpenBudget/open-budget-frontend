@@ -1,7 +1,8 @@
 class IndepthWidget extends Backbone.View
 
-        TOP_PART_SIZE = 400 #p
+        TOP_PART_SIZE = 200 #p
         TICKS = 10
+        TOOLTIP_SIZE = 50
 
         YEAR_LINE_HANG_LENGTH = 46 # px
         CHANGE_LINE_HANG_LENGTH = 18 # px
@@ -35,7 +36,7 @@ class IndepthWidget extends Backbone.View
                                .attr('class', 'd3-tip')
                                    #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
                                .direction("n")
-                               .offset((d) => [-100,150-(@timeScale( d.get('width')/2 ) - @timeScale(0))])
+                               .offset((d) => [-TOOLTIP_SIZE+45,TOOLTIP_SIZE-(@timeScale( d.get('width')/2 ) - @timeScale(0))])
                                .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
                 @chart.call( @change_tip )
 
@@ -294,7 +295,7 @@ class IndepthWidget extends Backbone.View
 
                 @chart.selectAll('path.tipFocus').data(changeModels)
                       .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "tipFocus increase #{subkind}" else if dbl < 0 then "tipFocus reduce #{subkind}" else "tipFocus  #{subkind}")
-                      .attr("d", (d) => "M#{@timeScale( d.get('timestamp') )},#{@valueScale( d.get('value') )} c0,-100,150,-50,150,-150" )
+                      .attr("d", (d) => "M#{@timeScale( d.get('timestamp') )},#{@valueScale( d.get('value') )} c0,#{-TOOLTIP_SIZE*2/3},#{TOOLTIP_SIZE},#{-TOOLTIP_SIZE/3},#{TOOLTIP_SIZE},-#{TOOLTIP_SIZE}" )
 
                 usedModels = _.filter(@model.models, (x)->x.get('kind')=='used')
                 newGraphParts = @chart.selectAll('.graphPartUsed').data(usedModels)
@@ -363,14 +364,13 @@ class IndepthWidget extends Backbone.View
                 @chart.selectAll('.usedLabel').data(usedModels)
                         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
-
+                @chart.selectAll('path.usedTipFocus').data(usedModels)
+                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "usedTipFocus increase #{subkind}" else if dbl < 0 then "usedTipFocus reduce #{subkind}" else "usedTipFocus  #{subkind}")
+                      .attr("d", (d) => "M#{@timeScale( d.get('timestamp') )},#{@valueScale( d.get('value') )} c0,#{-TOOLTIP_SIZE*2/3},#{TOOLTIP_SIZE},#{-TOOLTIP_SIZE/3},#{TOOLTIP_SIZE},-#{TOOLTIP_SIZE}" )
                 @chart.selectAll('circle.usedTipFocus').data(usedModels)
                       .attr("cx", (d) => @timeScale( d.get('timestamp')) )
                       .attr("cy", (d) => @valueScale( d.get('value') ) )
 
-                @chart.selectAll('path.usedTipFocus').data(usedModels)
-                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "tipFocus increase #{subkind}" else if dbl < 0 then "tipFocus reduce #{subkind}" else "tipFocus  #{subkind}")
-                      .attr("d", (d) => "M#{@timeScale( d.get('timestamp') )},#{@valueScale( d.get('value') )} c0,-100,150,-50,150,-150" )
 
         formatNumber: (n) ->
                 rx=  /(\d+)(\d{3})/
@@ -383,20 +383,17 @@ class IndepthWidget extends Backbone.View
                 @valueRange = @model.maxValue #- @model.minValue
                 scale = 1
                 valueRange = @valueRange
-                RATIO = (TICKS-1) / TICKS
+                RATIO = (1.0*(TOP_PART_SIZE-TOOLTIP_SIZE))/TOP_PART_SIZE
                 while valueRange > 1*RATIO
                         scale *= 10
                         valueRange /= 10
-                if valueRange < 0.25*RATIO
-                        @tickValue = 0.025*scale
-                        @labelValue = 0.1*scale
-                else if valueRange < 0.5*RATIO
-                        @tickValue = 0.05*scale
-                        @labelValue = 0.2*scale
-                else if valueRange <=1*RATIO
-                        @tickValue = 0.1*scale
-                        @labelValue = 0.2*scale
-                #console.log "SVR",@valueRange,valueRange,scale,@tickValue,@labelValue
+                PARTS = 40
+                i40 = Math.ceil(valueRange/RATIO*PARTS)
+                i40part = i40/PARTS
+                i40labelMult = (1 + (i40 % 2)) * 2
+                @tickValue = (i40*scale)/(TICKS*PARTS)
+                @labelValue = i40labelMult * @tickValue
+
                 @minValue = 0 # Math.floor(@model.minValue / @tickValue) * @tickValue
                 @maxValue = @minValue + TICKS * @tickValue
 
