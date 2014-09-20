@@ -164,36 +164,6 @@ strong.approved {
     { color: @decreased }
   }
 }
-/* Tooltip for visualzations */
-// .d3-tip {
-//   line-height: 1;
-//   font-weight: bold;
-//   padding: 12px;
-//   background: rgba(0, 0, 0, 0.8);
-//   color: #fff;
-//   border-radius: 2px;
-// }
-
-/* Creates a small triangle extender for the tooltip */
-// .d3-tip:after {
-//   box-sizing: border-box;
-//   display: inline;
-//   font-size: 10px;
-//   width: 100%;
-//   line-height: 1;
-//   color: rgba(0, 0, 0, 0.8);
-//   content: "\25BC";
-//   position: absolute;
-//   text-align: center;
-// }
-
-/* Style northward tooltips differently */
-// .d3-tip.n:after {
-//   margin: -1px 0 0 0;
-//   top: 100%;
-//   left: 0;
-// }
-
 
 /////// HEADER ///////////
 
@@ -268,6 +238,45 @@ strong.approved {
     padding: 0;
   }
 }
+
+#search-dropdown {
+
+    visibility:hidden;
+
+    &.active {
+        .search-partition-layout {
+            min-height: 400px;
+        }
+        visibility:visible;
+    }
+
+
+    .search-results, .search-partition-layout {
+    }
+
+    .search-results {
+    }
+
+    .search-partition-layout {
+        background: #fff;
+        min-height:0px;
+        transition: min-height 0.5s;
+        transition-timing-function:  cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -webkit-transition: min-height 0.5s;
+    }
+
+    .search-dropdown-item {
+        &.selected {
+            background: #88f;
+        }
+        &:hover {
+            background: #ccf;
+            cursor: pointer;
+        }
+    }
+
+}
+
 /////// ARTICLE ///////////
 
 article {
@@ -889,116 +898,17 @@ svg rect{
 
 } //.change-list
 
-// table.history-table {
-// 	width: 100%;
-// 	font-size: 15px;
-// 	border-collapse: collapse;
-// 	border-spacing: 0;
-// 	th {
-// 		font-weight: 700;
-// 		color: @text;
-// 		padding: 10px 0;
-// 	}
-// 	tr{
-// 		color: @darkgray;
-// 		vertical-align: top;
-// 		&.active {
-// 		    border-bottom: 1px solid @lightgray;
-// 		    line-height: 20px;
-// 		}
-// 		&.table-year-folded {
-// 			height: 45px;
-// 			.table-trans {
-// 				width: auto;
-// 			}
-// 		}
-// 		td {
-// 	    padding: 0;
-// 	    div {
-// 				padding: 10px 0 0;
-// 				overflow: hidden;
-// 				transition: padding 1s, height 1s;
-// 	    }
-// 		}
-//
-// 		.table-date {
-// 			width: 10%;
-// 		}
-// 		.table-trans {
-// 			width: 23%;
-// 			.table-change{
-// 				font-size: 24px;
-// 				display: block;
-// 			}
-// 		}
-// 		.table-from {
-// 			width: 45%;
-// 			.table-from-num{
-// 				display: block;
-// 			}
-// 			.table-from-name{
-// 				font-weight: 700;
-// 				margin-bottom: 10px;
-// 				display: block;
-// 				&:last-child {
-// 					margin-bottom: 0;
-// 				}
-// 			}
-// 		}
-// 		.table-more {
-// 			a {
-// 				display: block;
-// 			}
-// 		}
-// 		&.table-increased {
-// 			.table-change {color: @increased;}
-// 			.table-from {color: @decreased;}
-// 		}
-// 		&.table-decreased {
-// 			.table-change {color: @decreased;}
-// 			.table-from {color: @increased;}
-// 		}
-// 		&.table-yearly-budget {
-// 			.table-date, .table-total, .table-from {color: @approved;}
-// 			.table-total { font-size: 24px; }
-// 			border-bottom-color: @approved;
-// 			background: url(assets/diagonal-green.png);
-// 		}
-// 		&.table-year-folded {
-// 			font-weight: 700;
-// 			.table-date { font-size: 24px; }
-// 			span { opacity: 0.5;}
-// 			.table-year-incresed {
-// 			    color: @increased;
-// 			    &:before {
-// 				content: "\2b06";
-// 			    }
-// 			}
-// 			.table-year-decresed {
-// 			    color: @decreased;
-// 			    &:before {
-// 				content: "\2b07";
-// 			    }
-// 			}
-// 			&:hover {
-// 				.table-date { color: @link }
-// 				color: @text;
-// 				cursor: pointer;
-// 				span { opacity: 1;}
-// 			}
-// 		}
-// 		&.table-single-transfer, &.table-yearly-budget {
-// 		    td > div {
-// 			padding: 0;
-// 		    }
-// 		}
-// 	}
-// }
 
-/* Typeahead Styles */
+/* Typeahead Styles
 .twitter-typeahead .tt-query,
 .twitter-typeahead .tt-hint {
   margin-bottom: 0;
+}
+
+.twitter-typeahead {
+    width: 100%;
+    direction: rtl;
+    display: block;
 }
 
 .twitter-typeahead .tt-hint
@@ -1089,7 +999,7 @@ svg rect{
 
 .tt-suggestion p {
   margin: 0;
-}
+}*/
 
 /* Single Changegroup */
 
@@ -1172,12 +1082,7 @@ svg rect{
   padding-left: 10px;
 }
 
-.twitter-typeahead {
-    width: 100%;
-    direction: rtl;
-}
-
-/// Subscribe widget
+/* Subscribe widget */
 #subscribeWidget {
     &.notsubscribed::before {
         content: 'הרשמה לעדכונים';

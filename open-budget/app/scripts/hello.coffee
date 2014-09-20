@@ -39,46 +39,6 @@ window.color_classname = (value) ->
 window.linkToBudget = (code,year) -> "#budget/#{code}/#{year}"
 window.linkToTransfer = (code,year) -> "#transfer/#{code}/#{year}"
 
-get_program = (obj,datum,name) ->
-        console.log "selected:", obj, datum, name
-        console.log "selected2:", $("#search-item").val()
-        if datum?
-            code = datum.code
-            window.location.hash = "#budget/" + code + "/" + window.pageModel.get('year')
-            window.location.reload()
-        else
-            code = $("#search-item").val()
-            if code.match(/^[0-9]+$/)
-                window.location.hash = "#budget/00" + code + "/" + window.pageModel.get('year')
-                window.location.reload()
-
 $( ->
-        console.log 'setting up typeahead'
-        $("#search-item").typeahead(
-                name: 'budgets'
-                limit: 20
-                engine: { compile: (x) -> { render: JST[x]} }
-
-                template: 'search_dropdown_item'
-                footer: '<div class="tt-search-footer"></div>'
-
-                remote:
-                        url: window.pageModel.get('baseURL')+"/api/search/budget/#{pageModel.get('year')}?q=%QUERY&limit=20"
-                        dataType: 'jsonp'
-                        cache: true
-                        timeout: 3600
-                        filter: (l) ->
-                                for x in l
-                                        x._code = x.code.substring(2)
-                                        x.value = x._code
-                                l
-        )
-        $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
-        $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
-        $("#search-item").bind('typeahead:selected', get_program )
-        $("#search-item").bind('change', get_program )
-        $("#search-form").submit( ->
-                false
-                )
         window.onhashchange = -> window.location.reload()
 )
