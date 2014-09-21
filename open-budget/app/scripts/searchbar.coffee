@@ -1,3 +1,72 @@
+class BudgetPartitionLayoutView extends Backbone.View
+
+    initialize: ->
+        @render()
+
+    render: ->
+        @w = @$el.width()
+        @h = 400 # @$el.height()
+
+        @vis = d3.select(@el)
+                .append("svg:svg")
+                    .attr("width", @w)
+                    .attr("height", @h);
+        @partition = d3.layout.partition()
+                            .value((d) -> d.size) #net_allocated)
+
+        d3.json("/static-budget.json", (root) =>
+
+            data = @partition.nodes(root)
+
+            @x = d3.scale.linear().domain([root.dy,1]).range([@w, 0])
+            @y = d3.scale.linear().range([0, @h])
+
+            g = @vis.selectAll("g").data(data)
+                    .enter().append("svg:g")
+                    .attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
+                    # .on("click", click)
+
+            transform = (d) => "translate(" + (-8 - @x(d.dy / 2) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
+
+            g.append("svg:rect")
+                .attr("width", Math.abs(@x(root.dy) - @x(0)))
+                .attr("height", (d) => @y(d.dx) - @y(0))
+                .attr("class", (d) -> if d.children? then "parent" else "child")
+
+            g.append("svg:text")
+                .attr("transform", transform)
+                .attr("dy", ".35em")
+                .style("opacity", (d) -> d.dx * @h > 12 ? 1 : 0)
+                .text((d) -> d.name)
+        )
+
+            # d3.select(@el) # window
+            #     .on("click", () -> click(root))
+
+  # function click(d) {
+  #   if (!d.children) return;
+  #
+  #   kx = (d.y ? w - 40 : w) / (1 - d.y);
+  #   ky = h / d.dx;
+  #   x.domain([d.y, 1]).range([d.y ? 40 : 0, w]);
+  #   y.domain([d.x, d.x + d.dx]);
+  #
+  #   var t = g.transition()
+  #       .duration(d3.event.altKey ? 7500 : 750)
+  #       .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
+  #
+  #   t.select("rect")
+  #       .attr("width", d.dy * kx)
+  #       .attr("height", function(d) { return d.dx * ky; });
+  #
+  #   t.select("text")
+  #       .attr("transform", transform)
+  #       .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; });
+  #
+  #   d3.event.stopPropagation();
+  # }
+
+
 class SearchBar extends Backbone.View
 
     events:
@@ -8,12 +77,31 @@ class SearchBar extends Backbone.View
         "keydown #search-item": "searchBarKeyHandler"
         "click .search-dropdown-item": "itemSelectedHandler"
 
+    isActive: () =>
+        @dropdown.hasClass('active')
+
     toggleOpen: =>
-        @$el.find("#search-dropdown").toggleClass('active')
+        if !@isActive()
+            setTimeout( () =>
+                         if @isActive()
+                            @$el.find('.search-partition-layout svg').css('display','inherit')
+                       ,
+                        500
+                      )
+        else
+            @$el.find('.search-partition-layout svg').css('display','none')
+        @dropdown.toggleClass('active')
 
     headerClick: (event) =>
         event.preventDefault()
         @$el.find("#search-dropdown").toggleClass('active',true)
+        if !@isActive()
+            setTimeout( () =>
+                         if @isActive()
+                            @$el.find('.search-partition-layout svg').css('display','inherit')
+                       ,
+                        500
+                      )
 
     getSuggestions: (event) =>
         event.preventDefault()
@@ -76,7 +164,7 @@ class SearchBar extends Backbone.View
         @selectedItem.toggleClass('selected',true)
         @selected = selected
 
-    initialize: ->
+    initialize: () ->
         url = "#{window.pageModel.get('baseURL')}/api/search/budget/#{pageModel.get('year')}?q=%QUERY&limit=20"
         dataType = window.pageModel.get('dataType')
         console.log 'url:', url
@@ -92,6 +180,9 @@ class SearchBar extends Backbone.View
                         queryTokenizer: Bloodhound.tokenizers.whitespace
         @engine.initialize()
         @suggestions = 0
+        @partition = new BudgetPartitionLayoutView(el: @$el.find('.search-partition-layout'))
+        @dropdown = @$el.find("#search-dropdown")
+        console.log "DROPDOWN=",@dropdown
 
 $( ->
     console.log 'setting up searchbar'
