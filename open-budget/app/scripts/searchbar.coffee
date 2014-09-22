@@ -4,7 +4,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         @render()
 
     render: ->
-        @w = @$el.width()
+        @w = @$el.width()-15
         @h = 400 # @$el.height()
 
         @vis = d3.select(@el)
