@@ -16,5 +16,5 @@ class SupportList extends Backbone.View
 
 $( ->
         console.log "support_list"
-        window.supportList = new SupportList({el: $("#support-list"),model: window.pageModel});
+        window.supportList = new SupportList({el: $("#support-lines"),model: window.pageModel});
 )

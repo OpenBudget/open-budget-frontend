@@ -1,20 +1,24 @@
-<!--
-<li class='support-subject'><%= subject %></li>
-<li class='support-code'><%= code %></li>
-<li class='support-title'><%= title %></li>
--->
-
-<li class='support-year'>שנה: <%= year %></li>
-<li class='support-recipient'>שם: <%= recipient %></li>
-<li class='support-amount-allocated'>תמיכה שאושרה: <%= amount_allocated %></li>
-<li class='support-amount_supported'>תמיכה שהועברה: <%= amount_supported %></li>
-<li class='support-kind'>סוג התמיכה: <%= kind %></li>
-<% if (kind=='תמיכה בפרט' || num_used > 1) { %>
-<li class='support-num_used'>מספר נתמכים: <%= num_used %></li>
-<% } %>
-<% if ( company_id != null ) { %>
-<li class='support-company_id'>מספר חברה: <%= company_id %></li>
-<% } %>
-<% if ( ngo_id != null ) { %>
-<li class='support-ngo_id'>מספר עמותה: <%= ngo_id %></li>
-<% } %>
+<tr>
+  <td class='support-year'><%= year %></td>
+  <td class='support-recipient'><%= recipient %></td>
+  <td class='support-amount-allocated'><%= amount_allocated %></td>
+  <td class='support-amount_supported'><%= amount_supported %></td>
+  <td class='support-kind'><%= kind %></td>
+  <td class='support-more'>
+    <span class='support-num_used'>
+      <% if (kind=='תמיכה בפרט' || num_used > 1) { %>
+      <%= num_used %> נתמכים
+      <% } %>
+    </span>
+    <span class='support-company_id'>
+      <% if ( company_id != null ) { %>
+      מספר חברה: <%= company_id %>
+      <% } %>
+    </span>
+    <span class='support-ngo_id'>
+      <% if ( ngo_id != null ) { %>
+      מספר עמותה: <%= ngo_id %>
+      <% } %>
+    </span>
+  </td>
+</tr>

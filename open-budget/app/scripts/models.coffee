@@ -251,7 +251,7 @@ class PageModel extends Backbone.Model
                     digits = budgetCode.length - 2
                     @set('digits',digits)
                     @article.find(".2digits,.4digits,.6digits,.8digits").css('display','none')
-                    @article.find(".#{digits}digits").css('display','inherit')
+                    @article.find(".#{digits}digits").css('display','')
                     @changeLines = new ChangeLines([], pageModel: @)
                     @changeGroups = new ChangeGroups([], pageModel: @)
                     @budgetHistory = new BudgetHistory([], pageModel: @)
