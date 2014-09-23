@@ -295,6 +295,8 @@ strong.approved {
     .search-dropdown-item {
         margin-right: 16px;
         line-height: 2.15em;
+        max-height: 2.3em;
+        overflow: hidden;
 
         border-bottom: 1px solid #ddd;
         &.selected {
@@ -305,7 +307,20 @@ strong.approved {
             cursor: pointer;
         }
 
-        .item-code{
+        .item-title {
+          display: inline-block;
+          font-weight: bold;
+          font-size: 110%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          max-width: 100%;
+        }
+
+        .item-code {
+          display: inline;
+          font-size: 80%;
+          padding-left: 10px;
           float: left;
         }
     }
@@ -1113,20 +1128,6 @@ svg rect{
       }
     }
   }
-}
-
-/* My stuff */
-
-.item-title {
-  display: inline;
-  font-weight: bold;
-  font-size: 110%;
-}
-
-.item-code {
-  display: inline;
-  font-size: 80%;
-  padding-left: 10px;
 }
 
 /* Subscribe widget */
