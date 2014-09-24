@@ -26,7 +26,7 @@ class BudgetPartitionLayoutView extends Backbone.View
                     .attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
                     # .on("click", click)
 
-            transform = (d) => "translate(" + (-8 - @x(d.dy / 2) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
+            transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
 
             g.append("svg:rect")
                 .attr("width", Math.abs(@x(root.dy) - @x(0)))
@@ -164,17 +164,25 @@ class SearchBar extends Backbone.View
         @selectedItem.toggleClass('selected',true)
         @selected = selected
 
+    url: (query,limit) ->
+        "#{window.pageModel.get('baseURL')}/api/search/budget/#{pageModel.get('year')}?q=#{query}&limit=#{limit}"
+
     initialize: () ->
-        url = "#{window.pageModel.get('baseURL')}/api/search/budget/#{pageModel.get('year')}?q=%QUERY&limit=20"
+        url = @url("%QUERY",20)
         dataType = window.pageModel.get('dataType')
         console.log 'url:', url
         console.log 'dataType:', dataType
         @engine = new Bloodhound
                         name: 'budgets'
+                        prefetch:
+                            url: @url('משרד', 100)
+                            ajax:
+                                dataType: dataType
                         remote:
                             url: url
                             ajax:
                                 dataType: dataType
+                        dupDetector: (x,y) -> x.code==y.code && x.year==y.year
                         limit: 20
                         datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace(d.title)
                         queryTokenizer: Bloodhound.tokenizers.whitespace
