@@ -36,7 +36,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             g.append("svg:text")
                 .attr("transform", transform)
                 .attr("dy", ".35em")
-                .style("opacity", (d) -> d.dx * @h > 12 ? 1 : 0)
+                .attr("class", (d) => if @y(d.dx) - @y(0) > 12 then "big-title" else "small-title")
                 .text((d) -> d.name)
         )
 
