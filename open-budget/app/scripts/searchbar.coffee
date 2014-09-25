@@ -4,41 +4,56 @@ class BudgetPartitionLayoutView extends Backbone.View
         @render()
 
     render: ->
-        @w = @$el.width()-15
-        @h = 400 # @$el.height()
 
         @vis = d3.select(@el)
                 .append("svg:svg")
-                    .attr("width", @w)
-                    .attr("height", @h);
         @partition = d3.layout.partition()
                             .value((d) -> d.size) #net_allocated)
 
         d3.json("/static-budget.json", (root) =>
 
-            data = @partition.nodes(root)
+            @root = root
+            @data = @partition.nodes(@root)
 
-            @x = d3.scale.linear().domain([root.dy,1]).range([@w, 0])
-            @y = d3.scale.linear().range([0, @h])
 
-            g = @vis.selectAll("g").data(data)
+            g = @vis.selectAll("g").data(@data)
                     .enter().append("svg:g")
-                    .attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
                     # .on("click", click)
 
-            transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
-
             g.append("svg:rect")
-                .attr("width", Math.abs(@x(root.dy) - @x(0)))
-                .attr("height", (d) => @y(d.dx) - @y(0))
                 .attr("class", (d) -> if d.children? then "parent" else "child")
 
             g.append("svg:text")
-                .attr("transform", transform)
                 .attr("dy", ".35em")
-                .attr("class", (d) => if @y(d.dx) - @y(0) > 12 then "big-title" else "small-title")
                 .text((d) -> d.name)
+
+            @updateChart()
         )
+
+    updateChart: () =>
+        console.log "PL","updateChart"
+        @w = @$el.width()-15
+        @h = 400 # @$el.height()
+
+        console.log "PL","updateChart #{@w} x #{@h}"
+
+        @$el.find('svg')
+            .attr('width', @w)
+            .attr('height', @h)
+
+        @x = d3.scale.linear().domain([@root.dy,1]).range([@w, 0])
+        @y = d3.scale.linear().range([0, @h])
+
+        transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
+
+        @vis.selectAll("g").data(@data)
+            .attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
+        @vis.selectAll("g rect").data(@data)
+            .attr("width", Math.abs(@x(@root.dy) - @x(0)))
+            .attr("height", (d) => @y(d.dx) - @y(0))
+        @vis.selectAll("g text").data(@data)
+            .attr("transform", transform)
+            .attr("class", (d) => if @y(d.dx) - @y(0) > 12 then "big-title" else "small-title")
 
             # d3.select(@el) # window
             #     .on("click", () -> click(root))
@@ -87,7 +102,8 @@ class SearchBar extends Backbone.View
                             @$el.find('.search-partition-layout svg').css('display','inherit')
                        ,
                         500
-                      )
+            )
+            @$el.find('#search-item').focus()
         else
             @$el.find('.search-partition-layout svg').css('display','none')
         @dropdown.toggleClass('active')
@@ -107,11 +123,22 @@ class SearchBar extends Backbone.View
         event.preventDefault()
         val = @$el.find('#search-item').val()
         console.log 'getSuggestions',val
-        @engine.get( val, (suggestions) => @renderSuggestions(suggestions) )
+        if val != ''
+            @engine.get( val, (suggestions) => @renderSuggestions(suggestions) )
+        else
+            @$el.find(".search-results").html('')
+            @$el.find("#search-dropdown").toggleClass('gotresults',false)
+            @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-8',false)
+            @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-12',true)
+            @partition.updateChart()
 
     renderSuggestions: (suggestions) =>
         @suggestions = suggestions.length
         @selected = -1
+        @$el.find("#search-dropdown").toggleClass('gotresults',true)
+        @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-8',true)
+        @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-12',false)
+        @partition.updateChart()
         sr = @$el.find('.search-results')
         sr.html('')
         console.log 'renderSuggestions',suggestions
@@ -122,20 +149,31 @@ class SearchBar extends Backbone.View
 
     searchBarKeyHandler: (event) =>
         prevent = true
-        if event.which == 40
-            if @selected == -1 and @suggestions > 0 # down
+        if event.which == 40 # down
+            if @selected == -1 and @suggestions > 0
                 @select(0)
             else if @selected >= 0
                 @select((@selected+1) % @suggestions)
         else if event.which == 38 #up
             if @selected >= 0
                 @select((@selected+@suggestions-1) % @suggestions)
-        else if event.which == 9
-            if @selected == -1 and @suggestions > 0 # tab
+        else if event.which == 9 # tab
+            if @selected == -1 and @suggestions > 0
                 @select(0)
-        else if event.which == 13
+        else if event.which == 13 # enter
             if @selected != -1
                 @selectionHandler(event)
+        else if event.which == 27 # esc
+            @selected = -1
+            @$el.find("#search-item").val('')
+            @$el.find(".search-results").html('')
+            @$el.find("#search-dropdown").toggleClass('gotresults',false)
+            @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-8',false)
+            @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-12',true)
+            if @isActive()
+                @toggleOpen()
+            else
+                @partition.updateChart()
         else
             prevent = false
         if prevent then event.preventDefault()
