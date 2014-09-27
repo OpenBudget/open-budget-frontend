@@ -36,19 +36,20 @@ class OverviewWidget extends Backbone.View
                                                 selection[0] = newX
                                         else
                                                 selection[0] = selection[1]-1
-                                        that.pageModel.set('selection', selection)
-                                if selection_src == 1
+                                else if selection_src == 1
                                         if newX > selection[0]
                                                 selection[1] = newX
                                         else
                                                 selection[1] = selection[0] + 1
-                                        that.pageModel.set('selection', selection)
-                                if selection_src == 2
+                                else if selection_src == 2
                                         dx = d3.event.dx
                                         dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
                                         selection[0] += dx
                                         selection[1] += dx
-                                        that.pageModel.set('selection', selection)
+                                else
+                                    return
+                                if selection[0] > that.model.minTime && selection[1] < that.model.maxTime
+                                    that.pageModel.set('selection', selection)
                 )
 
         renderSelectionBar: ->

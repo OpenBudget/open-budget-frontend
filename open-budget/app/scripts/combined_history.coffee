@@ -85,8 +85,8 @@ class CombinedHistory extends Backbone.Collection
                         width = point.get('width')
                         if @minTime == null or @minTime > time
                                 @minTime = time
-                        if @maxTime == null or @maxTime < time + width
-                                @maxTime = time + width
+                        if @maxTime == null or @maxTime < time
+                                @maxTime = time
                 for model in @models
                     model.set('max_value',@maxValue)
                     model.set('min_value',@minValue)

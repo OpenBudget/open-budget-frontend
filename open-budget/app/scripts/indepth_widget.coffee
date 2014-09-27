@@ -28,9 +28,11 @@ class IndepthWidget extends Backbone.View
                                 newX = that.baseTimeScale.invert(x)
                                 dx = d3.event.dx
                                 dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
-                                selection[0] -= dx
-                                selection[1] -= dx
-                                that.pageModel.set('selection', selection)
+
+                                if (selection[0]-dx) > that.model.minTime && (selection[1]-dx) < that.model.maxTime
+                                    selection[0] -= dx
+                                    selection[1] -= dx
+                                    that.pageModel.set('selection', selection)
                 )
                 @change_tip = d3.tip()
                                .attr('class', 'd3-tip')

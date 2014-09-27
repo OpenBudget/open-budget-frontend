@@ -99,13 +99,13 @@ class SearchBar extends Backbone.View
         if !@isActive()
             setTimeout( () =>
                          if @isActive()
-                            @$el.find('.search-partition-layout svg').css('display','inherit')
+                            @$el.find('.search-partition-layout').css('display','inherit')
                        ,
                         500
             )
             @$el.find('#search-item').focus()
         else
-            @$el.find('.search-partition-layout svg').css('display','none')
+            @$el.find('.search-partition-layout').css('display','none')
         @dropdown.toggleClass('active')
 
     headerClick: (event) =>
@@ -114,7 +114,7 @@ class SearchBar extends Backbone.View
         if !@isActive()
             setTimeout( () =>
                          if @isActive()
-                            @$el.find('.search-partition-layout svg').css('display','inherit')
+                            @$el.find('.search-partition-layout').css('display','inherit')
                        ,
                         500
                       )
