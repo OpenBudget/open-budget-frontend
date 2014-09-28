@@ -84,109 +84,148 @@ class BudgetPartitionLayoutView extends Backbone.View
 
 class SearchBar extends Backbone.View
 
+    STATE_IDLE = 'idle'
+    STATE_OPEN = 'open'
+    STATE_RESULTS = 'results'
+    STATE_CLOSED_RESULTS = 'cl_results'
+
+    EV_OPEN_DROPDOWN = "open"
+    EV_TOGGLE_DROPDOWN = "toggle"
+    EV_CLOSE_DROPDOWN = "close"
+    EV_CLEAR_RESULTS = "clear"
+    EV_GOT_RESULTS = "results"
+
     events:
         "submit form": "selectionHandler"
-        "click #btn-tree": "toggleOpen"
+        "click #btn-tree": "treeBtnClick"
         "click #search-item": "headerClick"
         "input #search-item": "getSuggestions"
         "keydown #search-item": "searchBarKeyHandler"
         "click .search-dropdown-item": "itemSelectedHandler"
 
-    isActive: () =>
-        @dropdown.hasClass('active')
+    transition: (event) =>
+        if @state == STATE_IDLE
+            if event == EV_OPEN_DROPDOWN || event == EV_TOGGLE_DROPDOWN
+                @openDropdown()
+                @state = STATE_OPEN
+        else if @state == STATE_CLOSED_RESULTS
+            if event == EV_OPEN_DROPDOWN || event == EV_TOGGLE_DROPDOWN
+                @openDropdown()
+                @createSuggestionPane()
+                @renderSuggestions()
+                @state = STATE_RESULTS
+        else if @state == STATE_OPEN
+            if event == EV_GOT_RESULTS
+                @createSuggestionPane()
+                @renderSuggestions()
+                @state = STATE_RESULTS
+            else if event == EV_CLOSE_DROPDOWN || event == EV_TOGGLE_DROPDOWN
+                @closeDropdown()
+                @state = STATE_IDLE
+        else if @state == STATE_RESULTS
+            if event == EV_CLOSE_DROPDOWN || event == EV_TOGGLE_DROPDOWN
+                @closeDropdown()
+                @state = STATE_CLOSED_RESULTS
+            else if event == EV_CLEAR_RESULTS
+                @clearSuggestions()
+                @state = STATE_OPEN
+            else if event == EV_GOT_RESULTS
+                @renderSuggestions()
 
-    toggleOpen: =>
-        if !@isActive()
-            setTimeout( () =>
-                         if @isActive()
-                            @$el.find('.search-partition-layout').css('display','inherit')
-                       ,
-                        500
-            )
-            @$el.find('#search-item').focus()
-        else
-            @$el.find('.search-partition-layout').css('display','none')
-        @dropdown.toggleClass('active')
+    isOpen: () =>
+        @state == STATE_OPEN || @state == STATE_RESULTS
+
+    openDropdown: =>
+        setTimeout( () =>
+                     if @isOpen()
+                        @$el.find('.search-partition-layout').css('display','inherit')
+                   ,
+                    500
+        )
+        @$el.find('#search-item').focus()
+        @dropdown.toggleClass('active',true)
+
+    closeDropdown: =>
+        @$el.find('.search-partition-layout').css('display','none')
+        @dropdown.toggleClass('active',false)
+
+    clearSuggestions: () =>
+        @$el.find(".search-results").html('')
+        @$el.find("#search-dropdown").toggleClass('gotresults',false)
+        @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-8',false)
+        @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-12',true)
+        @partition.updateChart()
+
+    createSuggestionPane: () =>
+        @$el.find("#search-dropdown").toggleClass('gotresults',true)
+        @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-8',true)
+        @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-12',false)
+        @partition.updateChart()
+
+    renderSuggestions: () =>
+        sr = @$el.find('.search-results')
+        sr.html('')
+        for suggestion in @suggestions
+            item = $(JST.search_dropdown_item(suggestion))
+            sr.append(item)
+            item.data(suggestion)
+
+    treeBtnClick: (event) =>
+        console.log('treeBtnClick')
+        event.preventDefault()
+        @transition(EV_TOGGLE_DROPDOWN)
 
     headerClick: (event) =>
         event.preventDefault()
-        @$el.find("#search-dropdown").toggleClass('active',true)
-        if !@isActive()
-            setTimeout( () =>
-                         if @isActive()
-                            @$el.find('.search-partition-layout').css('display','inherit')
-                       ,
-                        500
-                      )
+        @transition(EV_OPEN_DROPDOWN)
 
     getSuggestions: (event) =>
         event.preventDefault()
         val = @$el.find('#search-item').val()
         console.log 'getSuggestions',val
         if val != ''
-            @engine.get( val, (suggestions) => @renderSuggestions(suggestions) )
+            @transition(EV_OPEN_DROPDOWN)
+            @engine.get( val
+                        ,
+                         (suggestions) =>
+                            @suggestions = suggestions
+                            @suggestionNum = suggestions.length
+                            @selected = -1
+                            @transition(EV_GOT_RESULTS) )
         else
-            @$el.find(".search-results").html('')
-            @$el.find("#search-dropdown").toggleClass('gotresults',false)
-            @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-8',false)
-            @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-12',true)
-            @partition.updateChart()
-
-    renderSuggestions: (suggestions) =>
-        @suggestions = suggestions.length
-        @selected = -1
-        @$el.find("#search-dropdown").toggleClass('gotresults',true)
-        @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-8',true)
-        @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-12',false)
-        @partition.updateChart()
-        sr = @$el.find('.search-results')
-        sr.html('')
-        console.log 'renderSuggestions',suggestions
-        for suggestion in suggestions
-            item = $(JST.search_dropdown_item(suggestion))
-            sr.append(item)
-            item.data(suggestion)
+            @transition(EV_CLEAR_RESULTS)
 
     searchBarKeyHandler: (event) =>
         prevent = true
         if event.which == 40 # down
-            if @selected == -1 and @suggestions > 0
+            if @selected == -1 and @suggestionNum > 0
                 @select(0)
             else if @selected >= 0
-                @select((@selected+1) % @suggestions)
+                @select((@selected+1) % @suggestionNum)
         else if event.which == 38 #up
             if @selected >= 0
-                @select((@selected+@suggestions-1) % @suggestions)
+                @select((@selected+@suggestionNum-1) % @suggestionNum)
         else if event.which == 9 # tab
-            if @selected == -1 and @suggestions > 0
+            if @selected == -1 and @suggestionNum > 0
                 @select(0)
         else if event.which == 13 # enter
             if @selected != -1
                 @selectionHandler(event)
         else if event.which == 27 # esc
             @selected = -1
-            @$el.find("#search-item").val('')
-            @$el.find(".search-results").html('')
-            @$el.find("#search-dropdown").toggleClass('gotresults',false)
-            @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-8',false)
-            @$el.find("#search-dropdown .search-partition-layout").toggleClass('col-md-12',true)
-            if @isActive()
-                @toggleOpen()
-            else
-                @partition.updateChart()
+            @transition(EV_CLEAR_RESULTS)
+            @transition(EV_CLOSE_DROPDOWN)
         else
             prevent = false
         if prevent then event.preventDefault()
 
     itemSelectedHandler: (event) ->
         data = $(event.currentTarget).data()
-        console.log event, data
         @goToData(data)
         event.preventDefault()
 
     selectionHandler: (event) =>
         data = @selectedItem.data()
-        console.log data
         @goToData(data)
         event.preventDefault()
 
@@ -195,7 +234,6 @@ class SearchBar extends Backbone.View
          window.location.reload()
 
     select: (selected) ->
-        console.log 'select',selected
         suggestions = @$el.find('.search-results .search-dropdown-item')
         suggestions.toggleClass('selected',false)
         @selectedItem = $(suggestions.get(selected))
@@ -206,10 +244,11 @@ class SearchBar extends Backbone.View
         "#{window.pageModel.get('baseURL')}/api/search/budget/#{pageModel.get('year')}?q=#{query}&limit=#{limit}"
 
     initialize: () ->
+        @state = STATE_IDLE
+        @suggestionNum = 0
+        @suggestions = []
         url = @url("%QUERY",20)
         dataType = window.pageModel.get('dataType')
-        console.log 'url:', url
-        console.log 'dataType:', dataType
         @engine = new Bloodhound
                         name: 'budgets'
                         prefetch:
@@ -225,53 +264,10 @@ class SearchBar extends Backbone.View
                         datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace(d.title)
                         queryTokenizer: Bloodhound.tokenizers.whitespace
         @engine.initialize()
-        @suggestions = 0
         @partition = new BudgetPartitionLayoutView(el: @$el.find('.search-partition-layout'))
         @dropdown = @$el.find("#search-dropdown")
-        console.log "DROPDOWN=",@dropdown
 
 $( ->
     console.log 'setting up searchbar'
     window.search = new SearchBar(el: $("#search-widget"))
 )
-
-# $("#search-item").typeahead(
-#         name: 'budgets'
-#         limit: 20
-#         engine: { compile: (x) -> { render: JST[x]} }
-#
-#         template: 'search_dropdown_item'
-#         footer: '<div class="tt-search-footer"></div>'
-#
-#         remote:
-#                 url: window.pageModel.get('baseURL')+"/api/search/budget/#{pageModel.get('year')}?q=%QUERY&limit=20"
-#                 dataType: 'jsonp'
-#                 cache: true
-#                 timeout: 3600
-#                 filter: (l) ->
-#                         for x in l
-#                                 x._code = x.code.substring(2)
-#                                 x.value = x._code
-#                         l
-# )
-# $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
-# $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
-# $("#search-item").bind('typeahead:selected', get_program )
-# $("#search-item").bind('change', get_program )
-# $("#search-form").submit( ->
-#         false
-#         )
-
-
-# get_program = (obj,datum,name) ->
-#         console.log "selected:", obj, datum, name
-#         console.log "selected2:", $("#search-item").val()
-#         if datum?
-#             code = datum.code
-#             window.location.hash = "#budget/" + code + "/" + window.pageModel.get('year')
-#             window.location.reload()
-#         else
-#             code = $("#search-item").val()
-#             if code.match(/^[0-9]+$/)
-#                 window.location.hash = "#budget/00" + code + "/" + window.pageModel.get('year')
-#                 window.location.reload()
