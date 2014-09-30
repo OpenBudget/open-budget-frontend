@@ -2,6 +2,7 @@ class BudgetPartitionLayoutView extends Backbone.View
 
     initialize: ->
         @render()
+        @codes = {}
 
     render: ->
 
@@ -10,24 +11,43 @@ class BudgetPartitionLayoutView extends Backbone.View
         @partition = d3.layout.partition()
                             .value((d) -> d.size) #net_allocated)
 
-        d3.json("/static-budget.json", (root) =>
+        onSuccess = (root) =>
 
-            @root = root
+            @root = root.value
             @data = @partition.nodes(@root)
 
+            @codes = {}
+            for datum in @data
+                @codes[datum.code] = datum
+
+            cls = (d) =>
+                if d.code=="0015" then console.log d.value - d.orig_size, d
+                if d.value > d.orig_size
+                    "increased"
+                else if d.value < d.orig_size
+                    "decreased"
+                else
+                    "unchanged"
 
             g = @vis.selectAll("g").data(@data)
                     .enter().append("svg:g")
                     # .on("click", click)
+            g.attr("class", cls )
+             .attr("data-code", (d) -> d.code)
 
             g.append("svg:rect")
                 .attr("class", (d) -> if d.children? then "parent" else "child")
+                .on("click", (d) => if d.children? then @selectCode(d.code) )
 
             g.append("svg:text")
                 .attr("dy", ".35em")
                 .text((d) -> d.name)
 
             @updateChart()
+        $.ajax(
+            dataType: window.pageModel.get('dataType')
+            url: "#{window.pageModel.get('baseURL')}/api/sysprop/static-budget"
+            success: onSuccess
         )
 
     updateChart: () =>
@@ -41,46 +61,39 @@ class BudgetPartitionLayoutView extends Backbone.View
             .attr('width', @w)
             .attr('height', @h)
 
-        @x = d3.scale.linear().domain([@root.dy,1]).range([@w, 0])
-        @y = d3.scale.linear().range([0, @h])
+        @x = d3.scale.linear().domain([@root.y+@root.dy/2,1]).range([@w, 0])
+        @y = d3.scale.linear().domain([@root.x,@root.x+@root.dx]).range([0, @h])
 
         transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
 
-        @vis.selectAll("g").data(@data)
-            .attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
-        @vis.selectAll("g rect").data(@data)
+        g = @vis.selectAll("g").data(@data)
+        t = g.transition()
+             .duration(750)
+             .attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
+        t.select("rect")
             .attr("width", Math.abs(@x(@root.dy) - @x(0)))
             .attr("height", (d) => @y(d.dx) - @y(0))
-        @vis.selectAll("g text").data(@data)
+        t.select("text")
             .attr("transform", transform)
+            .attr("dx", (d) => if d.y == @root.y then @x(@root.dy/2) - @x(0) else 0)
             .attr("class", (d) => if @y(d.dx) - @y(0) > 12 then "big-title" else "small-title")
 
             # d3.select(@el) # window
             #     .on("click", () -> click(root))
 
-  # function click(d) {
-  #   if (!d.children) return;
-  #
-  #   kx = (d.y ? w - 40 : w) / (1 - d.y);
-  #   ky = h / d.dx;
-  #   x.domain([d.y, 1]).range([d.y ? 40 : 0, w]);
-  #   y.domain([d.x, d.x + d.dx]);
-  #
-  #   var t = g.transition()
-  #       .duration(d3.event.altKey ? 7500 : 750)
-  #       .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
-  #
-  #   t.select("rect")
-  #       .attr("width", d.dy * kx)
-  #       .attr("height", function(d) { return d.dx * ky; });
-  #
-  #   t.select("text")
-  #       .attr("transform", transform)
-  #       .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; });
-  #
-  #   d3.event.stopPropagation();
-  # }
+    selectCode: (code) =>
+        d = null
+        code = code.slice(0,6)
+        console.log "CCC", code
+        while not d?
+            d = @codes[code]
+            if not d?
+                code = code.slice(0,-2)
 
+        if d?
+            console.log d
+            @root = d
+            @updateChart()
 
 class SearchBar extends Backbone.View
 
@@ -104,33 +117,38 @@ class SearchBar extends Backbone.View
         "click .search-dropdown-item": "itemSelectedHandler"
 
     transition: (event) =>
-        if @state == STATE_IDLE
-            if event == EV_OPEN_DROPDOWN || event == EV_TOGGLE_DROPDOWN
-                @openDropdown()
-                @state = STATE_OPEN
-        else if @state == STATE_CLOSED_RESULTS
-            if event == EV_OPEN_DROPDOWN || event == EV_TOGGLE_DROPDOWN
-                @openDropdown()
-                @createSuggestionPane()
-                @renderSuggestions()
-                @state = STATE_RESULTS
-        else if @state == STATE_OPEN
-            if event == EV_GOT_RESULTS
-                @createSuggestionPane()
-                @renderSuggestions()
-                @state = STATE_RESULTS
-            else if event == EV_CLOSE_DROPDOWN || event == EV_TOGGLE_DROPDOWN
-                @closeDropdown()
-                @state = STATE_IDLE
-        else if @state == STATE_RESULTS
-            if event == EV_CLOSE_DROPDOWN || event == EV_TOGGLE_DROPDOWN
-                @closeDropdown()
-                @state = STATE_CLOSED_RESULTS
-            else if event == EV_CLEAR_RESULTS
-                @clearSuggestions()
-                @state = STATE_OPEN
-            else if event == EV_GOT_RESULTS
-                @renderSuggestions()
+        switch @state
+            when STATE_IDLE
+                switch event
+                    when EV_OPEN_DROPDOWN, EV_TOGGLE_DROPDOWN
+                        @openDropdown()
+                        @state = STATE_OPEN
+            when STATE_CLOSED_RESULTS
+                switch event
+                    when EV_OPEN_DROPDOWN, EV_TOGGLE_DROPDOWN
+                        @openDropdown()
+                        @createSuggestionPane()
+                        @renderSuggestions()
+                        @state = STATE_RESULTS
+            when STATE_OPEN
+                switch event
+                    when EV_GOT_RESULTS
+                        @createSuggestionPane()
+                        @renderSuggestions()
+                        @state = STATE_RESULTS
+                    when EV_CLOSE_DROPDOWN, EV_TOGGLE_DROPDOWN
+                        @closeDropdown()
+                        @state = STATE_IDLE
+            when STATE_RESULTS
+                switch event
+                    when EV_CLOSE_DROPDOWN, EV_TOGGLE_DROPDOWN
+                        @closeDropdown()
+                        @state = STATE_CLOSED_RESULTS
+                    when EV_CLEAR_RESULTS
+                        @clearSuggestions()
+                        @state = STATE_OPEN
+                    when EV_GOT_RESULTS
+                        @renderSuggestions()
 
     isOpen: () =>
         @state == STATE_OPEN || @state == STATE_RESULTS
@@ -234,11 +252,14 @@ class SearchBar extends Backbone.View
          window.location.reload()
 
     select: (selected) ->
+        console.log 'selected',selected, @suggestions[selected].code
         suggestions = @$el.find('.search-results .search-dropdown-item')
         suggestions.toggleClass('selected',false)
         @selectedItem = $(suggestions.get(selected))
         @selectedItem.toggleClass('selected',true)
+        @selectedItem[0].scrollIntoView(false)
         @selected = selected
+        @partition.selectCode( @suggestions[selected].code )
 
     url: (query,limit) ->
         "#{window.pageModel.get('baseURL')}/api/search/budget/#{pageModel.get('year')}?q=#{query}&limit=#{limit}"

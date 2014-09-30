@@ -261,7 +261,6 @@ strong.approved {
     }
 
     .search-partition-layout {
-        //background: #fff;
         display: none;
         padding-left: 15px;
         min-height:0px;
@@ -271,27 +270,36 @@ strong.approved {
 
         font-size: 11px;
 
-        rect {
-          stroke: #eee;
-          fill: #aaa;
-          fill-opacity: .8;
+        .increased {
+            rect {
+                fill: lighten(@increased,40%);
+            }
         }
 
-        rect.parent {
-          cursor: pointer;
-          fill: steelblue;
+        .decreased {
+            rect {
+                fill: lighten(@decreased,40%);
+            }
+        }
+
+        rect {
+          stroke: @darkgray;
+          fill: @gray;
+          fill-opacity: .8;
+
+          &.parent {
+              cursor: pointer;
+          }
         }
 
         text {
           pointer-events: none;
+          stroke: @darkgray;
 
           &.small-title {
               opacity: 0;
           }
         }
-
-        .col-md-12;
-
     }
 
     .search-dropdown-item {
