@@ -10,6 +10,7 @@ class CombinedHistoryPoint extends Backbone.Model
                 width: 0
                 date: null
                 last: false
+                exact: true
 
                 diff_value: null
 
@@ -61,6 +62,11 @@ class CombinedHistory extends Backbone.Collection
                                         point.set('value', baseline)
                                         if lastPoint != null
                                                 lastPoint.set('width',time - lastPoint.get('timestamp'))
+                                        if point.get('src') == 'budgetline'
+                                            source = point.get('source')
+                                            code = source.get('code')
+                                            orig_codes = source.get('orig_codes')
+                                            point.set('exact',orig_codes[0] == code)
                                         lastPoint = point
                                 else
                                         continue

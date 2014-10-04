@@ -41,6 +41,14 @@
           <h2><%= format_full_number( get("value")*1000 ) %>₪</h2>
         </div>
         <div class="widget-popover-content">
+            <% if ( !get('exact') ) { %>
+                <b>משוערך</b> לפי הסעיפים הבאים:
+                <ul>
+                    <% var codes = get('source').get('orig_codes'); for ( var _i = 0 ; _i < codes.length ; _i++ ) { %>
+                    <li><%= codes[_i] %></li>
+                    <% } %>
+                </ul>
+            <% } %>
         </div>
       <% } else if ( get('kind') == 'used' ) { %>
         <!-- <div class="arrow"></div> -->

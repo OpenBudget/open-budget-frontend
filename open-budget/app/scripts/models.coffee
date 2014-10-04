@@ -94,6 +94,7 @@ class BudgetItem extends Backbone.Model
                 net_revised: null
                 year: null
                 net_used: null
+                orig_codes: []
 
         initialize: (options) ->
             @pageModel = options.pageModel
@@ -222,7 +223,7 @@ class BudgetHistory extends Backbone.Collection
                 @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
-                "#{pageModel.get('baseURL')}/api/budget/#{@pageModel.get('budgetCode')}"
+                "#{pageModel.get('baseURL')}/api/budget/#{@pageModel.get('budgetCode')}/#{@pageModel.get('year')}/equivs"
 
         comparator: (m) -> m.get('year')
 
