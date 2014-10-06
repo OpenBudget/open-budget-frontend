@@ -11,6 +11,8 @@ class BudgetPartitionLayoutView extends Backbone.View
         @partition = d3.layout.partition()
                             .value((d) -> d.size) #net_allocated)
 
+        @cls = (d) => window.changeClass( d.orig_size, d.value )
+
         onSuccess = (root) =>
 
             @root = root.value
@@ -20,30 +22,8 @@ class BudgetPartitionLayoutView extends Backbone.View
             for datum in @data
                 @codes[datum.code] = datum
 
-            cls = (d) =>
-                if d.code=="0015" then console.log d.value - d.orig_size, d
-                if d.value > d.orig_size
-                    "increased"
-                else if d.value < d.orig_size
-                    "decreased"
-                else
-                    "unchanged"
-
-            g = @vis.selectAll("g").data(@data)
-                    .enter().append("svg:g")
-                    # .on("click", click)
-            g.attr("class", cls )
-             .attr("data-code", (d) -> d.code)
-
-            g.append("svg:rect")
-                .attr("class", (d) -> if d.children? then "parent" else "child")
-                .on("click", (d) => if d.children? then @selectCode(d.code) )
-
-            g.append("svg:text")
-                .attr("dy", ".35em")
-                .text((d) -> d.name)
-
             @updateChart()
+
         $.ajax(
             dataType: window.pageModel.get('dataType')
             url: "#{window.pageModel.get('baseURL')}/api/sysprop/static-budget"
@@ -66,8 +46,24 @@ class BudgetPartitionLayoutView extends Backbone.View
 
         transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
 
-        g = @vis.selectAll("g").data(@data)
-        t = g.transition()
+        _data = _.filter(@data, (d) => d.depth - @root.depth < 3)
+        g_all = @vis.selectAll("g").data(_data, (d)->d.code)
+        g = g_all.enter().append("svg:g")
+                # .on("click", click)
+        g.attr("class", @cls )
+         .attr("data-code", (d) -> d.code)
+
+        g.append("svg:rect")
+            .attr("class", (d) -> if d.children? then "parent" else "child")
+            .on("click", (d) => if d.children? then @selectCode(d.code) )
+
+        g.append("svg:text")
+            .attr("dy", ".35em")
+            .text((d) -> d.name)
+
+        g_all.exit().remove()
+
+        t = g_all.transition()
              .duration(750)
              .attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
         t.select("rect")
@@ -122,6 +118,7 @@ class SearchBar extends Backbone.View
                 switch event
                     when EV_OPEN_DROPDOWN, EV_TOGGLE_DROPDOWN
                         @openDropdown()
+                        @partition.selectCode( window.pageModel.get('budgetCode') )
                         @state = STATE_OPEN
             when STATE_CLOSED_RESULTS
                 switch event

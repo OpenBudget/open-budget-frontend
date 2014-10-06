@@ -102,6 +102,9 @@ class BudgetItem extends Backbone.Model
         do_fetch: ->
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
+        get_class: ->
+            window.changeClass( @get('net_allocated'), @get('net_revised') )
+
         url: ->
             "#{pageModel.get('baseURL')}/api/budget/#{@get('code')}/#{@get('year')}"
 
