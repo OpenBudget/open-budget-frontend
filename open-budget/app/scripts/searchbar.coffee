@@ -50,11 +50,10 @@ class BudgetPartitionLayoutView extends Backbone.View
         g_all = @vis.selectAll("g").data(_data, (d)->d.code)
         g = g_all.enter().append("svg:g")
                 # .on("click", click)
-        g.attr("class", @cls )
-         .attr("data-code", (d) -> d.code)
+        g.attr("data-code", (d) -> d.code)
 
         g.append("svg:rect")
-            .attr("class", (d) -> if d.children? then "parent" else "child")
+            .attr("class", (d) => (if d.children? then "parent" else "child") + " " + @cls(d) )
             .on("click", (d) => if d.children? then @selectCode(d.code) )
 
         g.append("svg:text")
