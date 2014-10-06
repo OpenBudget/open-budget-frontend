@@ -281,32 +281,7 @@ strong.approved {
 
         font-size: 11px;
 
-        .increased {
-            rect {
-                //fill: lighten(@increased,20%);
-                fill: @increased;
-
-                // &:hover {
-                //   fill: lighten(@increased,10%);
-                // }
-            }
-        }
-
-        .decreased {
-            rect {
-                //fill: lighten(@decreased,20%);
-                fill: @decreased;
-
-                // &:hover{
-                //   fill: lighten(@decreased,10%);
-                // }
-            }
-        }
-
-        .increased, .decreased, .unchanged {
-
-
-          &:hover {
+        g:hover {
 
             rect {
               opacity: 0.8;
@@ -316,14 +291,11 @@ strong.approved {
             text {
               font-weight: bold;
             }
-          }
         }
 
         rect {
           stroke: @background;
           stroke-width: 0.5;
-          fill: @gray;
-          fill-opacity: .8;
 
           &.parent {
               cursor: pointer;
@@ -332,7 +304,6 @@ strong.approved {
 
         text {
           pointer-events: none;
-          //stroke: @darkgray;
 
           &.small-title {
               opacity: 0;
