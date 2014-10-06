@@ -10,8 +10,12 @@
 
 @approved: #33cd56; // #00AF6A;
 @spent: #F94641;
-@decreased: #9F7E27;
-@increased: #5731E7;
+@increased: #fb4007; // #5731E7;
+@decreased: #228dd8; // #9F7E27;
+@decreased_6: lighten(desaturate(@decreased, 20%), 15%);
+@increased_6: lighten(desaturate(@increased, 20%), 15%);
+@decreased_3: lighten(desaturate(@decreased, 30%), 20%);
+@increased_3: lighten(desaturate(@increased, 30%), 20%);
 @link: #00A1F6;
 @text: #3C4948;
 
@@ -21,6 +25,13 @@
 @ultralightgray: #f8f8f8;
 
 @selection: #3399ff;
+
+.increased_bg  {  background: @increased}
+.increased_6_bg{  background: @increased_6}
+.increased_3_bg{  background: @increased_3}
+.decreased_bg  {  background: @decreased}
+.decreased_6_bg{  background: @decreased_6}
+.decreased_3_bg{  background: @decreased_3}
 
 
 .browsehappy {
@@ -272,18 +283,45 @@ strong.approved {
 
         .increased {
             rect {
-                fill: lighten(@increased,40%);
+                //fill: lighten(@increased,20%);
+                fill: @increased;
+
+                // &:hover {
+                //   fill: lighten(@increased,10%);
+                // }
             }
         }
 
         .decreased {
             rect {
-                fill: lighten(@decreased,40%);
+                //fill: lighten(@decreased,20%);
+                fill: @decreased;
+
+                // &:hover{
+                //   fill: lighten(@decreased,10%);
+                // }
             }
         }
 
+        .increased, .decreased, .unchanged {
+
+
+          &:hover {
+
+            rect {
+              opacity: 0.8;
+              stroke-width: 2;
+            }
+
+            text {
+              font-weight: bold;
+            }
+          }
+        }
+
         rect {
-          stroke: @darkgray;
+          stroke: @background;
+          stroke-width: 0.5;
           fill: @gray;
           fill-opacity: .8;
 
@@ -294,7 +332,7 @@ strong.approved {
 
         text {
           pointer-events: none;
-          stroke: @darkgray;
+          //stroke: @darkgray;
 
           &.small-title {
               opacity: 0;
@@ -304,22 +342,25 @@ strong.approved {
 
     .search-dropdown-item {
         margin-right: 16px;
-        line-height: 2.15em;
+        line-height: 2.25em;
         max-height: 2.3em;
         overflow: hidden;
 
         border-bottom: 1px solid #ddd;
         &.selected {
-            background: #88f;
+            background: white;
+            font-weight: bold;
         }
         &:hover {
-            background: #ccf;
+            //background: white;
+            color: darken(@text, 40%);
             cursor: pointer;
+            font-weight: bold;
         }
 
         .item-title {
           display: inline-block;
-          font-weight: bold;
+          //font-weight: bold;
           font-size: 110%;
           text-overflow: ellipsis;
           overflow: hidden;
