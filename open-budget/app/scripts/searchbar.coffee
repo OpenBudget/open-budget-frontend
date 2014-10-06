@@ -11,7 +11,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         @partition = d3.layout.partition()
                             .value((d) -> d.size) #net_allocated)
 
-        @cls = (d) => window.changeClass( d.orig_size, d.value )
+        @cls = (d) => window.changeClass( d.orig_size, d.value ) + "_bg"
 
         onSuccess = (root) =>
 
@@ -41,7 +41,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             .attr('width', @w)
             .attr('height', @h)
 
-        @x = d3.scale.linear().domain([@root.y+@root.dy/2,1]).range([@w, 0])
+        @x = d3.scale.linear().domain([@root.y+@root.dy/2,@root.y+@root.dy*3]).range([@w, 0])
         @y = d3.scale.linear().domain([@root.x,@root.x+@root.dx]).range([0, @h])
 
         transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
