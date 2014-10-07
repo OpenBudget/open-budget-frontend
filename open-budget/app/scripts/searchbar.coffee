@@ -9,9 +9,9 @@ class BudgetPartitionLayoutView extends Backbone.View
         @vis = d3.select(@el)
                 .append("svg:svg")
         @partition = d3.layout.partition()
-                            .value((d) -> d.size) #net_allocated)
+                            .value((d) -> d.s) #net_allocated)
 
-        @cls = (d) => window.changeClass( d.orig_size, d.value ) + "_bg"
+        @cls = (d) => window.changeClass( d.o, d.value ) + "_bg"
 
         onSuccess = (root) =>
 
@@ -20,7 +20,7 @@ class BudgetPartitionLayoutView extends Backbone.View
 
             @codes = {}
             for datum in @data
-                @codes[datum.code] = datum
+                @codes[datum.c] = datum
 
             @updateChart()
 
@@ -47,24 +47,24 @@ class BudgetPartitionLayoutView extends Backbone.View
         transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
 
         _data = _.filter(@data, (d) => d.depth - @root.depth < 3)
-        g_all = @vis.selectAll("g").data(_data, (d)->d.code)
+        g_all = @vis.selectAll("g").data(_data, (d)->d.c)
         g = g_all.enter().append("svg:g")
                 # .on("click", click)
-        g.attr("data-code", (d) -> d.code)
+        g.attr("data-code", (d) -> d.c)
 
         g.append("svg:rect")
             .attr("class", (d) => (if d.children? then "parent" else "child") + " " + @cls(d) )
-            .on("click", (d) => if d.children? then @selectCode(d.code) )
+            .on("click", (d) => if d.children? then @selectCode(d.c) )
 
         g.append("svg:text")
             .attr("dy", ".35em")
-            .text((d) -> d.name)
+            .text((d) -> d.n)
 
         g_all.exit().remove()
 
-        t = g_all.transition()
-             .duration(750)
-             .attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
+        t = g_all#.transition()
+             #.duration(750)
+        t = g_all.attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
         t.select("rect")
             .attr("width", Math.abs(@x(@root.dy) - @x(0)))
             .attr("height", (d) => @y(d.dx) - @y(0))
