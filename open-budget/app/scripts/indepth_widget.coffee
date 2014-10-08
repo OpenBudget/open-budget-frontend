@@ -292,8 +292,8 @@ class IndepthWidget extends Backbone.View
                         .attr("class", (d) => if d.get('diff_value') > 0 then "changeLineWaterfall increase" else "changeLineWaterfall reduce")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y1", (d) => @valueScale( d.get('value') - d.get('diff_value') )+1 )
-                        .attr("y2", (d) => @valueScale( d.get('value') )-1 )
+                        .attr("y1", (d) => @valueScale( d.get('value') - d.get('diff_value') )+1*(if d.get('diff_value') > 0 then 1 else -1) )
+                        .attr("y2", (d) => @valueScale( d.get('value') )-1*(if d.get('diff_value') > 0 then 1 else -1) )
                         .attr('stroke-width',5)
 
                 tipLine = @chart.selectAll('.tipFocus').data(changeModels)
