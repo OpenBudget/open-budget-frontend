@@ -42,6 +42,17 @@ class IndepthWidget extends Backbone.View
                                .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
                 @chart.call( @change_tip )
 
+        showTip: (d,i) =>
+                @change_tip.show(d)
+                selector = '.tipFocus'
+                s = @chart.selectAll(selector)[0][i]  #.data([d])
+                d3.select(s).style('display','block')
+
+        hideTip: (d,i) =>
+                @change_tip.hide(d)
+                selector = '.tipFocus'
+                s = @chart.selectAll(selector)[0][i]  #.data([d])
+                d3.select(s).style('display','none')
 
         render: ->
                 @svg.call(@drag)
@@ -210,20 +221,17 @@ class IndepthWidget extends Backbone.View
                         .append('line')
                                 .attr('class', 'changeBar')
                                 .datum( (d) => d)
-                newGraphParts
-                        .append('circle')
-                                .attr('class', 'tipFocus')
+                tipLine = newGraphParts
+                            .append('g')
+                                .attr('class','tipFocus')
                                 .datum( (d) => d)
+
+                tipLine.append('circle')
                                 .style("stroke-width",2)
                                 .style("stroke-color","#fff")
-                                .style("opacity",0)
-                newGraphParts
-                        .append('path')
-                                .attr('class', 'tipFocus')
-                                .datum( (d) => d)
+                tipLine.append('path')
                                 .style("stroke-width",2)
                                 .style("stroke-color","#fff")
-                                .style("opacity",0)
                                 .style("fill","none")
                 newGraphParts
                         .append('rect')
@@ -267,8 +275,8 @@ class IndepthWidget extends Backbone.View
                         .attr("width", (d) => @timeScale( d.get('width') ) - @timeScale( 0 ))
                         .attr("y", (d) => @valueScale( d.get('value') ) )
                         .attr("height", (d) => CHANGE_LINE_HANG_LENGTH + @valueScale(0) - @valueScale( d.get('value') ) )
-                        .on('mouseover', @change_tip.show)
-                        .on('mouseout', @change_tip.hide)
+                        .on('mouseover', @showTip)
+                        .on('mouseout', @hideTip)
 
                 @chart.selectAll('.changeLine').data(changeModels)
                         .attr("class", (d) => if d.get('diff_value') > 0 then "changeLine increase" else "changeLine reduce")
@@ -288,15 +296,16 @@ class IndepthWidget extends Backbone.View
                         .attr("y2", (d) => @valueScale( d.get('value') )-1 )
                         .attr('stroke-width',5)
 
-                @chart.selectAll('circle.tipFocus').data(changeModels)
-                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "tipFocus increase #{subkind}" else if dbl < 0 then "tipFocus reduce #{subkind}" else "tipFocus  #{subkind}")
+                tipLine = @chart.selectAll('.tipFocus').data(changeModels)
+                tipLine.selectAll('circle')
+                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "increase #{subkind}" else if dbl < 0 then "reduce #{subkind}" else subkind)
                       .attr("cx", (d) => @timeScale( d.get('timestamp') ) )
                       .attr("cy", (d) => @valueScale( d.get('value') ) )
                       .attr("r", 10 )
                       .attr("fill", "none" )
 
-                @chart.selectAll('path.tipFocus').data(changeModels)
-                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "tipFocus increase #{subkind}" else if dbl < 0 then "tipFocus reduce #{subkind}" else "tipFocus  #{subkind}")
+                tipLine.selectAll('path')
+                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "increase #{subkind}" else if dbl < 0 then "reduce #{subkind}" else subkind)
                       .attr("d", (d) => "M#{@timeScale( d.get('timestamp') )},#{@valueScale( d.get('value') )} c0,#{-TOOLTIP_SIZE*2/3},#{TOOLTIP_SIZE},#{-TOOLTIP_SIZE/3},#{TOOLTIP_SIZE},-#{TOOLTIP_SIZE}" )
 
                 usedModels = _.filter(@model.models, (x)->x.get('kind')=='used')
@@ -325,23 +334,21 @@ class IndepthWidget extends Backbone.View
                                 .text((d) => d.get('date').getFullYear())
                                 .style("text-anchor", "start")
                                 .datum( (d) => d)
-                newGraphParts
-                        .append('circle')
-                                .attr('class', 'usedTipFocus')
+
+                tipLine = newGraphParts
+                            .append('g')
+                                .attr('class', 'used tipFocus')
                                 .datum( (d) => d)
+
+                tipLine.append('circle')
                                 .style("stroke-width",2)
                                 .style("stroke-color","#fff")
-                                .style("opacity",0)
                                 .attr("r", 10 )
                                 .attr("fill", "none" )
 
-                newGraphParts
-                        .append('path')
-                                .attr('class', 'usedTipFocus')
-                                .datum( (d) => d)
+                tipLine.append('path')
                                 .style("stroke-width",2)
                                 .style("stroke-color","#fff")
-                                .style("opacity",0)
                                 .style("fill","none")
 
                 @chart.selectAll('.usedBackground').data(usedModels)
@@ -349,8 +356,8 @@ class IndepthWidget extends Backbone.View
                         .attr("y", (d) => @valueScale( d.get('value') ) )
                         .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width')) - @timeScale(d.get('timestamp')) )
                         .attr("height", (d) => @valueScale( @minValue ) - @valueScale( d.get('value') ) )
-                        .on('mouseover', @change_tip.show)
-                        .on('mouseout', @change_tip.hide)
+                        .on('mouseover', @showTip)
+                        .on('mouseout', @hideTip)
 
                 @chart.selectAll('.usedBar').data(usedModels)
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
@@ -366,10 +373,11 @@ class IndepthWidget extends Backbone.View
                 @chart.selectAll('.usedLabel').data(usedModels)
                         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
-                @chart.selectAll('path.usedTipFocus').data(usedModels)
-                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "usedTipFocus increase #{subkind}" else if dbl < 0 then "usedTipFocus reduce #{subkind}" else "usedTipFocus  #{subkind}")
+                tipLine = @chart.selectAll('.used.tipFocus').data(usedModels)
+                tipLine.selectAll('path')
+                      .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "increase #{subkind}" else if dbl < 0 then "reduce #{subkind}" else subkind)
                       .attr("d", (d) => "M#{@timeScale( d.get('timestamp') )},#{@valueScale( d.get('value') )} c0,#{-TOOLTIP_SIZE*2/3},#{TOOLTIP_SIZE},#{-TOOLTIP_SIZE/3},#{TOOLTIP_SIZE},-#{TOOLTIP_SIZE}" )
-                @chart.selectAll('circle.usedTipFocus').data(usedModels)
+                tipLine.selectAll('circle')
                       .attr("cx", (d) => @timeScale( d.get('timestamp')) )
                       .attr("cy", (d) => @valueScale( d.get('value') ) )
 

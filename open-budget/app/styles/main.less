@@ -592,14 +592,10 @@ svg rect{
         }
      }
 
-  .graphPartChanged, .graphPartUsed {
-      &:hover {
-          circle, path {
-                opacity: 1 !important;
-                &.increase {stroke: @increased}
-                &.reduce   {stroke: @decreased}
-            }
-      }
+  .tipFocus {
+      display: none;
+      .increase {stroke: @increased}
+      .reduce   {stroke: @decreased}
   }
 
   .graphPartChanged {
