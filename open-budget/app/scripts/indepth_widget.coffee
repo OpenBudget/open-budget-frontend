@@ -360,7 +360,7 @@ class IndepthWidget extends Backbone.View
                         .on('mouseout', @hideTip)
 
                 @chart.selectAll('.usedBar').data(usedModels)
-                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') - 9*d.get('width') ) ) # probably an ugly hack
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
                         .attr("y2", (d) => @valueScale( d.get('value') ) )
