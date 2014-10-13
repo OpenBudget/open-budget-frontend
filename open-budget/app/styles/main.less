@@ -131,25 +131,34 @@ strong.approved {
   }
 
   .widget-popover {
+      border-radius: 0;
+      box-shadow: none;
+      border: 1px solid #eee;
+      background-color: rgba(255,255,255,0.85);
       position: static;
       top: auto;
       left: auto;
       display: inherit;
-      text-align:center;
+      text-align:right;
       direction:rtl;
-      padding: 0 20px;
+      padding: 0 10px;
       h2 {
           margin: 0;
           padding-bottom: 0.1em;
       }
       .widget-popover-title {
-          text-align: center;
+          //text-align: center;
           background: none;
-          padding: 8px 0;
+          padding: 8px 0 0;
           p {
               margin-bottom: 0em;
           }
       }
+      .widget-popover-content {
+        color: @darkgray;
+        padding-bottom: 8px;
+      }
+
       .widget-popover-content .trans-description {
           display: none;
           color: @gray;
@@ -165,11 +174,17 @@ strong.approved {
       }
   }
   .trans-increased{
+    .widget-popover{
+      border-bottom-color: @increased;
+    }
     .widget-popover-title p,
     .date:before
       { color: @increased }
     }
   .trans-decreased{
+    .widget-popover{
+      border-bottom-color: @decreased;
+    }
     .widget-popover-title p,
     .date:before
     { color: @decreased }
