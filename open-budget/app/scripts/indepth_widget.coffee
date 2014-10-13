@@ -282,7 +282,7 @@ class IndepthWidget extends Backbone.View
                         .attr("class", (d) => if d.get('diff_value') > 0 then "changeLine increase" else "changeLine reduce")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y1", (d) => @valueScale( d.get('value') + _.min([0, d.get('diff_value')]) ) )
+                        .attr("y1", (d) => @valueScale( d.get('value') + _.min([0, d.get('diff_value')])*(if d.get('diff_value') > 0 then 1 else 0) ) )
                         .attr("y2", (d) => @valueScale(@minValue) )
                         .attr('stroke-width',5)
                         .style('opacity',0.3)

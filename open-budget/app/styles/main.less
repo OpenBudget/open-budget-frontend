@@ -512,6 +512,18 @@ svg rect{
   shape-rendering:crispEdges;
 }
 
+@keyframes  dash-pong {
+  to {stroke-dashoffset: 20;}
+}
+@-webkit-keyframes  dash-pong {
+  0%, 100% {
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dashoffset: 10;
+  }
+}
+
 @keyframes  dash-up {
   to {stroke-dashoffset: 5;}
 }
@@ -739,7 +751,7 @@ svg rect{
     stroke-opacity: 1;
   }
   50% {
-    stroke-opacity: 0.5;
+    stroke-opacity: 0.2;
   }
   100% {
     stroke-opacity: 1;
@@ -780,10 +792,13 @@ svg rect{
 }
 
 .pending {
-  animation:         pending 1s infinite; /* IE 10+ */
-  -webkit-animation: pending 1s infinite; /* Safari 4+ */
-  -moz-animation:    pending 1s infinite; /* Fx 5+ */
-  -o-animation:      pending 1s infinite; /* Opera 12+ */
+  .animation(pending 0.5s infinite); /* IE 10+ */
+
+  &.changeBar {
+    stroke-dasharray: 5 2;
+    .animation(dash-pong 1s infinite ease-in-out);
+  }
+
 }
 
 // CHANGE LIST ///////////////////////////////
