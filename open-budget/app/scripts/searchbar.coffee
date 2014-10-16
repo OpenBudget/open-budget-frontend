@@ -1,5 +1,7 @@
 class BudgetPartitionLayoutView extends Backbone.View
 
+    BACK_WIDTH = 100
+
     initialize: ->
         @render()
         @codes = {}
@@ -10,6 +12,14 @@ class BudgetPartitionLayoutView extends Backbone.View
                 .append("svg:svg")
         @partition = d3.layout.partition()
                             .value((d) -> d.s) #net_allocated)
+                            .children((d) -> d.k)
+        @change_tip = d3.tip()
+                       .attr('class', 'd3-tip')
+                           #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
+                       .direction("s")
+                       .offset((d) => [50,0])
+                       .html((d) -> JST.searchbar_tooltip(d))
+        @vis.call(@change_tip)
 
         @cls = (d) => window.changeClass( d.o, d.value ) + "_bg"
 
@@ -41,7 +51,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             .attr('width', @w)
             .attr('height', @h)
 
-        @x = d3.scale.linear().domain([@root.y+@root.dy/2,@root.y+@root.dy*3]).range([@w, 0])
+        @x = d3.scale.linear().domain([@root.y+@root.dy/2,@root.y+@root.dy*3]).range([@w-BACK_WIDTH, 0])
         @y = d3.scale.linear().domain([@root.x,@root.x+@root.dx]).range([0, @h])
 
         transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
@@ -53,12 +63,14 @@ class BudgetPartitionLayoutView extends Backbone.View
         g.attr("data-code", (d) -> d.c)
 
         g.append("svg:rect")
-            .attr("class", (d) => (if d.children? then "parent" else "child") + " " + @cls(d) )
-            .on("click", (d) => if d.children? then @selectCode(d.c) )
+            .attr("class", (d) => (if d.k? then "parent" else "child") + " " + @cls(d) )
+            .on("click", (d) => if d.k? then @selectCode(d.c) )
 
         g.append("svg:text")
             .attr("dy", ".35em")
             .text((d) -> d.n)
+        g.on('mouseover', (d) => @change_tip.show(d))
+         .on('mouseout', (d) => @change_tip.hide(d))
 
         g_all.exit().remove()
 
@@ -80,7 +92,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         d = null
         code = code.slice(0,6)
         console.log "CCC", code
-        while not d?
+        while code != '' and not d?
             d = @codes[code]
             if not d?
                 code = code.slice(0,-2)

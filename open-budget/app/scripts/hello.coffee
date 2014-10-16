@@ -37,12 +37,12 @@ window.color_classname = (value) ->
     return if value > 0 then "increased" else "decreased"
 
 window.changeClass = (orig_value,revised_value) ->
-    if revised_value > 1.5*orig_value       then "increased"
+    if revised_value > 2.25*orig_value       then "increased"
     else if revised_value > 1.2*orig_value  then "increased_50"
     else if revised_value > orig_value then "increased_20"
     else if revised_value < orig_value then "decreased_20"
     else if revised_value < 0.8*orig_value  then "decreased_50"
-    else if revised_value < 0.5*orig_value  then "decreased"
+    else if revised_value < 0.01*orig_value  then "decreased"
     else "unchanged"
 
 window.linkToBudget = (code,year) -> "#budget/#{code}/#{year}"

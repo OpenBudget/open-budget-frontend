@@ -263,7 +263,7 @@ class PageModel extends Backbone.Model
                                       () =>
                                           @set('currentItem', @budgetHistory.getLast())
                     readyCollections = [@changeLines,@changeGroups,@budgetHistory]
-                    if digits == 8
+                    if digits >= 6
                         @takanot = new TakanaSupports([], pageModel: @)
                         readyCollections.push(@takanot)
                     readyModels = []
