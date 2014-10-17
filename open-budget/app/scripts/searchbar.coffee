@@ -21,7 +21,25 @@ class BudgetPartitionLayoutView extends Backbone.View
                        .html((d) -> JST.searchbar_tooltip(d))
         @vis.call(@change_tip)
 
-        @cls = (d) => window.changeClass( d.o, d.value ) + "_bg"
+        @selecetd_tooltip = ""
+        @show_tip = (d) =>
+            @change_tip.show(d)
+            @selecetd_tooltip = d.c
+            window.setTimeout(
+                =>
+                    if d.c == @selecetd_tooltip
+                        bl = new window.models.BudgetItem(pageModel: window.pageModel)
+                        bl.set('year',window.pageModel.get('year'))
+                        bl.set('code',d.c)
+                        bl.on('change', ->
+                            $("#search-tip[data-code=#{d.c}]").html(JST.searchbar_tooltip_full(bl.toJSON()))
+                        )
+                        bl.do_fetch()
+               ,
+                250
+            )
+
+        @cls = (d) => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + "_bg"
 
         onSuccess = (root) =>
 
@@ -69,7 +87,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         g.append("svg:text")
             .attr("dy", ".35em")
             .text((d) -> d.n)
-        g.on('mouseover', (d) => @change_tip.show(d))
+        g.on('mouseover', (d) => @show_tip(d))
          .on('mouseout', (d) => @change_tip.hide(d))
 
         g_all.exit().remove()

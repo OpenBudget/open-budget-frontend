@@ -323,6 +323,7 @@ class PageModel extends Backbone.Model
             @set('kinds',kinds)
 
 window.models =
+        BudgetItem: BudgetItem
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
 

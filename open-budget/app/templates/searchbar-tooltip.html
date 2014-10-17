@@ -1,27 +1,27 @@
-<% console.log(this);
+<% console.log(o,value);
    var cls = "";
-   if ( o > value ) {
+   if ( o < 0 ) {
        cls = "decreased";
-   } else if ( value > o ) {
+   } else if ( o > 0 ) {
        cls = "increased";
+   } else {
+       cls = "unchanged";
    }
  %>
 <div class="trans-<%= cls %>">
   <div id="trans-tip" class="widget-popover fade in bottom">
     <div class="widget-popover-title">
-      <p>
+      <h2>
           <%= n %>
-      </p>
-      <h2 class="<%= cls %>">
-          מקורי: <%= format_number( o ) %>
-      </h2>
-      <h2 class="<%= cls %>">
-          אחרי העברות: <%= format_number( value ) %>
       </h2>
     </div>
     <div class="widget-popover-content">
-        שינוי של
-        <%= Math.floor((100*value)/o)-100 %> %
+        <h2 class="<%= cls %>">
+            מקורי: <%= format_number( value ) %>
+        </h2>
+        <div id="search-tip" data-code="<%= c %>">
+            <%= JST.spinner() %>
+        </div>
     </div>
   </div>
 </div>
