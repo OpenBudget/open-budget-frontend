@@ -6,13 +6,13 @@
     <div class="widget-popover-title">
       <p>
         <!-- : העברה <%= get("source").get('group_id') %> -->
+        <%  var expense_diff = get("source").getCodeChanges(window.pageModel.get('budgetCode')).expense_change;%>
         <% if (  expense_diff > 0 ) { %>
           +
       <% } else { %>
           -
       <% } %>
-          <%  var expense_diff = get("source").getCodeChanges(window.pageModel.get('budgetCode')).expense_change;%>
-          <strong><%= format_full_number( expense_diff*1000 ) %> ₪ =</strong>
+          <strong><%= format_full_number( Math.abs(expense_diff*1000) ) %> ₪ =</strong>
       </p>
       <h2 class="<%= color_classname(get("diff_baseline")) %>">
           <%= format_full_number( get("value")*1000 ) %>₪
