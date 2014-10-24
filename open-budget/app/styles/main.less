@@ -6,7 +6,7 @@
 
 
 /* Color scheme */
-@background: #F3F3F3;
+@background: #F1f1f1;
 
 @approved: #33cd56; // #00AF6A;
 @spent: #666;
@@ -34,6 +34,22 @@
 .decreased_50_bg{  background: @decreased_50; fill: @decreased_50;}
 .unchanged_bg {  background: @gray; fill: @gray;}
 
+.increased_text  {  color: @increased;}
+.increased_50_text{  color: @increased_50;}
+.increased_20_text{  color: @increased_20;}
+.decreased_text  {  color: @decreased;}
+.decreased_20_text{  color: @decreased_20;}
+.decreased_50_text{  color: @decreased_50;}
+.unchanged_text {  color: @gray;}
+
+.increased_border  {  border-color: @increased;}
+.increased_50_border{  border-color: @increased_50;}
+.increased_20_border{  border-color: @increased_20;}
+.decreased_border  {  border-color: @decreased;}
+.decreased_20_border{  border-color: @decreased_20;}
+.decreased_50_border{  border-color: @decreased_50;}
+.unchanged_border {  border-color: @gray;}
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -45,7 +61,6 @@
 body {
     //padding-top: 20px;
     padding-bottom: 20px;
-    background: @background;
 
     &.kind-cutbacks {
         background-color: fadeout(@decreased, 50%);
@@ -64,6 +79,66 @@ header{
     background: @background;
     border-radius: 0;
   }
+
+  #header-tree{
+    padding:0;
+    list-style: none;
+    li{
+      color: @darkgray;
+      margin-bottom: 2px;
+      .issue-part{
+        border-top: 3px solid;
+        margin-right: 90px;
+      }
+      .issue-num{
+        text-align: left;
+        width: 90px;
+        padding: 5px 10px;
+
+      }
+      h3{
+        font-size: 1em;
+        margin: 0;
+        padding: 7px 0;
+      }
+      .item-budget{
+        text-align: left;
+        direction: ltr;
+        padding: 5px;
+      }
+      .issue-partition{
+        clear: both;
+        background: @background;
+        height: 8px;
+        margin-right: 90px;
+      }
+      &.current {
+        header{
+          height: 50px;
+        }
+        .issue-part{
+          margin-right: 0;
+        }
+        .issue-num{
+          margin-top: 10px;
+        }
+        h1{
+          margin: 0;
+          padding: 7px 0;
+          font-size: 30px;
+        }
+        .item-budget{
+          font-size: 24px;
+        }
+        .affix{
+          top: 0px;
+          width: 100%;
+        }
+
+      }
+    }
+  }
+
 }
 
 .single-page-article {
@@ -199,6 +274,10 @@ strong.approved {
   top:0;
   z-index: 1000000;
 
+  .navbar {
+    margin-bottom: 0;
+  }
+
   .navbar-brand {
     color: #222;
   }
@@ -231,7 +310,6 @@ strong.approved {
 
 #search-form{
   position: relative;
-  margin: 65px auto 0;
   //max-width: 600px;
   input, .btn-search{
     border-radius: 0;
@@ -436,10 +514,10 @@ article {
     }
   }
 
-  &.increased header {
+  &.increased .current header {
     background: lighten(@increased, 40%);
-
-    h1, .nav>li>a.active, .nav>li>a:hover, div>a {
+    color: @increased;
+    a {
       color: @increased;
     }
     .nav>li>a {
@@ -469,9 +547,15 @@ article {
   }
 
   .brief {
-    padding: 40px;
-    font-size: 24px;
-    text-align: center;
+    color: @text;
+    padding: 10px 90px;
+    margin: 0;
+    font-size: 20px;
+    clear: both;
+    p{
+
+      margin: 0;
+    }
   }
 
   h2 {
