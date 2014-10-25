@@ -88,12 +88,12 @@ header{
       margin-bottom: 2px;
       .issue-part{
         border-top: 3px solid;
-        margin-right: 90px;
+        margin: 0 85px;
       }
       .issue-num{
         text-align: left;
-        width: 90px;
-        padding: 5px 10px;
+        width: 85px;
+        padding: 5px 5px 5px 10px;
 
       }
       h3{
@@ -105,22 +105,29 @@ header{
         text-align: left;
         direction: ltr;
         padding: 5px;
+        margin-left: 85px;
       }
       .issue-partition{
         clear: both;
         background: @background;
         height: 8px;
-        margin-right: 90px;
+        margin: 0 85px;
       }
       &.current {
+        margin: 0 5px 0 10px;
         header{
           height: 50px;
         }
         .issue-part{
-          margin-right: 0;
+          margin: 0;
         }
         .issue-num{
           margin-top: 10px;
+          width: 80px;
+          a { display: none}
+        }
+        .issue-partition{
+          margin: 0 80px;
         }
         h1{
           margin: 0;
@@ -128,7 +135,9 @@ header{
           font-size: 30px;
         }
         .item-budget{
-          font-size: 24px;
+          //font-size: 24px;
+          margin-top: 9px;
+          margin-left: 75px;
         }
         .affix{
           top: 0px;
@@ -148,6 +157,7 @@ header{
 .form-control{
   color: @text;
   text-align: right;
+  padding: 6px 0 6px 12px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -310,6 +320,8 @@ strong.approved {
 
 #search-form{
   position: relative;
+  margin-left: 0;
+  padding: 10px 15px 10px 10px;
   //max-width: 600px;
   input, .btn-search{
     border-radius: 0;
@@ -327,15 +339,16 @@ strong.approved {
     }
   }
   > div{
-    margin-right: 86px
+    margin-left: 75px;
+    margin-right: 5px;
   }
 
   #btn-tree{
     position: absolute;
-    top: 0;
-    right: 15px;
-    width: 66px;
-    height: 30px;
+    top: 7px;
+    left: 9px;
+    width: 70px;
+    height: 38px;
     text-indent: -99999px;
     overflow: hidden;
     display: block;
@@ -548,7 +561,7 @@ article {
 
   .brief {
     color: @text;
-    padding: 10px 90px;
+    padding: 10px 80px;
     margin: 0;
     font-size: 20px;
     clear: both;
