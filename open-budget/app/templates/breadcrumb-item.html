@@ -1,0 +1,82 @@
+<li class="issue-<%= window.issue_depth(main.get('code')) %> <%= {true: 'current'}[last] %>">
+
+  <% if(last) { %>
+    <header data-spy="affix" data-offset-top="174">
+    <div class="issue-part"></div>
+  <% } %>
+  <!-- Issue number -->
+  <div class="issue-num pull-right">
+    <%= main.get('code').slice(2).replace(/(.{2})(?!$)/g , '$1.') %>
+  </div>
+  <!-- Issue title -->
+  <div class="pull-right">
+    <%= last ? '<h1>' : '<h3>' %>
+      <a class="dropdown-toggle" href="<%= linkToBudget(main.get('code'),main.get('year')) %>">
+        <%= main.get('title') %></a> 
+
+        <span class="dropdown">
+           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <% for ( var _kid in kids.models ) { var kid=kids.models[_kid];  %>
+                <li><a href="<%= linkToBudget(kid.get('code'),main.get('year')) %>">#<%= kid.get('code').slice(2) %>  - <%= kid.get('title')%></a></li>
+            <% } %>
+          </ul>
+        </span>
+
+        / 
+    <%= last ? '</h1>' : '</h3>' %>
+    
+
+  </div>
+  <div class="item-budget  pull-left">
+    ₪
+    <%= window.number_with_commas(main.get('net_revised')) %> 
+    <%= window.up_or_down_arrow(main.get('net_revised'), main.get('net_allocated')) %>
+  </div>
+  <% if(last) { %>
+    </header>
+  <% } %>
+
+  <% if(last) { %>
+    <section class="brief spinner-container container">
+      פה יופיע סיכום אוטומטי של הסעיף המשלב מידע הסטורי ועדכני
+    </section>
+  <% } %>
+  <div class="issue-partition"></div>
+</li>
+
+<!-- Legacy - Static html -->
+<!-- 
+
+<li class="issue-2">
+  <div class="issue-num pull-right">23</div>
+  <div class="pull-right"><h3>משרד הרווחה והשירותים החברתיים <span class="caret"></span> / </h3></div>
+  <div class="item-budget  pull-left">₪ 8,027,014,000 ⬆</div>
+  <div class="issue-partition"></div>
+</li>
+<li class="issue-4">
+  <div class="issue-part"></div>
+  <div class="issue-num pull-right">23.08</div>
+  <div class="pull-right"><h3>אגף לטיפול באדם עם מוגבלות שכלית התפתחותית (פיגור שכלי) <span class="caret"></span> / </h3></div>
+  <div class="item-budget pull-left">₪ 2,165,489,000 ⬆</div>
+  <div class="issue-partition"></div>
+</li>
+<li class="issue-6 current">
+  <header data-spy="affix" data-offset-top="174">
+    <div class="issue-part"></div>
+    <div class="issue-num pull-right">
+        23.08.50
+    </div>
+    <div class="pull-right">
+      <h1></h1>
+    </div>
+    <div class="item-budget pull-left">₪ 2,165,489,000 ⬆</div>
+  </header>
+  <section class="brief spinner-container container">
+    פה יופיע סיכום אוטומטי של הסעיף המשלב מידע הסטורי ועדכני
+  </section>
+  <div class="issue-partition"></div>
+</li>
+<li class="issue-8">
+  
+</li> -->

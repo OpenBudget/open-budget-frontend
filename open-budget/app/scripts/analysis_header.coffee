@@ -2,7 +2,7 @@ window.up_or_down = (allocated,revised ) ->
             if allocated > revised
                 return "קטן"
             else
-                return "גדל"
+                return "הוגדל"
 
 window.increase_or_cut = (allocated,revised ) ->
             if allocated > revised
