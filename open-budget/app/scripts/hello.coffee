@@ -25,6 +25,14 @@ window.format_number = (num,is_shekels) ->
         else
                 "—"
 
+window.format_date_diff = (diff) ->
+        diff_in_days = Math.floor( diff / 86400000);
+        return (diff_in_days / 31).toFixed(1) + " חודשים"
+
+window.number_with_commas = (num) ->
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+
 window.format_full_number = (num) ->
         if not num or num == 0
                 "—"

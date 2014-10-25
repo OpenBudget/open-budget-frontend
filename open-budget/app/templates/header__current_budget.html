@@ -1,3 +1,8 @@
-<p>
-בתקציב <%= year %> תקציב <%= title %> עמד על <%= format_number( net_allocated ) %>.
-</p>
+ב-
+<% if(year == new Date().getFullYear()) { %>
+	<%= window.format_date_diff(new Date() - new Date(year,1,1)) %> מאז
+<% } %>
+
+<b>תקציב <%= year %></b>,
+
+
