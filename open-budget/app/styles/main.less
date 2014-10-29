@@ -360,13 +360,17 @@ strong.approved {
 
     visibility:hidden;
 
+    >.row{
+      margin: 0;
+    }
+
     &.active {
         border-bottom: 2px solid #ddd;
         .search-partition-layout {
             min-height: 400px;
         }
         .search-results {
-            display: inherit;
+            //display: inherit;
         }
         visibility:visible;
     }
@@ -379,41 +383,46 @@ strong.approved {
 
     .search-partition-layout {
         display: none;
-        padding-left: 15px;
-        min-height:0px;
+        padding: 0;
+        min-height: 0px;
         transition: min-height 0.5s;
         transition-timing-function:  cubic-bezier(0.175, 0.885, 0.32, 1.275);
         -webkit-transition: min-height 0.5s;
 
         font-size: 11px;
 
-        g:hover {
+        svg {
+          margin-right: 5px;
 
-            rect {
-              opacity: 0.8;
-              stroke-width: 2;
-            }
+          g:hover {
 
-            text {
-              font-weight: bold;
-            }
-        }
+              rect {
+                opacity: 0.8;
+                stroke-width: 2;
+              }
 
-        rect {
-          stroke: @background;
-          stroke-width: 0.5;
-
-          &.parent {
-              cursor: pointer;
+              text {
+                font-weight: bold;
+              }
           }
-        }
 
-        text {
-          pointer-events: none;
+          rect {
+            stroke: @background;
+            stroke-width: 0.5;
 
-          &.small-title {
-              opacity: 0;
+            &.parent {
+                cursor: pointer;
+            }
           }
+
+          text {
+            pointer-events: none;
+
+            &.small-title {
+                opacity: 0;
+            }
+          }
+
         }
     }
 
@@ -561,7 +570,7 @@ article {
 
   .brief {
     color: @text;
-    padding: 10px 80px;
+    padding: 10px 80px 10px 0;
     margin: 0;
     font-size: 20px;
     clear: both;
