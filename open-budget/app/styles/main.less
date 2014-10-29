@@ -11,10 +11,10 @@
 @approved: #33cd56; // #00AF6A;
 @spent: #666;
 @increased: #fb4007; // #5731E7;
-@decreased: #3595ef; // #228dd8; // #9F7E27;
-@decreased_50: #4687c1; //lighten(desaturate(@decreased, 20%), 15%);
+@decreased: #0266DE; // #228dd8; // #9F7E27;
+@decreased_50: #32A4F9; //lighten(desaturate(@decreased, 20%), 15%);
 @increased_50: #f59019; //lighten(desaturate(@increased, 20%), 15%);
-@decreased_20: #60aad7; //lighten(desaturate(@decreased, 30%), 20%);
+@decreased_20: #6DD1DA; //lighten(desaturate(@decreased, 30%), 20%);
 @increased_20: #fcc524; //lighten(desaturate(@increased, 30%), 20%);
 @link: #00A1F6;
 @text: #3C4948;
@@ -277,6 +277,14 @@ strong.approved {
 }
 
 /////// HEADER ///////////
+
+.spinner > div {
+  &.rect1 { .increased_bg }
+  &.rect2 { .increased_50_bg }
+  &.rect3 { background-color: @lightgray }
+  &.rect4 { .decreased_50_bg }
+  &.rect5 { .decreased_bg }
+}
 
 .site-nav {
   width: 100%;
@@ -570,7 +578,7 @@ article {
 
   .brief {
     color: @text;
-    padding: 10px 80px 10px 0;
+    padding: 10px 80px 10px 20px;
     margin: 0;
     font-size: 20px;
     clear: both;
