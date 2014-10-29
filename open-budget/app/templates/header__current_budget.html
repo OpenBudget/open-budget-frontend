@@ -1,8 +1,10 @@
-ב-
-<% if(year == new Date().getFullYear()) { %>
+<!-- <% if(year == new Date().getFullYear()) { %>
 	<%= window.format_date_diff(new Date() - new Date(year,1,1)) %> מאז
-<% } %>
-
-<b>תקציב <%= year %></b>,
-
-
+<% } %> -->
+מתחילת <%= year %>,
+<%= up_or_down(net_allocated,net_revised) %>
+תקציב זה מ<strong class="approved"><%= number_with_commas(net_allocated*1000) %> ₪</strong>
+ל<strong class="<%= color_classname(net_revised-net_allocated) %>"><%= number_with_commas(net_revised*1000) %> ₪</strong>
+<br/>
+ ועדת הכספים אישרה <%= num_of_transfers_in_year_text(year) %> בסך כולל של <strong><span><%= number_with_commas((net_revised-net_allocated)*1000) %><%= number_plus_minus(net_revised-net_allocated) %></span> ₪ <%= increase_or_cut(net_allocated,net_revised) %></strong>, לכדי <strong class="<%= color_classname(net_revised-net_allocated) %>"><%= parseInt(Math.abs( (net_revised/net_allocated)) * 100) %>%<%= up_or_down_arrow(net_revised,net_allocated) %></strong> מהתקציב המקורי
+<br/>

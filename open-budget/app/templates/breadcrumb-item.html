@@ -12,7 +12,7 @@
   <div class="pull-right">
     <%= last ? '<h1>' : '<h3>' %>
       <a class="dropdown-toggle" href="<%= linkToBudget(main.get('code'),main.get('year')) %>">
-        <%= main.get('title') %></a> 
+        <%= main.get('title') %></a>
 
         <span class="dropdown">
            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="caret"></span></a>
@@ -23,15 +23,15 @@
           </ul>
         </span>
 
-        / 
+        /
     <%= last ? '</h1>' : '</h3>' %>
-    
+
 
   </div>
   <div class="item-budget  pull-left">
     ₪
-    <%= window.number_with_commas(main.get('net_revised')) %> 
-    <%= window.up_or_down_arrow(main.get('net_revised'), main.get('net_allocated')) %>
+    <%= window.number_with_commas(main.get('net_revised')*1000) %>
+    <%= window.up_or_down_arrow(main.get('net_revised')*1000, main.get('net_allocated')*1000) %>
   </div>
   <% if(last) { %>
     </header>
@@ -46,7 +46,7 @@
 </li>
 
 <!-- Legacy - Static html -->
-<!-- 
+<!--
 
 <li class="issue-2">
   <div class="issue-num pull-right">23</div>
@@ -78,5 +78,5 @@
   <div class="issue-partition"></div>
 </li>
 <li class="issue-8">
-  
+
 </li> -->
