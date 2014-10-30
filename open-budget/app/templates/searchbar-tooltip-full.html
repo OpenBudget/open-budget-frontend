@@ -1,0 +1,15 @@
+<% console.log(this);
+   var cls = "";
+   if ( net_allocated > net_revised ) {
+       cls = "decreased";
+   } else if ( net_revised > net_allocated ) {
+       cls = "increased";
+   } else {
+       cls = "unchanged";
+   }
+ %>
+<h2 class="<%= cls %>">
+    אחרי העברות: <%= format_number( net_revised ) %>
+</h2>
+שינוי של
+<%= Math.floor((100*net_revised)/net_allocated)-100 %> %

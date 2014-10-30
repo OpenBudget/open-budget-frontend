@@ -123,6 +123,20 @@ class BudgetItemKids extends Backbone.Collection
             "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/kids"
 
 
+class BudgetItemDepth extends Backbone.Collection
+
+        model: BudgetItem
+
+        initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @year = options.year
+            @code = options.code
+            @depth = options.depth
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+        url: ->
+            "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/depth/#{@depth}?limit=1000"
+
 class ChangeLines extends Backbone.Collection
 
         model: ChangeLine
@@ -240,6 +254,7 @@ class PageModel extends Backbone.Model
                 budgetCode: null
                 year: null
                 changeGroupId: null
+                mainPage: false
                 baseURL: "http://the.open-budget.org.il"
                 selection: [ 0, 0 ]
                 currentItem: null
@@ -296,6 +311,12 @@ class PageModel extends Backbone.Model
                         for part in title_template
                             @addKind(part)
 
+                @on 'change:mainPage', ->
+                    @budgetItems = new BudgetItemDepth([], year: pageModel.get('year'), code: '00', depth: 2, pageModel: @)
+                    @mainBudgetItem = new BudgetItem(year: pageModel.get('year'), code: '00', pageModel: @)
+                    @setupReadyEvent [ @budgetItems ], [ @mainBudgetItem ]
+                    @mainBudgetItem.do_fetch()
+
                 @on 'change:kinds', =>
                     for kind in @get('kinds')
                         $('body').toggleClass("kind-#{kind}",true)
@@ -327,6 +348,7 @@ window.models =
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
 
+DEFAULT_HOME = "#main//2014"
 
 $( ->
         window.pageModel = new PageModel()
@@ -337,7 +359,7 @@ $( ->
         if !isNaN(year)
             pageModel.set('year',year)
         else
-            window.location.hash = "#budget/00203804/2014"
+            window.location.hash = DEFAULT_HOME
             window.location.reload()
 
         if kind == "budget"
@@ -346,8 +368,11 @@ $( ->
         else if kind == "transfer"
             pageModel.article = $("article#change-group-article")
             pageModel.set("changeGroupId",identifier)
+        else if kind == "main"
+            pageModel.article = $("article#main-page-article")
+            pageModel.set("mainPage",identifier)
         else
-            window.location.hash = "#budget/00203804/2014"
+            window.location.hash = DEFAULT_HOME
             window.location.reload()
         $("article.single-page-article").css("display","none")
         pageModel.article.css("display","inherit")

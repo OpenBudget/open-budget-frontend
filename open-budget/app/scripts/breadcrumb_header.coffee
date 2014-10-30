@@ -16,8 +16,9 @@ class BreadcrumbHeaderView extends Backbone.View
             @$el.append( window.JST.breadcrumb_item(rec))
 
 $( ->
-    window.pageModel.on('ready', ->
-        window.breadcrumbHeaderView = new BreadcrumbHeaderView(el: $("#header-tree"))
-        window.breadcrumbHeaderView.render()
-    )
+    if window.pageModel.get('budgetCode')?
+        window.pageModel.on('ready', ->
+            window.breadcrumbHeaderView = new BreadcrumbHeaderView(el: $("#header-tree"))
+            window.breadcrumbHeaderView.render()
+        )
 )

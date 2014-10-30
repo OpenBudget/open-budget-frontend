@@ -76,7 +76,8 @@ class HeaderView extends Backbone.View
             @$el.append( analyzer.analyze() )
 
 $( ->
-    window.pageModel.on('ready', ->
-        window.headerView = new HeaderView(el: window.pageModel.article.find(".brief"))
-    )
+    if window.pageModel.get('budgetCode')?
+        window.pageModel.on('ready', ->
+            window.headerView = new HeaderView(el: window.pageModel.article.find(".brief"))
+        )
 )

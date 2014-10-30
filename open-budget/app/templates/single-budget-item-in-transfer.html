@@ -1,0 +1,32 @@
+<% /* Template for a single budget item in a transfer */ %>
+<% var increase = expense_change > 0 ? true : (commitment_change > 0 ? true : personnel_change > 0); %>
+<% var cls = increase ? 'increased' : 'decreased'; %>
+<div class="trans <%= increase ? 'inc' : 'dec' %>">
+  <div class="row">
+    <div class="col-xs-2 col-sm-1 item-list-dates">
+      <span class="transfer-list-year"><%= budget_code.slice(2,4) %><br/><%= budget_code.slice(4) %></span>
+    </div>
+    <div class="col-xs-8 col-sm-5 transfer-list-nums">
+      <span class="transfer-list-amount-transferred <%= cls %>" >
+        <% if (expense_change>0){ %>
+          <strong>+ <%= format_full_number(expense_change*1000) %> ₪</strong>
+          כתוספת ל
+        <% } else { %>
+          <strong>- <%= format_full_number(-expense_change*1000) %> ₪</strong>
+          כקיצוץ ל
+        <% } %>
+        </span>
+      <h4 class="transfer-list-total"><%= budget_title %></h4>
+      <span class="transfer-list-diff-percent">
+      </span>
+    </div>
+    <div class="col-sm-5 item-list-docs">
+      <div class="folded">
+      </div>
+    </div>
+    <div class="col-xs-2 col-sm-1 item-list-more">
+      <a href=" <%= linkToBudget(budget_code,year) %>">></a>
+    </div>
+    <div class="item-list-bar <%= cls %>" style="width:<%= 50 %>%">&nbsp</div>
+  </div>
+</div>
