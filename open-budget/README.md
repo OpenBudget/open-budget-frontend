@@ -42,10 +42,15 @@ Get the Windows installer from: http://nodejs.org/download/
 (This section handles a known issue with npm, see https://github.com/npm/npm/issues/6106)
 
 Open Git Bash. run:
+
     $ npm
+
 If you get an error that looks like:
+
     ENOENT, stat '<some directory>\npm'
+
 Then run this command:
+
     $ mkdir "%APPDATA%\npm"
 
 ###Install the project
