@@ -42,14 +42,24 @@ class IndepthWidget extends Backbone.View
                                .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
                 @chart.call( @change_tip )
 
+                @participant_tip = d3.tip()
+                               .attr('class', 'd3-tip')
+                                   #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
+                               .direction("n")
+                               .offset((d) => [350,(@timeScale( d.get('width')/2 ) - @timeScale(0))])
+                               .html((d) -> if d.get('source') != 'dummy' then JST.widget_participant_tooltip({ participants: d.getParticipants()}) else "")
+                @chart.call( @participant_tip )
+
         showTip: (d,i) =>
                 @change_tip.show(d)
+                @participant_tip.show(d)
                 selector = '.tipFocus'
                 s = @chart.selectAll(selector)[0][i]  #.data([d])
                 d3.select(s).style('display','block')
 
         hideTip: (d,i) =>
                 @change_tip.hide(d)
+                @participant_tip.hide(d)
                 selector = '.tipFocus'
                 s = @chart.selectAll(selector)[0][i]  #.data([d])
                 d3.select(s).style('display','none')
@@ -407,6 +417,8 @@ class IndepthWidget extends Backbone.View
                 @minValue = 0 # Math.floor(@model.minValue / @tickValue) * @tickValue
                 @maxValue = @minValue + TICKS * @tickValue
 
+        getParticipants: (d) ->
+            return "asdsasdasdasd"
 
 
 $( ->
