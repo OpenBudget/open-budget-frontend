@@ -62,9 +62,9 @@ class BubbleChart extends Backbone.View
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.value))
-    total_amount = d3.sum(@data, (d) -> parseInt(d.value))
+    @total_amount = d3.sum(@data, (d) -> parseInt(d.value))
     @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
-    @boundingRadius = @radius_scale(total_amount)
+    @boundingRadius = @radius_scale(@total_amount/@numParts())
 
     @create_nodes()
     @force = d3.layout.force()
@@ -83,16 +83,15 @@ class BubbleChart extends Backbone.View
     @data.forEach (d) =>
       d.radius = @radius_scale(parseInt(d.value))
       d.x = Math.random() * @width
-      d.y = Math.random() * @height
+      d.y = -d.part*@boundingRadius + d.center().y + Math.random()*50
       @nodes.push d
 
     @nodes.sort (a,b) -> b.value - a.value
 
-
   # create svg at #vis and then
   # create circle representation for each node
   create_vis: () =>
-    @vis = d3.select(@el).append("svg")
+    @vis = d3.select(@el)
       .attr("width", @width)
       .attr("height", @height)
       .call(@tooltip)
@@ -113,6 +112,7 @@ class BubbleChart extends Backbone.View
       .attr("stroke-width", 2)
       #.attr("stroke", (d) -> d.stroke_color())
       .attr("id", (d) -> "bubble_#{d.id}")
+      .on("click", (d,i) -> d.click())
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
 
@@ -137,29 +137,53 @@ class BubbleChart extends Backbone.View
   # Sets up force layout to display
   # all nodes in one circle.
   start: () =>
+    @boundingRadius = @radius_scale(@total_amount/@numParts())
     @force.gravity(@layout_gravity)
       .charge(this.charge)
       .friction(0.9)
       .on "tick", (e) =>
+        @calc_averages()
         @circles
           .each(this.move_towards_centers(e.alpha))
-          .each(this.buoyancy(e.alpha))
-          .attr("cx", (d) -> d.x)
-          .attr("cy", (d) -> d.y)
+          .attr("cx", (d) => d.x - @get_offset(e.alpha,d).dx)
+          .attr("cy", (d) => d.y - @get_offset(e.alpha,d).dy)
     @force.start()
+
+  calc_averages: () =>
+    @averages = {}
+    for d in @nodes
+        cat = d.category()
+        if !@averages[cat]?
+            @averages[cat] =
+                x: 0
+                y: 0
+                n: 0
+        @averages[cat].x += d.x
+        @averages[cat].y += d.y
+        @averages[cat].n += 1
+    for avg in _.values(@averages)
+        avg.x = avg.x / avg.n
+        avg.y = avg.y / avg.n
+
+  get_offset: (alpha,d) =>
+      cat = d.category()
+      if !@averages[cat]?
+          { dx: 0, dy: 0 }
+      else
+          avg = @averages[cat]
+          s = ((0.1-alpha)/0.1)
+          {
+            dx: s*(avg.x - d.center().x),
+            dy: s*(avg.y - d.center().y)
+          }
 
   # Moves all circles towards the @center
   # of the visualization
   move_towards_centers: (alpha) =>
     (d) =>
       d.x = d.x + (d.center().x - d.x) * (@damper + 0.02) * alpha
-      d.y = d.y + (d.center().y - d.y) * (@damper + 0.02) * alpha
-
-  buoyancy: (alpha) ->
-    (d) =>
-      targetY = (d.part) * @boundingRadius / @numParts() + d.center().y
-      diff = (targetY - d.y) * (@layout_gravity) * alpha * alpha * alpha * 500
-      d.y = d.y + diff
+      targetY = - d3.min([1,d.part]) * @boundingRadius + d.center().y
+      d.y = d3.max([0, d.y + (d.center().y - d.y) * (@damper + 0.02) * alpha + (targetY - d.y) * (@damper) * alpha * alpha * alpha * 500])
 
   show_details: (data, i, element) =>
     @tooltip.show(data)

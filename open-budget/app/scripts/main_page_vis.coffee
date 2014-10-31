@@ -12,55 +12,80 @@ class MainPageVis extends Backbone.View
 
     switchToggle: ->
         @toggle = !@toggle
+        d3.select(@el).selectAll('.bubblesMinistryTitle')
+                    .transition()
+                    .style('opacity', if @toggle then 1 else 0)
         @chart.start()
 
     prepareData: ->
         fill_color = -> "#aabbcc"
         stroke_color = -> "#ccbbaa"
-        tooltip_contets = -> (this.src.get('code').substring(2)) + ": " + (this.src.get('title'))
 
+        # 2 digit prefix separation
         parentItems = pageModel.budgetItems2.models
-        console.log parentItems
-        bySize = _.sortBy( parentItems, (x) -> -x.get('net_revised') )
-
-        prefixes = []
-        models = []
-        for model in bySize
-            digits = model.get('code').substring(2,4)
-            if digits=="00"
-                continue
-            prefixes.push(digits)
-        console.log prefixes
+        parentItems = _.sortBy( parentItems, (x) -> -x.get('net_revised') )
+        parentItems = _.filter( parentItems, (x) -> x.get('code').substring(2,4) != "00" )
+        parentItems = _.filter( parentItems, (x) -> x.get('net_revised')>0 )
 
         centers = {}
-        _.each( prefixes, (el,i) -> centers[el] = { x: i%6 * 150 + 200, y: Math.floor(i/6) * 150 + 250 })
-        console.log prefixes.length
+        _.each( parentItems
+               ,
+                (el,i) ->
+                    code = el.get('code').substring(2,4)
+                    centers[code] =
+                        x: i%6 * 200 + 150,
+                        y: Math.floor(i/6) * 250 + 250
+                        title: el.get('title')
+        )
+        title_data = _.values(centers)
+        d3.select(@el).selectAll('.bubblesMinistryTitle')
+                    .data(title_data)
+                    .enter()
+                    .append('svg:text')
+                    .attr('class','bubblesMinistryTitle')
+                    .attr('x', (d) -> d.x)
+                    .attr('y', (d) -> d.y)
+                    .attr('dy', 100)
+                    .text((d) -> d.title)
+                    .style('opacity', 0)
+                    .style('stroke', 'black')
+                    .style("text-anchor", "middle")
 
+        # Create data for bubble chart
         @data = []
+        @scaling = 20.0
         that = this
         for model in pageModel.budgetItems4.models
-            if model.get('code').substring(0,4)=="0000"
+            if !centers[model.get('code').substring(2,4)]?
                 continue
 
-            value = model.get('net_allocated')
+            orig = model.get('net_allocated')
             revised = model.get('net_revised')
-            if !(value>0) || !(revised>0)
+            if !(orig>0) || !(revised>0)
                 continue
+            part = 1.0*revised/orig-1
+            #if part > 0 then part = d3.min([1,part / @scaling])
+
             node =
                 id: model.get('code')
+                category: -> if that.toggle then this.id.substring(0,4) else ""
                 src: model
-                value: value
+                value: revised
+                orig: orig
                 rev: revised
-                part: revised / value
-                className: -> changeClass(this.value,this.rev)+"_svg"
+                part: part
+                className: -> "bubblesCirle "+changeClass(this.orig,this.rev)+"_svg"
                 fill_color: null
                 stroke_color: null
-                tooltip_contents: tooltip_contets
+                tooltip_contents: -> JST.bubble_tooltip(this)
+                click: ->
+                    window.location.hash = linkToBudget(this.id,this.src.get('year'))
+                    false
                 center: ->
                     if that.toggle
                         centers[@.id.substring(2,4)]
                     else
-                        { x: 600, y:400 }
+                        { x: that.$el.width()/2, y: 300 }
             @data.push node
 
 
