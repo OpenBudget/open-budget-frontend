@@ -312,9 +312,10 @@ class PageModel extends Backbone.Model
                             @addKind(part)
 
                 @on 'change:mainPage', ->
-                    @budgetItems = new BudgetItemDepth([], year: pageModel.get('year'), code: '00', depth: 2, pageModel: @)
+                    @budgetItems2 = new BudgetItemKids([], year: pageModel.get('year'), code: '00', pageModel: @)
+                    @budgetItems4 = new BudgetItemDepth([], year: pageModel.get('year'), code: '00', depth: 2, pageModel: @)
                     @mainBudgetItem = new BudgetItem(year: pageModel.get('year'), code: '00', pageModel: @)
-                    @setupReadyEvent [ @budgetItems ], [ @mainBudgetItem ]
+                    @setupReadyEvent [ @budgetItems2, @budgetItems4 ], [ @mainBudgetItem ]
                     @mainBudgetItem.do_fetch()
 
                 @on 'change:kinds', =>

@@ -147,7 +147,8 @@ class SearchBar extends Backbone.View
                 switch event
                     when EV_OPEN_DROPDOWN, EV_TOGGLE_DROPDOWN
                         @openDropdown()
-                        @partition.selectCode( window.pageModel.get('budgetCode') )
+                        if window.pageModel.get('budgetCode')?
+                            @partition.selectCode( window.pageModel.get('budgetCode') )
                         @state = STATE_OPEN
             when STATE_CLOSED_RESULTS
                 switch event

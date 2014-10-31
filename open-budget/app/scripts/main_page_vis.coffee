@@ -1,10 +1,11 @@
 class MainPageVis extends Backbone.View
 
     initialize: ->
-        @model.on 'reset', =>
-            @prepareData()
-            @render()
-            @toggle = false
+        if @model?
+            @model.on 'reset', =>
+                @prepareData()
+                @render()
+                @toggle = false
 
     events:
         'click': 'switchToggle'
@@ -18,22 +19,29 @@ class MainPageVis extends Backbone.View
         stroke_color = -> "#ccbbaa"
         tooltip_contets = -> (this.src.get('code').substring(2)) + ": " + (this.src.get('title'))
 
-        prefixes = {}
+        parentItems = pageModel.budgetItems2.models
+        console.log parentItems
+        bySize = _.sortBy( parentItems, (x) -> -x.get('net_revised') )
+
+        prefixes = []
         models = []
-        for model in @model.models
-            if model.get('code').substring(0,4)=="0000"
+        for model in bySize
+            digits = model.get('code').substring(2,4)
+            if digits=="00"
                 continue
-            models.push model
-            prefixes[model.get('code').substring(2,4)] = true
-        prefixes = _.keys(prefixes)
-        prefixes.sort (a,b) -> parseInt(a) - parseInt(b)
+            prefixes.push(digits)
+        console.log prefixes
+
         centers = {}
-        _.each( prefixes, (el,i) -> centers[el] = { x: i%9 * 100 + 200, y: Math.floor(i/9) * 75 + 150 })
+        _.each( prefixes, (el,i) -> centers[el] = { x: i%6 * 150 + 200, y: Math.floor(i/6) * 150 + 250 })
         console.log prefixes.length
 
         @data = []
         that = this
-        for model in models
+        for model in pageModel.budgetItems4.models
+            if model.get('code').substring(0,4)=="0000"
+                continue
+
             value = model.get('net_allocated')
             revised = model.get('net_revised')
             if !(value>0) || !(revised>0)
@@ -52,16 +60,16 @@ class MainPageVis extends Backbone.View
                     if that.toggle
                         centers[@.id.substring(2,4)]
                     else
-                        { x: 600, y:300 }
+                        { x: 600, y:400 }
             @data.push node
 
 
     render: ->
-        @chart = new BubbleChart( el: @el, data: @data )
+        @chart = new BubbleChart( el: @el, data: @data, numParts: -> if @toggle then 63 else 1 )
         @chart.render()
         @chart.start()
 
 $( ->
     console.log "main_page"
-    window.mainPageVis = new MainPageVis({el: $("#bubble-chart"), model: window.pageModel.budgetItems });
+    window.mainPageVis = new MainPageVis({el: $("#bubble-chart"), model: window.pageModel.budgetItems4 });
 )

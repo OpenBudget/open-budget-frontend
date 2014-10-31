@@ -38,6 +38,7 @@ class BubbleChart extends Backbone.View
   initialize: (options) ->
     @options = options
     @data = @options.data
+    @numParts = @options.numParts
 
     @width = @$el.width()
     @height = @$el.height()
@@ -61,7 +62,9 @@ class BubbleChart extends Backbone.View
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.value))
+    total_amount = d3.sum(@data, (d) -> parseInt(d.value))
     @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
+    @boundingRadius = @radius_scale(total_amount)
 
     @create_nodes()
     @force = d3.layout.force()
@@ -154,7 +157,7 @@ class BubbleChart extends Backbone.View
 
   buoyancy: (alpha) ->
     (d) =>
-      targetY = (d.part) * 200 + d.center().y
+      targetY = (d.part) * @boundingRadius / @numParts() + d.center().y
       diff = (targetY - d.y) * (@layout_gravity) * alpha * alpha * alpha * 500
       d.y = d.y + diff
 
