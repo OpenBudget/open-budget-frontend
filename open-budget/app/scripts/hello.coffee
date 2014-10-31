@@ -40,6 +40,10 @@ window.format_full_number = (num) ->
         num = num.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         "&lrm;" + num  + "&rlm;"
 
+window.number_plus_minus = (value) ->
+    if value == 0 then ""
+    return if value > 0 then "+" else "-"
+
 window.color_classname = (value) ->
     if value == 0 then ""
     return if value > 0 then "increased" else "decreased"
