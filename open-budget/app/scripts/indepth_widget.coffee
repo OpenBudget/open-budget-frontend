@@ -417,9 +417,6 @@ class IndepthWidget extends Backbone.View
                 @minValue = 0 # Math.floor(@model.minValue / @tickValue) * @tickValue
                 @maxValue = @minValue + TICKS * @tickValue
 
-        getParticipants: (d) ->
-            return "asdsasdasdasd"
-
 
 $( ->
         console.log "indepth_widget"
