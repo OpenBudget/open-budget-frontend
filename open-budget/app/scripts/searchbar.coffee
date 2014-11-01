@@ -109,7 +109,6 @@ class BudgetPartitionLayoutView extends Backbone.View
     selectCode: (code) =>
         d = null
         code = code.slice(0,6)
-        console.log "CCC", code
         while code != '' and not d?
             d = @codes[code]
             if not d?

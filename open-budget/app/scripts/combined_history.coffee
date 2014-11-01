@@ -18,8 +18,22 @@ class Participant extends Backbone.Model
                 start_date = data.start_date
                 title = data.title
 
-class CombinedHistoryPoint extends Backbone.Model
+class Participants extends Backbone.Collection
         model: Participant
+
+        initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @date = options.date
+            @code = options.code.substring(0,4)
+            @year = @date.getFullYear()
+            @month = @date.getMonth()+1
+            @day = @date.getDate()
+            @fetch(dataType: window.pageModel.get('dataType'), reset: true)
+
+        url: ->
+            "#{pageModel.get('baseURL')}/api/participants/#{@code}/#{@year}/#{@month}/#{@day}"
+
+class CombinedHistoryPoint extends Backbone.Model
 
         defaults:
                 kind: null
@@ -36,15 +50,7 @@ class CombinedHistoryPoint extends Backbone.Model
 
         getParticipants: () ->
             date = this.get('date')
-            request =  $.ajax 'http://the.open-budget.org.il/api/participants/'+window.pageModel.get('budgetCode')+'/'+date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate(),async: false#, (data) ->
-            participants = []
-            if(request.responseText?) 
-                _.each(JSON.parse(request.responseText), (el) ->
-                    participants.push(new Participant(el))
-                ) 
-                return participants
-            else
-                return "" 
+            new Participants([], date:date, code:window.pageModel.get('budgetCode'))
 
 
 class CombinedHistory extends Backbone.Collection

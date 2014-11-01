@@ -1,13 +1,11 @@
-<div class="participants-tooltip">
-	<% _.each(participants,function(el) { %>
-		<div class="participant-row">
-			<div class="participant-info">
-				<div><%= el.get('title') %></div>
-				<div><%= el.get('name') %></div>
-			</div>
-			<div class="participant-photo">
-				<img src="<%= el.get('photo_url')%>">
-			</div>
+<% _.each(participants,function(el) { %>
+	<div class="participant-row">
+		<div class="participant-info">
+			<div><%= el.get('title') %></div>
+			<div><%= el.get('name') %></div>
 		</div>
-	<% }) %>	
-</div>
+		<div class="participant-photo">
+			<img src="<%= el.get('photo_url')%>">
+		</div>
+	</div>
+<% }) %>

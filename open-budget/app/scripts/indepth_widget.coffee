@@ -44,14 +44,21 @@ class IndepthWidget extends Backbone.View
 
                 @participant_tip = d3.tip()
                                .attr('class', 'd3-tip')
-                                   #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
-                               .direction("n")
-                               .offset((d) => [350,(@timeScale( d.get('width')/2 ) - @timeScale(0))])
-                               .html((d) -> if d.get('source') != 'dummy' then JST.widget_participant_tooltip({ participants: d.getParticipants()}) else "")
+                               .direction("sw")
+                               .offset((d) => [70,50])
+                               .html((d) -> JST.widget_participant_tooltip_placeholder(d))
                 @chart.call( @participant_tip )
 
         showTip: (d,i) =>
                 @change_tip.show(d)
+                @selected_tooltip = d
+                window.setTimeout =>
+                    if d == @selected_tooltip
+                        participants = d.getParticipants()
+                        participants.on 'reset', ->
+                            $(".participants-tooltip div[data-timestamp=#{d.get('timestamp')}]").html(JST.widget_participant_tooltip({ participants: participants.models }))
+                   ,
+                    250
                 @participant_tip.show(d)
                 selector = '.tipFocus'
                 s = @chart.selectAll(selector)[0][i]  #.data([d])
