@@ -83,7 +83,7 @@ class BubbleChart extends Backbone.View
     @data.forEach (d) =>
       d.radius = @radius_scale(parseInt(d.value))
       d.x = Math.random() * @width
-      d.y = -d.part*@boundingRadius + d.center().y + Math.random()*50
+      d.y = -d.part*@boundingRadius + d.center.y + Math.random()*50
       @nodes.push d
 
     @nodes.sort (a,b) -> b.value - a.value
@@ -151,19 +151,24 @@ class BubbleChart extends Backbone.View
 
   calc_averages: () =>
     @averages = {}
+    extents = {}
     for d in @nodes
         cat = d.category()
-        if !@averages[cat]?
-            @averages[cat] =
-                x: 0
-                y: 0
-                n: 0
-        @averages[cat].x += d.x
-        @averages[cat].y += d.y
-        @averages[cat].n += 1
-    for avg in _.values(@averages)
-        avg.x = avg.x / avg.n
-        avg.y = avg.y / avg.n
+        if !extents[cat]?
+            extents[cat] =
+                maxx: 0
+                maxy: 0
+                minx: @width
+                miny: @height
+        extents[cat].maxx = d3.max([extents[cat].maxx,d.x])
+        extents[cat].maxy = d3.max([extents[cat].maxy,d.y])
+        extents[cat].minx = d3.min([extents[cat].minx,d.x])
+        extents[cat].miny = d3.min([extents[cat].miny,d.y])
+    for cat in _.keys(extents)
+        extent = extents[cat]
+        @averages[cat] =
+            x: (extent.maxx + extent.minx)/2
+            y: (extent.maxy + extent.miny)/2
 
   get_offset: (alpha,d) =>
       cat = d.category()
@@ -173,17 +178,17 @@ class BubbleChart extends Backbone.View
           avg = @averages[cat]
           s = ((0.1-alpha)/0.1)
           {
-            dx: s*(avg.x - d.center().x),
-            dy: s*(avg.y - d.center().y)
+            dx: s*(avg.x - d.center.x),
+            dy: s*(avg.y - d.center.y)
           }
 
   # Moves all circles towards the @center
   # of the visualization
   move_towards_centers: (alpha) =>
     (d) =>
-      d.x = d.x + (d.center().x - d.x) * (@damper + 0.02) * alpha
-      targetY = - d3.min([1,d.part]) * @boundingRadius + d.center().y
-      d.y = d3.max([0, d.y + (d.center().y - d.y) * (@damper + 0.02) * alpha + (targetY - d.y) * (@damper) * alpha * alpha * alpha * 500])
+      d.x = d.x + (d.center.x - d.x) * (@damper + 0.02) * alpha
+      targetY = - d3.min([1,d.part]) * @boundingRadius + d.center.y
+      d.y = d3.max([0, d.y + (d.center.y - d.y) * (@damper + 0.02) * alpha + (targetY - d.y) * (@damper) * alpha * alpha * alpha * 500])
 
   show_details: (data, i, element) =>
     @tooltip.show(data)
