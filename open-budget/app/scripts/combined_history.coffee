@@ -66,9 +66,10 @@ class CombinedHistory extends Backbone.Collection
                 else
                     @changeGroups = { models: [] }
                 @budgetHistory = @pageModel.budgetHistory
+                @budgetApprovals = @pageModel.budgetApprovals
                 @pageModel.on "ready", =>
                     @processChangeLines(@changeGroups.models)
-                    @processBudgetHistory(@budgetHistory.models)
+                    @processBudgetHistory(@budgetHistory.models,@budgetApprovals.models)
                     @postProcess()
                 @minValue = @maxValue = @minTime = @maxTime = null
 
@@ -136,16 +137,22 @@ class CombinedHistory extends Backbone.Collection
                     model.set('min_value',@minValue)
                 @reset(@models)
 
-        processBudgetHistory: (models) ->
+        processBudgetHistory: (models,approvedModels) ->
+                approved = _.groupBy(approvedModels, (x) -> x.get('year'))
                 for m in models
+                        approvedRec = approved[m.get('year')][0]
+                        approvedRec.setTimestamps()
                         value = m.get("net_allocated")
+                        console.log approvedRec.toJSON()
                         if value?
                                 point = new CombinedHistoryPoint()
                                 point.set("source", m)
                                 point.set("kind", "approved")
                                 point.set("value", m.get("net_allocated"))
-                                startYear = new Date(m.get('year'),0).valueOf()
-                                endYear = new Date(m.get('year'),11,31).valueOf()
+                                startYear = approvedRec.get('effect_timestamp')
+                                if !startYear? then startYear = new Date(m.get('year'),0).valueOf()
+                                endYear = approvedRec.get('end_timestamp')
+                                if !endYear? then endYear = new Date(m.get('year'),11,31).valueOf()
                                 point.set('timestamp',startYear)
                                 point.set('width', endYear - startYear)
                                 point.set('src','budgetline')

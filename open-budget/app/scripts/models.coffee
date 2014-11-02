@@ -1,3 +1,9 @@
+dateToTimestamp = (date) ->
+    if !date? then return null
+    date = date.split('/')
+    date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
+    date.valueOf()
+
 class ChangeExplanation extends Backbone.Model
 
         defaults:
@@ -76,10 +82,7 @@ class ChangeLine extends Backbone.Model
                                 @setTimestamp()
 
         setTimestamp: ->
-                dateStr = @get 'date'
-                date = dateStr.split('/')
-                date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
-                @set 'timestamp', date.valueOf()
+                @set 'timestamp', dateToTimestamp(@get 'date')
 
 class BudgetItem extends Backbone.Model
 
@@ -137,6 +140,33 @@ class BudgetItemDepth extends Backbone.Collection
         url: ->
             "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/depth/#{@depth}?limit=1000"
 
+class BudgetApproval extends Backbone.Model
+    defaults:
+        year: null
+        approval_date: null
+        effect_date: null
+        end_date: null
+        approval_timestamp: null
+        effect_timestamp: null
+        end_timestamp: null
+        link: null
+
+    setTimestamps: ->
+        @set 'approval_timestamp', dateToTimestamp(@get 'approval_date')
+        @set 'effect_timestamp', dateToTimestamp(@get 'effect_date')
+        @set 'end_timestamp', dateToTimestamp(@get 'end_date')
+
+class BudgetApprovals extends Backbone.Collection
+    model: BudgetApproval
+
+    initialize: (models, options) ->
+        @pageModel = options.pageModel
+        @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+    url: ->
+        "#{pageModel.get('baseURL')}/api/budget/approvals"
+
+
 class ChangeLines extends Backbone.Collection
 
         model: ChangeLine
@@ -174,10 +204,7 @@ class ChangeGroup extends Backbone.Model
                         @setTimestamp()
 
         setTimestamp: ->
-                dateStr = @get 'date'
-                date = dateStr.split('/')
-                date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
-                @set 'timestamp', date.valueOf()
+                @set 'timestamp', dateToTimestamp(@get 'date')
 
         getCodeChanges: (code) =>
                 _.filter(@get('changes'),(c)->c.budget_code==code)[0]
@@ -273,11 +300,12 @@ class PageModel extends Backbone.Model
                     @article.find(".#{digits}digits").css('display','')
                     @changeLines = new ChangeLines([], pageModel: @)
                     @changeGroups = new ChangeGroups([], pageModel: @)
+                    @budgetApprovals = new BudgetApprovals([], pageModel: @)
                     @budgetHistory = new BudgetHistory([], pageModel: @)
                     @budgetHistory.on 'reset',
                                       () =>
                                           @set('currentItem', @budgetHistory.getLast())
-                    readyCollections = [@changeLines,@changeGroups,@budgetHistory]
+                    readyCollections = [@changeLines,@changeGroups,@budgetHistory,@budgetApprovals]
                     if digits >= 6
                         @takanot = new TakanaSupports([], pageModel: @)
                         readyCollections.push(@takanot)
