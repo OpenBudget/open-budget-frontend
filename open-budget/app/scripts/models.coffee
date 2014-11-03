@@ -150,6 +150,7 @@ class BudgetApproval extends Backbone.Model
         effect_timestamp: null
         end_timestamp: null
         link: null
+        participants: null
 
     setTimestamps: ->
         @set 'approval_timestamp', dateToTimestamp(@get 'approval_date')
@@ -164,7 +165,7 @@ class BudgetApprovals extends Backbone.Collection
         @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
     url: ->
-        "#{pageModel.get('baseURL')}/api/budget/approvals"
+        "#{pageModel.get('baseURL')}/api/budget/#{pageModel.get('budgetCode')}/approvals"
 
 
 class ChangeLines extends Backbone.Collection
@@ -176,7 +177,7 @@ class ChangeLines extends Backbone.Collection
                 @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
-                "#{pageModel.get('baseURL')}/api/changes/#{@pageModel.get('budgetCode')}"
+                "#{pageModel.get('baseURL')}/api/changes/#{pageModel.get('budgetCode')}"
 
         comparator: 'req_code'
 

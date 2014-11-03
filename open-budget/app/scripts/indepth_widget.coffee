@@ -56,7 +56,8 @@ class IndepthWidget extends Backbone.View
                     if d == @selected_tooltip
                         participants = d.getParticipants()
                         participants.on 'reset', ->
-                            $(".participants-tooltip div[data-timestamp=#{d.get('timestamp')}]").html(JST.widget_participant_tooltip({ participants: participants.models }))
+                            models = _.map( participants.models, (x) -> x.toJSON() )
+                            $(".participants-tooltip div[data-timestamp=#{d.get('timestamp')}]").html(JST.widget_participant_tooltip({ participants: models }))
                    ,
                     250
                 @participant_tip.show(d)
@@ -71,38 +72,7 @@ class IndepthWidget extends Backbone.View
                 s = @chart.selectAll(selector)[0][i]  #.data([d])
                 d3.select(s).style('display','none')
 
-        render: ->
-                @svg.call(@drag)
-                @maxWidth = $(@el).width()
-                @maxHeight = $(@el).height()
-
-                @setValueRange()
-
-                @minTime = @pageModel.get('selection')[0]
-                @maxTime = @pageModel.get('selection')[1]
-
-                @baseTimeScale = d3.scale.linear()
-                        .domain([@minTime, @maxTime])
-                        .range([0, @maxWidth])
-                @roundToYearStart = (t) =>
-                        year = new Date(t).getFullYear()
-                        base = new Date(year,0).valueOf()
-                        return base
-
-                @yearSeperatingScale = (t) =>
-                        base = @roundToYearStart(t)
-                        #console.log t, year, base
-                        base + (t - base) * 0.98
-                @pixelPerfecter = (t) =>
-                        Math.floor(t) + 0.5
-                @timeScale = (t) =>
-                        @pixelPerfecter(@baseTimeScale(@yearSeperatingScale(t)))
-                @baseValueScale = d3.scale.linear()
-                        .domain([@minValue, @maxValue])
-                        .range([TOP_PART_SIZE, 0])
-                @valueScale = (t) =>
-                        @pixelPerfecter(@baseValueScale(t))
-
+        render__chart_bg: ->
                 @chart.selectAll('.background').data([1])
                         .enter()
                                 .append('rect')
@@ -146,6 +116,35 @@ class IndepthWidget extends Backbone.View
                         .style("text-anchor", "end")
                         .text((d) => @formatNumber( @minValue + d.index*@tickValue ) )
 
+        render__year_starts: ->
+                yearstartModels = _.filter(@model.models, (x)->x.get('kind')=='yearstart')
+                newGraphParts = @chart.selectAll('.graphPartYearStart').data(yearstartModels)
+                        .enter().append("g")
+                        .attr('class','graphPartYearStart')
+                newGraphParts
+                        .append('line')
+                                .attr('class', 'yearstartLine')
+                                .datum( (d) => d)
+                newGraphParts
+                        .append('text')
+                                .attr('class', 'yearstartLabel')
+                                .style("font-size", 12)
+                                .attr("dx",3)
+                                .text((d) => d.get('date').getFullYear())
+                                .style("text-anchor", "end")
+                                .datum( (d) => d)
+
+                @chart.selectAll('.yearstartLine').data(yearstartModels)
+                        .attr("class", "yearstartLine" )
+                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y1", (d) => @valueScale( d.get('value') ) )
+                        .attr("y2", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+                @chart.selectAll('.yearstartLabel').data(yearstartModels)
+                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+
+        render__approved_budgets: ->
                 approvedModels = _.filter(@model.models, (x)->x.get('kind')=='approved')
                 newGraphParts = @chart.selectAll('.graphPartApproved').data(approvedModels)
                         .enter().append("g")
@@ -158,29 +157,75 @@ class IndepthWidget extends Backbone.View
                         .append('line')
                                 .attr('class', 'approvedBar')
                                 .datum( (d) => d)
-                newGraphParts
-                        .append('text')
-                                .attr('class', 'approvedLabel')
-                                .style("font-size", 12)
-                                .attr("dx",3)
-                                .text((d) => d.get('date').getFullYear())
-                                .style("text-anchor", "end")
-                                .datum( (d) => d)
+                newTips = d3.select('body').selectAll('.approvedTip').data(approvedModels)
+                            .enter().append("div")
+                            .attr("class","approvedTip participantTooltip")
+                            .html((d) -> JST.widget_participant_tooltip({participants: d.get('participants')}))
 
-                @chart.selectAll('.approvedLine').data(approvedModels)
-                        .attr("class", (d) => dby = d.get('diff_yearly'); if dby < 0 then "approvedLine reduce" else if dby > 0 then "approvedLine increase" else "approvedLine" )
-                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y1", (d) => @valueScale( d.get('value') ) )
-                        .attr("y2", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+                pos = @$el.offset()
+                d3.select('body').selectAll('.approvedTip').data(approvedModels)
+                            .style("left", (d) => (pos.left+@timeScale(d.get('timestamp')))+"px" )
+                            .style("top", (pos.top + @valueScale(0))+"px" )
+
+                # newGraphParts
+                #         .append('text')
+                #                 .attr('class', 'approvedLabel')
+                #                 .style("font-size", 12)
+                #                 .attr("dx",3)
+                #                 .text((d) => d.get('date').getFullYear())
+                #                 .style("text-anchor", "end")
+                #                 .datum( (d) => d)
+
+                # @chart.selectAll('.approvedLine').data(approvedModels)
+                #         .attr("class", (d) => dby = d.get('diff_yearly'); if dby < 0 then "approvedLine reduce" else if dby > 0 then "approvedLine increase" else "approvedLine" )
+                #         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                #         .attr("x2", (d) => @timeScale( d.get('timestamp') ) )
+                #         .attr("y1", (d) => @valueScale( d.get('value') ) )
+                #         .attr("y2", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
                 @chart.selectAll('.approvedBar').data(approvedModels)
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
                         .attr("y1", (d) => @valueScale( d.get('value') ) )
                         .attr("y2", (d) => @valueScale( d.get('value') ) )
-                @chart.selectAll('.approvedLabel').data(approvedModels)
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+                # @chart.selectAll('.approvedLabel').data(approvedModels)
+                #         .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                #         .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
+
+        render: ->
+                @svg.call(@drag)
+                @maxWidth = $(@el).width()
+                @maxHeight = $(@el).height()
+
+                @setValueRange()
+
+                @minTime = @pageModel.get('selection')[0]
+                @maxTime = @pageModel.get('selection')[1]
+
+                @baseTimeScale = d3.scale.linear()
+                        .domain([@minTime, @maxTime])
+                        .range([0, @maxWidth])
+                @roundToYearStart = (t) =>
+                        year = new Date(t).getFullYear()
+                        base = new Date(year,0).valueOf()
+                        return base
+
+                @yearSeperatingScale = (t) =>
+                        base = @roundToYearStart(t)
+                        #console.log t, year, base
+                        base + (t - base) * 0.98
+                @pixelPerfecter = (t) =>
+                        Math.floor(t) + 0.5
+                @timeScale = (t) =>
+                        @pixelPerfecter(@baseTimeScale(@yearSeperatingScale(t)))
+                @baseValueScale = d3.scale.linear()
+                        .domain([@minValue, @maxValue])
+                        .range([TOP_PART_SIZE, 0])
+                @valueScale = (t) =>
+                        @pixelPerfecter(@baseValueScale(t))
+
+                @render__chart_bg()
+                @render__year_starts()
+                @render__approved_budgets()
 
                 revisedModels = _.filter(@model.models, (x)->x.get('kind')=='revised' and !x.get('disabled'))
                 newGraphParts = @chart.selectAll('.graphPartRevised').data(revisedModels)

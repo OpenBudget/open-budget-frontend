@@ -717,6 +717,15 @@ svg rect{
           stroke: @lightgray;
         }
     }
+    .graphPartYearStart {
+        text {
+        fill: @approved;
+        }
+        .yearstartLine {
+          stroke: @approved;
+          stroke-dasharray: 1,4;
+        }
+     }
     .graphPartApproved {
         text {
         fill: @approved;
@@ -830,13 +839,18 @@ svg rect{
     }
 }
 
+.approvedTip {
+    position: absolute;
+    width:150px;
+}
+
 .participant-row {
   display: table;
   width: 100%;
-  .participant-photo { 
+  .participant-photo {
     width: 15%;
     text-align: left;
-    display: table-cell; 
+    display: table-cell;
   }
   .participant-info { display: table-cell;}
 }

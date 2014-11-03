@@ -45,8 +45,8 @@ class CombinedHistoryPoint extends Backbone.Model
                 date: null
                 last: false
                 exact: true
-
                 diff_value: null
+                participants: null
 
         getParticipants: () ->
             date = this.get('date')
@@ -145,6 +145,17 @@ class CombinedHistory extends Backbone.Collection
                         value = m.get("net_allocated")
                         console.log approvedRec.toJSON()
                         if value?
+
+                                point = new CombinedHistoryPoint()
+                                point.set("source", m)
+                                point.set("kind", "yearstart")
+                                point.set("value", m.get("net_allocated"))
+                                startYear = new Date(m.get('year'),0).valueOf()
+                                point.set('timestamp',startYear)
+                                point.set('width', 1)
+                                point.set('src','dummy')
+                                @add point
+
                                 point = new CombinedHistoryPoint()
                                 point.set("source", m)
                                 point.set("kind", "approved")
@@ -155,6 +166,7 @@ class CombinedHistory extends Backbone.Collection
                                 if !endYear? then endYear = new Date(m.get('year'),11,31).valueOf()
                                 point.set('timestamp',startYear)
                                 point.set('width', endYear - startYear)
+                                point.set('participants', approvedRec.get('participants'))
                                 point.set('src','budgetline')
                                 @add point
 

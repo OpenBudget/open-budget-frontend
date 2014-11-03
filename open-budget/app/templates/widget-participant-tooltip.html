@@ -1,11 +1,11 @@
 <% _.each(participants,function(el) { %>
 	<div class="participant-row">
 		<div class="participant-info">
-			<div><%= el.get('title') %></div>
-			<div><%= el.get('name') %></div>
+			<div><%= el.title %></div>
+			<div><%= el.name %></div>
 		</div>
 		<div class="participant-photo">
-			<img src="<%= el.get('photo_url')%>">
+			<img src="<%= el.photo_url %>">
 		</div>
 	</div>
 <% }) %>
