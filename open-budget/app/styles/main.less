@@ -26,21 +26,21 @@
 
 @selection: #3399ff;
 
-.increased_svg  {  stroke: @increased; fill: @increased;}
-.increased_50_svg{  stroke: @increased_50; fill: @increased_50;}
-.increased_20_svg{  stroke: @increased_20; fill: @increased_20;}
-.decreased_svg  {  stroke: @decreased; fill: @decreased;}
-.decreased_20_svg{  stroke: @decreased_20; fill: @decreased_20;}
-.decreased_50_svg{  stroke: @decreased_50; fill: @decreased_50;}
-.unchanged_svg {  stroke: @gray; fill: @gray;}
+.increased_svg   {  stroke: darken(@increased, 10%); fill: @increased;}
+.increased_50_svg{  stroke: darken(@increased_50, 10%); fill: @increased_50;}
+.increased_20_svg{  stroke: darken(@increased_20, 10%); fill: @increased_20;}
+.decreased_svg   {  stroke: darken(@decreased, 10%); fill: @decreased;}
+.decreased_50_svg{  stroke: darken(@decreased_50, 10%); fill: @decreased_50;}
+.decreased_20_svg{  stroke: darken(@decreased_20, 10%); fill: @decreased_20;}
+.unchanged_svg   {  stroke: darken(@gray, 10%); fill: @gray;}
 
-.increased_bg  {  background: @increased; fill: @increased;}
+.increased_bg   {  background: @increased; fill: @increased;}
 .increased_50_bg{  background: @increased_50; fill: @increased_50;}
 .increased_20_bg{  background: @increased_20; fill: @increased_20;}
-.decreased_bg  {  background: @decreased; fill: @decreased;}
-.decreased_20_bg{  background: @decreased_20; fill: @decreased_20;}
+.decreased_bg   {  background: @decreased; fill: @decreased;}
 .decreased_50_bg{  background: @decreased_50; fill: @decreased_50;}
-.unchanged_bg {  background: @gray; fill: @gray;}
+.decreased_20_bg{  background: @decreased_20; fill: @decreased_20;}
+.unchanged_bg   {  background: @gray; fill: @gray;}
 
 .increased_text  {  color: @increased;}
 .increased_50_text{  color: @increased_50;}
@@ -335,6 +335,7 @@ strong.approved {
 .bubblesCirle {
     //opacity: 0.5;
     cursor: pointer;
+    stroke-width: 1;
 }
 
 //////// SEARCH & TREE //////////////
