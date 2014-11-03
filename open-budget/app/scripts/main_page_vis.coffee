@@ -49,7 +49,6 @@ class MainPageVis extends Backbone.View
                     .attr('dy', 100)
                     .text((d) -> d.title)
                     .style('opacity', 0)
-                    .style('stroke', 'black')
                     .style("text-anchor", "middle")
 
         # Create data for bubble chart
