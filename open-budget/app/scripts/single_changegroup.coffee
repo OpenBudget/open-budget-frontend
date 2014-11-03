@@ -1,7 +1,7 @@
 class SingleChangeGroupView extends Backbone.View
 
         initialize: ->
-            @model.on 'ready', => @render()
+            @model.on 'ready-changegroup', => @render()
             console.log 'SingleChangeGroupView init'
 
         render: ->

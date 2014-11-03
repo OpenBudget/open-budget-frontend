@@ -274,6 +274,35 @@ class BudgetHistory extends Backbone.Collection
 
         getLast: -> @models[@models.length-1]
 
+class ReadyAggregator
+
+    constructor: (event) ->
+        @readyCounter = 0
+        @collections = []
+        @models = []
+        @event = event
+        @ready = false
+
+    addModel: (model) ->
+        @models.push model
+        @readyCounter += 1
+        model.on 'change',() => @checkIfReady(model)
+        @
+
+    addCollection: (collection) ->
+        @collections.push collection
+        @readyCounter += 1
+        collection.on 'reset',() => @checkIfReady(collection)
+        @
+
+    checkIfReady: (what) ->
+        console.log "checkIfReady: "+@event+"="+@readyCounter
+        if @ready
+            return
+        @readyCounter -= 1
+        if @readyCounter == 0
+            @ready = true
+            pageModel.trigger(@event)
 
 
 class PageModel extends Backbone.Model
@@ -293,24 +322,32 @@ class PageModel extends Backbone.Model
         initialize: ->
                 if window.location.origin == @get('baseURL')
                     @set('dataType','json')
+                @readyEvents = []
                 @on 'change:budgetCode', ->
                     budgetCode = @get('budgetCode')
                     digits = budgetCode.length - 2
                     @set('digits',digits)
                     @article.find(".2digits,.4digits,.6digits,.8digits").css('display','none')
                     @article.find(".#{digits}digits").css('display','')
-                    @changeLines = new ChangeLines([], pageModel: @)
+                    #@changeLines = new ChangeLines([], pageModel: @)
                     @changeGroups = new ChangeGroups([], pageModel: @)
                     @budgetApprovals = new BudgetApprovals([], pageModel: @)
                     @budgetHistory = new BudgetHistory([], pageModel: @)
                     @budgetHistory.on 'reset',
                                       () =>
                                           @set('currentItem', @budgetHistory.getLast())
-                    readyCollections = [@changeLines,@changeGroups,@budgetHistory,@budgetApprovals]
+
+                    @readyEvents.push new ReadyAggregator("ready-budget-history")
+                                                .addCollection(@changeGroups)
+                                                .addCollection(@budgetHistory)
+                                                .addCollection(@budgetApprovals)
+
                     if digits >= 6
-                        @takanot = new TakanaSupports([], pageModel: @)
-                        readyCollections.push(@takanot)
-                    readyModels = []
+                        @supports = new TakanaSupports([], pageModel: @)
+                        @readyEvents.push new ReadyAggregator("ready-supports")
+                                                    .addCollection(@supports)
+                    readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs")
+                    @readyEvents.push readyBreadcrumbs
                     @breadcrumbs = []
                     for i in [1..(budgetCode.length/2)]
                         main = null
@@ -320,18 +357,19 @@ class PageModel extends Backbone.Model
                             main = new BudgetItem(year: @get('year'), code: budgetCode.slice(0,(i+1)*2), pageModel: @)
                             main.do_fetch()
                             kids = new BudgetItemKids([], year: @get('year'), code: budgetCode.slice(0,i*2), pageModel: @)
-                            readyModels.push(main)
-                            readyCollections.push(kids)
+                            readyBreadcrumbs.addModel(main)
+                            readyBreadcrumbs.addCollection(kids)
                             @breadcrumbs.push
                                 main: main
                                 kids: kids
                                 last: i == budgetCode.length/2
-                    @setupReadyEvent readyCollections, readyModels
+
                 @on 'change:changeGroupId', ->
                     @changeGroup = new ChangeGroup(pageModel: @)
                     @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))
-                    readyItems = [@changeGroup, @changeGroupExplanation]
-                    @setupReadyEvent [], readyItems
+                    @readyEvents.push new ReadyAggregator("ready-changegroup")
+                                                .addModel(@changeGroup)
+                                                .addModel(@changeGroupExplanation)
                     @changeGroup.doFetch()
                     @changeGroupExplanation.doFetch()
                     @changeGroup.on 'change:title_template', =>
@@ -341,32 +379,21 @@ class PageModel extends Backbone.Model
                             @addKind(part)
 
                 @on 'change:mainPage', ->
-                    @budgetItems2 = new BudgetItemKids([], year: pageModel.get('year'), code: '00', pageModel: @)
                     @budgetItems4 = new BudgetItemDepth([], year: pageModel.get('year'), code: '00', depth: 2, pageModel: @)
+                    @budgetItems2 = new BudgetItemKids([], year: pageModel.get('year'), code: '00', pageModel: @)
+                    @readyEvents.push new ReadyAggregator("ready-budget-bubbles")
+                                                        .addCollection(@budgetItems2)
+                                                        .addCollection(@budgetItems4)
+
                     @mainBudgetItem = new BudgetItem(year: pageModel.get('year'), code: '00', pageModel: @)
-                    @setupReadyEvent [ @budgetItems2, @budgetItems4 ], [ @mainBudgetItem ]
                     @mainBudgetItem.do_fetch()
+                    @readyEvents.push new ReadyAggregator("ready-main-budget")
+                                                         .addModel(@mainBudgetItem)
+
 
                 @on 'change:kinds', =>
                     for kind in @get('kinds')
                         $('body').toggleClass("kind-#{kind}",true)
-
-        setupReadyEvent: (collections,models) ->
-                @readyCount = collections.length + models.length
-                console.log 'readyCount ',@readyCount
-                for i in collections
-                    i.on 'reset',() => @checkIfReady()
-                for i in models
-                    i.on 'change',() => @checkIfReady()
-
-        checkIfReady: ->
-            if @get('ready')
-                return
-            console.log 'checkIfReady ',@readyCount
-            @readyCount -= 1
-            if @readyCount == 0
-                @set('ready',true)
-                @trigger('ready')
 
         addKind: (kind) ->
             kinds = _.clone(@get('kinds'))

@@ -9,6 +9,6 @@ $( ->
     if window.pageModel.get('budgetCode')?
         window.budgetBreadcrumbs = new BudgetBreadcrumbsView(el: $("#breadcrumb-header"))
 
-        window.pageModel.on 'ready', ->
+        window.pageModel.on 'ready-breadcrumbs', ->
             window.budgetBreadcrumbs.render()
 )

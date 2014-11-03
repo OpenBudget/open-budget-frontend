@@ -67,7 +67,7 @@ class CombinedHistory extends Backbone.Collection
                     @changeGroups = { models: [] }
                 @budgetHistory = @pageModel.budgetHistory
                 @budgetApprovals = @pageModel.budgetApprovals
-                @pageModel.on "ready", =>
+                @pageModel.on "ready-budget-history", =>
                     @processChangeLines(@changeGroups.models)
                     @processBudgetHistory(@budgetHistory.models,@budgetApprovals.models)
                     @postProcess()

@@ -1,12 +1,11 @@
 class MainPageVis extends Backbone.View
 
     initialize: ->
-        if @model?
-            @model.on 'reset', =>
-                @toggle = false
-                @prepareData()
-                @recalc_centers()
-                @render()
+        @model.on 'ready-budget-bubbles', =>
+            @toggle = false
+            @prepareData()
+            @recalc_centers()
+            @render()
 
     events:
         'click': 'switchToggle'
@@ -102,5 +101,5 @@ class MainPageVis extends Backbone.View
 
 $( ->
     console.log "main_page"
-    window.mainPageVis = new MainPageVis({el: $("#bubble-chart"), model: window.pageModel.budgetItems4 });
+    window.mainPageVis = new MainPageVis({el: $("#bubble-chart"), model: window.pageModel });
 )
