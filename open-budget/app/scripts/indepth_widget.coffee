@@ -157,13 +157,13 @@ class IndepthWidget extends Backbone.View
                         .append('line')
                                 .attr('class', 'approvedBar')
                                 .datum( (d) => d)
-                newTips = d3.select('body').selectAll('.approvedTip').data(approvedModels)
+                newTips = d3.select('#approvedTooltips').selectAll('.approvedTip').data(approvedModels)
                             .enter().append("div")
                             .attr("class","approvedTip participantTooltip")
                             .html((d) -> JST.widget_participant_tooltip({participants: d.get('participants')}))
 
                 pos = @$el.offset()
-                d3.select('body').selectAll('.approvedTip').data(approvedModels)
+                d3.select('#approvedTooltips').selectAll('.approvedTip').data(approvedModels)
                             .style("left", (d) => (pos.left+@timeScale(d.get('timestamp')))+"px" )
                             .style("top", (pos.top + @valueScale(0))+"px" )
 
