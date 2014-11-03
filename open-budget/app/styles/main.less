@@ -839,20 +839,31 @@ svg rect{
     }
 }
 
-.approvedTip {
-    position: absolute;
-    width:150px;
-}
+#approvedTooltips{
+  overflow: hidden;
+  position: relative;
+  height: 300px;
+  margin-top: -240px;
 
-.participant-row {
-  display: table;
-  width: 100%;
-  .participant-photo {
-    width: 15%;
-    text-align: left;
-    display: table-cell;
+  .approvedTip {
+      position: absolute;
+      width:150px;
+      padding-top: 70px;
+      border-left: 1px solid;
   }
-  .participant-info { display: table-cell;}
+
+  .participant-row {
+    display: table;
+    width: 100%;
+    text-align: left;
+
+    .participant-photo {
+      width: 15%;
+      text-align: left;
+      display: table-cell;
+    }
+    .participant-info { display: table-cell;}
+  }
 }
 
 /* Overview Widget */
