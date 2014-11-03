@@ -162,10 +162,9 @@ class IndepthWidget extends Backbone.View
                             .attr("class","approvedTip participantTooltip")
                             .html((d) -> JST.widget_participant_tooltip({participants: d.get('participants')}))
 
-                pos = @$el.offset()
                 d3.select('#approvedTooltips').selectAll('.approvedTip').data(approvedModels)
-                            .style("left", (d) => (pos.left+@timeScale(d.get('timestamp')))+"px" )
-                            .style("top", (pos.top + @valueScale(0))+"px" )
+                            .style("left", (d) => (@timeScale(d.get('timestamp')))+"px" )
+                            .style("top", "0px" )
 
                 # newGraphParts
                 #         .append('text')
