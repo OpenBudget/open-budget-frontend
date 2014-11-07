@@ -65,6 +65,7 @@ class IndepthWidget extends Backbone.View
                         selector = '.tipFocus'
                         s = that.chart.selectAll(selector)[0][i]  #.data([d])
                         d3.select(s).style('display','block')
+                        true
                 @hideTip = (d,i) ->
                         d3.select(this).style('opacity',0)
                         that.change_tip.hide(d)
@@ -72,8 +73,32 @@ class IndepthWidget extends Backbone.View
                         selector = '.tipFocus'
                         s = that.chart.selectAll(selector)[0][i]  #.data([d])
                         d3.select(s).style('display','none')
+                        true
+                @showGuideline = ->
+                        mouse = d3.mouse(this)
+                        that.chart.selectAll('.guideline')
+                            .attr('x1',mouse[0])
+                            .attr('x2',mouse[0])
+                            .style('visibility','visible')
+                        date = that.baseTimeScale.invert(mouse[0])
+                        date = new Date(date)
+                        ofs = $(that.svg[0]).offset()
+                        d3.select("#indepth-guideline-date")
+                            .html(date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear())
+                            .style('display','block')
+                            .style('left', d3.event.pageX+"px")
+                            .style('top',ofs.top+that.valueScale(0)+"px")
+                        true
+                @hideGuideline = ->
+                        that.chart.selectAll('.guideline')
+                            .style('visibility','hidden')
+                        d3.select("#indepth-guideline-date")
+                            .html("")
+                            .style('display','none')
+                        true
 
         render__chart_bg: ->
+
                 @chart.selectAll('.background').data([1])
                         .enter()
                                 .append('rect')
@@ -116,6 +141,23 @@ class IndepthWidget extends Backbone.View
                         .style("font-size", 8)
                         .style("text-anchor", "end")
                         .text((d) => @formatNumber( @minValue + d.index*@tickValue ) )
+
+                # Guideline
+                @chart.selectAll('.guideline').data([1])
+                        .enter()
+                            .append('line')
+                            .attr('class','guideline')
+                            .attr('y1',0)
+                            .attr('y2',@valueScale(0)+CHANGE_LINE_HANG_LENGTH)
+                            .style('stroke','#000')
+
+                d3.select('body').selectAll('#indepth-guideline-date').data([1])
+                        .enter()
+                            .append('div')
+                            .attr('id','indepth-guideline-date')
+
+                @svg.on('mousemove',@showGuideline)
+                @svg.on('mouseout',@hideGuideline)
 
         render__year_starts: ->
                 yearstartModels = _.filter(@model.models, (x)->x.get('kind')=='yearstart')
@@ -388,8 +430,8 @@ class IndepthWidget extends Backbone.View
                         .attr("y", 0 )
                         .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width')) - @timeScale(d.get('timestamp')) )
                         .attr("height", @maxHeight )
-                        .on('mouseover', @showTip)
-                        .on('mouseout', @hideTip)
+                        .on('mouseenter', @showTip)
+                        .on('mouseleave', @hideTip)
 
         render: ->
                 @svg.call(@drag)

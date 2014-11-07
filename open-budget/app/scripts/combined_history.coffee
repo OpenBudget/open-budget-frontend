@@ -144,7 +144,6 @@ class CombinedHistory extends Backbone.Collection
                         approvedRec = approved[m.get('year')][0]
                         approvedRec.setTimestamps()
                         value = m.get("net_allocated")
-                        console.log approvedRec.toJSON()
                         if value?
 
                                 point = new CombinedHistoryPoint()
@@ -245,7 +244,6 @@ class CombinedHistory extends Backbone.Collection
                                         point.set('subkind',m.getDateType())
                                         date = m.get('timestamp')
                                         diff = date - timestamp
-                                        console.log m.get('date'),m.get('timestamp'),diff
                                         timestamp = date
                                         if lastPoint
                                                 lastPoint.set('width', diff)

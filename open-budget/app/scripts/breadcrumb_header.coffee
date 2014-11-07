@@ -20,5 +20,6 @@ $( ->
         window.pageModel.on('ready-breadcrumbs', ->
             window.breadcrumbHeaderView = new BreadcrumbHeaderView(el: $("#header-tree"))
             window.breadcrumbHeaderView.render()
+            $("#affix-wrapper").height($("#affix-header").height())
         )
 )

@@ -1,7 +1,8 @@
 <li class="issue-<%= window.issue_depth(main.get('code')) %> <%= {true: 'current'}[last] %>">
 
   <% if(last) { %>
-    <header data-spy="affix" data-offset-top="174">
+    <div id="affix-wrapper">
+    <header id="affix-header" data-spy="affix" data-offset-top="174">
     <div class="issue-part"></div>
   <% } %>
   <!-- Issue number -->
@@ -35,6 +36,7 @@
   </div>
   <% if(last) { %>
     </header>
+    </div>
   <% } %>
 
   <% if(last) { %>

@@ -343,10 +343,13 @@ class PageModel extends Backbone.Model
                                                 .addCollection(@budgetApprovals)
 
                     if digits >= 6
-                        @supports = new TakanaSupports([], pageModel: @)
-                        @readyEvents.push new ReadyAggregator("ready-supports")
-                                                    .addCollection(@supports)
+                        @on('ready-budget-history', ->
+                            @supports = new TakanaSupports([], pageModel: @)
+                            @readyEvents.push new ReadyAggregator("ready-supports")
+                                                        .addCollection(@supports)
+                        )
                     readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs")
+                                                    .addCollection(@budgetHistory)
                     @readyEvents.push readyBreadcrumbs
                     @breadcrumbs = []
                     for i in [1..(budgetCode.length/2)]
