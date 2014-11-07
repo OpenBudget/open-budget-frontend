@@ -40,7 +40,7 @@
 <% } %>
 
 <% /* Template for approved budget line */ %>
-<% if (kind == "approved" && src == "budgetline") { %>
+<% if (kind == "approved" && src == "budgetline" && !continued ) { %>
 <div class="yearly">
   <div class="row">
     <div class="col-xs-2 col-sm-1 transfer-list-dates">

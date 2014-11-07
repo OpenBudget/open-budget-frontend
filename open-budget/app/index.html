@@ -61,16 +61,6 @@
                   <ul class="nav navbar-nav navbar-left">
 				  	<li class="twitter-button">
 						<a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-hashtags="פותחים_תתקציב">Tweet</a>
-						<script>!function(d,s,id){
-									var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
-									if(!d.getElementById(id)){
-										js=d.createElement(s);
-										js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
-										fjs.parentNode.insertBefore(js,fjs);
-									}
-								}
-								(document, 'script', 'twitter-wjs');
-						</script>
 					</li>
                     <li><a href="#" id="subscribeWidget" role="button" class="btn btn-default"></a></li>
                   </ul>
@@ -137,9 +127,10 @@
 
                 <section id="vis">
                     <h2 id="vis-title">שינויים בתקציב</h2>
-                    <div class="spinner-container"></div>
             	    <div id="overview-widget" class="2digits 4digits 6digits 8digits"></div>
-        		    <div id="indepth-widget" class="2digits 4digits 6digits 8digits"></div>
+        		    <div id="indepth-widget" class="2digits 4digits 6digits 8digits">
+                        <div class="spinner-container"></div>
+                    </div>
                   <div id="approvedTooltips"></div>
                     <h2 id="list-title" class="4digits 6digits">רשימת השינויים</h2>
                     <div id="change-list" class="container 4digits 6digits"></div>
@@ -305,6 +296,18 @@
         <noscript><p><img src="http://visitors.hasadna.org.il/piwik.php?idsite=4" style="border:0;" alt="" /></p></noscript>
         <!-- End Piwik Code -->
 
+        <!-- Twitter -->
+        <script>!function(d,s,id){
+                    var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+                    if(!d.getElementById(id)){
+                        js=d.createElement(s);
+                        js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
+                        fjs.parentNode.insertBefore(js,fjs);
+                    }
+                }
+                (document, 'script', 'twitter-wjs');
+        </script>
+        <!-- End twitter code -->
 
 </body>
 </html>

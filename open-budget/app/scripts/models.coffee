@@ -315,7 +315,7 @@ class PageModel extends Backbone.Model
                 baseURL: "http://the.open-budget.org.il"
                 selection: [ 0, 0 ]
                 currentItem: null
-                dataType: "jsonp"
+                dataType: "json"#p"
                 ready: false
                 kinds: []
 

@@ -47,6 +47,7 @@ class CombinedHistoryPoint extends Backbone.Model
                 exact: true
                 diff_value: null
                 participants: null
+                continued: false
 
         getParticipants: () ->
             date = this.get('date')
@@ -156,19 +157,34 @@ class CombinedHistory extends Backbone.Collection
                                 point.set('src','dummy')
                                 @add point
 
+                                endYear = new Date(m.get('year'),11,31).valueOf()
+                                endEffect = approvedRec.get('end_timestamp')
+                                if !endEffect? then endEffect = endYear
+
                                 point = new CombinedHistoryPoint()
                                 point.set("source", m)
                                 point.set("kind", "approved")
                                 point.set("value", m.get("net_allocated"))
                                 startYear = approvedRec.get('effect_timestamp')
                                 if !startYear? then startYear = new Date(m.get('year'),0).valueOf()
-                                endYear = approvedRec.get('end_timestamp')
-                                if !endYear? then endYear = new Date(m.get('year'),11,31).valueOf()
                                 point.set('timestamp',startYear)
                                 point.set('width', endYear - startYear)
                                 point.set('participants', approvedRec.get('participants'))
                                 point.set('src','budgetline')
                                 @add point
+
+                                if endEffect > endYear
+                                    point = new CombinedHistoryPoint()
+                                    point.set("source", m)
+                                    point.set("kind", "approved")
+                                    point.set("value", m.get("net_allocated"))
+                                    startYear = endYear
+                                    point.set('timestamp',startYear)
+                                    point.set('width', endEffect - startYear)
+                                    point.set('participants', approvedRec.get('participants'))
+                                    point.set('src','budgetline')
+                                    point.set('continued',true)
+                                    @add point
 
                                 # period between start of year and first committee
                                 point = new CombinedHistoryPoint()

@@ -1,4 +1,4 @@
-<div class="trans-<%= color_classname(get("diff_value")) %>">
+<div class="trans-<%= color_classname(get("diff_value")) %> <% if ( get('kind') == 'approved' ) { %>approved<% } %>">
   <div class="date"><%= get("source").get('date') %></div>
   <div id="trans-tip" class="widget-popover fade in bottom">
   <% if ( get("src") == "changeline" ) { %>
@@ -33,10 +33,10 @@
 
     </div>
   <% } else { %>
-      <% if ( get('kind') == 'change' ) { %>
+      <% if ( get('kind') == 'approved' ) { %>
         <!-- <div class="arrow"></div> -->
         <div class="widget-popover-title">
-          <p> תקציב <%= get("source").get("year") %>
+          <p> תקציב <%= get("source").get("year") %> <% if ( get("continued") ) { %>(המשכי)<% } %>
           </p>
           <h2><%= format_full_number( get("value")*1000 ) %>₪</h2>
         </div>
