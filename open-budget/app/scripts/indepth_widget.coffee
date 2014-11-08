@@ -342,7 +342,7 @@ class IndepthWidget extends Backbone.View
                         .on('mouseleave', @hideTip)
 
         render__timeline_titles: ->
-                @titleIndexScale = (title) -> TOP_PART_SIZE + YEAR_LINE_HANG_LENGTH + (@titleToIndex[title]+1)*16
+                @titleIndexScale = (title) -> TOP_PART_SIZE + YEAR_LINE_HANG_LENGTH + (@titleToIndex[title]+1)*32
                 @chart.selectAll('.timelineTitle').data(@titles)
                         .enter()
                         .append("text")
@@ -375,7 +375,7 @@ class IndepthWidget extends Backbone.View
                         .attr('x2', (d)=> @timeScale( d.get('end_timestamp') ))
                         .attr('y1', (d)=> @titleIndexScale(d.get('title')) )
                         .attr('y2', (d)=> @titleIndexScale(d.get('title'))+10 )
-                newTumbnails = d3.select('body')
+                newTumbnails = d3.select('#participantThumbnails')
                                  .selectAll('.participantThumbnail')
                                  .data(@participants)
                                  .enter()
@@ -384,13 +384,19 @@ class IndepthWidget extends Backbone.View
                                 .attr('class','participantThumbnail')
                 divs.append("img")
                         .attr('src', (d)=> d.get('photo_url'))
+                name = (d) ->
+                    ret = d.get('name')
+                    if d.get('full_title')?
+                        if d.get('full_title') != d.get('title')
+                            ret += " - "+d.get('full_title')
+                    ret
                 divs.append("div")
-                        .text((d)=> d.get('name'))
-                divs = d3.select('body')
+                        .html(name)
+                divs = d3.select('#participantThumbnails')
                          .selectAll('.participantThumbnail')
                          .data(@participants)
                          .style("left", (d)=>@timeScale( d.get('start_timestamp')) + "px")
-                         .style("top", (d)=>(400 + @titleIndexScale(d.get('title'))) + "px")
+                         .style("top", (d)=>(@titleIndexScale(d.get('title')) - 240) + "px")
 
         render: ->
                 @svg.call(@drag)
