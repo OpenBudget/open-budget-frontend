@@ -498,7 +498,14 @@ class IndepthWidget extends Backbone.View
                 @minValue = 0 # Math.floor(@model.minValue / @tickValue) * @tickValue
                 @maxValue = @minValue + TICKS * @tickValue
 
-        setParticipants: ( participants )
+        setParticipants: ( participants ) ->
+            title = null
+            @titles = []
+            for participant in participants
+                if participant.get("title") != title
+                    title = participant.get("title")
+                    @titles.push title
+            @participants = _.groupBy(participants, (x) -> x.get('title') )
 
 
 $( ->
