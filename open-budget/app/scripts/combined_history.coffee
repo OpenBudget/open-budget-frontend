@@ -29,7 +29,7 @@ class CombinedHistory extends Backbone.Collection
                     @changeGroups = { models: [] }
                 @budgetHistory = @pageModel.budgetHistory
                 @budgetApprovals = @pageModel.budgetApprovals
-                @pageModel.on "ready-budget-history", =>
+                @pageModel.on "ready-budget-history-pre", =>
                     @processChangeLines(@changeGroups.models)
                     @processBudgetHistory(@budgetHistory.models,@budgetApprovals.models)
                     @postProcess()
@@ -98,6 +98,7 @@ class CombinedHistory extends Backbone.Collection
                     model.set('max_value',@maxValue)
                     model.set('min_value',@minValue)
                 @reset(@models)
+                @pageModel.trigger 'ready-budget-history'
 
         processBudgetHistory: (models,approvedModels) ->
                 approved = _.groupBy(approvedModels, (x) -> x.get('year'))

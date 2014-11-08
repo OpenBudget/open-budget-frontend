@@ -276,13 +276,23 @@ class BudgetHistory extends Backbone.Collection
 class Participant extends Backbone.Model
 
         defaults:
-                end_date: null
                 kind: ""
                 name: null
                 party: null
                 photo_url: "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4NCiAgICA8cGF0aCBkPSJNMTIgMmMtNS41MiAwLTEwIDQuNDgtMTAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwLTQuNDgtMTAtMTAtMTB6bTAgM2MxLjY2IDAgMyAxLjM0IDMgM3MtMS4zNCAzLTMgMy0zLTEuMzQtMy0zIDEuMzQtMyAzLTN6bTAgMTQuMmMtMi41IDAtNC43MS0xLjI4LTYtMy4yMi4wMy0xLjk5IDQtMy4wOCA2LTMuMDggMS45OSAwIDUuOTcgMS4wOSA2IDMuMDgtMS4yOSAxLjk0LTMuNSAzLjIyLTYgMy4yMnoiLz4NCiAgICA8cGF0aCBkPSJNMCAwaDI0djI0aC0yNHoiIGZpbGw9Im5vbmUiLz4NCjwvc3ZnPg=="
                 start_date: null
+                end_date: null
                 title: null
+                start_timestamp: null
+                end_timestamp: null
+
+        setTimestamps: ->
+            @set 'start_timestamp', dateToTimestamp(@get 'start_date')
+            if (@get 'end_date')?
+                @set 'end_timestamp', dateToTimestamp(@get 'end_date')
+            else
+                @set 'end_timestamp', window.combinedHistory.maxTime
+            console.log 'setTimestamps', window.combinedHistory.maxTime, @toJSON()
 
 class Participants extends Backbone.Collection
         model: Participant
@@ -358,7 +368,7 @@ class PageModel extends Backbone.Model
                                       () =>
                                           @set('currentItem', @budgetHistory.getLast())
 
-                    @readyEvents.push new ReadyAggregator("ready-budget-history")
+                    @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
                                                 .addCollection(@changeGroups)
                                                 .addCollection(@budgetHistory)
                                                 .addCollection(@budgetApprovals)
@@ -390,10 +400,12 @@ class PageModel extends Backbone.Model
                                 kids: kids
                                 last: i == maxlen
 
-                    @participants = new Participants([], code: budgetCode, pageModel: @)
-                    readyParticipants = new ReadyAggregator('ready-participants')
-                                                    .addCollection(@participants)
-                    @readyEvents.push readyParticipants
+                    @on('ready-budget-history', ->
+                        @participants = new Participants([], code: budgetCode, pageModel: @)
+                        readyParticipants = new ReadyAggregator('ready-participants')
+                                                        .addCollection(@participants)
+                        @readyEvents.push readyParticipants
+                    )
 
                 @on 'change:changeGroupId', ->
                     @changeGroup = new ChangeGroup(pageModel: @)
