@@ -1,37 +1,3 @@
-class Participant extends Backbone.Model
-
-        defaults:
-                end_date: null
-                kind: ""
-                name: null
-                party: null
-                photo_url: "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4NCiAgICA8cGF0aCBkPSJNMTIgMmMtNS41MiAwLTEwIDQuNDgtMTAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwLTQuNDgtMTAtMTAtMTB6bTAgM2MxLjY2IDAgMyAxLjM0IDMgM3MtMS4zNCAzLTMgMy0zLTEuMzQtMy0zIDEuMzQtMyAzLTN6bTAgMTQuMmMtMi41IDAtNC43MS0xLjI4LTYtMy4yMi4wMy0xLjk5IDQtMy4wOCA2LTMuMDggMS45OSAwIDUuOTcgMS4wOSA2IDMuMDgtMS4yOSAxLjk0LTMuNSAzLjIyLTYgMy4yMnoiLz4NCiAgICA8cGF0aCBkPSJNMCAwaDI0djI0aC0yNHoiIGZpbGw9Im5vbmUiLz4NCjwvc3ZnPg=="
-                start_date: null
-                title: null
-
-        initialize: (data) ->
-                end_date = data.end_date
-                kind = data.kind
-                name = data.name
-                party = data.party
-                photo_url = data.photo_url
-                start_date = data.start_date
-                title = data.title
-
-class Participants extends Backbone.Collection
-        model: Participant
-
-        initialize: (models, options) ->
-            @pageModel = options.pageModel
-            @date = options.date
-            @code = options.code.substring(0,4)
-            @year = @date.getFullYear()
-            @month = @date.getMonth()+1
-            @day = @date.getDate()
-            @fetch(dataType: window.pageModel.get('dataType'), reset: true)
-
-        url: ->
-            "#{pageModel.get('baseURL')}/api/participants/#{@code}/#{@year}/#{@month}/#{@day}"
 
 class CombinedHistoryPoint extends Backbone.Model
 
@@ -48,11 +14,6 @@ class CombinedHistoryPoint extends Backbone.Model
                 diff_value: null
                 participants: null
                 continued: false
-
-        getParticipants: () ->
-            date = this.get('date')
-            new Participants([], date:date, code:window.pageModel.get('budgetCode'))
-
 
 class CombinedHistory extends Backbone.Collection
 

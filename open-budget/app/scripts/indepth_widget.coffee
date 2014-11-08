@@ -498,8 +498,16 @@ class IndepthWidget extends Backbone.View
                 @minValue = 0 # Math.floor(@model.minValue / @tickValue) * @tickValue
                 @maxValue = @minValue + TICKS * @tickValue
 
+        setParticipants: ( participants )
+
 
 $( ->
         console.log "indepth_widget"
-        window.indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.combinedHistory});
+        indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.combinedHistory});
+        window.pageModel.on 'ready-budget-history', ->
+            indepthWidget.render()
+        window.pageModel.on 'ready-participants', ->
+            indepthWidget.setParticipants( window.pageModel.participants.models )
+            indepthWidget.render()
+        window.indepthWidget = indepthWidget
 )

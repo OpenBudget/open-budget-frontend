@@ -12,7 +12,8 @@ class HistoryItem extends Backbone.View
                 @explanation.doFetch()
 
         render: ->
-            @$el.html( window.JST.single_transfer( @model.toJSON() ) )
+            if @model.get('original_baseline')?
+                @$el.html( window.JST.single_transfer( @model.toJSON() ) )
 
 class HistoryTable extends Backbone.View
 

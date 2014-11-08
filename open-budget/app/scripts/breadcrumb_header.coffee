@@ -11,8 +11,7 @@ class BreadcrumbHeaderView extends Backbone.View
     render: ->
         @$el.html('')
         breadcrumbs = window.pageModel.breadcrumbs
-        fixedBreadcrumbs = _.without(breadcrumbs, breadcrumbs[breadcrumbs.length - 2]);
-        for rec in fixedBreadcrumbs
+        for rec in breadcrumbs
             @$el.append( window.JST.breadcrumb_item(rec))
 
 $( ->

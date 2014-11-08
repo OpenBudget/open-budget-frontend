@@ -8,7 +8,6 @@ class OverviewWidget extends Backbone.View
         HANDLE_HEIGHT = 18
 
         initialize: ->
-                @model.on 'reset', => @render()
                 @pageModel = window.pageModel
                 @pageModel.on "change:selection", => @renderSelectionBar()
 
@@ -183,5 +182,7 @@ class OverviewWidget extends Backbone.View
 $( ->
     if window.pageModel.get('budgetCode')?
         console.log "history_widget"
-        window.overviewWidget = new OverviewWidget({el: $("#overview-widget"),model: window.combinedHistory});
+        window.pageModel.on 'ready-budget-history', ->
+            window.overviewWidget = new OverviewWidget({el: $("#overview-widget"),model: window.combinedHistory});
+            window.overviewWidget.render()
 )
