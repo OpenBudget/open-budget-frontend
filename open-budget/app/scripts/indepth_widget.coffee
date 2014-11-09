@@ -379,7 +379,6 @@ class IndepthWidget extends Backbone.View
                                  .selectAll('.participantThumbnail')
                                  .data(@participants)
                                  .enter()
-                console.log @participants
                 divs = newTumbnails.append("div")
                                 .attr('class','participantThumbnail')
                 divs.append("img")
@@ -475,7 +474,6 @@ class IndepthWidget extends Backbone.View
                     @titleToIndex[title] = @titles.length
                     @titles.push title
             @participants = participants #_.groupBy(participants, (x) -> x.get('title') )
-            console.log 'setParticipants', @titles
 
 
 $( ->

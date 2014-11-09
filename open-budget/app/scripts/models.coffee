@@ -292,7 +292,6 @@ class Participant extends Backbone.Model
                 @set 'end_timestamp', dateToTimestamp(@get 'end_date')
             else
                 @set 'end_timestamp', window.combinedHistory.maxTime
-            console.log 'setTimestamps', window.combinedHistory.maxTime, @toJSON()
 
 class Participants extends Backbone.Collection
         model: Participant

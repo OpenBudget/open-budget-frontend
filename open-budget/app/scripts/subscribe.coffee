@@ -11,7 +11,7 @@ class SubscribeModel extends Backbone.Model
     @refreshSubscription()
 
   notLoggedIn: (loginURL) =>
-    console.log 'notLoggedIn',loginURL
+    console.log 'notLoggedIn'#,loginURL
     @set('state',"not-logged-in")
     @set('key',null)
     @set('loginURL',loginURL)

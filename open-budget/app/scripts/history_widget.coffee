@@ -116,14 +116,11 @@ class OverviewWidget extends Backbone.View
                 @valueScale = (t) =>
                         @pixelPerfecter(@baseValueScale(t))
 
-                console.log @model.minTime, @model.maxTime
                 selectionStart = @model.maxTime - 3500 * 365 * 86400
                 if selectionStart < @model.minTime
                     selectionStart = @model.minTime
                 selectionEnd = @model.maxTime
                 @pageModel.set('selection', [ selectionStart, selectionEnd ] )
-
-                console.log 'OverviewWidget',@maxWidth,@maxHeight
 
                 # Lines of each year's budget
                 approvedBars = @approvedBars.selectAll('.approvedBar')
