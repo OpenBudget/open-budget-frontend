@@ -348,9 +348,8 @@ class IndepthWidget extends Backbone.View
                         .append("text")
                         .attr('class','timelineTitle')
                         .text((d)->d)
-                        .attr('x',@maxWidth)
-                        .attr('y',(d) => @titleIndexScale(d) )
-                        .style('stroke','#000')
+                        .attr('x',@maxWidth-8)
+                        .attr('y',(d) => @titleIndexScale(d)+4 )
                         #.style("text-anchor", "end")
 
         render__timeline_terms: ->
@@ -359,10 +358,9 @@ class IndepthWidget extends Backbone.View
                         .append('g')
                         .attr('class','timelineTerm')
                 newGroups.append('line')
-                        .style('stroke','#000')
                         .attr('class','termBreadth')
                 newGroups.append('line')
-                        .style('stroke','#000')
+                        # .style('stroke','#000')
                         .attr('class','termStart')
                 groups = @chart.selectAll('.timelineTerm').data(@participants)
                 groups.selectAll('.termBreadth')
@@ -381,8 +379,6 @@ class IndepthWidget extends Backbone.View
                                  .enter()
                 divs = newTumbnails.append("div")
                                 .attr('class','participantThumbnail')
-                divs.append("img")
-                        .attr('src', (d)=> d.get('photo_url'))
                 name = (d) ->
                     ret = d.get('name')
                     if d.get('full_title')?
@@ -391,6 +387,8 @@ class IndepthWidget extends Backbone.View
                     ret
                 divs.append("div")
                         .html(name)
+                divs.append("img")
+                        .attr('src', (d)=> d.get('photo_url'))
                 divs = d3.select('#participantThumbnails')
                          .selectAll('.participantThumbnail')
                          .data(@participants)
@@ -436,8 +434,8 @@ class IndepthWidget extends Backbone.View
                 @render__change_items()
                 @render__used_budgets()
                 @render__tooltip_hooks()
-                @render__timeline_titles()
                 @render__timeline_terms()
+                @render__timeline_titles()
 
         formatNumber: (n) ->
                 rx=  /(\d+)(\d{3})/

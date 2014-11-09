@@ -869,20 +869,38 @@ svg rect{
         height:32px;
         margin-left:-184px;
         margin-top:24px;
+        overflow: hidden;
         img {
             position:absolute;
             right: 0px;
             width: 32px;
             height: 32px;
+            border: 2px solid #ccc;
             border-radius: 16px;
         }
         div {
-            position:absolute;
-            top: 15px;
-            right: 31px;
+            position: absolute;
+            top: 7px;
+            right: 20px;
             text-align: right;
+            padding: 0 15px 0 5px;
+            height: 18px;
+            overflow: hidden;
+            background: #ccc;
+            border-radius: 16px;
         }
     }
+}
+
+.timelineTerm {
+  .termBreadth {
+    stroke-width: 6px;
+    stroke: #eee;
+  }
+}
+
+.timelineTitle{
+  color: @text;
 }
 
 #approvedTooltips{
