@@ -13,6 +13,7 @@
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <link rel="stylesheet" href="styles/spinner.css">
+        <link rel="stylesheet" href="bower_components/bootstrap-tour/build/css/bootstrap-tour.css">
         <!-- endbuild -->
 
         <!-- build:js scripts/vendor/modernizr.js -->
@@ -54,6 +55,7 @@
                         <li><a href="#">איך עובד התיוג?</a></li>
                       </ul>
                     </li>
+                    <li><a href="#" id="intro-link">הדרכה</a></li>
                     <li><a href="#">הצטרפו אלינו</a></li>
                     <li><a href="#">השבוע בתקציב</a></li>
                     <li>
@@ -126,29 +128,31 @@
                 </header>
 
                 <section id="vis">
+                  <div id="vis-container">
                     <h2 id="vis-title">שינויים בתקציב</h2>
-            	    <div id="overview-widget" class="2digits 4digits 6digits 8digits"></div>
-        		    <div id="indepth-widget" class="2digits 4digits 6digits 8digits">
-                        <div class="spinner-container"></div>
+                    <div id="overview-widget" class="2digits 4digits 6digits 8digits"></div>
+                    <div id="indepth-widget" class="2digits 4digits 6digits 8digits">
+                      <div class="spinner-container"></div>
                     </div>
                     <div id="participantThumbnails" class="2digits 4digits 6digits 8digits"></div>
-                    <h2 id="list-title" class="4digits 6digits">רשימת השינויים</h2>
-                    <div id="change-list" class="container 4digits 6digits"></div>
-                    <h2 id="support-list-title" class="6digits 8digits">תמיכות בתקנה זו</h2>
+                  </div>
+                  <h2 id="list-title" class="4digits 6digits">רשימת השינויים</h2>
+                  <div id="change-list" class="container 4digits 6digits"></div>
+                  <h2 id="support-list-title" class="6digits 8digits">תמיכות בתקנה זו</h2>
 
-                    <table id="support-table" class="table table-hover table-striped 6digits 8digits">
-                      <thead>
-                        <th>שנה</th>
-                        <th>שם</th>
-                        <th>אושר</th>
-                        <th>הועבר</th>
-                        <th>סוג</th>
-                        <th>עוד</th>
-                      </thead>
-                      <tbody id="support-lines">
+                  <table id="support-table" class="table table-hover table-striped 6digits 8digits">
+                    <thead>
+                      <th>שנה</th>
+                      <th>שם</th>
+                      <th>אושר</th>
+                      <th>הועבר</th>
+                      <th>סוג</th>
+                      <th>עוד</th>
+                    </thead>
+                    <tbody id="support-lines">
 
-                      </tbody>
-                    </table>
+                    </tbody>
+                  </table>
 
                 </section>
 
@@ -229,6 +233,7 @@
         <script src="bower_components/underscore/underscore.js"></script>
         <script src="bower_components/backbone/backbone.js"></script>
         <script src="bower_components/typeahead.js/dist/bloodhound.min.js"></script>
+        <script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -239,7 +244,7 @@
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
             e.src='//www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-	    ga('create', 'UA-10203855-7', 'open-budget.org.il');
+            ga('create', 'UA-10203855-7', 'open-budget.org.il');
             /*ga('send','pageview');*/
         </script> -->
 
@@ -263,6 +268,7 @@
         <script src="scripts/searchbar.js"></script>
         <script src="scripts/subscribe.js"></script>
         <script src="scripts/hello.js"></script>
+        <script src="scripts/training.js"></script>
         <!-- endbuild -->
 
         <!-- Piwik -->
