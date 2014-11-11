@@ -447,7 +447,7 @@ window.models =
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
 
-DEFAULT_HOME = "#main//2014"
+DEFAULT_HOME = "#main//2015"
 
 $( ->
         window.pageModel = new PageModel()
