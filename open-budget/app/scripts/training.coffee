@@ -22,7 +22,7 @@ class TrainingSteps extends Backbone.Collection
 class TrainingView extends Backbone.View
 
     initialize: ->
-        #window.pageModel.on 'change:mainPage', => 
+        #window.pageModel.on 'change:mainPage', =>
         @loadTour()
 
     events:
@@ -34,6 +34,7 @@ class TrainingView extends Backbone.View
 
     initTour: (steps) ->
         tour = new Tour(
+            name: "tour-#{window.pageModel.get('flow')}"
             steps: steps
             basePath: document.location.pathname
             backdrop: true
