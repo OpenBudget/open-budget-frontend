@@ -341,13 +341,14 @@ class PageModel extends Backbone.Model
                 budgetCode: null
                 year: null
                 changeGroupId: null
-                mainPage: false
+                mainPage: null
                 baseURL: "http://the.open-budget.org.il"
                 selection: [ 0, 0 ]
                 currentItem: null
                 dataType: "json"#p"
                 ready: false
                 kinds: []
+                flow: null
 
         initialize: ->
                 if window.location.origin == @get('baseURL')
@@ -447,20 +448,22 @@ window.models =
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
 
-DEFAULT_HOME = "#main//2015"
+window.pageModel = new PageModel()
+
+DEFAULT_HOME = "#main//2015/main"
 
 $( ->
-        window.pageModel = new PageModel()
         hash = window.location.hash.substring(1)
-        [kind, identifier, year] = hash.split("/",3)
+        [kind, identifier, year, flow] = hash.split("/",4)
         year = parseInt(year)
-        console.log "hash:", kind, identifier, year
+        console.log "hash:", kind, identifier, year, flow
         if !isNaN(year)
             pageModel.set('year',year)
         else
             window.location.hash = DEFAULT_HOME
             window.location.reload()
 
+        pageModel.set("flow",flow)
         if kind == "budget"
             pageModel.article = $("article#budget-item-article")
             pageModel.set("budgetCode",identifier)
