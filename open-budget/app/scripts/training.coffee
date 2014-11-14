@@ -33,6 +33,9 @@ class TrainingView extends Backbone.View
         @steps.on 'reset', => @initTour(_.map(@steps.models, (i)->i.toJSON()))
 
     initTour: (steps) ->
+        for step in steps
+            @replaceNullWithUndefined(step)
+
         tour = new Tour(
             name: "tour-#{window.pageModel.get('flow')}"
             steps: steps
@@ -43,6 +46,11 @@ class TrainingView extends Backbone.View
         )
         tour.init()
         @tour = tour
+
+    replaceNullWithUndefined: (obj) ->
+        for own key, value of obj
+            if value is null
+                obj[key] = undefined
 
     onTrainingButtonClick: (event) ->
         event.preventDefault()
