@@ -37,8 +37,6 @@ class BubbleChart extends Backbone.View
 
   initialize: (options) ->
     @options = options
-    @data = @options.data
-    @numParts = @options.numParts
 
     @width = @$el.width()
     @height = @$el.height()
@@ -55,49 +53,57 @@ class BubbleChart extends Backbone.View
     @damper = 0.1
 
     # these will be set in create_nodes and create_vis
-    @vis = null
-    @nodes = []
-    @force = null
+    @vis = d3.select(@el)
+      .attr("width", @width)
+      .attr("height", @height)
+      .call(@tooltip)
+    @nodes = null
+    @force = d3.layout.force()
+                .size([@width, @height])
+                .gravity(@layout_gravity)
+                .charge(this.charge)
+                .friction(0.9)
+                .on "tick", (e) =>
+                    @calc_averages()
+                    @circles
+                      .each(this.move_towards_centers(e.alpha))
+                      .attr("cx", (d) => d.x - @get_offset(e.alpha,d).dx)
+                      .attr("cy", (d) => d.y - @get_offset(e.alpha,d).dy)
     @circles = null
 
+  updateNodes: (data, numParts) ->
+    if not @data?
+        @data = data
+    @numParts = numParts
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.value))
     @total_amount = d3.sum(@data, (d) -> parseInt(d.value))
     @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
-    @boundingRadius = @radius_scale(@total_amount/@numParts())
+    @boundingRadius = @radius_scale(@total_amount/@numParts)
 
-    @create_nodes()
-    @force = d3.layout.force()
-      .nodes(@nodes)
-      .size([@width, @height])
-
-
-  render: () =>
-    @create_vis()
+    if not @nodes?
+        @create_nodes()
+        @force.nodes(@nodes)
 
   # create node objects from original data
   # that will serve as the data behind each
   # bubble in the vis, then add each node
   # to @nodes to be used later
   create_nodes: () =>
+    @nodes = []
     @data.forEach (d) =>
       d.radius = @radius_scale(parseInt(d.value))
-      d.x = Math.random() * @width
-      d.y = -d.part*@boundingRadius + d.center.y + Math.random()*50
+      d.x = if d.x? then d.x else Math.random() * @width
+      d.y = if d.y? then d.y else Math.random()*50 - d.part*@boundingRadius + d.center.y
       @nodes.push d
 
     @nodes.sort (a,b) -> b.value - a.value
 
   # create svg at #vis and then
   # create circle representation for each node
-  create_vis: () =>
-    @vis = d3.select(@el)
-      .attr("width", @width)
-      .attr("height", @height)
-      .call(@tooltip)
-
+  render: () =>
     @circles = @vis.selectAll("circle")
-      .data(@nodes, (d) -> d.id)
+                    .data(@nodes, (d) -> d.id)
 
     # used because we need 'this' in the
     # mouse callbacks
@@ -107,19 +113,19 @@ class BubbleChart extends Backbone.View
     # see transition below
     @circles.enter().append("circle")
       .attr("r", 0)
-      .attr("class", (d) -> d.className())
-      #.attr("fill", (d) -> d.fill_color())
       .attr("stroke-width", 2)
-      #.attr("stroke", (d) -> d.stroke_color())
       .attr("id", (d) -> "bubble_#{d.id}")
       .on("click", (d,i) -> d.click())
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
+    @reapply_values()
 
-    # Fancy transition to make bubbles appear, ending with the
-    # correct radius
-    @circles.transition().duration(2000).attr("r", (d) -> d.radius)
-
+  reapply_values: () =>
+      # Fancy transition to make bubbles appear, ending with the
+      # correct radius
+      @circles
+          .attr("class", (d) -> d.className())
+          .transition().duration(2000).attr("r", (d) -> d.radius)
 
   # Charge function that is called for each node.
   # Charge is proportional to the diameter of the
@@ -137,23 +143,14 @@ class BubbleChart extends Backbone.View
   # Sets up force layout to display
   # all nodes in one circle.
   start: () =>
-    @boundingRadius = @radius_scale(@total_amount/@numParts())
-    @force.gravity(@layout_gravity)
-      .charge(this.charge)
-      .friction(0.9)
-      .on "tick", (e) =>
-        @calc_averages()
-        @circles
-          .each(this.move_towards_centers(e.alpha))
-          .attr("cx", (d) => d.x - @get_offset(e.alpha,d).dx)
-          .attr("cy", (d) => d.y - @get_offset(e.alpha,d).dy)
+    @boundingRadius = @radius_scale(@total_amount/@numParts)
     @force.start()
 
   calc_averages: () =>
     @averages = {}
     extents = {}
     for d in @nodes
-        cat = d.category()
+        cat = d.center.category()
         if !extents[cat]?
             extents[cat] =
                 maxx: 0
@@ -171,7 +168,7 @@ class BubbleChart extends Backbone.View
             y: (extent.maxy + extent.miny)/2
 
   get_offset: (alpha,d) =>
-      cat = d.category()
+      cat = d.center.category()
       if !@averages[cat]?
           { dx: 0, dy: 0 }
       else
@@ -187,7 +184,7 @@ class BubbleChart extends Backbone.View
   move_towards_centers: (alpha) =>
     (d) =>
       d.x = d.x + (d.center.x - d.x) * (@damper + 0.02) * alpha
-      targetY = - d3.min([1,d.part]) * @boundingRadius + d.center.y
+      targetY =  d.center.y - d3.min([1,d.part]) * @boundingRadius
       d.y = d3.max([0, d.y + (d.center.y - d.y) * (@damper + 0.02) * alpha + (targetY - d.y) * (@damper) * alpha * alpha * alpha * 500])
 
   show_details: (data, i, element) =>

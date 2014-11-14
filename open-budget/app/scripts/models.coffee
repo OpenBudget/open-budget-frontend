@@ -140,6 +140,31 @@ class BudgetItemDepth extends Backbone.Collection
         url: ->
             "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/depth/#{@depth}?limit=1000"
 
+class CompareRecord extends Backbone.Model
+    defaults:
+        code: null
+        title: null
+        orig_2014: null
+        orig_2015: null
+        rev_2014: null
+        rev_2015: null
+        group_top: null
+        grouo_full: null
+
+class CompareRecords extends Backbone.Collection
+
+        model: CompareRecord
+
+        initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+        url: ->
+            "#{pageModel.get('baseURL')}/api/sysprop/budget-comparisons"
+
+        parse: (response) ->
+            response.value
+
 class BudgetApproval extends Backbone.Model
     defaults:
         year: null
@@ -422,7 +447,7 @@ class PageModel extends Backbone.Model
                             @addKind(part)
 
                 @on 'change:mainPage', ->
-                    @budgetItems4 = new BudgetItemDepth([], year: pageModel.get('year'), code: '00', depth: 2, pageModel: @)
+                    @budgetItems4 = new CompareRecords([], pageModel: @)
                     @budgetItems2 = new BudgetItemKids([], year: pageModel.get('year'), code: '00', pageModel: @)
                     @readyEvents.push new ReadyAggregator("ready-budget-bubbles")
                                                         .addCollection(@budgetItems2)

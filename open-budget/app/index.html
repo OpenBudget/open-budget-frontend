@@ -170,9 +170,27 @@
 
             <article id="main-page-article" class="single-page-article increased">
 
+                <div class="center-block">
+                    <select id="comparison-kind" class="form-control input-lg">
+                      <option value="orig_2014/orig_2015">השוואת הצעת תקציב 2015 לתקציב מקורי 2014</option>
+                      <option value="rev_2014/orig_2015">השוואת הצעת תקציב 2015 לתקציב מאושר 2014</option>
+                      <option value="orig_2014/rev_2014">השוואת תקציב מאושר 2014 לתקציב מקורי 2014</option>
+                    </select>
+                </div>
+                <div id="main-budget-header" class="center-block">
+                </div>
+                <div id="grouping-kind" class="center-block">
+                    קבץ לפי:
+                    <div  class="btn-group" role="group" data-toggle="buttons" aria-label="...">
+                        <label data-toggle="0" class="btn btn-default active"><input type="radio" name="grouping-kind" autocomplete="off" checked>הכל ביחד</input></label>
+                        <label data-toggle="1" class="btn btn-default"><input type="radio" name="grouping-kind" autocomplete="off" class="btn btn-default">לפי נושאים כלליים</input></label>
+                        <label data-toggle="2" class="btn btn-default"><input type="radio" name="grouping-kind" autocomplete="off" class="btn btn-default">לפי נושאים מפורטים</input></label>
+                        <label data-toggle="3" class="btn btn-default"><input type="radio" name="grouping-kind" autocomplete="off" class="btn btn-default">לפי סעיפים ראשיים</input></label>
+                    </div>
+                </div>
                 <!-- Bubble chart -->
                 <div class="center-block">
-                    <svg id="bubble-chart" style="width:1300px;height:2800px"></svg>
+                    <svg id="bubble-chart"></svg>
                 </div>
 
             </article>
