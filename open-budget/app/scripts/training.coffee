@@ -22,17 +22,19 @@ class TrainingSteps extends Backbone.Collection
 class TrainingView extends Backbone.View
 
     initialize: ->
-        #window.pageModel.on 'change:mainPage', =>
-        @loadTour()
+        window.pageModel.on 'ready-budget-bubbles', => @loadTour()
+        window.pageModel.on 'ready-budget-history', => @loadTour()
 
     events:
         "click": "onTrainingButtonClick"
 
     loadTour: ->
+        console.log "loadTour", window.pageModel.get('flow')
         @steps = new TrainingSteps([])
         @steps.on 'reset', => @initTour(_.map(@steps.models, (i)->i.toJSON()))
 
     initTour: (steps) ->
+        console.log "got #{steps.length} steps"
         for step in steps
             @replaceNullWithUndefined(step)
 
@@ -43,8 +45,11 @@ class TrainingView extends Backbone.View
             backdrop: true
             backdropPadding: 5
             template: JST.tour_dialog()
+            debug: true
         )
+        console.log "initializing tour"
         tour.init()
+        tour.start()
         @tour = tour
 
     replaceNullWithUndefined: (obj) ->
