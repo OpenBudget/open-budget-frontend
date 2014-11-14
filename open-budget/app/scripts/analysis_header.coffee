@@ -1,8 +1,10 @@
 window.up_or_down = (allocated,revised ) ->
             if allocated > revised
-                return "קטן"
+                return ["קטן","מ"]
+            else if allocated < revised
+                return ["הוגדל","מ"]
             else
-                return "הוגדל"
+                return ["עמד","על"]
 
 window.increase_or_cut = (allocated,revised ) ->
             if allocated > revised
