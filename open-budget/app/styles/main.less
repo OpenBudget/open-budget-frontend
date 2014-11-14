@@ -1449,3 +1449,17 @@ svg rect{
 	padding: 6px 10px;
 	border-radius: 20px;
 }
+
+// Override bootstrap-tour End button position for rtl.
+.popover[class*="tour-"] {
+  .popover-navigation.popover-navigation-rtl {
+    *[data-role="end"] {
+      float: left; // Instead of right.
+    }
+  }
+}
+
+// Override bootstrap popover text alignment for rtl.
+.popover.popover-rtl {
+  text-align: right;
+}
