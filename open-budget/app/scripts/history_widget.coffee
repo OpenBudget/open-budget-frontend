@@ -17,6 +17,7 @@ class OverviewWidget extends Backbone.View
                 @svg.append('defs').html('<pattern id="upperApprovedRect" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
                 @svg.append('defs').html('<pattern id="lowerApprovedRect" patternUnits="userSpaceOnUse" width="4" height="4"><path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke-width="1" /></pattern>')
 
+                @approvedBarBgs = @svg.append('g').attr('class','approvedBarBgs')
                 @approvedBars = @svg.append('g').attr('class','approvedBar')
                 @changeBars = @svg.append('g').attr('class','changeBar')
                 @yearNumberTexts = @svg.append('g').attr('class','yearNumberText')
@@ -122,26 +123,25 @@ class OverviewWidget extends Backbone.View
                 selectionEnd = @model.maxTime
                 @pageModel.set('selection', [ selectionStart, selectionEnd ] )
 
+                approvedBarBgs = @approvedBarBgs.selectAll('.approvedBarBg')
+                    .data(_.filter(@model.models, (p) -> p.get('kind') == 'yearstart'))
+                    .enter()
+                        .append("g")
+                        .attr("class", "approvedBarBg widgetElement")
+                approvedBarBgs
+                        .append("rect")
+                        .attr("class", "lower")
+                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("y", (d) => @valueScale( @maxValue) )
+                        .attr("width", (d) => @timeScale(364*86400*1000 + d.get('timestamp')) - @timeScale( d.get('timestamp')))
+                        .attr("height", @valueScale(0) - @valueScale(@maxValue))
+
                 # Lines of each year's budget
                 approvedBars = @approvedBars.selectAll('.approvedBar')
                     .data(_.filter(@model.models, (p) -> p.get('kind') == 'approved'))
                     .enter()
                         .append("g")
                         .attr("class", "approvedBar widgetElement")
-                approvedBars
-                        .append("rect")
-                        .attr("class", "lower")
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y", (d) => @valueScale( d.get('value') ) )
-                        .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width') ) - @timeScale( d.get('timestamp') ) )
-                        .attr("height", (d) => @valueScale(0) - @valueScale( d.get('value') ) )
-                approvedBars
-                        .append("rect")
-                        .attr("class", "upper")
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y", (d) => @valueScale( @maxValue ) )
-                        .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width') ) - @timeScale( d.get('timestamp') ) )
-                        .attr("height", (d) => @valueScale( d.get('value') ) - @valueScale( @maxValue ) )
                 approvedBars
                         .append("line")
                         .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
@@ -162,7 +162,7 @@ class OverviewWidget extends Backbone.View
 
                 # Year numbers
                 yearNumberTexts = @yearNumberTexts.selectAll('.yearNumberText')
-                    .data(_.filter(@model.models, (p) -> p.get('kind') == 'approved'))
+                    .data(_.filter(@model.models, (p) -> p.get('kind') == 'yearstart'))
                     .enter()
                         .append("text")
                         .attr("class", "yearNumberText widgetElement")
