@@ -447,33 +447,35 @@ strong.approved {
         svg {
           margin-right: 5px;
 
-          g:hover {
+          .treemap {
+                g:hover {
 
-              rect {
-                opacity: 0.8;
-                stroke-width: 2;
-              }
+                    rect {
+                      opacity: 0.8;
+                      stroke-width: 2;
+                    }
 
-              text {
-                font-weight: bold;
-              }
-          }
+                    text {
+                      font-weight: bold;
+                    }
+                }
 
-          rect {
-            stroke: @background;
-            stroke-width: 0.5;
+                rect {
+                  stroke: @background;
+                  stroke-width: 0.5;
 
-            &.parent {
-                cursor: pointer;
-            }
-          }
+                  &.parent {
+                      cursor: pointer;
+                  }
+                }
 
-          text {
-            pointer-events: none;
+                text {
+                  pointer-events: none;
 
-            &.small-title {
-                opacity: 0;
-            }
+                  &.small-title {
+                      opacity: 0;
+                  }
+                }              
           }
 
         }
@@ -960,7 +962,7 @@ svg rect{
       &.reduce {stroke: @decreased;stroke-dasharray: 1;}
     }
 
-    .approvedBar {
+    .approvedBar, .approvedBarBg {
       rect {fill: @ultralightgray;}
       line {stroke: @approved;}
       rect.upper {fill-color: lighten(@ultralightgray, 2%);}

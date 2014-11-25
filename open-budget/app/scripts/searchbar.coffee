@@ -14,20 +14,65 @@ class BudgetPartitionLayoutView extends Backbone.View
                             .value((d) -> d.s) #net_allocated)
                             .children((d) -> d.k)
         @change_tip = d3.tip()
-                       .attr('class', 'd3-tip')
+                       .attr('class', 'd3-tip search-bar-tip')
                            #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
-                       .direction("s")
-                       .offset((d) => [50,0])
+                       .direction("e")
+                       .offset((d) => [50,-5])
                        .html((d) -> JST.searchbar_tooltip(d))
         @vis.call(@change_tip)
+        @treemap = @vis.append('g')
+                        .attr("class","treemap")
+        @expandor = @vis.append('g')
+                        .attr("class","expandor")
+                        .style('visibility','hidden')
+        @expandor.append('rect')
+                        .style('stroke','none')
+                        .style('fill','#888')
+        @expandor.append('g')
+                        .attr("class","icon")
+                        .html(JST.expandor_icon())
+                        .on("click", () =>
+                                console.log "click", @selected_tooltip
+                                if @selected_tooltip? then @selectCode(@selected_tooltip)
+                                @hide_tip()
+                                false
+                        )
+        @upbacker = @vis.append('g')
+                        .attr("class","upbacker")
+                        .style('visibility','hidden')
+                        .html(JST.upbacker())
+        @upbacker.on("click", () =>
+                                console.log "click", @selected_tooltip
+                                if @selected_tooltip? and @selected_tooltip.length > 2
+                                    console.log @selected_tooltip.slice(0,-2)
+                                    @selectCode(@selected_tooltip.slice(0,-2))
+                                @hide_tip()
+                                false
+                        )
 
-        @selecetd_tooltip = ""
+
+        @selected_tooltip = ""
         @show_tip = (d) =>
+            @selected_tooltip = d.c
+            if d.c == @root.c
+                @hide_tip()
+                if d.c != '00'
+                    @upbacker.attr("transform", "translate(" + @w + "," + 0 + ")" )
+                             .style('visibility','visible')
+                return
             @change_tip.show(d)
-            @selecetd_tooltip = d.c
+            @expandor.attr("transform", "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
+                    .style('visibility','visible')
+            @expandor.select('rect')
+                     .attr("width", 50)#Math.abs(@x(@root.dy) - @x(0)))
+                     .attr("height", @y(d.dx) - @y(0))
+            @expandor.select('g.icon')
+                     .attr('transform', "translate("+0+","+(@y(d.dx/2) - @y(0))+")")
+            @upbacker.style('visibility','hidden')
+
             window.setTimeout(
                 =>
-                    if d.c == @selecetd_tooltip
+                    if d.c == @selected_tooltip
                         bl = new window.models.BudgetItem(pageModel: window.pageModel)
                         bl.set('year',window.pageModel.get('year'))
                         bl.set('code',d.c)
@@ -38,6 +83,11 @@ class BudgetPartitionLayoutView extends Backbone.View
                ,
                 250
             )
+        @hide_tip = =>
+            @change_tip.hide()
+            @expandor.style('visibility','hidden')
+            @upbacker.style('visibility','hidden')
+
 
         @cls = (d) => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + "_bg"
 
@@ -58,6 +108,11 @@ class BudgetPartitionLayoutView extends Backbone.View
             success: onSuccess
         )
 
+    gotoBudgetItem: (code) =>
+        window.location.hash = window.linkToBudget(code,window.pageModel.get('year'))
+        window.location.reload()
+
+
     updateChart: () =>
         console.log "PL","updateChart"
         @w = @$el.width()-15
@@ -75,20 +130,19 @@ class BudgetPartitionLayoutView extends Backbone.View
         transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
 
         _data = _.filter(@data, (d) => d.depth - @root.depth < 3)
-        g_all = @vis.selectAll("g").data(_data, (d)->d.c)
+        g_all = @treemap.selectAll("g").data(_data, (d)->d.c)
         g = g_all.enter().append("svg:g")
                 # .on("click", click)
         g.attr("data-code", (d) -> d.c)
 
         g.append("svg:rect")
             .attr("class", (d) => (if d.k? then "parent" else "child") + " " + @cls(d) )
-            .on("click", (d) => if d.k? then @selectCode(d.c) )
-
+            .on("click", (d) => if d.k? then @gotoBudgetItem(d.c) )
         g.append("svg:text")
             .attr("dy", ".35em")
             .text((d) -> d.n)
         g.on('mouseover', (d) => @show_tip(d))
-         .on('mouseout', (d) => @change_tip.hide(d))
+        #.on('mouseout', (d) => @change_tip.hide(d))
 
         g_all.exit().remove()
 
