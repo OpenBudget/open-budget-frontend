@@ -1,5 +1,4 @@
-<% console.log(o,value);
-   var cls = "";
+<% var cls = "";
    if ( o < 0 ) {
        cls = "decreased";
    } else if ( o > 0 ) {
@@ -11,17 +10,13 @@
 <div class="trans-<%= cls %>">
   <div id="trans-tip" class="widget-popover fade in bottom">
     <div class="widget-popover-title">
-      <h2>
-          <%= n %>
-      </h2>
+        <p><%= c %></p>
+        <h2><%= n %></h2>
     </div>
-    <div class="widget-popover-content">
-        <h2 class="<%= cls %>">
-            מקורי: <%= format_number( value ) %>
-        </h2>
-        <div id="search-tip" data-code="<%= c %>">
-            <%= JST.spinner() %>
-        </div>
+    <div  id="search-tip" class="widget-popover-content" data-code="<%= c %>">
+        <span class="approved">
+            <%= format_full_number( value*1000 ) %> ₪
+        </span>
     </div>
   </div>
 </div>
