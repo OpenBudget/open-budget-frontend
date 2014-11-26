@@ -125,7 +125,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             .attr('height', @h)
 
         @x = d3.scale.linear().domain([@root.y+@root.dy/2,@root.y+@root.dy*3]).range([@w-BACK_WIDTH, 0])
-        @y = d3.scale.linear().domain([@root.x,@root.x+@root.dx]).range([0, @h])
+        @y = d3.scale.linear().domain([@root.x,@root.x+@root.dx]).range([10, @h-10])
 
         transform = (d) => "translate(" + (-8 - @x(d.dy) + @x(0) ) +  "," + (@y(d.dx / 2) - @y(0)) + ")"
 
