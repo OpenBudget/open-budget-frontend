@@ -22,6 +22,11 @@ class BudgetPartitionLayoutView extends Backbone.View
         @vis.call(@change_tip)
         @treemap = @vis.append('g')
                         .attr("class","treemap")
+        @highlightor = @vis.append('rect')
+                            .style('fill','none')
+                            .style('stroke','white')
+                            .style('stroke-width','2px')
+                            .style('stroke-location','inside')
         @expandor = @vis.append('g')
                         .attr("class","expandor")
                         .style('visibility','hidden')
@@ -69,6 +74,10 @@ class BudgetPartitionLayoutView extends Backbone.View
             @expandor.select('g.icon')
                      .attr('transform', "translate("+0+","+(@y(d.dx/2) - @y(0))+")")
             @upbacker.style('visibility','hidden')
+            @highlightor.attr("height", @y(d.dx) - @y(0))
+                        .attr("width", @x(d.y))
+                        .attr("y", @y(d.x))
+                        .style("visibility","visible")
 
             window.setTimeout(
                 =>
@@ -87,6 +96,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             @change_tip.hide()
             @expandor.style('visibility','hidden')
             @upbacker.style('visibility','hidden')
+            @highlightor.style("visibility","visible")
 
 
         @cls = (d) => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + "_bg"
