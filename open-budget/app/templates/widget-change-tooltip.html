@@ -1,36 +1,25 @@
 <div class="trans-<%= color_classname(get("diff_value")) %> <% if ( get('kind') == 'approved' ) { %>approved<% } %>">
-  <div class="date"><%= get("source").get('date') %></div>
   <div id="trans-tip" class="widget-popover fade in bottom">
   <% if ( get("src") == "changeline" ) { %>
     <!-- <div class="arrow"></div> -->
     <div class="widget-popover-title">
-      <p>
-        <!-- : העברה <%= get("source").get('group_id') %> -->
-        <%  var expense_diff = get("source").getCodeChanges(window.pageModel.get('budgetCode')).expense_change;%>
-        <% if (  expense_diff > 0 ) { %>
-          +
-      <% } else { %>
-          -
-      <% } %>
-          <strong><%= format_full_number( Math.abs(expense_diff*1000) ) %> ₪ =</strong>
-      </p>
-      <h2 class="<%= color_classname(get("diff_baseline")) %>">
-          <%= format_full_number( get("value")*1000 ) %>₪
-      </h2>
+        <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode')).expense_change*1000; %>
+        <% var revised = get("value")*1000; %>
+        <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( diff ) %>&rlm; </h2>
+        <h2>=</h2>
+        <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
+        <% if ( diff < 0 ) { %>
+            <p><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
+                קיצוץ מתקציב
+                <%= get("source").get("year") %></p>
+        <% } %>
+        <% if ( diff > 0 ) { %>
+            <p><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
+                תוספת לתקציב
+                <%= get("source").get("year") %></p>
+        <% } %>
     </div>
     <div class="widget-popover-content">
-      (<%= Math.floor(100*( get("value") /  get("original_baseline"))) %>% מהתקצוב של <%= get("source").get("year") %>)
-  <!-- <% if ( get("diff_baseline") > 0 ) { %>
-  עליות של
-  <% } else { %>
-  ירידות של
-   <% } %>
-      <strong class="<%= color_classname(get("diff_baseline")) %>">
-          <%= format_full_number( get("diff_baseline")*1000 ) %>
-      </strong>
-       מתחילת
-        <%= get("source").get("year") %> -->
-
     </div>
   <% } else { %>
       <% if ( get('kind') == 'approved' ) { %>
@@ -51,16 +40,28 @@
             <% } %>
         </div>
       <% } else if ( get('kind') == 'used' ) { %>
-        <!-- <div class="arrow"></div> -->
         <div class="widget-popover-title">
-            <p> תקציב מאושר <%= get("source").get("year") %></p>
-            <h2><%= format_full_number( get("source").get('net_allocated')*1000 ) %>₪</h2>
-            <p> אחרי העברות תקציביות </p>
-            <h2><%= format_full_number( get("source").get('net_revised')*1000 ) %>₪</h2>
-            <p> הסכום בו נעשה שימוש </p>
-            <h2><%= format_full_number( get("source").get('net_used')*1000 ) %>₪</h2>
+            <h2 class="approved"><%= format_full_number( get("source").get('net_allocated')*1000 ) %>₪</h2>
+            <% var diff = (get("source").get('net_revised') - get("source").get('net_allocated'))*1000; %>
+            <% var revised = get("source").get('net_revised')*1000; %>
+            <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( diff ) %>&rlm; </h2>
+            <h2>=</h2>
+            <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
+            <% if ( diff < 0 ) { %>
+                <p><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
+                    קיצוץ מתקציב
+                    <%= get("source").get("year") %></p>
+            <% } %>
+            <% if ( diff > 0 ) { %>
+                <p><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
+                    תוספת לתקציב
+                    <%= get("source").get("year") %></p>
+            <% } %>
+            <p>
         </div>
         <div class="widget-popover-content">
+            <h2 class="used"><%= format_full_number( get("source").get('net_used')*1000 ) %>₪</h2>
+            <p>(ההוצאה בפועל)</p>
         </div>
       <% } %>
   <% } %>

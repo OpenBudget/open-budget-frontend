@@ -44,19 +44,27 @@ class IndepthWidget extends Backbone.View
                 that = this
                 @showTip = (d,i) ->
                         that.change_tip.show(d)
-                        d3.select(this).style('opacity',0.1)
-                        selector = '.tipFocus'
-                        s = that.chart.selectAll(selector)[0][i]  #.data([d])
-                        d3.select(s).style('display','block')
+                        hook = d3.select(this)
+                        that.tipBG.style('opacity',1)
+                        for a in ['x','y','width','height']
+                            that.tipBG.attr(a, hook.attr(a))
+                        that.tipBGleft.attr('width',hook.attr('x'))
+                        that.tipBGright.attr('x',parseInt(hook.attr('x'))+parseInt(hook.attr('width')))
                         true
+                        # selector = '.tipFocus'
+                        # s = that.chart.selectAll(selector)[0][i]  #.data([d])
+                        # d3.select(s).style('display','block')
+
                 @hideTip = (d,i) ->
-                        d3.select(this).style('opacity',0)
-                        that.change_tip.hide(d)
-                        # that.participant_tip.hide(d)
-                        selector = '.tipFocus'
-                        s = that.chart.selectAll(selector)[0][i]  #.data([d])
-                        d3.select(s).style('display','none')
+                        #d3.select(this).style('opacity',0)
+                        #that.change_tip.hide(d)
+                        #that.tipBG.style('opacity',0.1)
                         true
+                        # that.participant_tip.hide(d)
+                        # selector = '.tipFocus'
+                        # s = that.chart.selectAll(selector)[0][i]  #.data([d])
+                        # d3.select(s).style('display','none')
+
                 @showGuideline = ->
                         mouse = d3.mouse(this)
                         that.chart.selectAll('.guideline')
@@ -98,6 +106,24 @@ class IndepthWidget extends Backbone.View
                         .attr("width", (d) => @timeScale( @maxTime ) - @timeScale( @minTime ) )
                         .attr("height", (d) => @valueScale( @minValue ) - @valueScale( @maxValue ) )
 
+                # Tip Background
+                if not @tipBG?
+                    @tipBG = @chart.append('rect')
+                                    .style('fill','#fff')
+                    @tipBGleft = @chart.append('rect')
+                                    .style('fill','#ccc')
+                                    .style('opacity',0.05)
+                                    .attr('y',0)
+                                    .attr('height',TOP_PART_SIZE)
+                                    .attr('x',0)
+                    @tipBGright = @chart.append('rect')
+                                    .style('fill','#ccc')
+                                    .style('opacity',0.05)
+                                    .attr('y',0)
+                                    .attr('height',TOP_PART_SIZE)
+                                    .attr('x',0)
+                                    .attr('width',10000)
+
                 allLabelIndexes = _.map([0..9], (x) =>
                         index: x
                         major: (@minValue + x*@tickValue) % @labelValue < 1
@@ -128,6 +154,7 @@ class IndepthWidget extends Backbone.View
                         .style("text-anchor", "end")
                         .text((d) => @formatNumber( @minValue + d.index*@tickValue ) )
 
+
                 # Guideline
                 @chart.selectAll('.guideline').data([1])
                         .enter()
@@ -144,6 +171,7 @@ class IndepthWidget extends Backbone.View
 
                 @svg.on('mousemove',@showGuideline)
                 @svg.on('mouseout',@hideGuideline)
+
 
         render__year_starts: ->
                 yearstartModels = _.filter(@model.models, (x)->x.get('kind')=='yearstart')
