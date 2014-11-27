@@ -27,9 +27,8 @@
       <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-approved">
         <!-- <div class="arrow"></div> -->
         <div class="widget-popover-title">
-          <p> תקציב <%= get("source").get("year") %> <% if ( get("continued") ) { %>(המשכי)<% } %>
-          </p>
-          <h2><%= format_full_number( get("value")*1000 ) %>₪</h2>
+          <h2 class="approved-sum"><%= format_full_number( get("value")*1000 ) %>₪</h2>
+          <p> תקציב <%= get("source").get("year") %> <% if ( get("continued") ) { %>(המשכי)<% } %></p>
         </div>
         <div class="widget-popover-content">
             <% if ( !get('exact') ) { %>

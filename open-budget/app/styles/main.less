@@ -32,6 +32,7 @@
 
 @tooltip_bg: rgba(255, 255, 255, 0.9);
 
+.approved_svg    {  stroke: darken(@approved, 10%);    fill: @approved;   }
 .increased_d_svg {  stroke: darken(@increased_d, 10%); fill: @increased_d;}
 .increased_c_svg {  stroke: darken(@increased_c, 10%); fill: @increased_c;}
 .increased_b_svg {  stroke: darken(@increased_b, 10%); fill: @increased_b;}
@@ -42,6 +43,7 @@
 .decreased_a_svg {  stroke: darken(@decreased_a, 10%); fill: @decreased_a;}
 .unchanged_svg   {  stroke: darken(@gray, 8%); fill: @gray;}
 
+.approved_bg     {  background-color: @approved;    fill: @approved;   }
 .increased_d_bg  {  background-color: @increased_d; fill: @increased_d;}
 .increased_c_bg  {  background-color: @increased_c; fill: @increased_c;}
 .increased_b_bg  {  background-color: @increased_b; fill: @increased_b;}
@@ -52,6 +54,7 @@
 .decreased_a_bg  {  background-color: @decreased_a; fill: @decreased_a;}
 .unchanged_bg    {  background-color: @gray; fill: @gray;}
 
+.approved_text   {  color: @approved;   }
 .increased_d_text{  color: @increased_d;}
 .increased_c_text{  color: @increased_c;}
 .increased_b_text{  color: @increased_b;}
@@ -62,6 +65,7 @@
 .decreased_d_text{  color: @decreased_d;}
 .unchanged_text {  color: @gray;}
 
+.approved_border   {  border-color: @approved;   }
 .increased_d_border{  border-color: @increased_d;}
 .increased_c_border{  border-color: @increased_c;}
 .increased_b_border{  border-color: @increased_b;}
@@ -456,7 +460,8 @@ strong.approved {
         margin: 0 -10px;
       }
       .item-title,
-      .revised-diff {
+      .revised-diff,
+      .approved-sum {
         background: @darkgray;
         color: white;
       }
@@ -493,7 +498,8 @@ strong.approved {
       background-image: url(assets/square-tile.png);
       background-size: 20px;
       text-align: right;
-      .revised-diff{
+      .revised-diff,
+      .approved-sum {
         margin-top: -9px;
         padding-top: 9px;
       }
@@ -512,6 +518,10 @@ strong.approved {
           margin-bottom: -5px;
         }
       }
+      &.tooltip-approved {
+        h2 {background-color: @approved;}
+        p { color: @approved;}
+      }
     }
 
     &.arrow-bottom:before {
@@ -522,6 +532,13 @@ strong.approved {
     }
   }
 
+  .approved{
+    .widget-popover {                         .approved_border !important}
+    .item-title,.revised-diff,#trans-tip{     .approved_bg     !important}
+    .widget-popover-title span,.percentage {  .approved_text   !important}
+    .widget-popover.arrow-bottom:before{      border-top-color: @approved}
+    .widget-popover.arrow-left:before{        border-right-color: @approved}
+  }
   .increased_a{
     .widget-popover {                         .increased_a_border !important}
     .item-title,.revised-diff,#trans-tip{     .increased_a_bg     !important}
