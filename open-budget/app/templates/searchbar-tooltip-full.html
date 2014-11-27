@@ -7,15 +7,17 @@
        cls = "unchanged";
    }
  %>
-<span class="approved">
+<div class="widget-popover-sums">
+  <span class="approved">
     <%= format_full_number( net_allocated*1000 ) %> ₪
-</span>
-<span class="<%= cls %>">
+  </span>
+  <span class="<%= cls %>">
     <%= number_plus_minus(net_revised - net_allocated) %> <%= Math.abs( 1 - net_revised / net_allocated ) * 100 %> %
-</span>
-<span class="description">
+  </span>
+</div>
+<p class="description">
 לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. קונדימנטום קורוס בליקרה, נונסטי קלובר בריקנה סטום, לפריקך תצטריק לרטי.
-</span>
+</p>
 <span class="history increased">
 מ-2009 ההוצאות חורגות ב-X% מהתכנון
 </span>

@@ -2,13 +2,15 @@
 <div class="search-tip <%= cls %> arrow arrow-left">
   <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-left">
     <div class="widget-popover-title">
-        <p><%= c %></p>
+        <span><%= c %></span>
         <h2><%= n %></h2>
     </div>
-    <div  id="search-tip" class="widget-popover-content" data-code="<%= c %>">
+    <div id="search-tip" class="widget-popover-content" data-code="<%= c %>">
+      <div class="widget-popover-sums">
         <span class="approved">
             <%= format_full_number( value*1000 ) %> ₪
         </span>
+      </div>
     </div>
   </div>
 </div>
