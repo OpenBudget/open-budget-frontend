@@ -42,15 +42,15 @@
 .decreased_a_svg {  stroke: darken(@decreased_a, 10%); fill: @decreased_a;}
 .unchanged_svg   {  stroke: darken(@gray, 8%); fill: @gray;}
 
-.increased_d_bg  {  background: @increased_d; fill: @increased_d;}
-.increased_c_bg  {  background: @increased_c; fill: @increased_c;}
-.increased_b_bg  {  background: @increased_b; fill: @increased_b;}
-.increased_a_bg  {  background: @increased_a; fill: @increased_a;}
-.decreased_d_bg  {  background: @decreased_d; fill: @decreased_d;}
-.decreased_c_bg  {  background: @decreased_c; fill: @decreased_c;}
-.decreased_b_bg  {  background: @decreased_b; fill: @decreased_b;}
-.decreased_a_bg  {  background: @decreased_a; fill: @decreased_a;}
-.unchanged_bg    {  background: @gray; fill: @gray;}
+.increased_d_bg  {  background-color: @increased_d; fill: @increased_d;}
+.increased_c_bg  {  background-color: @increased_c; fill: @increased_c;}
+.increased_b_bg  {  background-color: @increased_b; fill: @increased_b;}
+.increased_a_bg  {  background-color: @increased_a; fill: @increased_a;}
+.decreased_d_bg  {  background-color: @decreased_d; fill: @decreased_d;}
+.decreased_c_bg  {  background-color: @decreased_c; fill: @decreased_c;}
+.decreased_b_bg  {  background-color: @decreased_b; fill: @decreased_b;}
+.decreased_a_bg  {  background-color: @decreased_a; fill: @decreased_a;}
+.unchanged_bg    {  background-color: @gray; fill: @gray;}
 
 .increased_d_text{  color: @increased_d;}
 .increased_c_text{  color: @increased_c;}
@@ -448,13 +448,17 @@ strong.approved {
         margin-top: -7px;
         display: block;
       }
-      h2 {
-        background: @darkgray;
-        color: white;
+      h2, {
+        color: @text;
         padding: 10px;
         font-size: 20px;
         font-weight: 700;
         margin: 0 -10px;
+      }
+      .item-title,
+      .revised-diff {
+        background: @darkgray;
+        color: white;
       }
     }
 
@@ -484,6 +488,32 @@ strong.approved {
       }
     }
 
+    //transfer tooltips:
+    &#trans-tip{
+      background-image: url(assets/square-tile.png);
+      background-size: 20px;
+      text-align: right;
+      .revised-diff{
+        margin-top: -9px;
+        padding-top: 9px;
+      }
+      .revised {
+        padding: 0 10px;
+        line-height: 20px;
+      }
+      .tooltip-note {
+        padding-top: 2px;
+        margin-bottom: -10px;
+        font-size: 12px;
+        color: @text;
+      }
+      &.tooltip-changeline{
+        .tooltip-note {
+          margin-bottom: -5px;
+        }
+      }
+    }
+
     &.arrow-bottom:before {
       border-top-color: @darkgray;
     }
@@ -494,56 +524,58 @@ strong.approved {
 
   .increased_a{
     .widget-popover {                         .increased_a_border !important}
-    h2{                                       .increased_a_bg     !important}
+    .item-title,.revised-diff,#trans-tip{     .increased_a_bg     !important}
     .widget-popover-title span,.percentage {  .increased_a_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @increased_a}
     .widget-popover.arrow-left:before{        border-right-color: @increased_a}
   }
   .increased_b{
     .widget-popover {                         .increased_b_border !important}
-    h2{                                       .increased_b_bg     !important}
+    .item-title,.revised-diff,#trans-tip{     .increased_b_bg     !important}
     .widget-popover-title span,.percentage {  .increased_b_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @increased_b}
     .widget-popover.arrow-left:before{        border-right-color: @increased_b}
   }
-  .increased_c{
+  .increased_c,
+  .trans-increased{
     .widget-popover {                         .increased_c_border !important}
-    h2{                                       .increased_c_bg     !important}
+    .item-title,.revised-diff,#trans-tip{     .increased_c_bg     !important}
     .widget-popover-title span,.percentage {  .increased_c_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @increased_c}
     .widget-popover.arrow-left:before{        border-right-color: @increased_c}
   }
   .increased_d{
     .widget-popover {                         .increased_d_border !important}
-    h2{                                       .increased_d_bg     !important}
+    .item-title,.revised-diff,#trans-tip{     .increased_d_bg     !important}
     .widget-popover-title span,.percentage {  .increased_d_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @increased_d}
     .widget-popover.arrow-left:before{        border-right-color: @increased_d}
   }
   .decreased_a{
     .widget-popover {                         .decreased_a_border !important}
-    h2{                                       .decreased_a_bg     !important}
+    .item-title,.revised-diff,#trans-tip{     .decreased_a_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_a_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @decreased_a}
     .widget-popover.arrow-left:before{        border-right-color: @decreased_a}
   }
   .decreased_b{
     .widget-popover {                         .decreased_b_border !important}
-    h2{                                       .decreased_b_bg     !important}
+    .item-title,.revised-diff,#trans-tip{     .decreased_b_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_b_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @decreased_b}
     .widget-popover.arrow-left:before{        border-right-color: @decreased_b}
   }
-  .decreased_c{
+  .decreased_c,
+  .trans-decreased{
     .widget-popover {                         .decreased_c_border !important}
-    h2{                                       .decreased_c_bg     !important}
+    .item-title,.revised-diff,#trans-tip{     .decreased_c_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_c_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @decreased_c}
     .widget-popover.arrow-left:before{        border-right-color: @decreased_c}
   }
   .decreased_d{
     .widget-popover {                         .decreased_d_border !important}
-    h2{                                       .decreased_d_bg     !important}
+    .item-title,.revised-diff,#trans-tip{     .decreased_d_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_d_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @decreased_d}
     .widget-popover.arrow-left:before{        border-right-color: @decreased_d}

@@ -1,28 +1,29 @@
-<div class="trans-<%= color_classname(get("diff_value")) %> <% if ( get('kind') == 'approved' ) { %>approved<% } %>">
-  <div id="trans-tip" class="widget-popover fade in bottom">
-  <% if ( get("src") == "changeline" ) { %>
-    <!-- <div class="arrow"></div> -->
+<div class="trans-<%= color_classname(get("diff_value")) %> <% if ( get('kind') == 'approved' ) { %>approved<% } %> arrow arrow-bottom">
+<% if ( get("src") == "changeline" ) { %>
+  <!-- <div class="arrow"></div> -->
+  <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-changeline">
     <div class="widget-popover-title">
         <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode')).expense_change*1000; %>
         <% var revised = get("value")*1000; %>
-        <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( diff ) %>&rlm; </h2>
-        <h2>=</h2>
-        <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
-        <% if ( diff < 0 ) { %>
-            <p><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
-                קיצוץ מתקציב
-                <%= get("source").get("year") %></p>
-        <% } %>
-        <% if ( diff > 0 ) { %>
-            <p><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
-                תוספת לתקציב
-                <%= get("source").get("year") %></p>
-        <% } %>
+        <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
+        <h2 class="revised">=<br/>
+        <%= format_full_number( revised ) %>₪</h2>
     </div>
     <div class="widget-popover-content">
+      <% if ( diff < 0 ) { %>
+          <p class="tooltip-note"><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
+              קיצוץ מתקציב
+              <%= get("source").get("year") %></p>
+      <% } %>
+      <% if ( diff > 0 ) { %>
+          <p class="tooltip-note"><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
+              תוספת לתקציב
+              <%= get("source").get("year") %></p>
+      <% } %>
     </div>
   <% } else { %>
       <% if ( get('kind') == 'approved' ) { %>
+      <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-approved">
         <!-- <div class="arrow"></div> -->
         <div class="widget-popover-title">
           <p> תקציב <%= get("source").get("year") %> <% if ( get("continued") ) { %>(המשכי)<% } %>
@@ -40,28 +41,28 @@
             <% } %>
         </div>
       <% } else if ( get('kind') == 'used' ) { %>
+      <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-used">
         <div class="widget-popover-title">
             <h2 class="approved"><%= format_full_number( get("source").get('net_allocated')*1000 ) %>₪</h2>
             <% var diff = (get("source").get('net_revised') - get("source").get('net_allocated'))*1000; %>
             <% var revised = get("source").get('net_revised')*1000; %>
             <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( diff ) %>&rlm; </h2>
-            <h2>=</h2>
-            <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
-            <% if ( diff < 0 ) { %>
-                <p><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
-                    קיצוץ מתקציב
-                    <%= get("source").get("year") %></p>
-            <% } %>
-            <% if ( diff > 0 ) { %>
-                <p><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
-                    תוספת לתקציב
-                    <%= get("source").get("year") %></p>
-            <% } %>
-            <p>
+            <h2 class="revised">=<br/>
+            <%= format_full_number( revised ) %>₪</h2>
         </div>
         <div class="widget-popover-content">
+            <% if ( diff < 0 ) { %>
+              <p class="tooltip-note"><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
+                  קיצוץ מתקציב
+                  <%= get("source").get("year") %></p>
+            <% } %>
+            <% if ( diff > 0 ) { %>
+              <p class="tooltip-note"><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
+                  תוספת לתקציב
+                  <%= get("source").get("year") %></p>
+            <% } %>
             <h2 class="used"><%= format_full_number( get("source").get('net_used')*1000 ) %>₪</h2>
-            <p>(ההוצאה בפועל)</p>
+            <p class="tooltip-note">(ההוצאה בפועל)</p>
         </div>
       <% } %>
   <% } %>
