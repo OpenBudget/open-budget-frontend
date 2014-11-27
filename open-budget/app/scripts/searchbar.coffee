@@ -66,11 +66,11 @@ class BudgetPartitionLayoutView extends Backbone.View
                              .style('visibility','visible')
                 return
             @change_tip.show(d)
-            @expandor.attr("transform", "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
+            @expandor.attr("transform", "translate(" + @x(d.y+d.dy) + "," + (@y(d.x)+1) + ")" )
                     .style('visibility','visible')
             @expandor.select('rect')
                      .attr("width", 50)#Math.abs(@x(@root.dy) - @x(0)))
-                     .attr("height", @y(d.dx) - @y(0))
+                     .attr("height", @y(d.dx) - @y(0)-2)
             @expandor.select('g.icon')
                      .attr('transform', "translate("+0+","+(@y(d.dx/2) - @y(0))+")")
             @upbacker.style('visibility','hidden')
