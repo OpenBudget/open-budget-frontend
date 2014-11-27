@@ -1,4 +1,4 @@
-<div class="trans-<%= color_classname(get("diff_value")) %> <%= changeClass(get("value"), get("value")+get("diff_value")) %> <% if ( get('kind') == 'approved' ) { %>approved<% } %> arrow arrow-bottom">
+<div class="trans-<%= color_classname(get("diff_value")) %> <%= changeClass(get("original_baseline"), get("value")) %> <% if ( get('kind') == 'approved' ) { %>approved<% } %> arrow arrow-bottom">
 <% if ( get("src") == "changeline" ) { %>
   <!-- <div class="arrow"></div> -->
   <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-changeline">
