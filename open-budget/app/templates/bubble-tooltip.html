@@ -6,19 +6,10 @@
     </div>
     <div class="widget-popover-content">
       <div class="widget-popover-sums">
-        <% var cls = "";
-           if ( orig > rev ) {
-               cls = "decreased";
-           } else if ( rev > orig ) {
-               cls = "increased";
-           } else {
-               cls = "unchanged";
-           }
-         %>
           <span class="approved">
               <%= format_full_number( orig ) %> ₪
           </span>
-          <span class="percentage <%= cls %>">
+          <span class="percentage">
               <%= (Math.abs( 1 - rev / orig ) * 100).toFixed(1) %>%<%= number_plus_minus( rev - orig ) %>
           </span>
         </div>

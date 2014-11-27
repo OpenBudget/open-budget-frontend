@@ -367,7 +367,7 @@ class PageModel extends Backbone.Model
                 year: null
                 changeGroupId: null
                 mainPage: null
-                baseURL: "http://the.open-budget.org.il"
+                baseURL: "http://www.obudget.org"
                 selection: [ 0, 0 ]
                 currentItem: null
                 dataType: "json"#p"
