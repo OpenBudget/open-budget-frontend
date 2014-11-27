@@ -276,14 +276,14 @@ class IndepthWidget extends Backbone.View
                             .datum( (d) => d)
 
             @chart.selectAll(".changeBar-last").data(lastChanges)
-                        .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar-last increase #{subkind}" else if dbl < 0 then "changeBar-last reduce #{subkind}" else "changeBar-last  #{subkind}")
+                        .attr("class", (d) => cls = changeClass( d.get('original_baseline'), d.get('value') ); subkind = d.get('subkind') ; "changeBar-last #{cls} #{subkind}" )
                         .attr("x", (d) => @timeScale( @roundToYearStart( d.get('timestamp') ) ) )
                         .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width') ) - @timeScale( @roundToYearStart( d.get('timestamp') ) ) )
                         .attr("y", (d) => @valueScale( d.get('value') ) )
                         .attr("height", (d) => @valueScale( @minValue ) - @valueScale( d.get('value') ) )
 
             @chart.selectAll(".changeBar-last-line").data(lastChanges)
-                        .attr("class", (d) => dbl = d.get('diff_baseline'); subkind = d.get('subkind') ; if dbl > 0 then "changeBar-last-line increase #{subkind}" else if dbl < 0 then "changeBar-last-line reduce #{subkind}" else "changeBar-last-line  #{subkind}")
+                        .attr("class", (d) => cls = changeClass( d.get('original_baseline'), d.get('value') ); subkind = d.get('subkind') ; "changeBar-last-line #{cls} #{subkind}" )
                         .attr("x1", (d) => @timeScale( @roundToYearStart( d.get('timestamp') ) ) )
                         .attr("x2", (d) => @timeScale( d.get('timestamp')))
                         .attr("y1", (d) => @valueScale( d.get('value') ) )

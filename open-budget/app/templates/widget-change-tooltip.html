@@ -4,19 +4,20 @@
   <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-changeline">
     <div class="widget-popover-title">
         <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode')).expense_change*1000; %>
+        <% var yeardiff = (get("value") - get("original_baseline"))*1000; %>
         <% var revised = get("value")*1000; %>
         <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
         <h2 class="revised">=<br/>
         <%= format_full_number( revised ) %>₪</h2>
     </div>
     <div class="widget-popover-content">
-      <% if ( diff < 0 ) { %>
-          <p class="tooltip-note"><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
+      <% if ( yeardiff < 0 ) { %>
+          <p class="tooltip-note"><%= (100 * (-yeardiff / (revised - yeardiff))).toFixed(1) + "%" %>
               קיצוץ מתקציב
               <%= get("source").get("year") %></p>
       <% } %>
-      <% if ( diff > 0 ) { %>
-          <p class="tooltip-note"><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
+      <% if ( yeardiff > 0 ) { %>
+          <p class="tooltip-note"><%= (100 * (yeardiff / (revised - yeardiff))).toFixed(1) + "%" %>
               תוספת לתקציב
               <%= get("source").get("year") %></p>
       <% } %>
