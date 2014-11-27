@@ -1,10 +1,11 @@
 <div class="trans-<%= className().replace('_svg','') %>">
   <div id="trans-tip" class="widget-popover fade in bottom">
     <div class="widget-popover-title">
-        <p><%= src.get("code") %></p>
+        <span><%= src.get("code") %></span>
         <h2><%= src.get("title") %></h2>
     </div>
     <div class="widget-popover-content">
+      <div class="widget-popover-sums">
         <% var cls = "";
            if ( orig > rev ) {
                cls = "decreased";
@@ -14,15 +15,16 @@
                cls = "unchanged";
            }
          %>
-        <span class="approved">
-            <%= format_full_number( orig ) %> ₪
-        </span>
-        <span class="<%= cls %>">
-            <%= number_plus_minus( rev - orig ) %> <%= (Math.abs( 1 - rev / orig ) * 100).toFixed(1) %> %
-        </span>
-        <span class="description">
+          <span class="approved">
+              <%= format_full_number( orig ) %> ₪
+          </span>
+          <span class="percentage <%= cls %>">
+              <%= (Math.abs( 1 - rev / orig ) * 100).toFixed(1) %>%<%= number_plus_minus( rev - orig ) %>
+          </span>
+        </div>
+        <p class="description">
         לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. קונדימנטום קורוס בליקרה, נונסטי קלובר בריקנה סטום, לפריקך תצטריק לרטי.
-        </span>
+        </p>
         <span class="history increased">
         מ-2009 ההוצאות חורגות ב-X% מהתכנון
         </span>

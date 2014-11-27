@@ -371,6 +371,63 @@ strong.approved {
     }
 }
 
+//////// TOOL-TIPS //////////////////
+
+.d3-tip {
+  opacity: 1 !important;
+
+  .widget-popover{
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid @darkgray;
+    border-radius: 5px;
+    width: 250px;
+    text-align: center;
+
+    .widget-popover-title{
+      span{
+        color: @darkgray;
+        font-size: 12px;
+        margin-top: -7px;
+        display: block;
+      }
+      h2 {
+        background: @darkgray;
+        color: white;
+        padding: 10px;
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 -10px;
+      }
+    }
+
+    .widget-popover-content {
+
+      .widget-popover-sums {
+        font-size: 16px;
+        font-weight: 700;
+        color: @text;
+
+        .percentage {
+          color: @darkgray;
+        }
+      }
+
+      .description {
+        font-size: 14px;
+        color: @text;
+      }
+
+      .history {
+        border-top: 1px dashed @darkgray;
+        color: @darkgray;
+        font-size: 12px;
+        margin-bottom: -7px;
+        display: block;
+      }
+    }
+  }
+}
+
 //////// SEARCH & TREE //////////////
 
 #search-form{
