@@ -999,29 +999,39 @@ svg rect{
         .approvedLine {
           stroke: @approved;
           stroke-dasharray: 1,4;
-            &.increase {
-                stroke: @increased;
-            }
-            &.reduce {
-                stroke: @decreased;
-            }
+            &.increased_a {.increased_a_svg}
+            &.increased_b {.increased_b_svg}
+            &.increased_c {.increased_c_svg}
+            &.increased_d {.increased_d_svg}
+            &.decreased_a {.decreased_a_svg}
+            &.decreased_b {.decreased_b_svg}
+            &.decreased_c {.decreased_c_svg}
+            &.decreased_d {.decreased_d_svg}
         }
      }
     .graphPartRevised {
         .revisedBar {
-            &.increase {
-                stroke: @increased;
-            }
-            &.reduce {
-                stroke: @decreased;
-            }
+            &.increased_a {.increased_a_svg}
+            &.increased_b {.increased_b_svg}
+            &.increased_c {.increased_c_svg}
+            &.increased_d {.increased_d_svg}
+            &.decreased_a {.decreased_a_svg}
+            &.decreased_b {.decreased_b_svg}
+            &.decreased_c {.decreased_c_svg}
+            &.decreased_d {.decreased_d_svg}
         }
      }
 
   .tipFocus {
       display: none;
-      .increase {stroke: @increased}
-      .reduce   {stroke: @decreased}
+      &.increased_a {.increased_a_svg}
+      &.increased_b {.increased_b_svg}
+      &.increased_c {.increased_c_svg}
+      &.increased_d {.increased_d_svg}
+      &.decreased_a {.decreased_a_svg}
+      &.decreased_b {.decreased_b_svg}
+      &.decreased_c {.decreased_c_svg}
+      &.decreased_d {.decreased_d_svg}
   }
 
   .graphPartChanged {
@@ -1030,20 +1040,32 @@ svg rect{
 
       .changeLine {
         stroke-dasharray: 1,4;
-        &.increase {
-            stroke: @increased;
+        &.increased_a,
+        &.increased_b,
+        &.increased_c,
+        &.increased_d {
             -webkit-animation: dash-up 0.5s linear infinite;
             -moz-animation: dash-up 0.5s linear infinite;
-            -0-animation: dash-up 0.5s linear infinite;
+            -o-animation: dash-up 0.5s linear infinite;
             animation: dash-up 0.5s linear infinite;
         }
-        &.reduce {
-            stroke: @decreased;
+        &.decreased_a,
+        &.decreased_b,
+        &.decreased_c,
+        &.decreased_d {
             -webkit-animation: dash-down 0.5s linear infinite;
             -moz-animation: dash-down 0.5s linear infinite;
             -o-animation: dash-down 0.5s linear infinite;
             -webkit-animation: dash-down 0.5s linear infinite;
         }
+        &.increased_a {.increased_a_svg}
+        &.increased_b {.increased_b_svg}
+        &.increased_c {.increased_c_svg}
+        &.increased_d {.increased_d_svg}
+        &.decreased_a {.decreased_a_svg}
+        &.decreased_b {.decreased_b_svg}
+        &.decreased_c {.decreased_c_svg}
+        &.decreased_d {.decreased_d_svg}
       }
 
       .changeLineWaterfall{
@@ -1072,29 +1094,32 @@ svg rect{
 
      .changeBar-last {
         stroke-width: 0;
+        stroke-dasharray: 3,1;
         fill: fadeout(@approved, 92%);
-        &.increase {
-            stroke: @increased;
-            stroke-dasharray: 3,1;
-            fill: fadeout(@increased, 92%);
-        }
-        &.reduce {
-            stroke: @decreased;
-            stroke-dasharray: 3,1;
-            fill: fadeout(@decreased, 92%);
-        }
+
+        &.increased_a { stroke: @increased_a; fill: fadeout(@increased_a, 92%); }
+        &.increased_b { stroke: @increased_b; fill: fadeout(@increased_b, 92%); }
+        &.increased_c { stroke: @increased_c; fill: fadeout(@increased_c, 92%); }
+        &.increased_d { stroke: @increased_d; fill: fadeout(@increased_d, 92%); }
+        &.decreased_a { stroke: @decreased_a; fill: fadeout(@decreased_a, 92%); }
+        &.decreased_b { stroke: @decreased_b; fill: fadeout(@decreased_b, 92%); }
+        &.decreased_c { stroke: @decreased_c; fill: fadeout(@decreased_c, 92%); }
+        &.decreased_d { stroke: @decreased_d; fill: fadeout(@decreased_d, 92%); }
       }
 
       .changeBar-last-line {
              stroke-width: 1;
              stroke: @approved;
-             stroke-opacity: 0.5;
-             &.increase {
-                 stroke: @increased;
-             }
-             &.reduce {
-                 stroke: @decreased;
-             }
+             stroke-dasharray: 3,1;
+             //stroke-opacity: 0.5;
+             &.increased_a {.increased_a_svg}
+             &.increased_b {.increased_b_svg}
+             &.increased_c {.increased_c_svg}
+             &.increased_d {.increased_d_svg}
+             &.decreased_a {.decreased_a_svg}
+             &.decreased_b {.decreased_b_svg}
+             &.decreased_c {.decreased_c_svg}
+             &.decreased_d {.decreased_d_svg}
       }
 
     }
