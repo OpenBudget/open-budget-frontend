@@ -44,7 +44,7 @@ class BubbleChart extends Backbone.View
     @tooltip = d3.tip()
                    .attr('class', 'd3-tip')
                    .direction("n")
-                   #.offset((d) => [-TOOLTIP_SIZE+45,TOOLTIP_SIZE-(@timeScale( d.get('width')/2 ) - @timeScale(0))])
+                   .offset((d) => [35,0])
                    .html((d) -> d.tooltip_contents())
 
     # used when setting up force and
