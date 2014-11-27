@@ -30,6 +30,8 @@
 
 @selection: #3399ff;
 
+@tooltip_bg: rgba(255, 255, 255, 0.9);
+
 .increased_d_svg {  stroke: darken(@increased_d, 10%); fill: @increased_d;}
 .increased_c_svg {  stroke: darken(@increased_c, 10%); fill: @increased_c;}
 .increased_b_svg {  stroke: darken(@increased_b, 10%); fill: @increased_b;}
@@ -376,16 +378,64 @@ strong.approved {
 .d3-tip {
   opacity: 1;
 
+  &:after, &:before {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &:after {
+    border-color: transparent;
+    border-top-color: @tooltip_bg;
+    border-width: 5px;
+    margin-left: -5px;
+  }
+  &:before {
+    border-color: transparent;
+    border-top-color: white;
+    border-width: 8px;
+    margin-left: -8px;
+  }
+
   .widget-popover{
-    background: rgba(255, 255, 255, 0.9);
+    background: @tooltip_bg;
     border: 2px solid @darkgray;
     border-radius: 5px;
     width: 250px;
     text-align: center;
     position: relative;
 
-    &:after{
+    -webkit-box-shadow: 0 0 0 1px rgba(255,255,255,1);
+    -moz-box-shadow:    0 0 0 1px rgba(255,255,255,1);
+    box-shadow:         0 0 0 1px rgba(255,255,255,1);
 
+    &:after, &:before {
+    	top: 100%;
+    	left: 50%;
+    	border: solid transparent;
+    	content: " ";
+    	height: 0;
+    	width: 0;
+    	position: absolute;
+    	pointer-events: none;
+    }
+
+    &:after {
+    	border-color: transparent;
+    	border-top-color: @tooltip_bg;
+    	border-width: 5px;
+    	margin-left: -5px;
+    }
+    &:before {
+    	border-color: transparent;
+    	border-top-color: @darkgray;
+    	border-width: 8px;
+    	margin-left: -8px;
     }
 
     .widget-popover-title{
@@ -442,41 +492,49 @@ strong.approved {
     .widget-popover {                         .increased_a_border !important}
     h2{                                       .increased_a_bg     !important}
     .widget-popover-title span,.percentage {  .increased_a_text   !important}
+    .widget-popover:before{                   border-top-color: @increased_a}
   }
   .increased_b{
     .widget-popover {                         .increased_b_border !important}
     h2{                                       .increased_b_bg     !important}
     .widget-popover-title span,.percentage {  .increased_b_text   !important}
+    .widget-popover:before{                   border-top-color: @increased_b}
   }
   .increased_c{
     .widget-popover {                         .increased_c_border !important}
     h2{                                       .increased_c_bg     !important}
     .widget-popover-title span,.percentage {  .increased_c_text   !important}
+    .widget-popover:before{                   border-top-color: @increased_c}
   }
   .increased_d{
     .widget-popover {                         .increased_d_border !important}
     h2{                                       .increased_d_bg     !important}
     .widget-popover-title span,.percentage {  .increased_d_text   !important}
+    .widget-popover:before{                   border-top-color: @increased_d}
   }
   .decreased_a{
     .widget-popover {                         .decreased_a_border !important}
     h2{                                       .decreased_a_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_a_text   !important}
+    .widget-popover:before{                   border-top-color: @decreased_a}
   }
   .decreased_b{
     .widget-popover {                         .decreased_b_border !important}
     h2{                                       .decreased_b_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_b_text   !important}
+    .widget-popover:before{                   border-top-color: @decreased_b}
   }
   .decreased_c{
     .widget-popover {                         .decreased_c_border !important}
     h2{                                       .decreased_c_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_c_text   !important}
+    .widget-popover:before{                   border-top-color: @decreased_c}
   }
   .decreased_d{
     .widget-popover {                         .decreased_d_border !important}
     h2{                                       .decreased_d_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_d_text   !important}
+    .widget-popover:before{                   border-top-color: @decreased_d}
   }
 
 }
