@@ -30,14 +30,14 @@
 
 @selection: #3399ff;
 
-.increased_d_svg {  stroke: darken(@increased_d, 8%); fill: @increased_d;}
-.increased_c_svg {  stroke: darken(@increased_c, 8%); fill: @increased_c;}
-.increased_b_svg {  stroke: darken(@increased_b, 8%); fill: @increased_b;}
-.increased_a_svg {  stroke: darken(@increased_a, 8%); fill: @increased_a;}
-.decreased_d_svg {  stroke: darken(@decreased_d, 8%); fill: @decreased_d;}
-.decreased_c_svg {  stroke: darken(@decreased_c, 8%); fill: @decreased_c;}
-.decreased_b_svg {  stroke: darken(@decreased_b, 8%); fill: @decreased_b;}
-.decreased_a_svg {  stroke: darken(@decreased_a, 8%); fill: @decreased_a;}
+.increased_d_svg {  stroke: darken(@increased_d, 10%); fill: @increased_d;}
+.increased_c_svg {  stroke: darken(@increased_c, 10%); fill: @increased_c;}
+.increased_b_svg {  stroke: darken(@increased_b, 10%); fill: @increased_b;}
+.increased_a_svg {  stroke: darken(@increased_a, 10%); fill: @increased_a;}
+.decreased_d_svg {  stroke: darken(@decreased_d, 10%); fill: @decreased_d;}
+.decreased_c_svg {  stroke: darken(@decreased_c, 10%); fill: @decreased_c;}
+.decreased_b_svg {  stroke: darken(@decreased_b, 10%); fill: @decreased_b;}
+.decreased_a_svg {  stroke: darken(@decreased_a, 10%); fill: @decreased_a;}
 .unchanged_svg   {  stroke: darken(@gray, 8%); fill: @gray;}
 
 .increased_d_bg  {  background: @increased_d; fill: @increased_d;}
@@ -382,6 +382,11 @@ strong.approved {
     border-radius: 5px;
     width: 250px;
     text-align: center;
+    position: relative;
+
+    &:after{
+
+    }
 
     .widget-popover-title{
       span{
@@ -425,7 +430,55 @@ strong.approved {
         display: block;
       }
     }
+    .arrow{
+      position: absolute;
+      right: 120px;
+      width: 40px;
+      height: 8px;
+    }
   }
+
+  .increased_a{
+    .widget-popover {                         .increased_a_border !important}
+    h2{                                       .increased_a_bg     !important}
+    .widget-popover-title span,.percentage {  .increased_a_text   !important}
+  }
+  .increased_b{
+    .widget-popover {                         .increased_b_border !important}
+    h2{                                       .increased_b_bg     !important}
+    .widget-popover-title span,.percentage {  .increased_b_text   !important}
+  }
+  .increased_c{
+    .widget-popover {                         .increased_c_border !important}
+    h2{                                       .increased_c_bg     !important}
+    .widget-popover-title span,.percentage {  .increased_c_text   !important}
+  }
+  .increased_d{
+    .widget-popover {                         .increased_d_border !important}
+    h2{                                       .increased_d_bg     !important}
+    .widget-popover-title span,.percentage {  .increased_d_text   !important}
+  }
+  .decreased_a{
+    .widget-popover {                         .decreased_a_border !important}
+    h2{                                       .decreased_a_bg     !important}
+    .widget-popover-title span,.percentage {  .decreased_a_text   !important}
+  }
+  .decreased_b{
+    .widget-popover {                         .decreased_b_border !important}
+    h2{                                       .decreased_b_bg     !important}
+    .widget-popover-title span,.percentage {  .decreased_b_text   !important}
+  }
+  .decreased_c{
+    .widget-popover {                         .decreased_c_border !important}
+    h2{                                       .decreased_c_bg     !important}
+    .widget-popover-title span,.percentage {  .decreased_c_text   !important}
+  }
+  .decreased_d{
+    .widget-popover {                         .decreased_d_border !important}
+    h2{                                       .decreased_d_bg     !important}
+    .widget-popover-title span,.percentage {  .decreased_d_text   !important}
+  }
+
 }
 
 //////// SEARCH & TREE //////////////
