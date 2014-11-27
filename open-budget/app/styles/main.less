@@ -375,12 +375,9 @@ strong.approved {
 
 //////// TOOL-TIPS //////////////////
 
-.d3-tip {
-  opacity: 1;
-
+.arrow {
+  position: relative;
   &:after, &:before {
-    top: 100%;
-    left: 50%;
     border: solid transparent;
     content: " ";
     height: 0;
@@ -388,19 +385,49 @@ strong.approved {
     position: absolute;
     pointer-events: none;
   }
-
   &:after {
     border-color: transparent;
-    border-top-color: @tooltip_bg;
     border-width: 5px;
-    margin-left: -5px;
   }
   &:before {
     border-color: transparent;
-    border-top-color: white;
     border-width: 8px;
-    margin-left: -8px;
   }
+
+  &.arrow-bottom{
+    &:after, &:before {
+      top: 100%;
+      left: 50%;
+    }
+    &:after {
+      border-top-color: @tooltip_bg;
+      margin-left: -5px;
+    }
+    &:before {
+      border-top-color: white;
+      margin-left: -8px;
+    }
+  }
+
+  &.arrow-left{
+    &:after, &:before {
+    	right: 100%;
+    	top: 50%;
+    }
+
+    &:after {
+    	border-right-color: #fff;
+    	margin-top: -5px;
+    }
+    &:before {
+    	border-right-color: white;
+    	margin-top: -8px;
+    }
+  }
+}
+
+.d3-tip {
+  opacity: 1;
 
   .widget-popover{
     background: @tooltip_bg;
@@ -413,30 +440,6 @@ strong.approved {
     -webkit-box-shadow: 0 0 0 1px rgba(255,255,255,1);
     -moz-box-shadow:    0 0 0 1px rgba(255,255,255,1);
     box-shadow:         0 0 0 1px rgba(255,255,255,1);
-
-    &:after, &:before {
-    	top: 100%;
-    	left: 50%;
-    	border: solid transparent;
-    	content: " ";
-    	height: 0;
-    	width: 0;
-    	position: absolute;
-    	pointer-events: none;
-    }
-
-    &:after {
-    	border-color: transparent;
-    	border-top-color: @tooltip_bg;
-    	border-width: 5px;
-    	margin-left: -5px;
-    }
-    &:before {
-    	border-color: transparent;
-    	border-top-color: @darkgray;
-    	border-width: 8px;
-    	margin-left: -8px;
-    }
 
     .widget-popover-title{
       span{
@@ -480,11 +483,12 @@ strong.approved {
         display: block;
       }
     }
-    .arrow{
-      position: absolute;
-      right: 120px;
-      width: 40px;
-      height: 8px;
+
+    &.arrow-bottom:before {
+      border-top-color: @darkgray;
+    }
+    &.arrow-left:before {
+      border-right-color: @darkgray;
     }
   }
 
@@ -492,49 +496,57 @@ strong.approved {
     .widget-popover {                         .increased_a_border !important}
     h2{                                       .increased_a_bg     !important}
     .widget-popover-title span,.percentage {  .increased_a_text   !important}
-    .widget-popover:before{                   border-top-color: @increased_a}
+    .widget-popover.arrow-bottom:before{      border-top-color: @increased_a}
+    .widget-popover.arrow-left:before{        border-right-color: @increased_a}
   }
   .increased_b{
     .widget-popover {                         .increased_b_border !important}
     h2{                                       .increased_b_bg     !important}
     .widget-popover-title span,.percentage {  .increased_b_text   !important}
-    .widget-popover:before{                   border-top-color: @increased_b}
+    .widget-popover.arrow-bottom:before{      border-top-color: @increased_b}
+    .widget-popover.arrow-left:before{        border-right-color: @increased_b}
   }
   .increased_c{
     .widget-popover {                         .increased_c_border !important}
     h2{                                       .increased_c_bg     !important}
     .widget-popover-title span,.percentage {  .increased_c_text   !important}
-    .widget-popover:before{                   border-top-color: @increased_c}
+    .widget-popover.arrow-bottom:before{      border-top-color: @increased_c}
+    .widget-popover.arrow-left:before{        border-right-color: @increased_c}
   }
   .increased_d{
     .widget-popover {                         .increased_d_border !important}
     h2{                                       .increased_d_bg     !important}
     .widget-popover-title span,.percentage {  .increased_d_text   !important}
-    .widget-popover:before{                   border-top-color: @increased_d}
+    .widget-popover.arrow-bottom:before{      border-top-color: @increased_d}
+    .widget-popover.arrow-left:before{        border-right-color: @increased_d}
   }
   .decreased_a{
     .widget-popover {                         .decreased_a_border !important}
     h2{                                       .decreased_a_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_a_text   !important}
-    .widget-popover:before{                   border-top-color: @decreased_a}
+    .widget-popover.arrow-bottom:before{      border-top-color: @decreased_a}
+    .widget-popover.arrow-left:before{        border-right-color: @decreased_a}
   }
   .decreased_b{
     .widget-popover {                         .decreased_b_border !important}
     h2{                                       .decreased_b_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_b_text   !important}
-    .widget-popover:before{                   border-top-color: @decreased_b}
+    .widget-popover.arrow-bottom:before{      border-top-color: @decreased_b}
+    .widget-popover.arrow-left:before{        border-right-color: @decreased_b}
   }
   .decreased_c{
     .widget-popover {                         .decreased_c_border !important}
     h2{                                       .decreased_c_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_c_text   !important}
-    .widget-popover:before{                   border-top-color: @decreased_c}
+    .widget-popover.arrow-bottom:before{      border-top-color: @decreased_c}
+    .widget-popover.arrow-left:before{        border-right-color: @decreased_c}
   }
   .decreased_d{
     .widget-popover {                         .decreased_d_border !important}
     h2{                                       .decreased_d_bg     !important}
     .widget-popover-title span,.percentage {  .decreased_d_text   !important}
-    .widget-popover:before{                   border-top-color: @decreased_d}
+    .widget-popover.arrow-bottom:before{      border-top-color: @decreased_d}
+    .widget-popover.arrow-left:before{        border-right-color: @decreased_d}
   }
 
 }

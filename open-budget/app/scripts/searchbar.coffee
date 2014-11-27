@@ -17,7 +17,7 @@ class BudgetPartitionLayoutView extends Backbone.View
                        .attr('class', 'd3-tip search-bar-tip')
                            #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
                        .direction("e")
-                       .offset((d) => [50,-5])
+                       .offset((d) => [50,1])
                        .html((d) -> JST.searchbar_tooltip(d))
         @vis.call(@change_tip)
         @treemap = @vis.append('g')
