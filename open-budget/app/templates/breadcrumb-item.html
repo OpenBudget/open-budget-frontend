@@ -1,4 +1,4 @@
-<li class="issue-<%= window.issue_depth(main.get('code')) %> <%= {true: 'current'}[last] %> <% if (last) { changeClass(main.get('net_allocated'), main.get('net_revised')) } %>">
+<li class="issue-<%= window.issue_depth(main.get('code')) %> <%= {true: 'current'}[last] %> <% if (last) { %><%= changeClass(main.get('net_allocated'), main.get('net_revised')) %><% } %>">
 
   <% if(last) { %>
     <div id="affix-wrapper">
