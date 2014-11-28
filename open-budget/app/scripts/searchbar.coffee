@@ -78,6 +78,8 @@ class BudgetPartitionLayoutView extends Backbone.View
                         .attr("width", @x(d.y))
                         .attr("y", @y(d.x))
                         .style("visibility","visible")
+            $(".search-bar-tip").toggleClass('active',true)
+
 
             window.setTimeout(
                 =>
@@ -97,7 +99,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             @expandor.style('visibility','hidden')
             @upbacker.style('visibility','hidden')
             @highlightor.style("visibility","visible")
-
+            $(".search-bar-tip").toggleClass('active',false)
 
         @cls = (d) => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + "_bg"
 
