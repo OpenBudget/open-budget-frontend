@@ -1001,14 +1001,14 @@ svg rect{
     .graduationLabel {
         font-size: 11px;
         font-weight: 700;
-        fill: @darkgray;
+        fill: lighten(@darkgray, 20%);
     }
     .graduationLine {
         &.major {
-          stroke: @gray;
+          stroke: lighten(@lightgray, 4%);
         }
         &.minor {
-          stroke: @lightgray;
+          stroke: lighten(@lightgray, 8%);
         }
     }
     .graphPartYearStart {
@@ -1173,45 +1173,61 @@ svg rect{
     margin-top: -240px;
     .participantThumbnail {
         position: absolute;
-        width:200px;
         height:32px;
-        margin-left:-184px;
+        width:120px;
+        margin-left:-104px;
         margin-top:24px;
-        overflow: hidden;
-        &:hover {
-            z-index:1000;
-        }
         img {
             position:absolute;
             right: 0px;
             width: 32px;
             height: 32px;
-            border: 2px solid #ccc;
+            border: 2px solid #eee;
             border-radius: 16px;
         }
         div {
+            font-size: 12px;
             position: absolute;
             top: 7px;
             right: 20px;
             text-align: right;
-            padding: 0 15px 0 5px;
+            padding: 0 14px 0 8px;
             height: 18px;
             overflow: hidden;
-            background: #ccc;
+            background: #eee;
             border-radius: 16px;
+        }
+
+        &:hover {
+          z-index:1000;
+          width:150px;
+          margin-left:-134px;
+          img {
+            width: 48px;
+            height: 48px;
+            margin: -8px -8px 0 0;
+            border-radius: 24px;
+          }
+          div {
+            right: 28px;
+          }
         }
     }
 }
 
 .timelineTerm {
   .termBreadth {
-    stroke-width: 6px;
+    stroke-width: 2px;
     stroke: #eee;
   }
 }
 
 .timelineTitle{
   color: @text;
+  font-size: 12px;
+  line-height: 1em;
+  background: #eee;
+  border-radius: 16px;
 }
 
 #approvedTooltips{
@@ -1248,8 +1264,8 @@ svg rect{
 
     .changeBar line {
       stroke: @gray;
-      &.increase {stroke: @increased;stroke-dasharray: 1;}
-      &.reduce {stroke: @decreased;stroke-dasharray: 1;}
+      &.increase {stroke: @increased}
+      &.reduce {stroke: @decreased}
     }
 
     .approvedBar, .approvedBarBg {

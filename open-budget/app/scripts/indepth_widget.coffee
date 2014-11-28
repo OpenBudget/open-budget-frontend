@@ -148,7 +148,7 @@ class IndepthWidget extends Backbone.View
                         .attr("class", "graduationLabel")
                         .attr("x", (d) => @timeScale( @minTime ) )
                         .attr("y", (d) => @valueScale( @minValue + d.index*@tickValue ) )
-                        .attr("dx", 5 )
+                        .attr("dx", 10 )
                         .attr("dy", -1 )
                         .style("font-size", 8)
                         .style("text-anchor", "end")
@@ -377,7 +377,7 @@ class IndepthWidget extends Backbone.View
                         .attr('class','timelineTitle')
                         .text((d)->d)
                         .attr('x',@maxWidth-8)
-                        .attr('y',(d) => @titleIndexScale(d)+4 )
+                        .attr('y',(d) => @titleIndexScale(d)+3 )
                         #.style("text-anchor", "end")
 
         render__timeline_terms: ->
