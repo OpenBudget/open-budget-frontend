@@ -35,7 +35,7 @@ class IndepthWidget extends Backbone.View
                                     that.pageModel.set('selection', selection)
                 )
                 @change_tip = d3.tip()
-                               .attr('class', 'd3-tip')
+                               .attr('class', 'd3-tip timeline-tip')
                                #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
                                .direction((d) => if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
                                .offset((d) => [-TOOLTIP_SIZE+45+@valueScale( d.get('value') ) ,0])
@@ -44,6 +44,7 @@ class IndepthWidget extends Backbone.View
                 that = this
                 @showTip = (d,i) ->
                         that.change_tip.show(d)
+                        $(".timeline-tip").toggleClass('active',true)
                         hook = d3.select(this)
                         that.tipBG.style('opacity',1)
                         for a in ['x','y','width','height']
@@ -57,8 +58,9 @@ class IndepthWidget extends Backbone.View
 
                 @hideTip = (d,i) ->
                         #d3.select(this).style('opacity',0)
-                        #that.change_tip.hide(d)
-                        #that.tipBG.style('opacity',0.1)
+                        that.change_tip.hide(d)
+                        that.tipBG.style('opacity',0.1)
+                        $(".timeline-tip").toggleClass('active',false)
                         true
                         # that.participant_tip.hide(d)
                         # selector = '.tipFocus'
