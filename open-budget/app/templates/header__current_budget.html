@@ -6,7 +6,7 @@
 <% if(previous.net_allocated != previous.net_revised) { %>
 ל<strong class="<%= color_classname(previous.net_revised-previous.net_allocated) %>"><%= number_with_commas(previous.net_revised*1000) %> ₪</strong>
 <br/>
- ועדת הכספים אישרה <%= num_of_transfers_in_year_text(previous.year) %> בסך כולל של <strong><span><%= number_with_commas((previous.net_revised-previous.net_allocated)*1000) %><%= number_plus_minus(previous.net_revised-previous.net_allocated) %></span>₪</strong>, לכדי <%= increase_or_cut(previous.net_allocated,previous.net_revised) %><strong class="<%= color_classname(previous.net_revised-previous.net_allocated) %>"><%= parseInt(Math.abs( (previous.net_revised/previous.net_allocated) - 1) * 100) %>%<%= up_or_down_arrow(previous.net_revised,previous.net_allocated) %></strong> מהתקציב המקורי
+ ועדת הכספים אישרה <%= num_of_transfers_in_year_text(previous.year) %> בסך כולל של <strong><span><%= number_with_commas((previous.net_revised-previous.net_allocated)*1000) %><%= number_plus_minus(previous.net_revised-previous.net_allocated) %></span>₪</strong>, לכדי <%= increase_or_cut(previous.net_allocated,previous.net_revised) %><strong class="<%= color_classname(previous.net_revised-previous.net_allocated) %>"><%= parseInt(Math.abs( (previous.net_revised/previous.net_allocated) - 1) * 100) %>%<%= up_or_down_arrow(previous.net_allocated,previous.net_revised) %></strong> מהתקציב המקורי
 <br/>
 <% } %>
 
