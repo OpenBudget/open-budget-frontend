@@ -9,7 +9,7 @@
 @background: #F1f1f1;
 
 @approved: #33cd56; // #00AF6A;
-@spent: #666;
+@spent: #9813FD;
 @increased: #fb4007; // #5731E7;
 @decreased: #0266DE; // #228dd8;
 @increased_d: #c20a04; // #5731E7;
@@ -445,19 +445,21 @@ strong.approved {
     -moz-box-shadow:    0 0 0 1px rgba(255,255,255,1);
     box-shadow:         0 0 0 1px rgba(255,255,255,1);
 
+
+    h2 {
+      color: @text;
+      padding: 10px;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 -10px;
+    }
+
     .widget-popover-title{
       span{
         color: @darkgray;
         font-size: 12px;
         margin-top: -7px;
         display: block;
-      }
-      h2, {
-        color: @text;
-        padding: 10px;
-        font-size: 20px;
-        font-weight: 700;
-        margin: 0 -10px;
       }
       .item-title,
       .revised-diff,
@@ -496,12 +498,13 @@ strong.approved {
     //transfer tooltips:
     &#trans-tip{
       background-image: url(assets/square-tile.png);
+      background-position: 0 12px;
       background-size: 20px;
       text-align: right;
       .revised-diff,
       .approved-sum {
         margin-top: -9px;
-        padding-top: 9px;
+        padding: 5px 10px 6px;
       }
       .revised {
         padding: 0 10px;
@@ -520,7 +523,34 @@ strong.approved {
       }
       &.tooltip-approved {
         h2 {background-color: @approved;}
-        p { color: @approved;}
+        p { color: @approved; margin-bottom: -6px;}
+      }
+      &.tooltip-used {
+        .widget-popover-title {
+          .approved {
+            margin-top: -10px;
+            .approved_text;
+          }
+          .revised-diff {
+            margin-top: -5px;
+          }
+          .tooltip-note {
+            margin: -3px 0 3px;
+          }
+        }
+        .widget-popover-content {
+          padding: 0 10px 15px;
+          margin: 0 -10px;
+          background: white;
+          border-top: 1px dashed @spent;
+          h2, p {
+            color: @spent;
+          }
+          h2 {
+            padding: 3px 10px 0;
+            margin-bottom: -5px;
+          }
+        }
       }
     }
 

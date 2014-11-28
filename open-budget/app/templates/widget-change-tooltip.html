@@ -49,18 +49,18 @@
             <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( diff ) %>&rlm; </h2>
             <h2 class="revised">=<br/>
             <%= format_full_number( revised ) %>₪</h2>
+                <% if ( diff < 0 ) { %>
+                  <p class="tooltip-note"><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
+                      קיצוץ מתקציב
+                      <%= get("source").get("year") %></p>
+                <% } %>
+                <% if ( diff > 0 ) { %>
+                  <p class="tooltip-note"><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
+                      תוספת לתקציב
+                      <%= get("source").get("year") %></p>
+                <% } %>
         </div>
         <div class="widget-popover-content">
-            <% if ( diff < 0 ) { %>
-              <p class="tooltip-note"><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
-                  קיצוץ מתקציב
-                  <%= get("source").get("year") %></p>
-            <% } %>
-            <% if ( diff > 0 ) { %>
-              <p class="tooltip-note"><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
-                  תוספת לתקציב
-                  <%= get("source").get("year") %></p>
-            <% } %>
             <h2 class="used"><%= format_full_number( get("source").get('net_used')*1000 ) %>₪</h2>
             <p class="tooltip-note">(ההוצאה בפועל)</p>
         </div>
