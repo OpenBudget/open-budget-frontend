@@ -42,7 +42,7 @@ class BubbleChart extends Backbone.View
     @height = @$el.height()
 
     @tooltip = d3.tip()
-                   .attr('class', 'd3-tip')
+                   .attr('class', 'd3-tip bubble-chart-tip')
                    .direction("n")
                    .offset((d) => [35,0])
                    .html((d) -> d.tooltip_contents())
@@ -189,10 +189,12 @@ class BubbleChart extends Backbone.View
 
   show_details: (data, i, element) =>
     d3.select(element).style('stroke-width',4)
+    $(".bubble-chart-tip").toggleClass('active',true)
     @tooltip.show(data)
 
   hide_details: (data, i, element) =>
     d3.select(element).style('stroke-width',2)
     @tooltip.hide(data)
+    $(".bubble-chart-tip").toggleClass('active',false)
 
 window.BubbleChart = BubbleChart
