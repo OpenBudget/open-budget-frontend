@@ -76,6 +76,7 @@ class CombinedHistory extends Backbone.Collection
                                 point.set('disabled',changes > 1)
                                 if baseline != null
                                         point.set('diff_baseline',point.get('value') - original_baseline)
+                                        point.set('diff_value',point.get('value') - original_baseline)
                                         point.set('original_baseline', original_baseline)
                                         point.set('value', point.get('value'))
                                         if lastPoint != null
@@ -86,6 +87,7 @@ class CombinedHistory extends Backbone.Collection
                         else if kind == 'used'
                                 if baseline != null
                                         point.set('diff_baseline',point.get('value') - original_baseline)
+                                        point.set('diff_value',point.get('revised_value') - original_baseline)
                                         point.set('original_baseline', original_baseline)
                                         point.set('value', point.get('value'))
                                 else
@@ -171,6 +173,7 @@ class CombinedHistory extends Backbone.Collection
                                 point.set("source", m)
                                 point.set("kind", "used")
                                 point.set("value", m.get("net_used"))
+                                point.set("revised_value", m.get("net_revised"))
                                 startYear = new Date(m.get('year'),11,31).valueOf()
                                 endYear = new Date(m.get('year')+1,0).valueOf()
                                 point.set('timestamp',startYear)
