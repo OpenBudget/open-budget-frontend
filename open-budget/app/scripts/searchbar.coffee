@@ -15,9 +15,8 @@ class BudgetPartitionLayoutView extends Backbone.View
                             .children((d) -> d.k)
         @change_tip = d3.tip()
                        .attr('class', 'd3-tip search-bar-tip')
-                           #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
                        .direction("e")
-                       .offset((d) => [50,1])
+                       .offset((d) => [500,1])
                        .html((d) -> JST.searchbar_tooltip(d))
         @vis.call(@change_tip)
         @treemap = @vis.append('g')
@@ -38,8 +37,9 @@ class BudgetPartitionLayoutView extends Backbone.View
                         .html(JST.expandor_icon())
                         .on("click", () =>
                                 console.log "click", @selected_tooltip
-                                if @selected_tooltip? then @selectCode(@selected_tooltip)
-                                @hide_tip()
+                                if @selected_tooltip?
+                                    @hide_tip()
+                                    @selectCode(@selected_tooltip,true)
                                 false
                         )
         @upbacker = @vis.append('g')
@@ -50,8 +50,8 @@ class BudgetPartitionLayoutView extends Backbone.View
                                 console.log "click", @selected_tooltip
                                 if @selected_tooltip? and @selected_tooltip.length > 2
                                     console.log @selected_tooltip.slice(0,-2)
-                                    @selectCode(@selected_tooltip.slice(0,-2))
-                                @hide_tip()
+                                    @hide_tip()
+                                    @selectCode(@selected_tooltip.slice(0,-2),true)
                                 false
                         )
 
@@ -64,13 +64,15 @@ class BudgetPartitionLayoutView extends Backbone.View
                 if d.c != '00'
                     @upbacker.attr("transform", "translate(" + @w + "," + 0 + ")" )
                              .style('visibility','visible')
+                             .attr("class","upbacker #{ @cls(d) }") 
                 return
             @change_tip.show(d)
             @expandor.attr("transform", "translate(" + @x(d.y+d.dy) + "," + (@y(d.x)+1) + ")" )
                     .style('visibility','visible')
+                    .attr("class","expandor #{ @cls(d) }")
             @expandor.select('rect')
-                     .attr("width", 50)#Math.abs(@x(@root.dy) - @x(0)))
-                     .attr("height", @y(d.dx) - @y(0)-2)
+                     .attr("width", 50)
+                     .attr("height", d3.max([0,@y(d.dx) - @y(0)-2]))
             @expandor.select('g.icon')
                      .attr('transform', "translate("+0+","+(@y(d.dx/2) - @y(0))+")")
             @upbacker.style('visibility','hidden')
@@ -98,10 +100,10 @@ class BudgetPartitionLayoutView extends Backbone.View
             @change_tip.hide()
             @expandor.style('visibility','hidden')
             @upbacker.style('visibility','hidden')
-            @highlightor.style("visibility","visible")
+            @highlightor.style("visibility","hidden")
             $(".search-bar-tip").toggleClass('active',false)
 
-        @cls = (d) => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + "_bg"
+        @cls = (d,suffix="") => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + suffix
 
         onSuccess = (root) =>
 
@@ -125,7 +127,9 @@ class BudgetPartitionLayoutView extends Backbone.View
         window.location.reload()
 
 
-    updateChart: () =>
+    updateChart: (transition) =>
+        if not transition?
+            transition = false
         console.log "PL","updateChart"
         @w = @$el.width()-15
         @h = 400 # @$el.height()
@@ -148,7 +152,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         g.attr("data-code", (d) -> d.c)
 
         g.append("svg:rect")
-            .attr("class", (d) => (if d.k? then "parent" else "child") + " " + @cls(d) )
+            .attr("class", (d) => (if d.k? then "parent" else "child") + " " + @cls(d,'_bg') )
             .on("click", (d) => if d.k? then @gotoBudgetItem(d.c) )
         g.append("svg:text")
             .attr("dy", ".35em")
@@ -158,9 +162,12 @@ class BudgetPartitionLayoutView extends Backbone.View
 
         g_all.exit().remove()
 
-        t = g_all#.transition()
-             #.duration(750)
-        t = g_all.attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
+        t = g_all
+        if transition
+            console.log "will transition!"
+            t = t.transition()
+                 .duration(750)
+        t = t.attr("transform", (d) => "translate(" + @x(d.y+d.dy) + "," + @y(d.x) + ")" )
         t.select("rect")
             .attr("width", Math.abs(@x(@root.dy) - @x(0)))
             .attr("height", (d) => @y(d.dx) - @y(0))
@@ -172,7 +179,9 @@ class BudgetPartitionLayoutView extends Backbone.View
             # d3.select(@el) # window
             #     .on("click", () -> click(root))
 
-    selectCode: (code) =>
+    selectCode: (code, transition) =>
+        if not transition?
+            transition = false
         d = null
         code = code.slice(0,6)
         while code != '' and not d?
@@ -183,7 +192,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         if d?
             console.log d
             @root = d
-            @updateChart()
+            @updateChart(transition)
 
 class SearchBar extends Backbone.View
 
