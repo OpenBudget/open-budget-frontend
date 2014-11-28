@@ -12,7 +12,7 @@
     <%= format_full_number( net_allocated*1000 ) %> ₪
   </span>
   <span class="<%= cls %>">
-    <%= number_plus_minus(net_revised - net_allocated) %> <%= Math.abs( 1 - net_revised / net_allocated ) * 100 %> %
+    &lrm;<%= number_plus_minus(net_revised - net_allocated) %><%= Math.abs( (1 - (1.0*net_revised)/net_allocated) * 100).toFixed(1) %>% &rlm;
   </span>
 </div>
 <p class="description">
