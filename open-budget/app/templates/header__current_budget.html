@@ -10,6 +10,6 @@
 <br/>
 <% } %>
 
-בהצעת התקציב לשנת <%= current.year %> מתוקצב סעיף זה ב<strong class="approved"><%= number_with_commas(current.net_allocated*1000) %> ₪</strong>₪, <%= increase_or_cut(current.net_allocated,current.net_revised) %> <strong class="<%= color_classname(current.net_allocated-previous.net_allocated) %>"><%= parseInt(Math.abs( (current.net_allocated/previous.net_allocated) - 1) * 100) %>%<%= up_or_down_arrow(current.net_allocated,previous.net_allocated) %></strong> ביחס לבסיס התקציב ב <%= previous.year %>
+בהצעת התקציב לשנת <%= current.year %> מתוקצב סעיף זה ב<strong class="approved"><%= number_with_commas(current.net_allocated*1000) %> ₪</strong>, <%= increase_or_cut(previous.net_allocated,current.net_allocated) %> <strong class="<%= color_classname(current.net_allocated-previous.net_allocated) %>"><%= parseInt(Math.abs( (current.net_allocated/previous.net_allocated) - 1) * 100) %>%<%= up_or_down_arrow(previous.net_allocated,previous.net_allocated) %></strong> ביחס לבסיס התקציב ב <%= previous.year %>
 
 

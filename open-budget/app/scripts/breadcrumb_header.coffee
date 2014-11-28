@@ -3,9 +3,9 @@ window.issue_depth = (code) ->
 
 window.up_or_down_arrow = (allocated,revised ) ->
             if allocated > revised
-                return "&#11014;"
-            else
                 return "&#11015;"
+            else
+                return "&#11014;"
 
 class BreadcrumbHeaderView extends Backbone.View
     render: ->
