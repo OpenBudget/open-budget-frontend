@@ -45,7 +45,13 @@ class BudgetPartitionLayoutView extends Backbone.View
         @upbacker = @vis.append('g')
                         .attr("class","upbacker")
                         .style('visibility','hidden')
-                        .html(JST.upbacker())
+        @upbacker.append('rect')
+                 .attr('class','upbacker-bg')
+                 .attr('x',-30)
+                 .attr('width',30)
+        @upbacker.append('g')
+                 .attr('class','upbacker-icon')
+                 .html(JST.upbacker())
         @upbacker.on("click", () =>
                                 console.log "click", @selected_tooltip
                                 if @selected_tooltip? and @selected_tooltip.length > 2
@@ -62,9 +68,13 @@ class BudgetPartitionLayoutView extends Backbone.View
             if d.c == @root.c
                 @hide_tip()
                 if d.c != '00'
-                    @upbacker.attr("transform", "translate(" + @w + "," + 0 + ")" )
-                             .style('visibility','visible')
-                             .attr("class","upbacker #{ @cls(d) }")
+                    @upbacker.attr("transform", "translate(" + @w + "," + @y(d.x) + ")" )
+                            .style('visibility','visible')
+                            .attr("class","upbacker #{ @cls(d) }")
+                    @upbacker.select('.upbacker-bg')
+                             .attr('height', @y(d.dx) - @y(0))
+                    @upbacker.select('.upbacker-icon')
+                             .attr('transform', "translate(0," + (@y(d.dx/2)-@y(0)) + ")")
                 return
             @change_tip.show(d)
             @expandor.attr("transform", "translate(" + @x(d.y+d.dy) + "," + (@y(d.x)+1) + ")" )
@@ -101,7 +111,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             @expandor.style('visibility','hidden')
             @upbacker.style('visibility','hidden')
             @highlightor.style("visibility","hidden")
-            $(".search-bar-tip").toggleClass('active',false)
+            #$(".search-bar-tip").toggleClass('active',false)
 
         @cls = (d,suffix="") => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + suffix
 
