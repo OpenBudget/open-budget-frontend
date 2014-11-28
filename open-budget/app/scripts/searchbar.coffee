@@ -67,29 +67,23 @@ class BudgetPartitionLayoutView extends Backbone.View
             @selected_tooltip = d.c
             if d.c == @root.c
                 @hide_tip()
-                if d.c != '00'
-                    @upbacker.attr("transform", "translate(" + @w + "," + @y(d.x) + ")" )
-                            .style('visibility','visible')
-                            .attr("class","upbacker #{ @cls(d) }")
-                    @upbacker.select('.upbacker-bg')
-                             .attr('height', @y(d.dx) - @y(0))
-                    @upbacker.select('.upbacker-icon')
-                             .attr('transform', "translate(0," + (@y(d.dx/2)-@y(0)) + ")")
                 return
             @change_tip.show(d)
-            @expandor.attr("transform", "translate(" + @x(d.y+d.dy) + "," + (@y(d.x)+1) + ")" )
-                    .style('visibility','visible')
-                    .attr("class","expandor #{ @cls(d) }")
-            @expandor.select('rect')
-                     .attr("width", 50)
-                     .attr("height", d3.max([0,@y(d.dx) - @y(0)-2]))
-            @expandor.select('g.icon')
-                     .attr('transform', "translate("+0+","+(@y(d.dx/2) - @y(0))+")")
-            @upbacker.style('visibility','hidden')
-            @highlightor.attr("height", @y(d.dx) - @y(0))
-                        .attr("width", @x(d.y))
-                        .attr("y", @y(d.x))
-                        .style("visibility","visible")
+            if d.c.length > 6
+                @expandor.style('visibility','hidden')
+            else
+                @expandor.attr("transform", "translate(" + @x(d.y+d.dy) + "," + (@y(d.x)+1) + ")" )
+                        .style('visibility','visible')
+                        .attr("class","expandor #{ @cls(d) }")
+                @expandor.select('rect')
+                         .attr("width", 50)
+                         .attr("height", d3.max([0,@y(d.dx) - @y(0)-2]))
+                @expandor.select('g.icon')
+                         .attr('transform', "translate("+0+","+(@y(d.dx/2) - @y(0))+")")
+                @highlightor.attr("height", @y(d.dx) - @y(0))
+                            .attr("width", @x(d.y))
+                            .attr("y", @y(d.x))
+                            .style("visibility","visible")
             $(".search-bar-tip").toggleClass('active',true)
 
 
@@ -109,7 +103,6 @@ class BudgetPartitionLayoutView extends Backbone.View
         @hide_tip = =>
             @change_tip.hide()
             @expandor.style('visibility','hidden')
-            @upbacker.style('visibility','hidden')
             @highlightor.style("visibility","hidden")
             #$(".search-bar-tip").toggleClass('active',false)
 
@@ -137,7 +130,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         window.location.reload()
 
 
-    updateChart: (transition) =>
+    updateChart: (transition=false) =>
         if not transition?
             transition = false
         console.log "PL","updateChart"
@@ -188,6 +181,17 @@ class BudgetPartitionLayoutView extends Backbone.View
 
             # d3.select(@el) # window
             #     .on("click", () -> click(root))
+
+        if @root.c != '00'
+            @upbacker.attr("transform", "translate(" + @w + "," + @y(@root.x) + ")" )
+                    .style('visibility','visible')
+                    .attr("class","upbacker #{ @cls(@root) }")
+            @upbacker.select('.upbacker-bg')
+                     .attr('height', @y(@root.dx) - @y(0))
+            @upbacker.select('.upbacker-icon')
+                     .attr('transform', "translate(0," + (@y(@root.dx/2)-@y(0)) + ")")
+        else
+            @upbacker.style('visibility','hidden')
 
     selectCode: (code, transition) =>
         if not transition?
