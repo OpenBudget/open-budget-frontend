@@ -52,7 +52,8 @@ class CombinedHistory extends Backbone.Collection
                                 baseline = original_baseline
                                 lastPoint = null
                                 if last_baseline != null
-                                        point.set('diff_yearly', baseline-last_baseline)
+                                    point.set('diff_yearly', baseline-last_baseline)
+                                    point.set('last_baseline', last_baseline)
                                 changes = 0
                         else if kind == 'change'
                                 changes += 1
@@ -80,6 +81,13 @@ class CombinedHistory extends Backbone.Collection
                                         if lastPoint != null
                                                 lastPoint.set('width',time - lastPoint.get('timestamp'))
                                         lastPoint = point
+                                else
+                                        continue
+                        else if kind == 'used'
+                                if baseline != null
+                                        point.set('diff_baseline',point.get('value') - original_baseline)
+                                        point.set('original_baseline', original_baseline)
+                                        point.set('value', point.get('value'))
                                 else
                                         continue
                         else
