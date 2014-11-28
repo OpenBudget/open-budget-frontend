@@ -105,7 +105,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             @change_tip.hide()
             @expandor.style('visibility','hidden')
             @highlightor.style("visibility","hidden")
-            #$(".search-bar-tip").toggleClass('active',false)
+            $(".search-bar-tip").toggleClass('active',false)
 
         @cls = (d,suffix="") => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + suffix
 
@@ -117,7 +117,6 @@ class BudgetPartitionLayoutView extends Backbone.View
             @codes = {}
             for datum in @data
                 @codes[datum.c] = datum
-
             @updateChart()
 
         $.ajax(
@@ -194,20 +193,30 @@ class BudgetPartitionLayoutView extends Backbone.View
         else
             @upbacker.style('visibility','hidden')
 
+    nodeForCode: (code) =>
+        d = null
+        console.log 'nodeForCode',code,d
+        while code != '' and not d?
+            d = @codes[code]
+            console.log 'nodeForCode',code,d
+            if not d?
+                code = code.slice(0,-2)
+        d
+
     selectCode: (code, transition) =>
         if not transition?
             transition = false
-        d = null
-        code = code.slice(0,6)
-        while code != '' and not d?
-            d = @codes[code]
-            if not d?
-                code = code.slice(0,-2)
+        node = @nodeForCode( code )
+        root = @nodeForCode( code.slice(0,6) )
 
-        if d?
-            console.log d
-            @root = d
+        if root?
+            console.log 'root:',root,code.slice(0,6)
+            @root = root
             @updateChart(transition)
+        if node?
+            console.log 'node:',node,code
+            d3.event = { target: $("g[data-code=#{code}]")[0] }
+            @show_tip(node)
 
 class SearchBar extends Backbone.View
 
@@ -229,6 +238,7 @@ class SearchBar extends Backbone.View
         "input #search-item": "getSuggestions"
         "keydown #search-item": "searchBarKeyHandler"
         "click .search-dropdown-item": "itemSelectedHandler"
+        "mouseover .search-dropdown-item": "searchItemHover"
 
     transition: (event) =>
         switch @state
@@ -299,7 +309,10 @@ class SearchBar extends Backbone.View
     renderSuggestions: () =>
         sr = @$el.find('.search-results')
         sr.html('')
+        i = 0
         for suggestion in @suggestions
+            suggestion.index = i
+            i+=1
             item = $(JST.search_dropdown_item(suggestion))
             sr.append(item)
             item.data(suggestion)
@@ -312,6 +325,12 @@ class SearchBar extends Backbone.View
     headerClick: (event) =>
         event.preventDefault()
         @transition(EV_OPEN_DROPDOWN)
+
+    searchItemHover: (event) =>
+        el = event.target
+        index = $(el).attr('data-index')
+        index = parseInt(index)
+        @select(index)
 
     getSuggestions: (event) =>
         event.preventDefault()
@@ -378,7 +397,7 @@ class SearchBar extends Backbone.View
         @partition.selectCode( @suggestions[selected].code )
 
     url: (query,limit) ->
-        "#{window.pageModel.get('baseURL')}/api/search/budget?q=#{query}&limit=#{limit}"
+        "#{window.pageModel.get('baseURL')}/api/search/budget/#{window.pageModel.get('year')}?q=#{query}&limit=#{limit}"
 
     initialize: () ->
         @state = STATE_IDLE
