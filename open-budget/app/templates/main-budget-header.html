@@ -1,14 +1,21 @@
-<h1 class="title_1"><strong>תקציב המדינה המיועד לשנת <%= year %></strong> הוא <span class="approved"><%= format_number(net_allocated) %></span><br/>
-כיצד ניתן להבין אותו <strong>ביחס לתקציב 2014?</strong></h1>
-<h1 class="title_2 hide"><strong>תקציב המדינה המיועד לשנת <%= year %></strong> הוא <span class="approved"><%= format_number(net_allocated) %></span><br/>
-כיצד ניתן להבין אותו <strong>ביחס לשינויים שחלו בתקציב הקודם לאורך 2014?</strong></h1>
-<h1 class="title_3 hide"><strong>תקציב המדינה לשנת <%= year %></strong> הוא <span class="approved"><%= format_number(net_allocated) %></span><br/>
-מה הם <strong>השינויים שחלו בו מתחילת השנה?</strong></h1>
-<p>התחומים שגדלו
+<div id="title_1">
+  <h1><strong>תקציב המדינה המיועד לשנת <%= year %></strong> הוא <span class="approved"><%= format_number(net_allocated) %></span></h1>
+  <p>כיצד ניתן להבין אותו <strong>ביחס לתקציב 2014?</strong></p>
+</div>
+<div id="title_2" class="hide">
+  <h1><strong>תקציב המדינה המיועד לשנת <%= year %></strong> הוא <span class="approved"><%= format_number(net_allocated) %></span></h1>
+  <p>כיצד ניתן להבין אותו <strong>ביחס לשינויים שחלו בתקציב הקודם לאורך 2014?</strong></p>
+</div>
+<div id="title_3" class="hide">>
+  <h1<strong>תקציב המדינה לשנת <%= year %></strong> הוא <span class="approved"><%= format_number(net_allocated) %></span></h1>
+  <p>מה הם <strong>השינויים שחלו בו מתחילת השנה?</strong></p>
+</div>
+
+<p>X התחומים שגדלו
 <span class="increased_a_text">מופיעים</span>
 <span class="increased_b_text">בצבעים </span>
 <span class="increased_c_text">חמים</span>,
-אלה שקטנו
+Y אלה שקטנו
 <span class="decreased_a_text">מופיעים</span>
 <span class="decreased_b_text">בצבעים </span>
 <span class="decreased_c_text">קרים</span>
