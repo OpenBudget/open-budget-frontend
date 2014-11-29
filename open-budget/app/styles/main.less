@@ -557,14 +557,99 @@ strong.approved {
     width:auto;
     margin-left: auto;
     margin-right: auto;
+    font-size: 18px;
+    color: @gray;
+    border: 2px solid @gray;
+    border-radius: 5px;
+
+    &:hover, &:active{
+      color: @text;
+      //border-color: @text;
+    }
 }
 
-#main-budget-header {
-    text-align: center;
+#main-budget-header h1, p{
+  text-align: center;
+  font-size: 30px;
+  line-height: 43px;
+  margin-bottom: 0;
+
+  .approved {
+    .approved_text;
+    font-weight: 700;
+  }
 }
 
 #grouping-kind {
-    max-width: 50%;
+    max-width: 560px;
+    text-align: center;
+    margin-top: 20px;
+
+    >div {
+      position: relative;
+
+      &:before {
+        content: "";
+        background: #cccccc;
+        margin: 20px 20% -18px;
+        height: 2px;
+        display: block;
+      }
+    }
+
+    .btn{
+      width: 30%;
+      text-align: center;
+      font-size: 14px;
+      color: @gray;
+      position: relative;
+
+      &:before {
+        content: "";
+        display: block;
+        background: white;
+        border: 2px solid @gray;
+        height: 20px;
+        width: 20px;
+        border-radius: 20px;
+        margin: 0 auto 15px;
+      }
+
+      &:after {
+        content: "";
+        display: block;
+        height: 10px;
+        width: 10px;
+        border-radius: 20px;
+        position: absolute;
+        right: 50%;
+        margin-right: -5px;
+        top: 11px;
+      }
+
+      &:hover:after { background: @gray;}
+
+      &:active, &.active {
+        box-shadow: none;
+        color: @text;
+        //margin-top: -5px;
+
+        &:before {
+          border-color: @text;
+          //height: 30px;
+          //width: 30px;
+          //margin-bottom: 10px;
+        }
+
+        &:after {
+          background: @text;
+          //height: 20px;
+          //width: 20px;
+          //margin-right: -10px;
+          //top: 11px;
+        }
+      }
+    }
 }
 
 #bubble-chart {

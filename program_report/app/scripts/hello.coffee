@@ -14,11 +14,11 @@ window.format_number = (num,is_shekels) ->
         if not num or num == 0
                 "—"
         else if Math.abs(num) < 1000
-                num_to_str(num) + " אלף ש״ח "
+                num_to_str(num) + " אלף ₪ "
         else if Math.abs(num) < 1000000
-                num_to_str(num / 1000) + " מיליון ש״ח "
+                num_to_str(num / 1000) + " מיליון ₪ "
         else if Math.abs(num) < 1000000000
-                num_to_str(num / 1000000) + " מיליארד ש״ח "
+                num_to_str(num / 1000000) + " מיליארד ₪ "
         else
                 "—"
 
@@ -60,7 +60,7 @@ handle_data = (data) ->
                 theme:'blue'
                 textExtraction: (node)->
                         $(node).attr('data-sortkey')
-                        
+
         )
 
 
@@ -96,7 +96,7 @@ process_templates = (code,year) ->
                                 if debug then console.log template
                                 rendered = _.template(template,data)
                                 el.html( rendered )
-                                el.css("display","inherit")                     
+                                el.css("display","inherit")
                                 if debug then console.log 'rendered',rendered
                                 table = el.find(".tablesorter").tablesorter(
                                         theme:'blue'
@@ -107,7 +107,7 @@ process_templates = (code,year) ->
                                     table.tablesorterPager({container: el.find(".pager"), size: 10, positionFixed: false})
 
                         $.get(url, render_template, 'jsonp')
-                                                        
+
                 )
 
 get_program = ->
