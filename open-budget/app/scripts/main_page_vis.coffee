@@ -2,8 +2,16 @@ globalWidth = 0
 
 class SimpleCentering
 
-    getCenters: -> [{ x: 300, y: 300 }]
-    elToCenter: (el) -> { x: globalWidth/2, y: 300, category: -> "aaa" }
+    constructor: ->
+        @center =
+            index: 0
+            category: -> "aaa"
+
+    getCenters: -> [@center]
+    elToCenter: (el) -> @center
+    item_width: 600
+    item_height: 600
+    title_dy: 1
 
 class ParentCentering
 
@@ -20,8 +28,7 @@ class ParentCentering
                 (el,i) =>
                     code = el.get('code').substring(2,4)
                     @centers[code] =
-                        x: i%6 * 200 + 150,
-                        y: Math.floor(i/6) * 250 + 250
+                        index: i
                         title: el.get('title')
                         category: -> "aaa"+i
         )
@@ -29,6 +36,8 @@ class ParentCentering
 
     getCenters: => @data
     elToCenter: (el) => @centers[el.id.substring(2,4)]
+    item_width: 200
+    item_height: 250
     title_dy: 100
 
 class TopGroupCentering
@@ -45,8 +54,7 @@ class TopGroupCentering
                ,
                 (el,i) =>
                     @centers[el] =
-                        x: i%3 * 400 + 150,
-                        y: Math.floor(i/3) * 300 + 250
+                        index: i
                         title: el
                         category: -> "aaa"+i
         )
@@ -55,6 +63,9 @@ class TopGroupCentering
     getCenters: => @data
     elToCenter: (el) => @centers[el.src.get('group_top')[0]]
     title_dy: 150
+    item_width: 400
+    item_height: 300
+
 
 class FullGroupCentering
 
@@ -70,8 +81,7 @@ class FullGroupCentering
                ,
                 (el,i) =>
                     @centers[el] =
-                        x: i%4 * 300 + 150,
-                        y: Math.floor(i/4) * 250 + 250
+                        index: i
                         title: el
                         category: -> "aaa"+i
         )
@@ -80,6 +90,8 @@ class FullGroupCentering
     getCenters: => @data
     elToCenter: (el) => @centers[el.src.get('group_full')[0]]
     title_dy: 100
+    item_width: 300
+    item_height: 250
 
 
 class MainPageVis extends Backbone.View
@@ -95,8 +107,9 @@ class MainPageVis extends Backbone.View
             @recalc_centers()
             @render()
         @model.on 'ready-main-budget', =>
-            console.log 'ready-main-budget'
             @$el.find("#main-budget-header").html(JST.main_budget_header(@model.mainBudgetItem.toJSON()))
+            if @rendered
+                @switchComparison()
 
     events:
         'click #grouping-kind .btn': 'switchToggle'
@@ -108,10 +121,13 @@ class MainPageVis extends Backbone.View
                     .style('opacity', 0)
         console.log $(e.currentTarget).attr('data-toggle')
         @toggle = parseInt($(e.currentTarget).attr('data-toggle'))
-        d3.select(@el).selectAll(".bubbleTitle#{@toggle}")
-                    .transition()
-                    .style('opacity', 1)
         @recalc_centers()
+        d3.select(@el).selectAll(".bubbleTitle#{@toggle}")
+                        .data(@centers[@toggle].getCenters())
+                        .transition()
+                        .style('opacity', 1)
+                        .attr('x', (d) -> d.x)
+                        .attr('y', (d) -> d.y)
         @chart.start()
 
     prepareData: ->
@@ -125,8 +141,6 @@ class MainPageVis extends Backbone.View
                         .enter()
                             .append('svg:text')
                             .attr('class',"bubbleTitle bubbleTitle#{i}")
-                            .attr('x', (d) -> d.x)
-                            .attr('y', (d) -> d.y)
                             .attr('dy', center.title_dy)
                             .text((d) -> d.title)
                             .style('opacity', 0)
@@ -164,13 +178,21 @@ class MainPageVis extends Backbone.View
         selected = @$el.find("#comparison-kind").val()
         [orig_field, rev_field] = selected.split('/')
         console.log orig_field, rev_field
+        increased = 0
+        decreased = 0
         for node in @data
             model = node.src
             node.orig = model.get(orig_field)
             node.rev = model.get(rev_field)
+            if node.orig > node.rev then decreased += 1
+            if node.rev > node.orig then increased += 1
             node.value = node.rev
             node.part = 1.0*node.rev/node.orig-1
             if node.part > 0 then node.part = d3.min([1,node.part / scaling])
+        $("#num-items-increased").text(""+increased)
+        $("#num-items-decreased").text(""+decreased)
+        $("div.main-budget-title").toggleClass('hide',true)
+        $("div.main-budget-title[id='#{selected}']").toggleClass('hide',false)
         if @rendered
             @chart.reapply_values()
             @chart.start()
@@ -178,8 +200,19 @@ class MainPageVis extends Backbone.View
     recalc_centers: =>
         globalWidth = @$el.width()
         @nodes = []
+        center_strategy = @centers[@toggle]
+        centers = center_strategy.getCenters()
+        items_in_line = d3.max([Math.floor(globalWidth / center_strategy.item_width), 1])
+        items_in_line = d3.min([items_in_line,centers.length])
+        start_x = (globalWidth - (items_in_line-1)*center_strategy.item_width)/2
+        start_y = center_strategy.item_height/2
+
+        for center in centers
+            center.x = (center.index % items_in_line)*center_strategy.item_width + start_x
+            center.y = (Math.floor(center.index / items_in_line))*center_strategy.item_height + start_y
+
         for node in @data
-            node.center = @centers[@toggle].elToCenter(node)
+            node.center = center_strategy.elToCenter(node)
             if node.center?.x? or node.center?.y?
                 @nodes.push node
         @chart.updateNodes(@nodes, @centers[@toggle].getCenters().length)

@@ -1,5 +1,5 @@
-window.num_to_str = (x) ->
-            if x > 0
+window.num_to_str = (x,positive_plus=true) ->
+            if x > 0 and positive_plus
                     x = "+"+x
             else
                     x = ""+x
@@ -9,7 +9,7 @@ window.num_to_str = (x) ->
             "&lrm;" + x  + "&rlm;"
 
 
-window.format_number = (num,is_shekels) ->
+window.format_number = (num,is_shekels=false,positive_plus=true) ->
 
         if is_shekels == true
                 num = num / 1000
@@ -17,11 +17,11 @@ window.format_number = (num,is_shekels) ->
         if not num or num == 0
                 "—"
         else if Math.abs(num) < 1000
-                num_to_str(num) + " אלף ₪ "
+                num_to_str(num,positive_plus) + " אלף ₪ "
         else if Math.abs(num) < 1000000
-                num_to_str(num / 1000) + " מיליון ₪ "
+                num_to_str(num / 1000,positive_plus) + " מיליון ₪ "
         else if Math.abs(num) < 1000000000
-                num_to_str(num / 1000000) + " מיליארד ₪ "
+                num_to_str(num / 1000000,positive_plus) + " מיליארד ₪ "
         else
                 "—"
 
