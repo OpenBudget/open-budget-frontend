@@ -188,12 +188,16 @@ class BubbleChart extends Backbone.View
       d.y = d3.max([0, d.y + (d.center.y - d.y) * (@damper + 0.02) * alpha + (targetY - d.y) * (@damper) * alpha * alpha * alpha * 500])
 
   show_details: (data, i, element) =>
-    d3.select(element).style('stroke-width',4)
+    d3.select(element)
+       .style('stroke-width',4)
+       .attr('r',d3.max([0,data.radius-2]))
     $(".bubble-chart-tip").toggleClass('active',true)
     @tooltip.show(data)
 
   hide_details: (data, i, element) =>
-    d3.select(element).style('stroke-width',2)
+    d3.select(element)
+        .style('stroke-width',2)
+        .attr('r',data.radius)
     @tooltip.hide(data)
     $(".bubble-chart-tip").toggleClass('active',false)
 

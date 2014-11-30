@@ -97,6 +97,8 @@ class BudgetItem extends Backbone.Model
                 net_revised: null
                 year: null
                 net_used: null
+                explanation: null
+                analysis_short_term_yearly_change: null
                 orig_codes: []
 
         initialize: (options) ->
