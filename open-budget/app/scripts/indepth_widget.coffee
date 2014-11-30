@@ -355,7 +355,10 @@ class IndepthWidget extends Backbone.View
                     .attr("y", (d) => @valueScale( @minValue ) + YEAR_LINE_HANG_LENGTH )
 
         render__tooltip_hooks: ->
-                allModels = _.filter(@model.models, (m)->m.get("kind")=="used" or (m.get("kind")=="change" and m.get("src")=="changeline") or m.get("kind")=="approved")
+                if @show_changes
+                    allModels = _.filter(@model.models, (m)->m.get("kind")=="used" or (m.get("kind")=="change" and m.get("src")=="changeline") or m.get("kind")=="approved")
+                else
+                    allModels = _.filter(@model.models, (m)->m.get("kind")=="used" or m.get("kind")=="approved")
                 newGraphParts = @chart.selectAll('.tooltipHook').data(allModels)
                         .enter().append("g")
                         .attr('class','tooltipHook')
@@ -430,6 +433,53 @@ class IndepthWidget extends Backbone.View
                          .style("left", (d)=>@timeScale( d.get('start_timestamp')) + "px")
                          .style("top", (d)=>(@titleIndexScale(d.get('title')) - 240) + "px")
 
+        render__yearly_lines: ->
+
+                start_models = _.filter(@model.models, (m)->m.get("kind")=="yearstart")
+                start_models_starts = start_models.slice(0,-1)
+                start_models_ends = start_models.slice(1)
+                start_models = _.zip(start_models_starts,start_models_ends)
+
+                simpleApprovedLines = @chart.selectAll('.simpleApprovedLine')
+                      .data(start_models)
+                simpleApprovedLines.enter()
+                      .append('line')
+                      .attr('class','simpleApprovedLine')
+                      .style('stroke','green')
+                simpleApprovedLines
+                      .attr('x1', (d)=> @timeScale(d[0].get('timestamp')))
+                      .attr('x2', (d)=> @timeScale(d[1].get('timestamp')))
+                      .attr('y1', (d)=> @valueScale(d[0].get('source').get('net_allocated')))
+                      .attr('y2', (d)=> @valueScale(d[1].get('source').get('net_allocated')))
+
+                end_models = _.filter(@model.models, (m)->m.get("kind")=="used")
+                end_models_starts = end_models.slice(0,-1)
+                end_models_ends = end_models.slice(1)
+                end_models = _.zip(end_models_starts,end_models_ends)
+
+                simpleRevisedLines = @chart.selectAll('.simpleRevisedLine')
+                      .data(end_models)
+                simpleRevisedLines.enter()
+                      .append('line')
+                      .attr('class','simpleRevisedLine')
+                      .style('stroke','blue')
+                simpleRevisedLines
+                      .attr('x1', (d)=> @timeScale(d[0].get('timestamp')))
+                      .attr('x2', (d)=> @timeScale(d[1].get('timestamp')))
+                      .attr('y1', (d)=> @valueScale(d[0].get('source').get('net_revised')))
+                      .attr('y2', (d)=> @valueScale(d[1].get('source').get('net_revised')))
+                simpleUsedLines = @chart.selectAll('.simpleUsedLine')
+                      .data(end_models)
+                simpleUsedLines.enter()
+                      .append('line')
+                      .attr('class','simpleUsedLine')
+                      .style('stroke','red')
+                simpleUsedLines
+                      .attr('x1', (d)=> @timeScale(d[0].get('timestamp')) )
+                      .attr('x2', (d)=> @timeScale(d[1].get('timestamp')))
+                      .attr('y1', (d)=> @valueScale(d[0].get('source').get('net_used')))
+                      .attr('y2', (d)=> @valueScale(d[1].get('source').get('net_used')))
+
         render: ->
                 @svg.call(@drag)
                 @maxWidth = $(@el).width()
@@ -462,12 +512,18 @@ class IndepthWidget extends Backbone.View
                 @valueScale = (t) =>
                         @pixelPerfecter(@baseValueScale(t))
 
+                code = pageModel.get('budgetCode')
+                @show_changes = 4 < code.length < 10
+
                 @render__chart_bg()
                 @render__year_starts()
-                @render__approved_budgets()
-                @render__revised_budgets()
-                @render__change_items()
-                @render__used_budgets()
+                if @show_changes
+                    @render__approved_budgets()
+                    @render__revised_budgets()
+                    @render__change_items()
+                    @render__used_budgets()
+                else
+                    @render__yearly_lines()
                 @render__tooltip_hooks()
                 @render__timeline_terms()
                 @render__timeline_titles()

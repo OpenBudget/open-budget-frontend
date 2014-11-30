@@ -48,7 +48,7 @@ class OverviewWidget extends Backbone.View
                                         selection[1] += dx
                                 else
                                     return
-                                if selection[0] > that.model.minTime && selection[1] < that.model.maxTime
+                                if selection[0] >= that.model.minTime && selection[1] <= that.model.maxTime
                                     that.pageModel.set('selection', selection)
                 )
 
@@ -102,7 +102,7 @@ class OverviewWidget extends Backbone.View
 
                 @baseTimeScale = d3.scale.linear()
                         .domain([@model.minTime, @model.maxTime])
-                        .range([0, @maxWidth])
+                        .range([10, @maxWidth-10])
                 @yearSeperatingScale = (t) =>
                         year = new Date(t).getFullYear()
                         base = new Date(year,0).valueOf()
@@ -117,7 +117,10 @@ class OverviewWidget extends Backbone.View
                 @valueScale = (t) =>
                         @pixelPerfecter(@baseValueScale(t))
 
-                selectionStart = @model.maxTime - 3500 * 365 * 86400
+                if 4 < pageModel.get('budgetCode').length < 10
+                    selectionStart = @model.maxTime - 3500 * 365 * 86400
+                else
+                    selectionStart = @model.minTime
                 if selectionStart < @model.minTime
                     selectionStart = @model.minTime
                 selectionEnd = @model.maxTime
