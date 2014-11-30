@@ -7,7 +7,7 @@
     <div class="widget-popover-content">
       <div class="widget-popover-sums">
           <span class="approved">
-              <%= format_full_number( orig*1000 ) %> ₪
+              <%= format_full_number( rev*1000 ) %> ₪
           </span>
           <span class="percentage">
               <%= (Math.abs( 1 - rev / orig ) * 100).toFixed(1) %>%<%= number_plus_minus( rev - orig ) %>
