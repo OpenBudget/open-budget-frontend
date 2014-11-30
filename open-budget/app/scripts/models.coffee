@@ -477,7 +477,7 @@ window.models =
 
 window.pageModel = new PageModel()
 
-DEFAULT_HOME = "#main//2014/main"
+DEFAULT_HOME = "#main//2015/main"
 
 $( ->
         hash = window.location.hash.substring(1)

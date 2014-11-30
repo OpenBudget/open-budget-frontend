@@ -34,18 +34,18 @@ class IndepthWidget extends Backbone.View
                                     selection[1] -= dx
                                     that.pageModel.set('selection', selection)
                 )
+                @tooltipYOffset = (d) -> -TOOLTIP_SIZE+45+@valueScale( d.get('value') )
                 @change_tip = d3.tip()
                                .attr('class', 'd3-tip timeline-tip')
-                               #.offset((d) => [-(@timeScale( d.get('width')/2 ) - @timeScale(0)), @valueScale(0) - @valueScale( d.get('value') )])
-                               .direction((d) => if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
-                               .offset((d) => [-TOOLTIP_SIZE+45+@valueScale( d.get('value') ) ,0])
+                               .direction((d) => "n")#if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
+                               .offset((d) => [@tooltipYOffset(d) ,0])
                                .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
                 @chart.call( @change_tip )
                 that = this
                 @showTip = (d,i) ->
+                        hook = d3.select(this)
                         that.change_tip.show(d)
                         $(".timeline-tip").toggleClass('active',true)
-                        hook = d3.select(this)
                         that.tipBG.style('opacity',1)
                         for a in ['x','y','width','height']
                             that.tipBG.attr(a, hook.attr(a))
@@ -68,6 +68,7 @@ class IndepthWidget extends Backbone.View
                         # d3.select(s).style('display','none')
 
                 @showGuideline = ->
+                        hook = d3.select(this)
                         mouse = d3.mouse(this)
                         that.chart.selectAll('.guideline')
                             .attr('x1',mouse[0])
@@ -156,15 +157,17 @@ class IndepthWidget extends Backbone.View
                         .style("text-anchor", "end")
                         .text((d) => @formatNumber( @minValue + d.index*@tickValue ) )
 
-
+        render__guideline: ->
                 # Guideline
-                @chart.selectAll('.guideline').data([1])
+                @chart.selectAll('.guideline').data([{w:3,s:'#fff'},{w:1,s:'#000'}])
                         .enter()
                             .append('line')
                             .attr('class','guideline')
                             .attr('y1',0)
-                            .attr('y2',@valueScale(0)+CHANGE_LINE_HANG_LENGTH)
-                            .style('stroke','#000')
+                            .attr('y2',@$el.height())
+                            .style('stroke', (d)->d.s)
+                            .style('stroke-width', (d)->d.w)
+                            .style('pointer-events','none')
 
                 d3.select('body').selectAll('#indepth-guideline-date').data([1])
                         .enter()
@@ -370,6 +373,8 @@ class IndepthWidget extends Backbone.View
                         .attr("height", @maxHeight )
                         .on('mouseenter', @showTip)
                         .on('mouseleave', @hideTip)
+                        .on('mousemove',@showGuideline)
+
 
         render__timeline_titles: ->
                 @titleIndexScale = (title) -> TOP_PART_SIZE + YEAR_LINE_HANG_LENGTH + (@titleToIndex[title]+1)*32
@@ -466,6 +471,7 @@ class IndepthWidget extends Backbone.View
                 @render__tooltip_hooks()
                 @render__timeline_terms()
                 @render__timeline_titles()
+                @render__guideline()
 
         formatNumber: (n) ->
                 rx=  /(\d+)(\d{3})/
