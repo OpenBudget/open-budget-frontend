@@ -31,6 +31,7 @@ class TrainingView extends Backbone.View
 
         window.pageModel.on 'ready-budget-bubbles', => @loadTour()
         window.pageModel.on 'ready-budget-history', => @loadTour()
+        window.pageModel.on 'ready-changegroup', => @loadTour()
 
     events:
         "click": "onTrainingButtonClick"
