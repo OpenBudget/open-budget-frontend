@@ -8773,7 +8773,7 @@ svg rect {
   fill: #03329c;
 }
 #indepth-widget .chart .graphPartChanged .changeBar {
-  stroke-width: 2;
+  stroke-width: 1;
 }
 #indepth-widget .chart .graphPartChanged .changeBar.increased_a {
   stroke: #eaaf03;
@@ -8808,44 +8808,68 @@ svg rect {
   fill: #03329c;
 }
 #indepth-widget .chart .simpleRevisedLine line {
-  stroke-width: 2;
+  stroke-width: 1;
   stroke: #b8b8b8;
   fill: #cccccc;
 }
-#indepth-widget .chart .simpleRevisedLine line.increased_a {
+#indepth-widget .chart .simpleRevisedLine.increased_a line {
   stroke: #eaaf03;
   fill: #fcc524;
 }
-#indepth-widget .chart .simpleRevisedLine line.increased_b {
+#indepth-widget .chart .simpleRevisedLine.increased_b line {
   stroke: #d27609;
   fill: #f59019;
 }
-#indepth-widget .chart .simpleRevisedLine line.increased_c {
+#indepth-widget .chart .simpleRevisedLine.increased_c line {
   stroke: #cc3203;
   fill: #fb4007;
 }
-#indepth-widget .chart .simpleRevisedLine line.increased_d {
+#indepth-widget .chart .simpleRevisedLine.increased_d line {
   stroke: #900703;
   fill: #c20a04;
 }
-#indepth-widget .chart .simpleRevisedLine line.decreased_a {
+#indepth-widget .chart .simpleRevisedLine.decreased_a line {
   stroke: #44c4d0;
   fill: #6dd1da;
 }
-#indepth-widget .chart .simpleRevisedLine line.decreased_b {
+#indepth-widget .chart .simpleRevisedLine.decreased_b line {
   stroke: #078df1;
   fill: #32a4f9;
 }
-#indepth-widget .chart .simpleRevisedLine line.decreased_c {
+#indepth-widget .chart .simpleRevisedLine.decreased_c line {
   stroke: #024fab;
   fill: #0266de;
 }
-#indepth-widget .chart .simpleRevisedLine line.decreased_d {
+#indepth-widget .chart .simpleRevisedLine.decreased_d line {
   stroke: #02226a;
   fill: #03329c;
 }
+#indepth-widget .chart .simpleRevisedLine.increased_a circle {
+  fill: #fcc524;
+}
+#indepth-widget .chart .simpleRevisedLine.increased_b circle {
+  fill: #f59019;
+}
+#indepth-widget .chart .simpleRevisedLine.increased_c circle {
+  fill: #fb4007;
+}
+#indepth-widget .chart .simpleRevisedLine.increased_d circle {
+  fill: #c20a04;
+}
+#indepth-widget .chart .simpleRevisedLine.decreased_a circle {
+  fill: #6dd1da;
+}
+#indepth-widget .chart .simpleRevisedLine.decreased_b circle {
+  fill: #32a4f9;
+}
+#indepth-widget .chart .simpleRevisedLine.decreased_c circle {
+  fill: #0266de;
+}
+#indepth-widget .chart .simpleRevisedLine.decreased_d circle {
+  fill: #03329c;
+}
 #indepth-widget .chart .simpleApprovedLine line {
-  stroke-width: 2;
+  stroke-width: 1;
   stroke: #33cd56;
 }
 #indepth-widget .chart .simpleApprovedLine circle {
@@ -8853,7 +8877,7 @@ svg rect {
   stroke: #33cd56;
 }
 #indepth-widget .chart .simpleUsedLine line {
-  stroke-width: 2;
+  stroke-width: 1;
   stroke: #9813fd;
 }
 #indepth-widget .chart .simpleUsedLine circle {
@@ -8956,8 +8980,7 @@ svg rect {
 #participantThumbnails .participantThumbnail {
   position: absolute;
   height: 32px;
-  width: 120px;
-  margin-left: -104px;
+  margin-left: 16px;
   margin-top: 24px;
 }
 #participantThumbnails .participantThumbnail img {
@@ -8967,6 +8990,7 @@ svg rect {
   height: 32px;
   border: 2px solid #eee;
   border-radius: 16px;
+  transition: width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s;
 }
 #participantThumbnails .participantThumbnail div {
   font-size: 12px;
@@ -8974,11 +8998,13 @@ svg rect {
   top: 7px;
   right: 20px;
   text-align: right;
-  padding: 0 14px 0 8px;
+  padding: 0;
   height: 18px;
-  overflow: hidden;
   background: #eee;
   border-radius: 16px;
+  text-indent: -120px;
+  overflow: hidden;
+  transition: right 0.5s, text-indent 0.5s, padding 0.5s;
 }
 #participantThumbnails .participantThumbnail:hover {
   z-index: 1000;
@@ -8993,6 +9019,8 @@ svg rect {
 }
 #participantThumbnails .participantThumbnail:hover div {
   right: 28px;
+  text-indent: 0;
+  padding: 0 14px 0 8px;
 }
 .timelineTerm .termBreadth {
   stroke-width: 2px;
