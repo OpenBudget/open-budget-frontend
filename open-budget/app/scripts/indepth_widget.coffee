@@ -456,7 +456,7 @@ class IndepthWidget extends Backbone.View
                       .data(start_models)
                 news = simpleApprovedLines.enter()
                         .append('g')
-                        .attr('class','simpleApprovedLine')
+                        .attr('class', (d) -> 'simpleApprovedLine '+ changeClass(d[0].get('source').get('net_allocated'), d[1].get('source').get('net_allocated')))
                 news.append('line')
                     .style('stroke','green')
                 news.append('circle')
@@ -482,7 +482,7 @@ class IndepthWidget extends Backbone.View
                       .data(end_models)
                 news = simpleRevisedLines.enter()
                       .append('g')
-                      .attr('class','simpleRevisedLine')
+                      .attr('class', (d) -> 'simpleRevisedLine '+ changeClass(d[0].get('source').get('net_revised'), d[1].get('source').get('net_revised')))
                 news.append('line')
                       .style('stroke','blue')
                 news.append('circle')
@@ -502,7 +502,7 @@ class IndepthWidget extends Backbone.View
                       .data(end_models)
                 news = simpleUsedLines.enter()
                             .append('g')
-                            .attr('class','simpleUsedLine')
+                            .attr('class', (d) -> 'simpleUsedLine '+ changeClass(d[0].get('source').get('net_used'), d[1].get('source').get('net_used')))
                 news.append('line')
                       .style('stroke','red')
                 news.append('circle')
@@ -542,16 +542,22 @@ class IndepthWidget extends Backbone.View
                         base + (t - base) * 0.98
                 @pixelPerfecter = (t) =>
                         Math.floor(t) + 0.5
-                @timeScale = (t) =>
-                        @pixelPerfecter(@baseTimeScale(@yearSeperatingScale(t)))
+
+                code = pageModel.get('budgetCode')
+                @show_changes = 4 < code.length < 10
+
+                if @show_changes
+                    @timeScale = (t) =>
+                            @pixelPerfecter(@baseTimeScale(@yearSeperatingScale(t)))
+                else
+                    @timeScale = (t) =>
+                            @pixelPerfecter(@baseTimeScale(t))
                 @baseValueScale = d3.scale.linear()
                         .domain([@minValue, @maxValue])
                         .range([TOP_PART_SIZE, 0])
                 @valueScale = (t) =>
                         @pixelPerfecter(@baseValueScale(t))
 
-                code = pageModel.get('budgetCode')
-                @show_changes = 4 < code.length < 10
 
                 @render__chart_bg()
                 @render__year_starts()

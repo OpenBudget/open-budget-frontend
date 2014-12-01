@@ -76,8 +76,8 @@ class BubbleChart extends Backbone.View
         @data = data
     @numParts = numParts
     # use the max total_amount in the data as the max in the scale's domain
-    max_amount = d3.max(@data, (d) -> parseInt(d.value))
-    @total_amount = d3.sum(@data, (d) -> parseInt(d.value))
+    max_amount = d3.max(@data, (d) -> d.value)
+    @total_amount = d3.sum(@data, (d) -> d.value)
     @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
     @boundingRadius = @radius_scale(@total_amount/@numParts)
 
@@ -92,7 +92,7 @@ class BubbleChart extends Backbone.View
   create_nodes: () =>
     @nodes = []
     @data.forEach (d) =>
-      d.radius = @radius_scale(parseInt(d.value))
+      d.radius = @radius_scale(d.value)
       d.x = if d.x? then d.x else Math.random() * @width
       d.y = if d.y? then d.y else Math.random()*50 - d.part*@boundingRadius + d.center.y
       @nodes.push d
@@ -190,7 +190,7 @@ class BubbleChart extends Backbone.View
   show_details: (data, i, element) =>
     d3.select(element)
        .style('stroke-width',4)
-       .attr('r',d3.max([0,data.radius-2]))
+       .attr('r',d3.max([0,data.radius-1]))
     $(".bubble-chart-tip").toggleClass('active',true)
     @tooltip.show(data)
 

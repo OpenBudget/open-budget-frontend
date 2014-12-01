@@ -439,7 +439,6 @@ class PageModel extends Backbone.Model
                     @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))
                     @readyEvents.push new ReadyAggregator("ready-changegroup")
                                                 .addModel(@changeGroup)
-                                                .addModel(@changeGroupExplanation)
                     @changeGroup.doFetch()
                     @changeGroupExplanation.doFetch()
                     @changeGroup.on 'change:title_template', =>
