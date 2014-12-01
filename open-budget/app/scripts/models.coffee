@@ -449,12 +449,12 @@ class PageModel extends Backbone.Model
 
                 @on 'change:mainPage', ->
                     @budgetItems4 = new CompareRecords([], pageModel: @)
-                    @budgetItems2 = new BudgetItemKids([], year: pageModel.get('year'), code: '00', pageModel: @)
+                    @budgetItems2 = new BudgetItemKids([], year: 2015, code: '00', pageModel: @)
                     @readyEvents.push new ReadyAggregator("ready-budget-bubbles")
                                                         .addCollection(@budgetItems2)
                                                         .addCollection(@budgetItems4)
 
-                    @mainBudgetItem = new BudgetItem(year: pageModel.get('year'), code: '00', pageModel: @)
+                    @mainBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
                     @mainBudgetItem.do_fetch()
                     @readyEvents.push new ReadyAggregator("ready-main-budget")
                                                          .addModel(@mainBudgetItem)
@@ -476,7 +476,7 @@ window.models =
 
 window.pageModel = new PageModel()
 
-DEFAULT_HOME = "#main//2015/main"
+DEFAULT_HOME = "#main//2014/main"
 
 $( ->
         hash = window.location.hash.substring(1)

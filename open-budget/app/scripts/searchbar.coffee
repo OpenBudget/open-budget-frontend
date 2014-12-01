@@ -161,7 +161,7 @@ class BudgetPartitionLayoutView extends Backbone.View
             .attr("dy", ".35em")
             .text((d) -> d.n)
         g.on('mouseover', (d) => @show_tip(d))
-        #.on('mouseout', (d) => @change_tip.hide(d))
+        #g.on('mouseout', (d) => @hide_tip())
 
         g_all.exit().remove()
 
