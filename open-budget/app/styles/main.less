@@ -1418,7 +1418,7 @@ svg rect{
       }
 
       .changeBar {
-        stroke-width: 2;
+        stroke-width: 1;
         &.increased_a {.increased_a_svg}
         &.increased_b {.increased_b_svg}
         &.increased_c {.increased_c_svg}
@@ -1430,22 +1430,33 @@ svg rect{
       }
   }
 
-  .simpleRevisedLine line{
-    stroke-width: 2;
-    .unchanged_svg;
-    &.increased_a {.increased_a_svg}
-    &.increased_b {.increased_b_svg}
-    &.increased_c {.increased_c_svg}
-    &.increased_d {.increased_d_svg}
-    &.decreased_a {.decreased_a_svg}
-    &.decreased_b {.decreased_b_svg}
-    &.decreased_c {.decreased_c_svg}
-    &.decreased_d {.decreased_d_svg}
+  .simpleRevisedLine {
+    line {
+      stroke-width: 1;
+      .unchanged_svg;
+    }
+    &.increased_a line {.increased_a_svg}
+    &.increased_b line {.increased_b_svg}
+    &.increased_c line {.increased_c_svg}
+    &.increased_d line {.increased_d_svg}
+    &.decreased_a line {.decreased_a_svg}
+    &.decreased_b line {.decreased_b_svg}
+    &.decreased_c line {.decreased_c_svg}
+    &.decreased_d line {.decreased_d_svg}
+
+    &.increased_a circle {fill: @increased_a;}
+    &.increased_b circle {fill: @increased_b;}
+    &.increased_c circle {fill: @increased_c;}
+    &.increased_d circle {fill: @increased_d;}
+    &.decreased_a circle {fill: @decreased_a;}
+    &.decreased_b circle {fill: @decreased_b;}
+    &.decreased_c circle {fill: @decreased_c;}
+    &.decreased_d circle {fill: @decreased_d;}
   }
 
   .simpleApprovedLine {
     line {
-      stroke-width: 2;
+      stroke-width: 1;
       stroke: @approved;
     }
     circle {
@@ -1455,7 +1466,7 @@ svg rect{
   }
   .simpleUsedLine{
     line {
-      stroke-width: 2;
+      stroke-width: 1;
       stroke: @spent;
     }
     circle {
@@ -1515,9 +1526,9 @@ svg rect{
     .participantThumbnail {
         position: absolute;
         height:32px;
-        width:120px;
-        margin-left:-104px;
+        margin-left:16px;
         margin-top:24px;
+        //transition:width 0.5s, margin-left 0.5s;
         img {
             position:absolute;
             right: 0px;
@@ -1525,6 +1536,7 @@ svg rect{
             height: 32px;
             border: 2px solid #eee;
             border-radius: 16px;
+            transition:width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s;
         }
         div {
             font-size: 12px;
@@ -1532,11 +1544,14 @@ svg rect{
             top: 7px;
             right: 20px;
             text-align: right;
-            padding: 0 14px 0 8px;
+            padding: 0;
             height: 18px;
             overflow: hidden;
             background: #eee;
             border-radius: 16px;
+            text-indent: -120px;
+            overflow: hidden;
+            transition:right 0.5s, text-indent 0.5s, padding 0.5s;
         }
 
         &:hover {
@@ -1551,6 +1566,8 @@ svg rect{
           }
           div {
             right: 28px;
+            text-indent: 0;
+            padding: 0 14px 0 8px;
           }
         }
     }
