@@ -22,6 +22,13 @@ class TrainingSteps extends Backbone.Collection
 class TrainingView extends Backbone.View
 
     initialize: ->
+        if not @checkStorage('localStorage')
+            # Disable the tour if window.localStorage isn't available.
+            # Bootstrap Tour requires localStorage to function properly in
+            # multi-page tours and to identify first visits to the page.
+            $(@el).hide()
+            return
+
         window.pageModel.on 'ready-budget-bubbles', => @loadTour()
         window.pageModel.on 'ready-budget-history', => @loadTour()
 
@@ -35,6 +42,7 @@ class TrainingView extends Backbone.View
 
     initTour: (steps) ->
         console.log "got #{steps.length} steps"
+
         for step in steps
             @replaceNullWithUndefined(step)
 
@@ -63,6 +71,19 @@ class TrainingView extends Backbone.View
             # The tour wasn't initialized (due to loading failure).
             return
         @tour.restart()
+
+    checkStorage: (storageName) ->
+        # Checks that the storage is enabled and writable.
+        # The storage is passed by name since under Chrome even accessing
+        # window.localStorage throws an exception if it's disabled .
+        try
+            storage = window[storageName]
+            key = 'tour_storage_test'
+            storage.setItem(key, 'test')
+            storage.removeItem(key)
+            return true
+        catch
+            return false
 
 $( ->
         console.log "initializing the training view"
