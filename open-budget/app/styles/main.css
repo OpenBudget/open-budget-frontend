@@ -8991,7 +8991,7 @@ svg rect {
   border: 2px solid #eee;
   border-radius: 16px;
   margin: 0;
-  transition: width 0.5s, height 0.5s margin 0.5s, border-color 0.5s;
+  transition: width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s, border-color 0.5s;
 }
 #participantThumbnails .participantThumbnail div {
   font-size: 12px;
