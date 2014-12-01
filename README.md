@@ -16,7 +16,7 @@ Checkout the project from ```https://github.com/OpenBudget/open-budget-frontend/
     $ npm install
     $ sudo npm install -g bower
     $ bower update
-    $ npm install -g grunt-cli
+    $ sudo npm install -g grunt-cli
     $ patch -p0 < bootstrap-rtl.less.patch
     $ grunt
     $ grunt serve
