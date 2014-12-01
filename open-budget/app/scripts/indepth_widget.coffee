@@ -369,10 +369,22 @@ class IndepthWidget extends Backbone.View
                                 .style("opacity",0)
                                 .datum( (d) => d)
 
+                get_width = (d) =>
+                    ret = d3.max([@timeScale( d.get('timestamp') + d.get('width')) - @timeScale(d.get('timestamp')),10])
+                    console.log 'get_width',ret
+                    ret
+
+                get_x = (d) =>
+                    z = (@timeScale( d.get('timestamp') + d.get('width')) - @timeScale(d.get('timestamp'))-10)/2
+                    ofs = d3.min([0,z])
+                    ret = @timeScale( d.get('timestamp') ) + ofs
+                    console.log 'get_x',@timeScale( d.get('timestamp') + d.get('width')), @timeScale(d.get('timestamp')), ofs,ret
+                    ret
+
                 @chart.selectAll('.tooltipHook rect').data(allModels)
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                        .attr("x", get_x )
                         .attr("y", 0 )
-                        .attr("width", (d) => @timeScale( d.get('timestamp') + d.get('width')) - @timeScale(d.get('timestamp')) )
+                        .attr("width", get_width )
                         .attr("height", @maxHeight )
                         .on('mouseenter', @showTip)
                         .on('mouseleave', @hideTip)
@@ -442,15 +454,24 @@ class IndepthWidget extends Backbone.View
 
                 simpleApprovedLines = @chart.selectAll('.simpleApprovedLine')
                       .data(start_models)
-                simpleApprovedLines.enter()
-                      .append('line')
-                      .attr('class','simpleApprovedLine')
-                      .style('stroke','green')
-                simpleApprovedLines
+                news = simpleApprovedLines.enter()
+                        .append('g')
+                        .attr('class','simpleApprovedLine')
+                news.append('line')
+                    .style('stroke','green')
+                news.append('circle')
+                    .attr('r',5)
+                    .style('stroke','green')
+                    .style('fill','none')
+
+                simpleApprovedLines.selectAll('line')
                       .attr('x1', (d)=> @timeScale(d[0].get('timestamp')))
                       .attr('x2', (d)=> @timeScale(d[1].get('timestamp')))
                       .attr('y1', (d)=> @valueScale(d[0].get('source').get('net_allocated')))
                       .attr('y2', (d)=> @valueScale(d[1].get('source').get('net_allocated')))
+                simpleApprovedLines.selectAll('circle')
+                      .attr('cx', (d)=> @timeScale(d[1].get('timestamp')))
+                      .attr('cy', (d)=> @valueScale(d[1].get('source').get('net_allocated')))
 
                 end_models = _.filter(@model.models, (m)->m.get("kind")=="used")
                 end_models_starts = end_models.slice(0,-1)
@@ -459,26 +480,43 @@ class IndepthWidget extends Backbone.View
 
                 simpleRevisedLines = @chart.selectAll('.simpleRevisedLine')
                       .data(end_models)
-                simpleRevisedLines.enter()
-                      .append('line')
+                news = simpleRevisedLines.enter()
+                      .append('g')
                       .attr('class','simpleRevisedLine')
+                news.append('line')
                       .style('stroke','blue')
-                simpleRevisedLines
+                news.append('circle')
+                    .attr('r',5)
+                    .style('stroke','blue')
+                    .style('fill','none')
+                simpleRevisedLines.selectAll('line')
                       .attr('x1', (d)=> @timeScale(d[0].get('timestamp')))
                       .attr('x2', (d)=> @timeScale(d[1].get('timestamp')))
                       .attr('y1', (d)=> @valueScale(d[0].get('source').get('net_revised')))
                       .attr('y2', (d)=> @valueScale(d[1].get('source').get('net_revised')))
+                simpleRevisedLines.selectAll('circle')
+                    .attr('cx', (d)=> @timeScale(d[1].get('timestamp')))
+                    .attr('cy', (d)=> @valueScale(d[1].get('source').get('net_revised')))
+
                 simpleUsedLines = @chart.selectAll('.simpleUsedLine')
                       .data(end_models)
-                simpleUsedLines.enter()
-                      .append('line')
-                      .attr('class','simpleUsedLine')
+                news = simpleUsedLines.enter()
+                            .append('g')
+                            .attr('class','simpleUsedLine')
+                news.append('line')
                       .style('stroke','red')
-                simpleUsedLines
+                news.append('circle')
+                    .attr('r',5)
+                    .style('stroke','red')
+                    .style('fill','none')
+                simpleUsedLines.selectAll('line')
                       .attr('x1', (d)=> @timeScale(d[0].get('timestamp')) )
                       .attr('x2', (d)=> @timeScale(d[1].get('timestamp')))
                       .attr('y1', (d)=> @valueScale(d[0].get('source').get('net_used')))
                       .attr('y2', (d)=> @valueScale(d[1].get('source').get('net_used')))
+                simpleUsedLines.selectAll('circle')
+                      .attr('cx', (d)=> @timeScale(d[1].get('timestamp')))
+                      .attr('cy', (d)=> @valueScale(d[1].get('source').get('net_used')))
 
         render: ->
                 @svg.call(@drag)
