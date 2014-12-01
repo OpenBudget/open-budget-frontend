@@ -1528,7 +1528,6 @@ svg rect{
         height:32px;
         margin-left:16px;
         margin-top:24px;
-        //transition:width 0.5s, margin-left 0.5s;
         img {
             position:absolute;
             right: 0px;
@@ -1536,7 +1535,8 @@ svg rect{
             height: 32px;
             border: 2px solid #eee;
             border-radius: 16px;
-            transition:width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s;
+            margin: 0;
+            transition: width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s, border-color 0.5s;
         }
         div {
             font-size: 12px;
@@ -1551,7 +1551,7 @@ svg rect{
             border-radius: 16px;
             text-indent: -120px;
             overflow: hidden;
-            transition:right 0.5s, text-indent 0.5s, padding 0.5s;
+            transition: text-indent 0.5s, background-color 0.5s, color 0.5s, ;
         }
 
         &:hover {
@@ -1563,11 +1563,14 @@ svg rect{
             height: 48px;
             margin: -8px -8px 0 0;
             border-radius: 24px;
+            border-color: @text;
           }
           div {
             right: 28px;
             text-indent: 0;
             padding: 0 14px 0 8px;
+            background-color: @text;
+            color: white;
           }
         }
     }

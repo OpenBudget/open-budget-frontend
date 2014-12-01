@@ -8990,7 +8990,8 @@ svg rect {
   height: 32px;
   border: 2px solid #eee;
   border-radius: 16px;
-  transition: width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s;
+  margin: 0;
+  transition: width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s, border-color 0.5s;
 }
 #participantThumbnails .participantThumbnail div {
   font-size: 12px;
@@ -9004,7 +9005,7 @@ svg rect {
   border-radius: 16px;
   text-indent: -120px;
   overflow: hidden;
-  transition: right 0.5s, text-indent 0.5s, padding 0.5s;
+  transition: text-indent 0.5s, background-color 0.5s, color 0.5s;
 }
 #participantThumbnails .participantThumbnail:hover {
   z-index: 1000;
@@ -9016,11 +9017,14 @@ svg rect {
   height: 48px;
   margin: -8px -8px 0 0;
   border-radius: 24px;
+  border-color: #3c4948;
 }
 #participantThumbnails .participantThumbnail:hover div {
   right: 28px;
   text-indent: 0;
   padding: 0 14px 0 8px;
+  background-color: #3c4948;
+  color: white;
 }
 .timelineTerm .termBreadth {
   stroke-width: 2px;
