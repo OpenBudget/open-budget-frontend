@@ -371,14 +371,12 @@ class IndepthWidget extends Backbone.View
 
                 get_width = (d) =>
                     ret = d3.max([@timeScale( d.get('timestamp') + d.get('width')) - @timeScale(d.get('timestamp')),10])
-                    console.log 'get_width',ret
                     ret
 
                 get_x = (d) =>
                     z = (@timeScale( d.get('timestamp') + d.get('width')) - @timeScale(d.get('timestamp'))-10)/2
                     ofs = d3.min([0,z])
                     ret = @timeScale( d.get('timestamp') ) + ofs
-                    console.log 'get_x',@timeScale( d.get('timestamp') + d.get('width')), @timeScale(d.get('timestamp')), ofs,ret
                     ret
 
                 @chart.selectAll('.tooltipHook rect').data(allModels)
