@@ -64,4 +64,10 @@ window.linkToTransfer = (code,year) -> "#transfer/#{code}/#{year}/#{window.pageM
 
 $( ->
         window.onhashchange = -> window.location.reload()
+        $('#glossaryModal').on('show.bs.modal', (event) ->
+              console.log "glossaryModal open"
+              modal = $(this)
+              modal.find('.modal-body').html('<iframe class="scribd_iframe_embed" src="https://www.scribd.com/embeds/248411719/content?start_page=1&view_mode=scroll&show_recommendations=false" data-auto-height="true" data-aspect-ratio="undefined" scrolling="no" id="doc_97331" width="100%" height="600" frameborder="0">
+              </iframe>')
+        )
 )
