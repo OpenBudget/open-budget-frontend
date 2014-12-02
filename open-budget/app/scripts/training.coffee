@@ -48,9 +48,9 @@ class TrainingView extends Backbone.View
             @replaceNullWithUndefined(step)
 
         # Check the URL parameters for special options.
-        params = document.location.search
-        forceTour = params.indexOf('forceTour=1') != -1
-        isRedirected = params.indexOf('redirect=1') != -1
+        params = @searchStringToParamArray(document.location.search)
+        forceTour = 'forceTour=1' in params
+        isRedirected = 'redirect=1' in params
 
         # The first step is intended for redirected users. Skip it if not redirected.
         # TODO: Does this make sense in flows other than 'main'?
@@ -70,6 +70,17 @@ class TrainingView extends Backbone.View
             backdropPadding: 5
             template: JST.tour_dialog()
             debug: true
+            onEnd: (tour) =>
+                params = @searchStringToParamArray(document.location.search)
+                if 'forceTour=1' in params
+                    # Redirect to the current page, but without the forceTour parameter.
+                    # This gets rid of forceTour to prevent it from persisting and causing
+                    # unexpected starting of the tour upon moving to another page.
+                    params = @filterArray(params, 'forceTour=1')
+                    newSearch = @paramArrayToSearchString(params)
+                    newUrl = [document.location.pathname, newSearch, document.location.hash].join('')
+                    console.log 'Tour: Redirecting to #{newUrl}'
+                    document.location.href = newUrl
         )
         @tour = tour
 
@@ -113,7 +124,22 @@ class TrainingView extends Backbone.View
 
     isTourRunning: (tour) ->
         # Assumes that the tour is initialized.
-        return not tour.ended()
+        return not tour.ended() and tour.getCurrentStep() != null
+
+    searchStringToParamArray: (searchStr) ->
+        if searchStr.indexOf('?') == 0
+            searchStr = searchStr.substr(1)
+        return (s for s in searchStr.split('&') when s != '')
+
+    paramArrayToSearchString: (params) ->
+        if params.length > 0
+            return '?' + params.join('&')
+        else
+            return ''
+
+    filterArray: (array, value) ->
+        return (item for item in array when item != value)
+
 
 $( ->
         console.log "initializing the training view"
