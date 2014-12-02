@@ -505,5 +505,6 @@ $( ->
         $("article.single-page-article").css("display","none")
         pageModel.article.css("display","inherit")
         pageModel.addKind(kind)
-
+        $(window).resize ->
+            pageModel.trigger('resized')
 )

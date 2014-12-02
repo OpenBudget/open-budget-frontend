@@ -110,6 +110,11 @@ class MainPageVis extends Backbone.View
             @$el.find("#main-budget-header").html(JST.main_budget_header(@model.mainBudgetItem.toJSON()))
             if @rendered
                 @switchComparison()
+        @model.on 'resized', =>
+            if @rendered
+                @recalc_centers()
+                @chart.start()
+
 
     events:
         'click #grouping-kind .btn': 'switchToggle'
@@ -122,12 +127,6 @@ class MainPageVis extends Backbone.View
         console.log $(e.currentTarget).attr('data-toggle')
         @toggle = parseInt($(e.currentTarget).attr('data-toggle'))
         @recalc_centers()
-        d3.select(@el).selectAll(".bubbleTitle#{@toggle}")
-                        .data(@centers[@toggle].getCenters())
-                        .transition()
-                        .style('opacity', 1)
-                        .attr('x', (d) -> d.x)
-                        .attr('y', (d) -> d.y)
         @chart.start()
 
     prepareData: ->
@@ -207,6 +206,9 @@ class MainPageVis extends Backbone.View
         start_x = (globalWidth - (items_in_line-1)*center_strategy.item_width)/2
         start_y = center_strategy.item_height/2
 
+        globalHeight = Math.ceil(centers.length/items_in_line) * center_strategy.item_height + 30
+        @chart.setHeight(globalHeight)
+
         for center in centers
             center.x = (center.index % items_in_line)*center_strategy.item_width + start_x
             center.y = (Math.floor(center.index / items_in_line))*center_strategy.item_height + start_y
@@ -216,6 +218,12 @@ class MainPageVis extends Backbone.View
             if node.center?.x? or node.center?.y?
                 @nodes.push node
         @chart.updateNodes(@nodes, @centers[@toggle].getCenters().length)
+        d3.select(@el).selectAll(".bubbleTitle#{@toggle}")
+                        .data(@centers[@toggle].getCenters())
+                        .transition()
+                        .style('opacity', 1)
+                        .attr('x', (d) -> d.x)
+                        .attr('y', (d) -> d.y)
 
     render: ->
         @chart.render()

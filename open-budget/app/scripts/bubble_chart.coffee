@@ -71,6 +71,12 @@ class BubbleChart extends Backbone.View
                       .attr("cy", (d) => d.y - @get_offset(e.alpha,d).dy)
     @circles = null
 
+  setHeight: (height) ->
+      @height = height
+      d3.select(@el)
+        .attr("height", @height)
+      @force.size([@width, @height])
+
   updateNodes: (data, numParts) ->
     if not @data?
         @data = data
