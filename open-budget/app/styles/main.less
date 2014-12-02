@@ -61,12 +61,12 @@
 .increased_d_text{  color: @increased_d;}
 .increased_c_text{  color: @increased_c;}
 .increased_b_text{  color: @increased_b;}
-.increased_a_text{  color: @increased_a;}
-.decreased_a_text{  color: @decreased_a;}
+.increased_a_text{  color: darken(@increased_a, 10%);}
+.decreased_a_text{  color: darken(@decreased_a, 10%);}
 .decreased_b_text{  color: @decreased_b;}
 .decreased_c_text{  color: @decreased_c;}
 .decreased_d_text{  color: @decreased_d;}
-.unchanged_text {  color: @gray;}
+.unchanged_text {  color: darken(@gray, 20%);}
 
 .approved_border   {  border-color: @approved;   }
 .increased_d_border{  border-color: @increased_d;}
@@ -144,6 +144,35 @@ header{
       }
       &.current {
         margin: 0 5px 0 10px;
+
+        &.increased_a header {background-color: lighten(@increased_a, 40%); .increased_a_text; a {.increased_a_text;} }
+        &.increased_b header {background-color: lighten(@increased_b, 40%); .increased_b_text; a {.increased_b_text;} }
+        &.increased_c header {background-color: lighten(@increased_c, 40%); .increased_c_text; a {.increased_c_text;} }
+        &.increased_d header {background-color: lighten(@increased_d, 50%); .increased_d_text; a {.increased_d_text;} }
+        &.decreased_a header {background-color: lighten(@decreased_a, 30%); .decreased_a_text; a {.decreased_a_text;} }
+        &.decreased_b header {background-color: lighten(@decreased_b, 35%); .decreased_b_text; a {.decreased_b_text;} }
+        &.decreased_c header {background-color: lighten(@decreased_c, 45%); .decreased_c_text; a {.decreased_c_text;} }
+        &.decreased_d header {background-color: lighten(@decreased_d, 55%); .decreased_d_text; a {.decreased_d_text;} }
+        &.unchanged   header {background-color: lighten(@unchanged, 10%); .unchanged_text; a {.unchanged_text;} }
+          //
+          // background: lighten(@increased, 40%);
+          // color: @increased;
+          // a {
+          //   color: @increased;
+          // }
+          // // .nav>li>a {
+          // //   color: lighten(@increased, 25%);
+          // //   &:hover{
+          // //     background: none;
+          // //   }
+          // //   &.active {
+          // //     background: lighten(@increased, 35%);
+          // //     border-radius: 0;
+          // //     border: 0;
+          // //   }
+          // }
+        // }
+
         header{
           height: 50px;
         }
@@ -1213,28 +1242,6 @@ article {
         &.home {.box-shadow(none);}
       }
     }
-  }
-
-  &.increased .current header {
-    background: lighten(@increased, 40%);
-    color: @increased;
-    a {
-      color: @increased;
-    }
-    .nav>li>a {
-      color: lighten(@increased, 25%);
-      &:hover{
-        background: none;
-      }
-      &.active {
-        background: lighten(@increased, 35%);
-        border-radius: 0;
-        border: 0;
-      }
-    }
-  }
-  &.decreased header {
-    background: lighten(@increased, 40%);
   }
 
   ol.breadcrumb {
