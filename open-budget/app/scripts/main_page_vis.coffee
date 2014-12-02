@@ -118,7 +118,28 @@ class MainPageVis extends Backbone.View
 
     events:
         'click #grouping-kind .btn': 'switchToggle'
-        'change #comparison-kind': 'switchComparison'
+        'click .compare-2014': 'compare_2014'
+        'click .compare-2015': 'compare_2015_start'
+        'click .compare-2015 .compare-year-start': 'compare_2015_start'
+        'click .compare-2015 .compare-year-end': 'compare_2015_end'
+
+    compare_2014: =>
+        @set_actives('.compare-2014')
+        @switchComparison('orig_2014/rev_2014')
+
+    compare_2015_start: =>
+        @set_actives('.compare-year-start,.compare-2015')
+        @switchComparison('orig_2014/orig_2015')
+        false
+
+    compare_2015_end: =>
+        @set_actives('.compare-year-end,.compare-2015')
+        @switchComparison('rev_2014/orig_2015')
+        false
+
+    set_actives: (selector) =>
+        @$el.find('.compare-2014,.compare-2015,.compare-year-start,.compare-year-end').toggleClass('active',false)
+        @$el.find(selector).toggleClass('active',true)
 
     switchToggle: (e) =>
         d3.select(@el).selectAll(".bubbleTitle#{@toggle}")
@@ -171,10 +192,9 @@ class MainPageVis extends Backbone.View
             @data.push node
         @switchComparison()
 
-    switchComparison: =>
+    switchComparison: (selected) =>
         console.log 'switchComparison'
         scaling = 20.0
-        selected = @$el.find("#comparison-kind").val()
         [orig_field, rev_field] = selected.split('/')
         console.log orig_field, rev_field
         increased = 0
