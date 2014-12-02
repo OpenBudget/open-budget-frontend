@@ -497,7 +497,7 @@ $( ->
         pageModel.set("flow",flow)
         if kind == "budget"
             pageModel.article = $("article#budget-item-article")
-            pageModel.set("budgetCode",identifier)
+            pageModel.set("budgetCode","00"+identifier)
         else if kind == "transfer"
             pageModel.article = $("article#change-group-article")
             pageModel.set("changeGroupId",identifier)
