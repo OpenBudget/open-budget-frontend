@@ -571,17 +571,23 @@ strong.approved {
 }
 
 #comparison-toggle{
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   height: 120px;
   margin: 20px auto;
   background: url(assets/hp-slash.png) no-repeat center center;
   background-size: 58px 118px;
   > div {
-    width: 40%;
-    padding-top: 25px;
-    margin-right: 10%;
+    max-width: 50%;
+    padding: 25px 8% 10% 2%;
     float: right;
     color: @gray;
+
+    &:first-child {
+      text-align: left;
+      padding: 25px 2% 10% 8%;
+    }
+
     &:hover {
       color: @darkgray;
       cursor: pointer;
@@ -599,12 +605,6 @@ strong.approved {
       &.active {
         color: @text;
       }
-    }
-
-    &:first-child {
-      text-align: left;
-      margin-right: 0;
-      margin-left: 10%;
     }
   }
 }
