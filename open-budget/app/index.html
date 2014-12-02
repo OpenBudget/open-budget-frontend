@@ -6,9 +6,10 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>פותחים את התקציב</title>
+        <title>מפתח התקציב</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
+        <link rel="shortcut icon" href="http://www.obudget.org/favicon.ico">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
@@ -21,6 +22,18 @@
         <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
         <!-- endbuild -->
+
+        <meta content="מפתח התקציב - פותחים את תקציב המדינה" property="og:title">
+        <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." property="og:description">
+        <meta content="http://www.obudget.org" property="og:url">
+        <meta content="http://www.obudget.org/styles/assets/obudget.org.png" property="og:image">
+        <meta content="summary_large_image" name="twitter:card">
+        <meta content="@hasadna" name="twitter:site">
+        <meta content="@mushon" name="twitter:creator">
+        <meta content="@ikramvada" name="twitter:creator">
+        <meta content="מפתח התקציב - פותחים את תקציב המדינה" name="twitter:title">
+        <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." name="twitter:description">
+        <meta content="http://www.obudget.org/styles/assets/obudget.org.png" name="twitter:image:src">
 
     </head>
     <body>
@@ -40,13 +53,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="#">פותחים את התקציב</a>
+                  <a class="navbar-brand" href="#">מפתח התקציב</a>
+                  <!-- <a href="#" class="obudget-icon"></a> -->
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav">
-                    <li class="dropdown">
+                    <!-- <li class="dropdown">
                       <a href="#" label="how-it-works" class="dropdown-toggle" data-toggle="dropdown">איך זה עובד<b class="caret"></b></a>
                       <ul class="dropdown-menu" aria-labelledBy="how-it-works">
                         <li><a href="#">איך עובד תקציב המדינה?</a></li>
@@ -56,11 +70,11 @@
                         <li><a href="#">מאיפה הנתונים?</a></li>
                         <li><a href="#">איך עובד התיוג?</a></li>
                       </ul>
-                    </li>
+                    </li> -->
+                    <li><a href="#glossaryModal" data-toggle="modal" >מונחון התקציב</a></li>
                     <li><a href="#" id="intro-link">הדרכה</a></li>
-                    <li><a href="#">הצטרפו אלינו</a></li>
-                    <li><a href="#">השבוע בתקציב</a></li>
-                    <li><a href="#glossaryModal" data-toggle="modal" >מונחון</a></li>
+                    <li><a href="http://www.hasadna.org.il/%D7%94%D7%AA%D7%A0%D7%93%D7%91%D7%95%D7%AA/">הצטרפו אלינו</a></li>
+                    <li><a href="/email/">השבוע בתקציב</a></li>
                     <li>
                   </ul>
                   <ul class="nav navbar-nav navbar-left">
@@ -121,7 +135,7 @@
             </div>
 
 
-            <article id="budget-item-article" class="six-fig single-page-article increased">
+            <article id="budget-item-article" class="six-fig single-page-article">
 
                 <header id="breadcrumb-header">
                   <ul id="header-tree">
@@ -132,7 +146,7 @@
 
                 <section id="vis">
                   <div id="vis-container">
-                    <h2 id="vis-title">שינויים בתקציב</h2>
+                    <!-- <h2 id="vis-title">שינויים בתקציב</h2> -->
                     <div id="overview-widget" class="2digits 4digits 6digits 8digits"></div>
                     <div id="indepth-widget" class="2digits 4digits 6digits 8digits">
                       <div class="spinner-container"></div>
@@ -161,7 +175,7 @@
 
             </article>
 
-            <article id="change-group-article" class="single-page-article increased">
+            <article id="change-group-article" class="single-page-article">
 
                 <!-- Transaction details -->
                 <div id="single-changegroup" class="center-block">
@@ -169,7 +183,7 @@
 
             </article>
 
-            <article id="main-page-article" class="single-page-article increased">
+            <article id="main-page-article" class="single-page-article">
 
                 <div id="comparison-toggle">
                   <div class="compare-2014">
@@ -201,7 +215,15 @@
             </article>
 
             <div class="footer">
-                <p>♥ הצוות</p>
+                <ul>
+                    <li><a href="#">♥ הצוות</a></li>
+                    <li><a target="_blank" href="https://github.com/OpenBudget/">קוד האתר</a></li>
+                    <li><a target="_blank" href="https://github.com/OpenBudget/open-budget-frontend/issues">דווחו על תקלה</a></li>
+                    <li><a target="_blank" href="http://forum.hasadna.org.il/c/5-category/13-category">קבוצת הדיון שלנו</a></li>
+                    <li><a target="_blank" href="mailto:adam@obudget.org">צרו קשר</a></li>
+                    <li><a target="_blank" href="/api">API</a></li>
+                    <li><a target="_blank" href="/gov/">האתר הישן</a></li>
+                </ul>
             </div>
 
             <div id="popups">
@@ -236,7 +258,7 @@
                  <p>ההזדהות מבוצעת מול גוגל בלבד, המעבירה לנו את כתובת המייל שלכם ותו לא - זאת על מנת שנוכל לשלוח לכם את העדכונים השבועיים.</p>
                  <p>אנו לא שומרים פרטים מזהים של המשתמשים באתר.</p>
                  <p>בתודה, <br/>
-                   צוות ״פותחים את התקציב״<br/>
+                   צוות מפתח התקציב<br/>
                    הסדנא לידע ציבורי
                 </p>
               </div>

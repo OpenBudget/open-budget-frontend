@@ -419,6 +419,8 @@ class PageModel extends Backbone.Model
                             code = budgetCode.slice(0,(i+1)*2)
                             main = new BudgetItem(year: @get('year'), code: code, pageModel: @)
                             readyBreadcrumbs.addModel(main)
+                            main.on "change:title", ->
+                                window.document.title = "מפתח התקציב - #{main.get('title')}"
                             main.do_fetch()
                             kids = new BudgetItemKids([], year: @get('year'), code: code, pageModel: @)
                             readyBreadcrumbs.addCollection(kids)
@@ -454,10 +456,13 @@ class PageModel extends Backbone.Model
                                                         .addCollection(@budgetItems2)
                                                         .addCollection(@budgetItems4)
 
-                    @mainBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
-                    @mainBudgetItem.do_fetch()
+                    @mainBudgetItem = new BudgetItem(year: 2014, code: '00', pageModel: @)
+                    @newBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
                     @readyEvents.push new ReadyAggregator("ready-main-budget")
-                                                         .addModel(@mainBudgetItem)
+                                                        .addModel(@mainBudgetItem)
+                                                        .addModel(@newBudgetItem)
+                    @mainBudgetItem.do_fetch()
+                    @newBudgetItem.do_fetch()
 
 
                 @on 'change:kinds', =>
@@ -492,7 +497,7 @@ $( ->
         pageModel.set("flow",flow)
         if kind == "budget"
             pageModel.article = $("article#budget-item-article")
-            pageModel.set("budgetCode",identifier)
+            pageModel.set("budgetCode","00"+identifier)
         else if kind == "transfer"
             pageModel.article = $("article#change-group-article")
             pageModel.set("changeGroupId",identifier)
