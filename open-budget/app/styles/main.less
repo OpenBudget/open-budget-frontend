@@ -829,8 +829,19 @@ strong.approved {
         border-top: 1px dashed @darkgray;
         color: @darkgray;
         font-size: 12px;
+        font-weight: 700;
         margin-bottom: -7px;
         display: block;
+
+        &.increased_a {.increased_a_border; .increased_a_text; }
+        &.increased_b {.increased_b_border; .increased_b_text; }
+        &.increased_c {.increased_c_border; .increased_c_text; }
+        &.increased_d {.increased_d_border; .increased_d_text; }
+        &.decreased_a {.decreased_a_border; .decreased_a_text; }
+        &.decreased_b {.decreased_b_border; .decreased_b_text; }
+        &.decreased_c {.decreased_c_border; .decreased_c_text; }
+        &.decreased_d {.decreased_d_border; .decreased_d_text; }
+        &.unchanged   {.unchanged_border; .unchanged_text; }
       }
     }
 
