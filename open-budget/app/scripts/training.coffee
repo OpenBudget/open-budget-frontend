@@ -47,19 +47,43 @@ class TrainingView extends Backbone.View
         for step in steps
             @replaceNullWithUndefined(step)
 
+        # Check the URL parameters for special options.
+        params = document.location.search
+        forceTour = params.indexOf('forceTour=1') != -1
+        isRedirected = params.indexOf('redirect=1') != -1
+
+        # The first step is intended for redirected users. Skip it if not redirected.
+        # TODO: Does this make sense in flows other than 'main'?
+        # TODO: Not a perfect solution, the 'previous' button is enabled on the first step.
+        if not isRedirected
+            console.log "tour: not redirected, disabling first step"
+            # Make Bootstrap Tour skip the step by making it non-orphan with no element.
+            steps[0].element = ''
+            steps[0].orphan = false
+
         tour = new Tour(
             name: "tour-#{window.pageModel.get('flow')}"
             steps: steps
+            keyboard: false # Disabled since the buttons are hard-coded to ltr.
             basePath: document.location.pathname
             backdrop: true
             backdropPadding: 5
             template: JST.tour_dialog()
             debug: true
         )
+        @tour = tour
+
         console.log "initializing tour"
+        # If we're in the middle of a multi-page tour, init() will automatically
+        # start the tour.
+        # Otherwise, if the tour was never shown, start() will start it.
+        # start() has no effect if the tour is already displayed.
         tour.init()
         tour.start()
-        @tour = tour
+
+        if forceTour and not @isTourRunning(tour)
+            console.log "forcing the tour"
+            tour.restart()
 
     replaceNullWithUndefined: (obj) ->
         for own key, value of obj
@@ -68,8 +92,9 @@ class TrainingView extends Backbone.View
 
     onTrainingButtonClick: (event) ->
         event.preventDefault()
-        if not @tour?
-            # The tour wasn't initialized (due to loading failure).
+        # Don't start the tour if it wasn't initialized (due to loading failure)
+        # or is already running.
+        if (not @tour?) or @isTourRunning(@tour)
             return
         @tour.restart()
 
@@ -85,6 +110,10 @@ class TrainingView extends Backbone.View
             return true
         catch
             return false
+
+    isTourRunning: (tour) ->
+        # Assumes that the tour is initialized.
+        return not tour.ended()
 
 $( ->
         console.log "initializing the training view"
