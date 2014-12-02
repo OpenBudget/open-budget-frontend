@@ -8,12 +8,12 @@
 
 
 /* Color scheme */
-@background: #F1f1f1;
+@background:  #ffffff;
 
-@approved: #33cd56; // #00AF6A;
-@spent: #9813FD;
-@increased: #fb4007; // #5731E7;
-@decreased: #0266DE; // #228dd8;
+@approved:    #33cd56; // #00AF6A;
+@spent:       #9813FD;
+@increased:   #fb4007; // #5731E7;
+@decreased:   #0266DE; // #228dd8;
 @increased_d: #c20a04; // #5731E7;
 @decreased_d: #03329c; // #228dd8;
 @increased_c: #fb4007; // #5731E7;
@@ -23,8 +23,8 @@
 @decreased_a: #6DD1DA; //lighten(desaturate(@decreased, 30%), 20%);
 @increased_a: #fcc524; //lighten(desaturate(@increased, 30%), 20%);
 @unchanged:   #cccccc;
-@link: #00A1F6;
-@text: #3C4948;
+@link:        #00A1F6;
+@text:        #3C4948;
 
 @gray: #cccccc;
 @darkgray: #888888;
@@ -528,7 +528,13 @@ strong.approved {
   }
 
   .navbar-brand {
-    color: #222;
+    color: @text;
+    background: url(assets/obudget_key.png) no-repeat;
+    background-size: 23px 52px;
+    //text-indent: -999999999px;
+    overflow: hidden;
+    height: 53px;
+    width: 141px;
   }
 
   .navbar-nav > li > a {
@@ -573,19 +579,19 @@ strong.approved {
 #comparison-toggle{
   width: 100%;
   max-width: 500px;
-  height: 120px;
-  margin: 20px auto;
+  min-height: 90px;
+  margin: 10px auto;
   background: url(assets/hp-slash.png) no-repeat center center;
   background-size: 58px 118px;
   > div {
     max-width: 50%;
-    padding: 25px 8% 10% 2%;
+    padding: 15px 8% 15px 2%;
     float: right;
     color: @gray;
 
     &:first-child {
       text-align: left;
-      padding: 25px 2% 10% 8%;
+      padding: 15px 2% 15px 8%;
     }
 
     &:hover {
