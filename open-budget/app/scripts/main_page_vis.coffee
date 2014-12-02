@@ -109,7 +109,7 @@ class MainPageVis extends Backbone.View
         @model.on 'ready-main-budget', =>
             @$el.find("#main-budget-header").html(JST.main_budget_header(@model.mainBudgetItem.toJSON()))
             if @rendered
-                @switchComparison()
+                @compare_2014()
         @model.on 'resized', =>
             if @rendered
                 @recalc_centers()
@@ -190,7 +190,7 @@ class MainPageVis extends Backbone.View
                     false
                 center: null
             @data.push node
-        @switchComparison()
+        @compare_2014()
 
     switchComparison: (selected) =>
         console.log 'switchComparison'
