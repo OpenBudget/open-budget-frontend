@@ -24,7 +24,7 @@ Checkout the project from ```https://github.com/OpenBudget/open-budget-frontend/
 
 Install on Windows
 ------------------
-(tested on Windows XP SP3)
+(tested on Windows XP SP3, Windows 7)
 
 ###Install git
 
@@ -38,7 +38,7 @@ Get the Windows installer from: http://nodejs.org/download/
 
 (This section handles a known issue with npm, see https://github.com/npm/npm/issues/6106)
 
-Open Git Bash. run:
+Open Git Bash. Run:
 
     $ npm
 
