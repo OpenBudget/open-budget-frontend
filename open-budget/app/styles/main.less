@@ -570,7 +570,47 @@ strong.approved {
     }
 }
 
+#comparison-toggle{
+  width: 500px;
+  height: 120px;
+  margin: 20px auto;
+  background: url(assets/hp-slash.png) no-repeat center center;
+  background-size: 58px 118px;
+  > div {
+    width: 40%;
+    padding-top: 25px;
+    margin-right: 10%;
+    float: right;
+    color: @gray;
+    &:hover {
+      color: @darkgray;
+      cursor: pointer;
+    }
+    &.active {
+      color: @text;
+    }
+
+    span {
+      color: @gray;
+      &:hover {
+        color: @darkgray;
+        cursor: pointer;
+      }
+      &.active {
+        color: @text;
+      }
+    }
+
+    &:first-child {
+      text-align: left;
+      margin-right: 0;
+      margin-left: 10%;
+    }
+  }
+}
+
 #main-budget-header{
+  clear: both;
   h1, p{
     text-align: center;
     font-size: 30px;
