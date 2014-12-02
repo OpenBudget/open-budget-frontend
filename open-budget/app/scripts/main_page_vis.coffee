@@ -107,7 +107,7 @@ class MainPageVis extends Backbone.View
             @recalc_centers()
             @render()
         @model.on 'ready-main-budget', =>
-            @$el.find("#main-budget-header").html(JST.main_budget_header(@model.mainBudgetItem.toJSON()))
+            @$el.find("#main-budget-header").html(JST.main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
             if @rendered
                 @compare_2014()
         @model.on 'resized', =>

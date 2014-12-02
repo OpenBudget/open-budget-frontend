@@ -454,10 +454,13 @@ class PageModel extends Backbone.Model
                                                         .addCollection(@budgetItems2)
                                                         .addCollection(@budgetItems4)
 
-                    @mainBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
-                    @mainBudgetItem.do_fetch()
+                    @mainBudgetItem = new BudgetItem(year: 2014, code: '00', pageModel: @)
+                    @newBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
                     @readyEvents.push new ReadyAggregator("ready-main-budget")
-                                                         .addModel(@mainBudgetItem)
+                                                        .addModel(@mainBudgetItem)
+                                                        .addModel(@newBudgetItem)
+                    @mainBudgetItem.do_fetch()
+                    @newBudgetItem.do_fetch()
 
 
                 @on 'change:kinds', =>
