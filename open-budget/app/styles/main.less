@@ -1591,12 +1591,13 @@ svg rect{
             text-align: right;
             padding: 0;
             height: 18px;
+            width: 0;
             overflow: hidden;
-            background: #eee;
+            // background: transparent;
             border-radius: 16px;
             text-indent: -120px;
             overflow: hidden;
-            transition: text-indent 0.5s, background-color 0.5s, color 0.5s, ;
+            transition: text-indent 0.5s, background-color 0.5s, color 0.5s, width 0.5s;
         }
 
         &:hover {
@@ -1616,6 +1617,7 @@ svg rect{
             padding: 0 14px 0 8px;
             background-color: @text;
             color: white;
+            width: auto;
           }
         }
     }
