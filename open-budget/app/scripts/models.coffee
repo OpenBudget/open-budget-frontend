@@ -419,6 +419,8 @@ class PageModel extends Backbone.Model
                             code = budgetCode.slice(0,(i+1)*2)
                             main = new BudgetItem(year: @get('year'), code: code, pageModel: @)
                             readyBreadcrumbs.addModel(main)
+                            main.on "change:title", ->
+                                window.document.title = "מפתח התקציב - #{main.get('title')}"
                             main.do_fetch()
                             kids = new BudgetItemKids([], year: @get('year'), code: code, pageModel: @)
                             readyBreadcrumbs.addCollection(kids)
