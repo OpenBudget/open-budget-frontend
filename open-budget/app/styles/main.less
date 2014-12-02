@@ -2048,6 +2048,25 @@ svg rect{
   }
 }
 
+/* FOOTER */
+.footer {
+    li {
+        display: inline-block;
+        a {
+            display: inline-block;
+            margin-right:20px;
+            margin-left:20px;
+        }
+        &:before {
+            content: "\00B7"
+        }
+    }
+    li:first-child {
+        &:before {
+            content: ""
+        }
+    }
+}
 /* Subscribe widget */
 #subscribeWidget {
     &.notsubscribed::before {
