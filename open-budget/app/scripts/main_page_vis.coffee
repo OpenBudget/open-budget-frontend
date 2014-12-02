@@ -203,14 +203,18 @@ class MainPageVis extends Backbone.View
         centers = center_strategy.getCenters()
         items_in_line = d3.max([Math.floor(globalWidth / center_strategy.item_width), 1])
         items_in_line = d3.min([items_in_line,centers.length])
-        start_x = (globalWidth - (items_in_line-1)*center_strategy.item_width)/2
         start_y = center_strategy.item_height/2
 
         globalHeight = Math.ceil(centers.length/items_in_line) * center_strategy.item_height + 30
         @chart.setHeight(globalHeight)
 
         for center in centers
-            center.x = (center.index % items_in_line)*center_strategy.item_width + start_x
+            if center.index >= (Math.floor(centers.length/items_in_line)*items_in_line)
+                start_x = (globalWidth - ((centers.length % items_in_line)-1)*center_strategy.item_width)/2
+            else
+                start_x = (globalWidth - (items_in_line-1)*center_strategy.item_width)/2
+
+            center.x = globalWidth - ((center.index % items_in_line)*center_strategy.item_width + start_x)
             center.y = (Math.floor(center.index / items_in_line))*center_strategy.item_height + start_y
 
         for node in @data
