@@ -46,7 +46,6 @@ class TrainingView extends Backbone.View
             name: name
             steps: steps
             keyboard: false # Disabled since the buttons are hard-coded to ltr.
-            basePath: document.location.pathname
             backdrop: true
             backdropPadding: 5
             template: JST.tour_dialog()
@@ -84,6 +83,7 @@ class TrainingView extends Backbone.View
 
         options = @createTourOptions("tour-#{window.pageModel.get('flow')}",
                                      @mainTourSteps)
+        options.basePath = document.location.pathname
         options.onEnd = () =>
             # Check if the forceTour parameter is present at the end of the tour.
             params = @getUrlParamArray()
