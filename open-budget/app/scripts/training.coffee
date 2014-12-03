@@ -57,6 +57,11 @@ class TrainingView extends Backbone.View
 
         @replaceNullWithUndefined(step) for step in steps
 
+        # options.basePath substitute: Only redirect if step.path is non-blank.
+        for step in steps
+            if step.path? and step.path != ''
+                step.path = document.location.pathname + step.path
+
         # Split the steps into the redirection tour step and the rest.
         # TODO: This will only work with the 'main' flow, unless we add the redirection
         # step to each flow.
@@ -83,7 +88,6 @@ class TrainingView extends Backbone.View
 
         options = @createTourOptions("tour-#{window.pageModel.get('flow')}",
                                      @mainTourSteps)
-        options.basePath = document.location.pathname
         options.onEnd = () =>
             # Check if the forceTour parameter is present at the end of the tour.
             params = @getUrlParamArray()
