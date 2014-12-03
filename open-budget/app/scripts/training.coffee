@@ -39,62 +39,82 @@ class TrainingView extends Backbone.View
     loadTour: ->
         console.log "loadTour", window.pageModel.get('flow')
         @steps = new TrainingSteps([])
-        @steps.on 'reset', => @initTour(_.map(@steps.models, (i)->i.toJSON()))
+        @steps.on 'reset', => @onTourLoaded(_.map(@steps.models, (i)->i.toJSON()))
 
-    initTour: (steps) ->
-        console.log "got #{steps.length} steps"
-
-        for step in steps
-            @replaceNullWithUndefined(step)
-
-        # Check the URL parameters for special options.
-        params = @searchStringToParamArray(document.location.search)
-        forceTour = 'forceTour=1' in params
-        isRedirected = 'redirect=1' in params
-
-        # The first step is intended for redirected users. Skip it if not redirected.
-        # TODO: Does this make sense in flows other than 'main'?
-        # TODO: Not a perfect solution, the 'previous' button is enabled on the first step.
-        if not isRedirected
-            console.log "tour: not redirected, disabling first step"
-            # Make Bootstrap Tour skip the step by making it non-orphan with no element.
-            steps[0].element = ''
-            steps[0].orphan = false
-
-        tour = new Tour(
-            name: "tour-#{window.pageModel.get('flow')}"
+    createTourOptions: (name, steps) ->
+        options =
+            name: name
             steps: steps
             keyboard: false # Disabled since the buttons are hard-coded to ltr.
-            basePath: document.location.pathname
             backdrop: true
             backdropPadding: 5
             template: JST.tour_dialog()
             debug: true
-            onEnd: (tour) =>
-                params = @searchStringToParamArray(document.location.search)
-                if 'forceTour=1' in params
-                    # Redirect to the current page, but without the forceTour parameter.
-                    # This gets rid of forceTour to prevent it from persisting and causing
-                    # unexpected starting of the tour upon moving to another page.
-                    params = @filterArray(params, 'forceTour=1')
-                    newSearch = @paramArrayToSearchString(params)
-                    newUrl = [document.location.pathname, newSearch, document.location.hash].join('')
-                    console.log 'Tour: Redirecting to #{newUrl}'
-                    document.location.href = newUrl
-        )
-        @tour = tour
+        return options
 
-        console.log "initializing tour"
+    onTourLoaded: (steps) ->
+        console.log "got #{steps.length} steps"
+
+        @replaceNullWithUndefined(step) for step in steps
+
+        # Split the steps into the redirection tour step and the rest.
+        # TODO: This will only work with the 'main' flow, unless we add the redirection
+        # step to each flow.
+        @redirectionTourSteps = [steps[0]]
+        @mainTourSteps = steps[1..]
+
+        if 'redirect=1' in @getUrlParamArray()
+            @startRedirectionTour()
+        else
+            @startMainTour()
+
+    startRedirectionTour: () =>
+        console.log "initializing redirection tour"
+
+        options = @createTourOptions("tour-redirection", @redirectionTourSteps)
+        options.onEnd = () => @startMainTour()
+
+        tour = @startTour(options)
+        if not @isTourRunning(tour)
+            @startMainTour()
+
+    startMainTour: () =>
+        console.log "initializing main tour"
+
+        options = @createTourOptions("tour-#{window.pageModel.get('flow')}",
+                                     @mainTourSteps)
+        options.basePath = document.location.pathname
+        options.onEnd = () =>
+            # Check if the forceTour parameter is present at the end of the tour.
+            params = @getUrlParamArray()
+            if 'forceTour=1' in params
+                # Redirect to the current page, but without the forceTour parameter.
+                # This gets rid of forceTour to prevent it from persisting and causing
+                # unexpected starting of the tour upon moving to another page.
+                params = @filterArray(params, 'forceTour=1')
+                newSearch = @paramArrayToSearchString(params)
+                newUrl = [document.location.pathname, newSearch, document.location.hash].join('')
+                console.log "Tour: Redirecting to #{newUrl}"
+                document.location.href = newUrl
+
+        @tour = @startTour(options)
+        if not @isTourRunning(@tour) and 'forceTour=1' in @getUrlParamArray()
+            console.log "forcing the tour"
+            @tour.restart()
+
+    startTour: (options) =>
+        tour = new Tour(options)
         # If we're in the middle of a multi-page tour, init() will automatically
         # start the tour.
         # Otherwise, if the tour was never shown, start() will start it.
         # start() has no effect if the tour is already displayed.
         tour.init()
         tour.start()
+        return tour
 
-        if forceTour and not @isTourRunning(tour)
-            console.log "forcing the tour"
-            tour.restart()
+    isTourRunning: (tour) ->
+        # Assumes that the tour is initialized.
+        return not tour.ended() and tour.getCurrentStep() != null
 
     replaceNullWithUndefined: (obj) ->
         for own key, value of obj
@@ -122,10 +142,6 @@ class TrainingView extends Backbone.View
         catch
             return false
 
-    isTourRunning: (tour) ->
-        # Assumes that the tour is initialized.
-        return not tour.ended() and tour.getCurrentStep() != null
-
     searchStringToParamArray: (searchStr) ->
         if searchStr.indexOf('?') == 0
             searchStr = searchStr.substr(1)
@@ -136,6 +152,9 @@ class TrainingView extends Backbone.View
             return '?' + params.join('&')
         else
             return ''
+
+    getUrlParamArray: () =>
+        return @searchStringToParamArray(document.location.search)
 
     filterArray: (array, value) ->
         return (item for item in array when item != value)
