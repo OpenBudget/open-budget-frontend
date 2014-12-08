@@ -16,7 +16,7 @@ class TrainingSteps extends Backbone.Collection
         @fetch(dataType: window.pageModel.get('dataType'), reset: true)
 
     url: ->
-        "#{window.pageModel.get('baseURL')}/api/training/#{window.pageModel.get('flow')}"
+        "#{window.pageModel.get('baseURL')}/api/training/#{window.pageModel.get('flow')}?a=100"
 
 
 class TrainingView extends Backbone.View
@@ -38,6 +38,9 @@ class TrainingView extends Backbone.View
 
     loadTour: ->
         console.log "loadTour", window.pageModel.get('flow')
+        if window.location.hash.length < 2
+            console.log "not starting tour for hash ",window.location.hash
+            return
         @steps = new TrainingSteps([])
         @steps.on 'reset', => @onTourLoaded(_.map(@steps.models, (i)->i.toJSON()))
 
@@ -50,9 +53,13 @@ class TrainingView extends Backbone.View
             backdropPadding: 5
             template: JST.tour_dialog()
             debug: true
+            redirect: (x) ->
+                console.log "want to redirect to <<#{x}>>"
+                if x!='/' then window.location.href = x
+            onShow: (x) -> console.log "onshow",x
         return options
 
-    onTourLoaded: (steps) ->
+    onTourLoaded: (steps) =>
         console.log "got #{steps.length} steps"
 
         @replaceNullWithUndefined(step) for step in steps
@@ -61,6 +68,9 @@ class TrainingView extends Backbone.View
         for step in steps
             if step.path? and step.path != ''
                 step.path = document.location.pathname + step.path
+
+        console.log "step 0", steps[0], steps[0].path
+        console.log "step 1", steps[1], steps[1].path
 
         # Split the steps into the redirection tour step and the rest.
         # TODO: This will only work with the 'main' flow, unless we add the redirection
@@ -118,6 +128,7 @@ class TrainingView extends Backbone.View
 
     isTourRunning: (tour) ->
         # Assumes that the tour is initialized.
+        console.log "isTourRunning", tour.ended(), tour.getCurrentStep()
         return not tour.ended() and tour.getCurrentStep() != null
 
     replaceNullWithUndefined: (obj) ->
@@ -130,6 +141,7 @@ class TrainingView extends Backbone.View
         # Don't start the tour if it wasn't initialized (due to loading failure)
         # or is already running.
         if (not @tour?) or @isTourRunning(@tour)
+            console.log "not initialized!", @tour, @isTourRunning(@tour)
             return
         @tour.restart()
 

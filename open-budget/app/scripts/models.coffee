@@ -493,8 +493,8 @@ $( ->
         else
             window.location.hash = DEFAULT_HOME
             window.location.reload()
+            return
 
-        pageModel.set("flow",flow)
         if kind == "budget"
             pageModel.article = $("article#budget-item-article")
             pageModel.set("budgetCode","00"+identifier)
@@ -507,6 +507,9 @@ $( ->
         else
             window.location.hash = DEFAULT_HOME
             window.location.reload()
+            return
+
+        pageModel.set("flow",flow)
         $("article.single-page-article").css("display","none")
         pageModel.article.css("display","inherit")
         pageModel.addKind(kind)
