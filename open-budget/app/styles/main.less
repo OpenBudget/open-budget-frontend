@@ -1943,14 +1943,16 @@ svg rect{
         }
 
         &.transfer-list-bar{
-          background-color: @gray;
-          height:4px;
+          height:0px;
           bottom: 0;
           right: 0;
           position: absolute;
-          &.increased { background-color: @increased }
-          &.decreased { background-color: @decreased }
-        }
+          border-style: solid;
+          border-width:2px;
+          &.increased { border-color: @increased }
+          &.decreased { border-color: @decreased }
+          &.pending { border-style: dashed }
+      }
 
       } // >div
 
@@ -1988,7 +1990,7 @@ svg rect{
       }
 
       > div.transfer-list-bar{
-        background-color: @approved;
+        border-color: @approved;
       }
     }
   }

@@ -186,7 +186,7 @@ class MainPageVis extends Backbone.View
                 stroke_color: null
                 tooltip_contents: -> JST.bubble_tooltip(this)
                 click: ->
-                    window.location.hash = linkToBudget(this.id,window.pageModel.get('year'))
+                    window.location.hash = linkToBudget(this.id,2015)
                     false
                 center: null
             @data.push node

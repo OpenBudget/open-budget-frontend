@@ -11,12 +11,22 @@
     </div>
     <div class="col-xs-8 col-sm-5 transfer-list-nums">
       <span class="transfer-list-amount-transferred <%= cls %>" title="<%= value %>">
-        <% if (diff_value>0){ %>
-          <strong>+ <%= format_full_number(diff_value*1000) %> ₪</strong>
-           אושרו כתוספת לכדי סך:
+        <% if (!source.get('pending')) { %>
+            <% if (diff_value>0){ %>
+              <strong>+ <%= format_full_number(diff_value*1000) %> ₪</strong>
+               אושרו כתוספת לכדי סך:
+            <% } else { %>
+              <strong>- <%= format_full_number(-diff_value*1000) %> ₪</strong>
+               אושרו כקיצוץ לכדי סך:
+            <% } %>
         <% } else { %>
-          <strong>- <%= format_full_number(-diff_value*1000) %> ₪</strong>
-           אושרו כקיצוץ לכדי סך:
+            <% if (diff_value>0){ %>
+                <strong>+ <%= format_full_number(diff_value*1000) %> ₪</strong>
+                מבוקשים כתוספת לכדי סך:
+            <% } else { %>
+                <strong>- <%= format_full_number(-diff_value*1000) %> ₪</strong>
+                מבוקשים כקיצוץ לכדי סך:
+            <% } %>
         <% } %>
         </span>
       <h4 class="transfer-list-total"><%= format_full_number(value*1000) %> ₪</h4>
@@ -34,7 +44,7 @@
     <div class="col-xs-2 col-sm-1 transfer-list-more">
       <a href=" <%= linkToTransfer(source.get('group_id'),source.get('year')) %>">></a>
     </div>
-    <div class="transfer-list-bar <%= cls %>" style="width:<%= width_percent %>%">&nbsp</div>
+    <div class="transfer-list-bar <%= cls %> <%= source.get('pending')?'pending':'' %>" style="width:<%= width_percent %>%">&nbsp</div>
   </div>
 </div>
 <% } %>

@@ -54,6 +54,7 @@ class CombinedHistory extends Backbone.Collection
                                 if last_baseline != null
                                     point.set('diff_yearly', baseline-last_baseline)
                                     point.set('last_baseline', last_baseline)
+                                point.set('original_baseline', original_baseline)
                                 changes = 0
                         else if kind == 'change'
                                 changes += 1
@@ -142,6 +143,7 @@ class CombinedHistory extends Backbone.Collection
                                 point.set('width', endYear - startYear)
                                 point.set('participants', approvedRec.get('participants'))
                                 point.set('src','budgetline')
+                                point.set('continued',false)
                                 @add point
 
                                 if endEffect > endYear
