@@ -206,7 +206,12 @@ class MainPageVis extends Backbone.View
             if node.orig > node.rev then decreased += 1
             if node.rev > node.orig then increased += 1
             node.value = node.rev
-            node.part = 1.0*node.rev/node.orig-1
+            if node.orig <=0 and node.rev <= 0
+                node.part = 0
+            else if node.orig == 0
+                node.part = 0
+            else
+                node.part = 1.0*node.rev/node.orig-1
             if node.part > 0 then node.part = d3.min([1,node.part / scaling])
         $("#num-items-increased").text(""+increased)
         $("#num-items-decreased").text(""+decreased)

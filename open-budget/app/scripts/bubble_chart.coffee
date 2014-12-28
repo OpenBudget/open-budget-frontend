@@ -69,6 +69,7 @@ class BubbleChart extends Backbone.View
                       .each(this.move_towards_centers(e.alpha))
                       .attr("cx", (d) => d.x - @get_offset(e.alpha,d).dx)
                       .attr("cy", (d) => d.y - @get_offset(e.alpha,d).dy)
+
     @circles = null
 
   setHeight: (height) ->
@@ -101,6 +102,8 @@ class BubbleChart extends Backbone.View
       d.radius = @radius_scale(d.value)
       d.x = if d.x? then d.x else Math.random() * @width
       d.y = if d.y? then d.y else Math.random()*50 - d.part*@boundingRadius + d.center.y
+      if d.radius < 0
+          return
       @nodes.push d
 
     @nodes.sort (a,b) -> b.value - a.value
