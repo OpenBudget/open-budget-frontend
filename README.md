@@ -1,6 +1,12 @@
 open-budget-frontend
 ====================
 
+Contribute
+----------
+
+Check our issues [here](https://github.com/OpenBudget/open-budget-frontend/issues) or on [Huboard](https://huboard.com/OpenBudget/open-budget-frontend/#/)
+
+
 Install on OS X
 ---------------
 
