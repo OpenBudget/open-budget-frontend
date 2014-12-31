@@ -1025,6 +1025,7 @@ strong.approved {
     background: none;
     box-shadow: none;
     font-size: 20px;
+    max-width: 48%;
   }
   .btn-search{
     padding: 2px 8px;
@@ -2177,4 +2178,10 @@ svg rect{
 // Override bootstrap popover text alignment for rtl.
 .popover.popover-rtl {
   text-align: right;
+}
+
+// Don't let the width get wild
+.body {
+  max-width: 1170px;
+  margin: 1em auto;
 }
