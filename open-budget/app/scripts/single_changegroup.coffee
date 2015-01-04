@@ -10,9 +10,10 @@ class SingleChangeGroupView extends Backbone.View
             data = @model.changeGroup.toJSON()
             data.explanation = ""
             @$el.html window.JST.single_changegroup( data )
-            data.explanation = @model.changeGroupExplanation.get('explanation')
-            @$el.html window.JST.single_changegroup( data )
-            @model.changeGroupExplanation.on('change:explanation', ->
+            if @model.changeGroupExplanation.get('explanation')?
+                data.explanation = @model.changeGroupExplanation.get('explanation')
+                @$el.html window.JST.single_changegroup( data )
+            @model.changeGroupExplanation.on('change:explanation', =>
                 data.explanation = @model.changeGroupExplanation.get('explanation')
                 @$el.html window.JST.single_changegroup( data )
             )
