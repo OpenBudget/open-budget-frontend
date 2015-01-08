@@ -16,7 +16,7 @@ class TrainingSteps extends Backbone.Collection
         @fetch(dataType: window.pageModel.get('dataType'), reset: true)
 
     url: ->
-        "#{window.pageModel.get('baseURL')}/api/training/#{window.pageModel.get('flow')}?a=100"
+        "#{window.pageModel.get('baseURL')}/api/training/#{window.pageModel.get('flow')}"
 
 
 class TrainingView extends Backbone.View
