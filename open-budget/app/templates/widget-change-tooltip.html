@@ -3,7 +3,7 @@
   <!-- <div class="arrow"></div> -->
   <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-changeline">
     <div class="widget-popover-title">
-        <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode')).expense_change*1000; %>
+        <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode'))*1000; %>
         <% var yeardiff = (get("value") - get("original_baseline"))*1000; %>
         <% var revised = get("value")*1000; %>
         <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>

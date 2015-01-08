@@ -234,7 +234,10 @@ class ChangeGroup extends Backbone.Model
                 @set 'timestamp', dateToTimestamp(@get 'date')
 
         getCodeChanges: (code) =>
-                _.filter(@get('changes'),(c)->c.budget_code==code)[0]
+                year = pageModel.get('year')
+                key = "E#{year}/#{code}"
+                changes = _.filter(@get('changes'),(c)->_.indexOf(c['equiv_code'],key)>-1)
+                d3.sum(changes, (c)->c['expense_change'])
 
         getDateType: () =>
                 if @get('pending') then "pending" else "approved"
@@ -243,7 +246,7 @@ class ChangeGroup extends Backbone.Model
                 @fetch(dataType: @pageModel.get('dataType'))
 
         url: ->
-                "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('changeGroupId')}/#{@pageModel.get('year')}"
+                "#{pageModel.get('baseURL')}/api/changegroup/#{pageModel.get('changeGroupId')}/#{pageModel.get('year')}"
 
 class ChangeGroups extends Backbone.Collection
 
@@ -254,7 +257,7 @@ class ChangeGroups extends Backbone.Collection
                 @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
-                "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('budgetCode')}?limit=1000"
+                "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('budgetCode')}/#{@pageModel.get('year')}/equivs?limit=1000"
 
 class SupportLine extends Backbone.Model
 

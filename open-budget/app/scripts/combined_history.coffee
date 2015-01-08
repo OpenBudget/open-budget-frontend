@@ -205,12 +205,12 @@ class CombinedHistory extends Backbone.Collection
                         yearly = _.sortBy( yearly, (m) => m.get('timestamp') )
                         yearStart = new Date(year,0).valueOf()
                         yearEnd = new Date(year,11,31).valueOf()
-                        actualLen = _.filter(yearly, (m) -> m.getCodeChanges(@pageModel.get("budgetCode")).expense_change != 0).length
+                        actualLen = _.filter(yearly, (m) -> m.getCodeChanges(@pageModel.get("budgetCode")) != 0).length
 
                         timestamp = yearStart
                         lastPoint = null
                         for m, i in yearly
-                                value = m.getCodeChanges(@pageModel.get("budgetCode")).expense_change
+                                value = m.getCodeChanges(@pageModel.get("budgetCode"))
                                 if value? and value != 0
                                         point = new CombinedHistoryPoint()
                                         point.set("source",m)

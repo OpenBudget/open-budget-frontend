@@ -1,8 +1,8 @@
 <tr>
   <td class='support-year'><%= year %></td>
   <td class='support-recipient'><%= recipient %></td>
-  <td class='support-amount-allocated'><%= amount_allocated %></td>
-  <td class='support-amount_supported'><%= amount_supported %></td>
+  <td class='support-amount-allocated'><%= number_with_commas(amount_allocated) %></td>
+  <td class='support-amount_supported'><%= number_with_commas(amount_supported) %></td>
   <td class='support-kind'><%= kind %></td>
   <td class='support-more'>
     <span class='support-num_used'>
