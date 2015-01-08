@@ -2133,6 +2133,9 @@ svg rect{
   button.close{
     position: absolute;
     padding: 0px 5px;
+    left: 0;
+    top: 0;
+    z-index: 10000;
   }
 
   .popover-title, .modal-header {
@@ -2196,4 +2199,32 @@ svg rect{
 // Override bootstrap popover text alignment for rtl.
 .popover.popover-rtl {
   text-align: right;
+}
+
+body[class*="tour-tour-en"] .popover.popover-rtl{
+
+  .popover-content, .popover-title, .popover-navigation {
+    text-align: center;
+    direction: ltr;
+  }
+
+  button.close {
+    left: auto;
+    right: 0;
+  }
+
+  .btn-group > .btn {
+    float: left;
+    color: transparent;
+
+    &:first-child:before {
+      content: "« back";
+      color: #333;
+    }
+
+    &:last-child:before {
+      content: "next »";
+      color: #333;
+    }
+  }
 }
