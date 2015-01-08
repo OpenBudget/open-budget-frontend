@@ -2130,6 +2130,11 @@ svg rect{
 
   box-shadow: 0px 5px 100px 10px rgba(0, 0, 0, 0.4);
 
+  button.close{
+    position: absolute;
+    padding: 0px 5px;
+  }
+
   .popover-title, .modal-header {
     border-bottom: 1px solid transparent;
     background: @ultralightgray;
@@ -2149,6 +2154,20 @@ svg rect{
 
 // Override bootstrap-tour End button position for rtl.
 .popover[class*="tour-"] {
+
+  div.popover-navigation {
+    padding: 0;
+
+    .btn {
+      display: block;
+      width: 50%;
+    }
+  }
+
+  .popover-content {
+    padding: 14px;
+    position: relative;
+  }
 
   .popover-navigation.popover-navigation-rtl {
     *[data-role="end"] {
