@@ -37,7 +37,7 @@ class IndepthWidget extends Backbone.View
                 @tooltipYOffset = (d) -> -TOOLTIP_SIZE+45+@valueScale( d.get('value') )
                 @change_tip = d3.tip()
                                .attr('class', 'd3-tip timeline-tip')
-                               .direction((d) => "n")#if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
+                               .direction((d) => if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
                                .offset((d) => [@tooltipYOffset(d) ,0])
                                .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
                 @chart.call( @change_tip )

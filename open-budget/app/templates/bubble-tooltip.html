@@ -10,7 +10,7 @@
               <%= format_full_number( rev*1000 ) %> ₪
           </span>
           <span class="percentage">
-              <%= (Math.abs( 1 - rev / orig ) * 100).toFixed(1) %>%<%= number_plus_minus( rev - orig ) %>
+              <%= (Math.abs( rev / orig ) * 100).toFixed(0) %>%
           </span>
         </div>
         <p class="description">
