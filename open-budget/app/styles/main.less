@@ -945,13 +945,6 @@ strong.approved {
     }
   }
 
-  .approved{
-    .widget-popover,.widget-popover-content { .approved_border !important}
-    .item-title,.revised-diff,#trans-tip{     .approved_bg     !important}
-    .widget-popover-title span,.percentage {  .approved_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @approved}
-    .widget-popover.arrow-left:before{        border-right-color: @approved}
-  }
   .increased_a{
     .widget-popover,.widget-popover-content { .increased_a_border !important}
     .item-title,.revised-diff,#trans-tip{     .increased_a_bg     !important}
@@ -1007,6 +1000,13 @@ strong.approved {
     .widget-popover-title span,.percentage {  .decreased_d_text   !important}
     .widget-popover.arrow-bottom:before{      border-top-color: @decreased_d}
     .widget-popover.arrow-left:before{        border-right-color: @decreased_d}
+  }
+  .approved{
+    .widget-popover,.widget-popover-content { .approved_border !important}
+    .item-title,.revised-diff,#trans-tip{     .approved_bg     !important}
+    .widget-popover-title span,.percentage {  .approved_text   !important}
+    .widget-popover.arrow-bottom:before{      border-top-color: @approved!important}
+    .widget-popover.arrow-left:before{        border-right-color: @approved!important}
   }
 
 }
