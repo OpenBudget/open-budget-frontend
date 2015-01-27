@@ -9,6 +9,10 @@ class TrainingStep extends Backbone.Model
         duration: null
         backdrop: null
 
+    initialize: ->
+        @set('orphan',!(@get('element')?))
+
+
 class TrainingSteps extends Backbone.Collection
     model: TrainingStep
 
@@ -16,7 +20,7 @@ class TrainingSteps extends Backbone.Collection
         @fetch(dataType: window.pageModel.get('dataType'), reset: true)
 
     url: ->
-        "#{window.pageModel.get('baseURL')}/api/training/#{window.pageModel.get('flow')}"
+        "#{window.pageModel.get('baseURL')}/api/training/#{window.pageModel.get('flow')}?rand=#{Math.random()}"
 
 
 class TrainingView extends Backbone.View

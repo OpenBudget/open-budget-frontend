@@ -61,6 +61,7 @@ window.changeClass = (orig_value,revised_value) ->
 
 window.linkToBudget = (code,year) -> "#budget/#{code.slice(2)}/#{year}/#{window.pageModel.get('flow')}"
 window.linkToTransfer = (code,year) -> "#transfer/#{code}/#{year}/#{window.pageModel.get('flow')}"
+window.linkToEntity = (kind,id) -> "#entity/#{kind}:#{id}/#{pageModel.get('year')}/#{pageModel.get('flow')}"
 
 $( ->
         window.onhashchange = -> window.location.reload()

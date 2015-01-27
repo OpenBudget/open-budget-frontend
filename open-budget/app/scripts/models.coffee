@@ -334,6 +334,24 @@ class Participants extends Backbone.Collection
         url: ->
             "#{pageModel.get('baseURL')}/api/participants/#{@code}"
 
+class Entity extends Backbone.Model
+
+        defaults:
+                kind: null
+                name: null
+                supports: []
+                exemptions: []
+                id: null
+
+        initialize: (options) ->
+                @pageModel = options.pageModel
+
+        doFetch: ->
+                @fetch(dataType: @pageModel.get('dataType'))
+
+        url: ->
+                "#{pageModel.get('baseURL')}/api/entity/#{pageModel.get('entityKind')}/#{pageModel.get('entityId')}"
+
 class ReadyAggregator
 
     constructor: (event) ->
@@ -396,7 +414,9 @@ class PageModel extends Backbone.Model
                     @budgetHistory = new BudgetHistory([], pageModel: @)
                     @budgetHistory.on 'reset',
                                       () =>
+                                          console.log 'setting currentItem', @budgetHistory
                                           @set('currentItem', @budgetHistory.getLast())
+                                          console.log 'setting currentItem done'
 
                     @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
                                                 .addCollection(@changeGroups)
@@ -452,6 +472,12 @@ class PageModel extends Backbone.Model
                         for part in title_template
                             @addKind(part)
 
+                @on 'change:entityId', ->
+                    @entity = new Entity(pageModel: @)
+                    @readyEvents.push new ReadyAggregator("ready-entity")
+                                                .addModel(@entity)
+                    @entity.doFetch()
+
                 @on 'change:mainPage', ->
                     @budgetItems4 = new CompareRecords([], pageModel: @)
                     @budgetItems2 = new BudgetItemKids([], year: 2015, code: '00', pageModel: @)
@@ -504,6 +530,11 @@ $( ->
         else if kind == "transfer"
             pageModel.article = $("article#change-group-article")
             pageModel.set("changeGroupId",identifier)
+        else if kind == "entity"
+            pageModel.article = $("article#entity-article")
+            identifier = identifier.split(':')
+            pageModel.set("entityKind",identifier[0])
+            pageModel.set("entityId",identifier[1])
         else if kind == "main"
             pageModel.article = $("article#main-page-article")
             pageModel.set("mainPage",identifier)

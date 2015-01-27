@@ -1,6 +1,12 @@
 <tr>
   <td class='support-year'><%= year %></td>
-  <td class='support-recipient'><%= recipient %></td>
+  <td class='support-recipient'>
+      <% if ( entity_kind != null ) { %>
+          <a href="<%= linkToEntity(entity_kind,entity_id) %>"><%= recipient %></a>
+      <% } else { %>
+          <%= recipient %>
+      <% } %>
+  </td>
   <td class='support-amount-allocated'><%= number_with_commas(amount_allocated) %></td>
   <td class='support-amount_supported'><%= number_with_commas(amount_supported) %></td>
   <td class='support-kind'><%= kind %></td>
@@ -11,13 +17,13 @@
       <% } %>
     </span>
     <span class='support-company_id'>
-      <% if ( company_id != null ) { %>
-      מספר חברה: <%= company_id %>
+      <% if ( entity_kind == "company" ) { %>
+      מספר חברה: <%= entity_id %>
       <% } %>
     </span>
     <span class='support-ngo_id'>
-      <% if ( ngo_id != null ) { %>
-      מספר עמותה: <%= ngo_id %>
+      <% if ( entity_kind == "association" ) { %>
+      מספר עמותה: <%= entity_id %>
       <% } %>
     </span>
   </td>
