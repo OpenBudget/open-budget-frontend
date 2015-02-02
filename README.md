@@ -58,6 +58,6 @@ Then run this command:
 
 ###Install the project
 
-Same instructions as under OS X above.
+Same instructions as under OS X above (only without 'sudo').
 
 Enjoy!
