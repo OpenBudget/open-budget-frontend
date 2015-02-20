@@ -2230,3 +2230,31 @@ svg rect{
     }
   }
 }
+
+#tabs-label-container {
+  width: 100%;
+  overflow: auto;
+}
+
+  .tab-label {
+    display: inline-block;
+    float: right;
+    padding: 1em;
+    cursor: pointer;
+    background-color: white;
+  }
+  .tab-label:hover {
+    background-color: #efefef;
+  }
+  
+  .tab-label.selected {
+    background-color: grey;
+  }
+
+#tabs-content-container {
+  width: 100%;
+}
+
+.tab-content {
+  display: none;
+}

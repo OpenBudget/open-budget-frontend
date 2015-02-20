@@ -153,7 +153,31 @@
                     </div>
                     <div id="participantThumbnails" class="2digits 4digits 6digits 8digits"></div>
                   </div>
-                  <h2 id="list-title" class="4digits 6digits">רשימת השינויים</h2>
+                  <div id="tabs-label-container">
+                    <div id="list-title" class="tab-label">רשימת השינויים</div>
+                    <div id="support-list-title" class="tab-label">תמיכות בתקנה זו</div>
+                  </div>
+                  <div id="tabs-content-container">
+                    <div id="change-list-content" class="tab-content">
+                      <div id="change-list" class="container 4digits 6digits"></div>
+                    </div>
+                    <div id="change-list-content" class="tab-content">
+                      <table id="support-table" class="table table-hover table-striped 6digits 8digits">
+                        <thead>
+                          <th>שנה</th>
+                          <th>שם</th>
+                          <th>אושר</th>
+                          <th>הועבר</th>
+                          <th>סוג</th>
+                          <th>עוד</th>
+                        </thead>
+                        <tbody id="support-lines">
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!--h2 id="list-title" class="4digits 6digits">רשימת השינויים</h2>
                   <div id="change-list" class="container 4digits 6digits"></div>
                   <h2 id="support-list-title" class="6digits 8digits">תמיכות בתקנה זו</h2>
 
@@ -169,7 +193,7 @@
                     <tbody id="support-lines">
 
                     </tbody>
-                  </table>
+                  </table-->
 
                 </section>
 
@@ -338,6 +362,7 @@
         <script src="scripts/analysis_header.js"></script>
         <script src="scripts/bubble_chart.js"></script>
         <script src="scripts/main_page_vis.js"></script>
+        <script src="scripts/main_page_tabs.js"></script>
         <script src="scripts/support_list.js"></script>
         <script src="scripts/searchbar.js"></script>
         <script src="scripts/subscribe.js"></script>
