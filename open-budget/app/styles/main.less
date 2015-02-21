@@ -2269,3 +2269,21 @@ svg rect{
     position: absolute;
     text-indent: 2px;
   }
+  
+#bubble-chart-container {
+  position: relative;
+}
+  .bubble-group-label {
+    position: absolute;
+    text-align: center;
+    pointer-events: none; // in order to allow hover event to fire under the label
+  }
+  
+    .bubble-group-label-child {
+      position: relative;
+      left: -50%;
+    }
+    
+    .bubble-group-label-total-sum {
+      font-weight: bold;
+    }
