@@ -2254,8 +2254,18 @@ svg rect{
 
 #tabs-content-container {
   width: 100%;
+  overflow: auto;
 }
 
-.tab-content {
-  display: none;
-}
+  .tab-content {
+    display: none;
+  }
+  
+  .node {
+    border: solid 1px white;
+    font: 10px sans-serif;
+    line-height: 12px;
+    overflow: hidden;
+    position: absolute;
+    text-indent: 2px;
+  }

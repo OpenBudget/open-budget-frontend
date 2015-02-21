@@ -1,6 +1,8 @@
 class MainPageTabs extends Backbone.View
   initialize: ->
     self = this;
+    @tabList = $(".tab-label");
+    @contentList = $(".tab-content");
     $(".tab-label").click ->
       # Get the index of the clicked tab
       tabIndex = $(this).index();
@@ -10,15 +12,13 @@ class MainPageTabs extends Backbone.View
     @showTab(0);
   
   showTab: (tabIndex) ->
-    contentList = $(".tab-content");
-    tabList = $(".tab-label");
     # Hide all the content DIVs and return the DIV corresponding to the
     # requested index
-    contentElement = contentList.hide().get(tabIndex);
+    contentElement = @contentList.hide().get(tabIndex);
     # de-select all the tabs
-    tabList.filter(".selected").removeClass("selected");
+    @tabList.filter(".selected").removeClass("selected");
     # select the requested tab
-    $(tabList.get(tabIndex)).addClass("selected");
+    $(@tabList.get(tabIndex)).addClass("selected");
     # Show the selected content DIV
     $(contentElement).show();
 
