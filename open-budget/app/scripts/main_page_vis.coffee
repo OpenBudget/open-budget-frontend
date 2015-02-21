@@ -11,8 +11,6 @@ class SimpleCentering
     elToCenter: (el) -> @center
     item_width: 600
     item_height: 600
-    title_dy: =>
-      -1*@item_height/2
 
 class ParentCentering
 
@@ -39,8 +37,6 @@ class ParentCentering
     elToCenter: (el) => @centers[el.id.substring(2,4)]
     item_width: 200
     item_height: 250
-    title_dy: =>
-      -1*@item_height/2
 
 class TopGroupCentering
 
@@ -64,8 +60,6 @@ class TopGroupCentering
 
     getCenters: => @data
     elToCenter: (el) => @centers[el.src.get('group_top')[0]]
-    title_dy: =>
-      -1*@item_height/2
     item_width: 400
     item_height: 300
 
@@ -92,8 +86,6 @@ class FullGroupCentering
 
     getCenters: => @data
     elToCenter: (el) => @centers[el.src.get('group_full')[0]]
-    title_dy: =>
-      -1*@item_height/2
     item_width: 300
     item_height: 250
 
