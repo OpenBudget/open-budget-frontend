@@ -1,5 +1,6 @@
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import "../bower_components/bootstrap-rtl/less/bootstrap-rtl.less";
+@import "../bower_components/pivottable/dist/pivot.min.css";
 //@import url("http://fonts.googleapis.com/earlyaccess/alefhebrew.css");
 @import "assets/fonts/alefhebrew.css";
 @import "assets/fonts/glyphicons.css";
@@ -2230,3 +2231,41 @@ svg rect{
     }
   }
 }
+
+#tabs-label-container {
+  width: 100%;
+  overflow: auto;
+}
+
+  .tab-label {
+    display: inline-block;
+    float: right;
+    padding: 1em;
+    cursor: pointer;
+    background-color: white;
+  }
+  .tab-label:hover {
+    background-color: #efefef;
+  }
+  
+  .tab-label.selected {
+    background-color: grey;
+  }
+
+#tabs-content-container {
+  width: 100%;
+  overflow: auto;
+}
+
+  .tab-content {
+    display: none;
+  }
+  
+  .node {
+    border: solid 1px white;
+    font: 10px sans-serif;
+    line-height: 12px;
+    overflow: hidden;
+    position: absolute;
+    text-indent: 2px;
+  }

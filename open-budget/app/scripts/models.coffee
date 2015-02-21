@@ -259,8 +259,40 @@ class ChangeGroups extends Backbone.Collection
         url: ->
                 "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('budgetCode')}/#{@pageModel.get('year')}/equivs?limit=1000"
 
-class SupportLine extends Backbone.Model
 
+class SupportLineDescription extends Backbone.Model
+
+  defaults:
+    field: null,
+    en: null,
+    he: null,
+    model: null,
+    order: null
+
+class SupportFieldNormalizer extends Backbone.Collection
+  
+  model: SupportLineDescription
+  
+  initialize: (models, options) ->
+    @pageModel = options.pageModel
+    @fetch(dataType: @pageModel.get('dataType'), reset: true)
+    @on("reset", ->
+      _json = @toJSON()
+      @normalizationStructure = {}
+      for fieldStructure in _json
+        @normalizationStructure[fieldStructure["field"]] = fieldStructure
+    )
+    
+  normalize: (field, locale) ->
+    if @normalizationStructure[field] 
+    then @normalizationStructure[field][locale] 
+    else undefined
+    
+  url: -> 
+    "#{@pageModel.get('baseURL')}/api/describe/SupportLine"
+
+class SupportLine extends Backbone.Model
+ 
     defaults:
         kind: null
         code: null
@@ -273,6 +305,18 @@ class SupportLine extends Backbone.Model
         year: null
         recipient: null
         subject: null
+        
+    toLocaleJSON: (requestedLocale) -> 
+      locale = requestedLocale || "he"
+      baseJSON = @toJSON()
+      resultJSON = {}
+      pageModel = window.pageModel
+      for key, value of baseJSON
+        normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
+        if normalizedKey?
+          resultJSON[normalizedKey] = value
+      
+      return resultJSON
 
 class TakanaSupports extends Backbone.Collection
 
@@ -402,6 +446,7 @@ class PageModel extends Backbone.Model
                 if window.location.origin == @get('baseURL')
                     @set('dataType','json')
                 @readyEvents = []
+                @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
                 @on 'change:budgetCode', ->
                     budgetCode = @get('budgetCode')
                     digits = budgetCode.length - 2
