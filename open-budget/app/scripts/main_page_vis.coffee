@@ -262,7 +262,6 @@ class MainPageVis extends Backbone.View
     render: ->
         @chart.render()
         @chart.start()
-        @addBubbleLabels()
         @rendered = true
 
 $( ->
