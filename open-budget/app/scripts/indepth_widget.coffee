@@ -159,7 +159,7 @@ class IndepthWidget extends Backbone.View
 
         render__guideline: ->
                 # Guideline
-                @chart.selectAll('.guideline').data([{w:3,s:'#fff'},{w:1,s:'#000'}])
+                @chart.selectAll('.guideline').data([{w:3,s:'#fff'},{w:1,s:'#999'}])
                         .enter()
                             .append('line')
                             .attr('class','guideline')

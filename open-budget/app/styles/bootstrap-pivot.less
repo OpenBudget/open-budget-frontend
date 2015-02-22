@@ -1,0 +1,70 @@
+// @import "bootstrap-pivot.less";
+
+// #tabs-label-container {
+//   width: 100%;
+//   overflow: auto;
+// }
+//
+//   .tab-label {
+//     display: inline-block;
+//     float: right;
+//     padding: 1em;
+//     cursor: pointer;
+//     background-color: white;
+//   }
+//   .tab-label:hover {
+//     background-color: #efefef;
+//   }
+//
+//   .tab-label.selected {
+//     background-color: grey;
+//   }
+//
+// #tabs-content-container {
+//   width: 100%;
+//   overflow: auto;
+// }
+//
+// .tab-content {
+//   display: none;
+// }
+//
+// .node {
+//   border: solid 1px white;
+//   font: 10px sans-serif;
+//   line-height: 12px;
+//   overflow: hidden;
+//   position: absolute;
+//   text-indent: 2px;
+// }
+
+#pivot-table{
+  .table;
+  // .table-condensed;
+
+  table.pvtTable{
+    .table;
+    .table-hover;
+  }
+
+  >tbody>tr>td:last-child {
+    width: 70%;
+  }
+
+  td.pvtVals br {
+    display: none;
+  }
+
+  select {
+    .form-control;
+  }
+
+  .pvtAxisContainer, .pvtVals {
+    background: @ultralightgray;
+    border-color: darken(@ultralightgray, 5%);
+  }
+
+  .pvtAxisContainer {
+    text-align: right;
+  }
+}

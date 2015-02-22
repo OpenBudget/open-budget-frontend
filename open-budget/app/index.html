@@ -153,19 +153,27 @@
                     </div>
                     <div id="participantThumbnails" class="2digits 4digits 6digits 8digits"></div>
                   </div>
-                  <div id="tabs-label-container">
-                    <div id="list-title" class="tab-label">רשימת השינויים</div>
-                    <div id="support-list-title" class="tab-label">תמיכות בתקנה זו</div>
-                  </div>
-                  <div id="tabs-content-container">
-                    <div id="change-list-content" class="tab-content">
-                      <div id="change-list" class="container 4digits 6digits"></div>
-                    </div>
-                    <div id="support-list-content" class="tab-content">
-                      <div class="spinner-container"></div>
-                    </div>
-                  </div>
                 </section>
+
+                  <section role="tabpanel">
+
+                    <!-- Nav tabs -->
+                    <ul id="tabs-label-container" class="nav nav-tabs nav-justified" role="tablist">
+                      <li id="list-title"  role="presentation" class="active"><a href="#tabs-content-container" aria-controls="home" role="tab" data-toggle="tab">רשימת השינויים</a></li>
+                      <li id="support-list-title" role="presentation"><a href="#support-list-content" aria-controls="profile" role="tab" data-toggle="tab">תמיכות בתקנה זו</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div id="tabs-content-container" class="tab-content">
+                      <div id="change-list-content" role="tabpanel" class="tab-pane active" id="home">
+                        <div id="change-list" class="container 4digits 6digits"></div>
+                      </div>
+                      <div id="support-list-content" role="tabpanel" class="tab-pane" id="profile">
+                        <div class="spinner-container"></div>
+                      </div>
+                    </div>
+
+                  </section>
 
             </article>
 
