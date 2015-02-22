@@ -11,7 +11,6 @@ class SimpleCentering
     elToCenter: (el) -> @center
     item_width: 600
     item_height: 600
-    title_dy: 1
 
 class ParentCentering
 
@@ -38,7 +37,6 @@ class ParentCentering
     elToCenter: (el) => @centers[el.id.substring(2,4)]
     item_width: 200
     item_height: 250
-    title_dy: 100
 
 class TopGroupCentering
 
@@ -62,7 +60,6 @@ class TopGroupCentering
 
     getCenters: => @data
     elToCenter: (el) => @centers[el.src.get('group_top')[0]]
-    title_dy: 150
     item_width: 400
     item_height: 300
 
@@ -89,7 +86,6 @@ class FullGroupCentering
 
     getCenters: => @data
     elToCenter: (el) => @centers[el.src.get('group_full')[0]]
-    title_dy: 100
     item_width: 300
     item_height: 250
 
@@ -101,6 +97,7 @@ class MainPageVis extends Backbone.View
         @model.on 'ready-budget-bubbles', =>
             @chart = new BubbleChart( el: @$el.find("#bubble-chart") )
             @chart_el = d3.select(@chart.el)
+            @$bubbleContainer = @$el.find("#bubble-chart-container");
             @toggle = 0
             @centers = [ new SimpleCentering(), new TopGroupCentering(), new FullGroupCentering(), new ParentCentering() ]
             @prepareData()
@@ -149,23 +146,24 @@ class MainPageVis extends Backbone.View
         @toggle = parseInt($(e.currentTarget).attr('data-toggle'))
         @recalc_centers()
         @chart.start()
-
+    
+    addBubbleLabels: ->
+      # Check if labels already exist
+      @$bubbleContainer.find(".bubble-group-label").remove();
+      center = @centers[@toggle]
+      title_data = center.getCenters()
+      for group, i in title_data
+        if group.title?
+          $(JST.bubble_group_label(group)).css({
+            top: (group.y - center.item_height/2) + "px",
+            left: group.x + "px"
+          }).appendTo(@$bubbleContainer);
+            
+    
     prepareData: ->
         fill_color = -> "#aabbcc"
         stroke_color = -> "#ccbbaa"
-
-        for center,i in @centers
-            title_data = center.getCenters()
-            @chart_el.selectAll(".bubbleTitle#{i}")
-                        .data(title_data)
-                        .enter()
-                            .append('svg:text')
-                            .attr('class',"bubbleTitle bubbleTitle#{i}")
-                            .attr('dy', center.title_dy)
-                            .text((d) -> d.title)
-                            .style('opacity', 0)
-                            .style("text-anchor", "middle")
-
+        
         # Create data for bubble chart
         @data = []
         that = this
@@ -241,12 +239,19 @@ class MainPageVis extends Backbone.View
 
             center.x = globalWidth - ((center.index % items_in_line)*center_strategy.item_width + start_x)
             center.y = (Math.floor(center.index / items_in_line))*center_strategy.item_height + start_y
+            center.total = 0
 
         for node in @data
             node.center = center_strategy.elToCenter(node)
+            # Accumulate the total allocated budget for each center
+            if node.center? then node.center.total += node.rev
             if node.center?.x? or node.center?.y?
                 @nodes.push node
         @chart.updateNodes(@nodes, @centers[@toggle].getCenters().length)
+        
+        # We need to refresh the bubble labels based on the new centers
+        @addBubbleLabels()
+        
         d3.select(@el).selectAll(".bubbleTitle#{@toggle}")
                         .data(@centers[@toggle].getCenters())
                         .transition()
