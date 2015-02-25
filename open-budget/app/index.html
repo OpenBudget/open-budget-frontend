@@ -78,9 +78,12 @@
                     <li>
                   </ul>
                   <ul class="nav navbar-nav navbar-left">
-				  	<li class="twitter-button">
-						<a href="//twitter.com/share" class="twitter-share-button" data-count="none" data-hashtags="פותחים_תתקציב">Tweet</a>
-					</li>
+                    <li class="social-button-container">
+                      <div class="fb-share-button" data-layout="button_count"></div>
+        				  	</li>
+                    <li class="social-button-container">
+          						<a href="//twitter.com/share" class="twitter-share-button" data-count="none" data-hashtags="פותחים_תתקציב">Tweet</a>
+          					</li>
                     <li><a href="#" id="subscribeWidget" role="button" class="btn btn-default"></a></li>
                   </ul>
                 </div><!-- /.navbar-collapse -->
@@ -374,5 +377,24 @@
         </script>
         <!-- End twitter code -->
 
+        <!-- Facebook -->
+        <div id="fb-root"></div>
+        <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              xfbml      : true,
+              version    : 'v2.1'
+            });
+          };
+
+          (function(d, s, id){
+             var js, fjs = d.getElementsByTagName(s)[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement(s); js.id = id;
+             js.src = "//connect.facebook.net/en_US/sdk.js";
+             fjs.parentNode.insertBefore(js, fjs);
+           }(document, 'script', 'facebook-jssdk'));
+        </script>
+        <!-- End Facebook Code -->
 </body>
 </html>
