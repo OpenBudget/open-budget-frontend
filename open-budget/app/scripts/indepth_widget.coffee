@@ -37,7 +37,7 @@ class IndepthWidget extends Backbone.View
                 @tooltipYOffset = (d) -> -TOOLTIP_SIZE+45+@valueScale( d.get('value') )
                 @change_tip = d3.tip()
                                .attr('class', 'd3-tip timeline-tip')
-                               .direction((d) => if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
+                               .direction((d) => "n") #if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
                                .offset((d) => [@tooltipYOffset(d) ,0])
                                .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
                 @chart.call( @change_tip )
@@ -82,7 +82,29 @@ class IndepthWidget extends Backbone.View
                             .style('display','block')
                             .style('left', d3.event.pageX+"px")
                             .style('top',ofs.top+that.valueScale(0)+"px")
-                        true
+                        if this.tagName=='rect'
+                            hook_ofs = mouse[0] - hook.attr('x')
+                            hook_width = hook.attr('width')
+                            compensation = hook_ofs - hook_width/2
+                            sub_compensation = 0
+                            tip_width = $('.d3-tip').width()
+                            overflow = mouse[0] - tip_width/2
+                            if overflow < 0
+                                compensation -= overflow
+                                sub_compensation = overflow
+                            overflow = mouse[0] + tip_width/2 - that.maxWidth
+                            if overflow > 0
+                                compensation -= overflow
+                                sub_compensation = overflow
+
+                            $('.timeline-tip').css('margin-left',compensation+"px")
+                            sheet = document.getElementById('arrow-helper').sheet
+                            while sheet.cssRules.length > 0
+                                sheet.deleteRule(0)
+                            if sub_compensation != 0
+                                sheet.insertRule(".timeline-tip .arrow.arrow-bottom:before { margin-left: #{sub_compensation-8}px }")
+                                sheet.insertRule(".timeline-tip .arrow.arrow-bottom:after { margin-left: #{sub_compensation-5}px }")
+                        d3.event.preventDefault()
                 @hideGuideline = ->
                         that.chart.selectAll('.guideline')
                             .style('visibility','hidden')

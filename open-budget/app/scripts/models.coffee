@@ -270,9 +270,9 @@ class SupportLineDescription extends Backbone.Model
     order: null
 
 class SupportFieldNormalizer extends Backbone.Collection
-  
+
   model: SupportLineDescription
-  
+
   initialize: (models, options) ->
     @pageModel = options.pageModel
     @fetch(dataType: @pageModel.get('dataType'), reset: true)
@@ -282,17 +282,17 @@ class SupportFieldNormalizer extends Backbone.Collection
       for fieldStructure in _json
         @normalizationStructure[fieldStructure["field"]] = fieldStructure
     )
-    
+
   normalize: (field, locale) ->
-    if @normalizationStructure[field] 
-    then @normalizationStructure[field][locale] 
+    if @normalizationStructure[field]
+    then @normalizationStructure[field][locale]
     else undefined
-    
-  url: -> 
+
+  url: ->
     "#{@pageModel.get('baseURL')}/api/describe/SupportLine"
 
 class SupportLine extends Backbone.Model
- 
+
     defaults:
         kind: null
         code: null
@@ -305,8 +305,8 @@ class SupportLine extends Backbone.Model
         year: null
         recipient: null
         subject: null
-        
-    toLocaleJSON: (requestedLocale) -> 
+
+    toLocaleJSON: (requestedLocale) ->
       locale = requestedLocale || "he"
       baseJSON = @toJSON()
       resultJSON = {}
@@ -315,7 +315,7 @@ class SupportLine extends Backbone.Model
         normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
         if normalizedKey?
           resultJSON[normalizedKey] = value
-      
+
       return resultJSON
 
 class TakanaSupports extends Backbone.Collection
@@ -468,7 +468,7 @@ class PageModel extends Backbone.Model
                                                 .addCollection(@budgetHistory)
                                                 .addCollection(@budgetApprovals)
 
-                    if digits >= 6
+                    if digits >= 4
                         @on('ready-budget-history', ->
                             @supports = new TakanaSupports([], pageModel: @)
                             @readyEvents.push new ReadyAggregator("ready-supports")
