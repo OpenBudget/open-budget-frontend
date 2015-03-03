@@ -99,10 +99,12 @@ class BudgetItem extends Backbone.Model
                 net_used: null
                 explanation: null
                 analysis_short_term_yearly_change: null
-                orig_codes: []
+                orig_codes: [],
+                uniqueId: null
 
         initialize: (options) ->
             @pageModel = options.pageModel
+            @set("uniqueId", "budget-item-" + @get("code") + "-" + @get("year"))
 
         do_fetch: ->
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
@@ -220,6 +222,7 @@ class ChangeGroup extends Backbone.Model
                 group_id: null
                 changes: []
                 pending: false
+                uniqueId: null
 
         initialize: (options) ->
                 @pageModel = options.pageModel
@@ -229,6 +232,7 @@ class ChangeGroup extends Backbone.Model
                 else
                     @on 'change:date', =>
                         @setTimestamp()
+                @set("uniqueId", "change-group-"+@get("group_id"))
 
         setTimestamp: ->
                 @set 'timestamp', dateToTimestamp(@get 'date')
@@ -270,9 +274,9 @@ class SupportLineDescription extends Backbone.Model
     order: null
 
 class SupportFieldNormalizer extends Backbone.Collection
-  
+
   model: SupportLineDescription
-  
+
   initialize: (models, options) ->
     @pageModel = options.pageModel
     @fetch(dataType: @pageModel.get('dataType'), reset: true)
@@ -282,17 +286,17 @@ class SupportFieldNormalizer extends Backbone.Collection
       for fieldStructure in _json
         @normalizationStructure[fieldStructure["field"]] = fieldStructure
     )
-    
+
   normalize: (field, locale) ->
-    if @normalizationStructure[field] 
-    then @normalizationStructure[field][locale] 
+    if @normalizationStructure[field]
+    then @normalizationStructure[field][locale]
     else undefined
-    
-  url: -> 
+
+  url: ->
     "#{@pageModel.get('baseURL')}/api/describe/SupportLine"
 
 class SupportLine extends Backbone.Model
- 
+
     defaults:
         kind: null
         code: null
@@ -305,8 +309,8 @@ class SupportLine extends Backbone.Model
         year: null
         recipient: null
         subject: null
-        
-    toLocaleJSON: (requestedLocale) -> 
+
+    toLocaleJSON: (requestedLocale) ->
       locale = requestedLocale || "he"
       baseJSON = @toJSON()
       resultJSON = {}
@@ -315,7 +319,7 @@ class SupportLine extends Backbone.Model
         normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
         if normalizedKey?
           resultJSON[normalizedKey] = value
-      
+
       return resultJSON
 
 class TakanaSupports extends Backbone.Collection
