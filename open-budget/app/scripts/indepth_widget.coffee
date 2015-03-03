@@ -10,6 +10,7 @@ class IndepthWidget extends Backbone.View
         initialize: ->
                 @pageModel = window.pageModel
                 @pageModel.on 'change:selection', => @render()
+                @pageModel.on 'resized', => @render()
 
                 @$el.html('')
                 @svg = d3.select(@el).append('svg')

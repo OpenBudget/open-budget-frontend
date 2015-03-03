@@ -430,6 +430,22 @@ class ReadyAggregator
             @ready = true
             pageModel.trigger(@event)
 
+# window.onresize can only hold 1 callback, the ResizeNotifier will serve as
+# an initiator for onresize events
+class ResizeNotifier extends Backbone.Model
+        initialize: ->
+          @resizeTimer    = 0
+          @callbackQueue  = []
+
+          window.onresize = (event) =>
+            clearTimeout(@resizeTimer)
+            @resizeTimer = setTimeout ( =>
+              for callback in @callbackQueue
+                callback()
+            ), 100
+
+        registerResizeCallback: (callback) ->
+          @callbackQueue.push(callback)
 
 class PageModel extends Backbone.Model
 
@@ -451,7 +467,13 @@ class PageModel extends Backbone.Model
                     @set('dataType','json')
                 @readyEvents = []
                 @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
-                @mainPageTabs = new window.MainPageTabs(@);
+                @mainPageTabs           = new window.MainPageTabs(@);
+                @resizeNotifier         = new ResizeNotifier()
+
+                @resizeNotifier.registerResizeCallback( =>
+                  @.trigger('resized')
+                )
+
                 @on 'change:budgetCode', ->
                     budgetCode = @get('budgetCode')
                     digits = budgetCode.length - 2
@@ -597,6 +619,4 @@ $( ->
         $("article.single-page-article").css("display","none")
         pageModel.article.css("display","inherit")
         pageModel.addKind(kind)
-        $(window).resize ->
-            pageModel.trigger('resized')
 )
