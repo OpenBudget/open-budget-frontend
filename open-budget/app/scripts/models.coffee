@@ -99,10 +99,12 @@ class BudgetItem extends Backbone.Model
                 net_used: null
                 explanation: null
                 analysis_short_term_yearly_change: null
-                orig_codes: []
+                orig_codes: [],
+                uniqueId: null
 
         initialize: (options) ->
             @pageModel = options.pageModel
+            @set("uniqueId", "budget-item-" + @get("code") + "-" + @get("year"))
 
         do_fetch: ->
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
@@ -220,6 +222,7 @@ class ChangeGroup extends Backbone.Model
                 group_id: null
                 changes: []
                 pending: false
+                uniqueId: null
 
         initialize: (options) ->
                 @pageModel = options.pageModel
@@ -229,6 +232,7 @@ class ChangeGroup extends Backbone.Model
                 else
                     @on 'change:date', =>
                         @setTimestamp()
+                @set("uniqueId", "change-group-"+@get("group_id"))
 
         setTimestamp: ->
                 @set 'timestamp', dateToTimestamp(@get 'date')

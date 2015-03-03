@@ -14,6 +14,9 @@ class BreadcrumbHeaderView extends Backbone.View
         for rec in breadcrumbs
             @$el.append( window.JST.breadcrumb_item(rec))
 
+    headerHeight: ->
+      $("#affix-header").height()
+
 $( ->
     if window.pageModel.get('budgetCode')?
         window.pageModel.on('ready-breadcrumbs', ->
