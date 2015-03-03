@@ -451,12 +451,15 @@ class PageModel extends Backbone.Model
                     @set('dataType','json')
                 @readyEvents = []
                 @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
+                @mainPageTabs = new window.MainPageTabs(@);
                 @on 'change:budgetCode', ->
                     budgetCode = @get('budgetCode')
                     digits = budgetCode.length - 2
                     @set('digits',digits)
                     @article.find(".2digits,.4digits,.6digits,.8digits").css('display','none')
                     @article.find(".#{digits}digits").css('display','')
+
+                    @mainPageTabs.trigger("change:budgetCode")
                     #@changeLines = new ChangeLines([], pageModel: @)
                     @changeGroups = new ChangeGroups([], pageModel: @)
                     @budgetApprovals = new BudgetApprovals([], pageModel: @)
