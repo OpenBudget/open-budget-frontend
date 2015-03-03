@@ -1,7 +1,7 @@
 <h2 class='entity-name'><%= name %></h2>
 <h4>
 <% if ( kind === "association" ) { %>
-    עמותה/חברה לתועלת הציבור מ.ר. <%= id %>
+    עמותה/חברה לתועלת הציבור מ.ר. <%= id %> (<a target="_blank" href="http://www.guidestar.org.il/organization/<%= id %>">מידע נוסף בגיידסטאר</a>)
 <% } else if ( kind === "company" ) { %>
     חברה פרטית מ.ר. <%= id %>
 <% } else if ( kind === "municipality" ) { %>
@@ -13,6 +13,7 @@
 <table id="support-table" class="table table-hover table-striped">
     <thead>
         <th>שנה</th>
+        <th>נושא</th>
         <th>תקנה</th>
         <th>אושר</th>
         <th>הועבר</th>
@@ -23,7 +24,8 @@
         <% for ( var i = 0 ; i < supports.length ; i++ ) { var s = supports[i]; console.log(s);%>
         <tr>
             <td class='support-year'><%= s.year %></td>
-            <td class='support-code'><%= s.code %> - <%= s.title %></td>
+            <td class='support-subject'><%= s.subject %></td>
+            <td class='support-code'><a href="<%= linkToBudget(s.code, s.year) %>"><%= s.code.slice(2) %> - <%= s.title %></a></td>
             <td class='support-amount-allocated'><%= number_with_commas(s.amount_allocated) %></td>
             <td class='support-amount_supported'><%= number_with_commas(s.amount_supported) %></td>
             <td class='support-kind'><%= s.kind %></td>

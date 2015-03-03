@@ -398,7 +398,7 @@ class Entity extends Backbone.Model
                 @fetch(dataType: @pageModel.get('dataType'))
 
         url: ->
-                "#{pageModel.get('baseURL')}/api/entity/#{pageModel.get('entityKind')}/#{pageModel.get('entityId')}"
+                "#{pageModel.get('baseURL')}/api/entity/#{pageModel.get('entityId')}"
 
 class ReadyAggregator
 
@@ -472,7 +472,7 @@ class PageModel extends Backbone.Model
                                                 .addCollection(@budgetHistory)
                                                 .addCollection(@budgetApprovals)
 
-                    if digits >= 6
+                    if digits >= 4
                         @on('ready-budget-history', ->
                             @supports = new TakanaSupports([], pageModel: @)
                             @readyEvents.push new ReadyAggregator("ready-supports")
@@ -581,9 +581,7 @@ $( ->
             pageModel.set("changeGroupId",identifier)
         else if kind == "entity"
             pageModel.article = $("article#entity-article")
-            identifier = identifier.split(':')
-            pageModel.set("entityKind",identifier[0])
-            pageModel.set("entityId",identifier[1])
+            pageModel.set("entityId",identifier)
         else if kind == "main"
             pageModel.article = $("article#main-page-article")
             pageModel.set("mainPage",identifier)
