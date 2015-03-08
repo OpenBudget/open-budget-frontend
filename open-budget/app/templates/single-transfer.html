@@ -3,7 +3,7 @@
 <% var MAX_WIDTH = 90; var MIN_WIDTH = 10; %>
 <% var width_percent = value/max_value*(MAX_WIDTH-MIN_WIDTH)+MIN_WIDTH; %>
 <% if (kind == "change" && src == "changeline" ) { %>
-<div class="trans <%= value < original_baseline ? 'dec' : 'inc' %>">
+<div class="trans <%= value < original_baseline ? 'dec' : 'inc' %>" data-kind="<%= kind %>" id="<%= source.get('uniqueId') %>" >
   <div class="row">
     <div class="col-xs-2 col-sm-1 transfer-list-dates">
       <span class="transfer-list-date"><%= date.getDate() %>.<%= date.getMonth()+1 %></span>
@@ -51,7 +51,7 @@
 
 <% /* Template for approved budget line */ %>
 <% if (kind == "approved" && src == "budgetline" && !continued ) { %>
-<div class="yearly">
+<div class="yearly" data-kind="<%= kind %>" id="<%= source.get('uniqueId') %>" >
   <div class="row">
     <div class="col-xs-2 col-sm-1 transfer-list-dates">
       <span class="transfer-list-year"><%= date.getFullYear() %></span>

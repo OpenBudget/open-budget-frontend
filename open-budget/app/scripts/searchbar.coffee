@@ -387,6 +387,10 @@ class SearchBar extends Backbone.View
          window.location.reload()
 
     select: (selected) ->
+        # Sanity check
+        if @suggestions[selected] == undefined
+          return
+
         console.log 'selected',selected, @suggestions[selected].code
         suggestions = @$el.find('.search-results .search-dropdown-item')
         suggestions.toggleClass('selected',false)

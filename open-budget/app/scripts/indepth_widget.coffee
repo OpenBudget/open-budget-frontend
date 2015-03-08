@@ -10,6 +10,7 @@ class IndepthWidget extends Backbone.View
         initialize: ->
                 @pageModel = window.pageModel
                 @pageModel.on 'change:selection', => @render()
+                @pageModel.on 'resized', => @render()
 
                 @$el.html('')
                 @svg = d3.select(@el).append('svg')
@@ -51,6 +52,7 @@ class IndepthWidget extends Backbone.View
                             that.tipBG.attr(a, hook.attr(a))
                         that.tipBGleft.attr('width',hook.attr('x'))
                         that.tipBGright.attr('x',parseInt(hook.attr('x'))+parseInt(hook.attr('width')))
+
                         true
                         # selector = '.tipFocus'
                         # s = that.chart.selectAll(selector)[0][i]  #.data([d])
@@ -111,6 +113,27 @@ class IndepthWidget extends Backbone.View
                         d3.select("#indepth-guideline-date")
                             .html("")
                             .style('display','none')
+                        true
+
+                @scrollToChange = (d, i) ->
+                        # TODO someone with eastetic skills should take a look
+                        # at the animation types and duration
+                        source = d.get("source")
+                        uniqueId = source.get("uniqueId")
+                        $target = $("#"+uniqueId)
+                        # Scroll the window to the selected target
+                        $('html, body').animate({
+                            scrollTop: $target.offset().top -
+                              window.breadcrumbHeaderView.headerHeight()
+                        }, 1000, ->
+                            # once the scroll is complete,
+                            # make the target visually stand out
+                            $target.animate({
+                                "background-color": "#efefef"
+                            }, 200).animate({
+                                "background-color": "white"
+                            }, 200)
+                          )
                         true
 
                 @participants = []
@@ -409,6 +432,7 @@ class IndepthWidget extends Backbone.View
                         .on('mouseenter', @showTip)
                         .on('mouseleave', @hideTip)
                         .on('mousemove',@showGuideline)
+                        .on("click", @scrollToChange)
 
 
         render__timeline_titles: ->
