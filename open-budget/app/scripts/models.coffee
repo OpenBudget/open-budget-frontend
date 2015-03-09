@@ -99,10 +99,12 @@ class BudgetItem extends Backbone.Model
                 net_used: null
                 explanation: null
                 analysis_short_term_yearly_change: null
-                orig_codes: []
+                orig_codes: [],
+                uniqueId: null
 
         initialize: (options) ->
             @pageModel = options.pageModel
+            @set("uniqueId", "budget-item-" + @get("code") + "-" + @get("year"))
 
         do_fetch: ->
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
@@ -220,6 +222,7 @@ class ChangeGroup extends Backbone.Model
                 group_id: null
                 changes: []
                 pending: false
+                uniqueId: null
 
         initialize: (options) ->
                 @pageModel = options.pageModel
@@ -229,6 +232,7 @@ class ChangeGroup extends Backbone.Model
                 else
                     @on 'change:date', =>
                         @setTimestamp()
+                @set("uniqueId", "change-group-"+@get("group_id"))
 
         setTimestamp: ->
                 @set 'timestamp', dateToTimestamp(@get 'date')
@@ -270,9 +274,9 @@ class SupportLineDescription extends Backbone.Model
     order: null
 
 class SupportFieldNormalizer extends Backbone.Collection
-  
+
   model: SupportLineDescription
-  
+
   initialize: (models, options) ->
     @pageModel = options.pageModel
     @fetch(dataType: @pageModel.get('dataType'), reset: true)
@@ -282,17 +286,17 @@ class SupportFieldNormalizer extends Backbone.Collection
       for fieldStructure in _json
         @normalizationStructure[fieldStructure["field"]] = fieldStructure
     )
-    
+
   normalize: (field, locale) ->
-    if @normalizationStructure[field] 
-    then @normalizationStructure[field][locale] 
+    if @normalizationStructure[field]
+    then @normalizationStructure[field][locale]
     else undefined
-    
-  url: -> 
+
+  url: ->
     "#{@pageModel.get('baseURL')}/api/describe/SupportLine"
 
 class SupportLine extends Backbone.Model
- 
+
     defaults:
         kind: null
         code: null
@@ -305,8 +309,8 @@ class SupportLine extends Backbone.Model
         year: null
         recipient: null
         subject: null
-        
-    toLocaleJSON: (requestedLocale) -> 
+
+    toLocaleJSON: (requestedLocale) ->
       locale = requestedLocale || "he"
       baseJSON = @toJSON()
       resultJSON = {}
@@ -315,7 +319,7 @@ class SupportLine extends Backbone.Model
         normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
         if normalizedKey?
           resultJSON[normalizedKey] = value
-      
+
       return resultJSON
 
 class TakanaSupports extends Backbone.Collection
@@ -426,6 +430,22 @@ class ReadyAggregator
             @ready = true
             pageModel.trigger(@event)
 
+# window.onresize can only hold 1 callback, the ResizeNotifier will serve as
+# an initiator for onresize events
+class ResizeNotifier extends Backbone.Model
+        initialize: ->
+          @resizeTimer    = 0
+          @callbackQueue  = []
+
+          window.onresize = (event) =>
+            clearTimeout(@resizeTimer)
+            @resizeTimer = setTimeout ( =>
+              for callback in @callbackQueue
+                callback()
+            ), 100
+
+        registerResizeCallback: (callback) ->
+          @callbackQueue.push(callback)
 
 class PageModel extends Backbone.Model
 
@@ -447,12 +467,21 @@ class PageModel extends Backbone.Model
                     @set('dataType','json')
                 @readyEvents = []
                 @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
+                @mainPageTabs           = new window.MainPageTabs(@);
+                @resizeNotifier         = new ResizeNotifier()
+
+                @resizeNotifier.registerResizeCallback( =>
+                  @.trigger('resized')
+                )
+
                 @on 'change:budgetCode', ->
                     budgetCode = @get('budgetCode')
                     digits = budgetCode.length - 2
                     @set('digits',digits)
                     @article.find(".2digits,.4digits,.6digits,.8digits").css('display','none')
                     @article.find(".#{digits}digits").css('display','')
+
+                    @mainPageTabs.trigger("change:budgetCode")
                     #@changeLines = new ChangeLines([], pageModel: @)
                     @changeGroups = new ChangeGroups([], pageModel: @)
                     @budgetApprovals = new BudgetApprovals([], pageModel: @)
@@ -468,7 +497,7 @@ class PageModel extends Backbone.Model
                                                 .addCollection(@budgetHistory)
                                                 .addCollection(@budgetApprovals)
 
-                    if digits >= 6
+                    if digits >= 4
                         @on('ready-budget-history', ->
                             @supports = new TakanaSupports([], pageModel: @)
                             @readyEvents.push new ReadyAggregator("ready-supports")
@@ -590,6 +619,4 @@ $( ->
         $("article.single-page-article").css("display","none")
         pageModel.article.css("display","inherit")
         pageModel.addKind(kind)
-        $(window).resize ->
-            pageModel.trigger('resized')
 )

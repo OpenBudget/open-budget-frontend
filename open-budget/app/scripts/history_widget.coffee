@@ -10,6 +10,9 @@ class OverviewWidget extends Backbone.View
         initialize: ->
                 @pageModel = window.pageModel
                 @pageModel.on "change:selection", => @renderSelectionBar()
+                @pageModel.on "resized", =>
+                  @render()
+                  @renderSelectionBar()
 
                 @svg = d3.select(@el).append('svg')
                         .attr('width','100%')

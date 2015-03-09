@@ -10,6 +10,7 @@ class IndepthWidget extends Backbone.View
         initialize: ->
                 @pageModel = window.pageModel
                 @pageModel.on 'change:selection', => @render()
+                @pageModel.on 'resized', => @render()
 
                 @$el.html('')
                 @svg = d3.select(@el).append('svg')
@@ -37,7 +38,7 @@ class IndepthWidget extends Backbone.View
                 @tooltipYOffset = (d) -> -TOOLTIP_SIZE+45+@valueScale( d.get('value') )
                 @change_tip = d3.tip()
                                .attr('class', 'd3-tip timeline-tip')
-                               .direction((d) => if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
+                               .direction((d) => "n") #if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
                                .offset((d) => [@tooltipYOffset(d) ,0])
                                .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
                 @chart.call( @change_tip )
@@ -51,6 +52,7 @@ class IndepthWidget extends Backbone.View
                             that.tipBG.attr(a, hook.attr(a))
                         that.tipBGleft.attr('width',hook.attr('x'))
                         that.tipBGright.attr('x',parseInt(hook.attr('x'))+parseInt(hook.attr('width')))
+
                         true
                         # selector = '.tipFocus'
                         # s = that.chart.selectAll(selector)[0][i]  #.data([d])
@@ -82,13 +84,56 @@ class IndepthWidget extends Backbone.View
                             .style('display','block')
                             .style('left', d3.event.pageX+"px")
                             .style('top',ofs.top+that.valueScale(0)+"px")
-                        true
+                        if this.tagName=='rect'
+                            hook_ofs = mouse[0] - hook.attr('x')
+                            hook_width = hook.attr('width')
+                            compensation = hook_ofs - hook_width/2
+                            sub_compensation = 0
+                            tip_width = $('.d3-tip').width()
+                            overflow = mouse[0] - tip_width/2
+                            if overflow < 0
+                                compensation -= overflow
+                                sub_compensation = overflow
+                            overflow = mouse[0] + tip_width/2 - that.maxWidth
+                            if overflow > 0
+                                compensation -= overflow
+                                sub_compensation = overflow
+
+                            $('.timeline-tip').css('margin-left',compensation+"px")
+                            sheet = document.getElementById('arrow-helper').sheet
+                            while sheet.cssRules.length > 0
+                                sheet.deleteRule(0)
+                            if sub_compensation != 0
+                                sheet.insertRule(".timeline-tip .arrow.arrow-bottom:before { margin-left: #{sub_compensation-8}px }")
+                                sheet.insertRule(".timeline-tip .arrow.arrow-bottom:after { margin-left: #{sub_compensation-5}px }")
+                        d3.event.preventDefault()
                 @hideGuideline = ->
                         that.chart.selectAll('.guideline')
                             .style('visibility','hidden')
                         d3.select("#indepth-guideline-date")
                             .html("")
                             .style('display','none')
+                        true
+
+                @scrollToChange = (d, i) ->
+                        # TODO someone with eastetic skills should take a look
+                        # at the animation types and duration
+                        source = d.get("source")
+                        uniqueId = source.get("uniqueId")
+                        $target = $("#"+uniqueId)
+                        # Scroll the window to the selected target
+                        $('html, body').animate({
+                            scrollTop: $target.offset().top -
+                              window.breadcrumbHeaderView.headerHeight()
+                        }, 1000, ->
+                            # once the scroll is complete,
+                            # make the target visually stand out
+                            $target.animate({
+                                "background-color": "#efefef"
+                            }, 200).animate({
+                                "background-color": "white"
+                            }, 200)
+                          )
                         true
 
                 @participants = []
@@ -387,6 +432,7 @@ class IndepthWidget extends Backbone.View
                         .on('mouseenter', @showTip)
                         .on('mouseleave', @hideTip)
                         .on('mousemove',@showGuideline)
+                        .on("click", @scrollToChange)
 
 
         render__timeline_titles: ->
