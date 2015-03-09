@@ -16,11 +16,18 @@ class TrainingStep extends Backbone.Model
 class TrainingSteps extends Backbone.Collection
     model: TrainingStep
 
+    buildTrainingUrl: ->
+      # Choose the appropriate language
+      lang = "#{window.pageModel.get('flow')}"
+      if navigator.languages.indexOf("he") == -1
+        lang = "en"
+      return "#{window.pageModel.get('baseURL')}/api/training/"+lang+"?rand=#{Math.random()}"
+
     initialize: (models) ->
         @fetch(dataType: window.pageModel.get('dataType'), reset: true)
 
     url: ->
-        "#{window.pageModel.get('baseURL')}/api/training/#{window.pageModel.get('flow')}?rand=#{Math.random()}"
+        @buildTrainingUrl()
 
 
 class TrainingView extends Backbone.View
