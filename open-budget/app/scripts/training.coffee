@@ -103,6 +103,19 @@ class TrainingView extends Backbone.View
         options = @createTourOptions("tour-#{window.pageModel.get('flow')}",
                                      @mainTourSteps)
         options.onEnd = () =>
+            # Show popover under the הדרכה link on top
+            $("#intro-link").popover({
+              content: "לחץ כאן בכל שלב על מנת לחזור על ההדרכה",
+              placement: "bottom"
+              })
+              .data('bs.popover')
+              .tip()
+              .addClass("tour-reminder");
+            $("#intro-link").popover('show');
+            # Destroy the popover after 3 seconds
+            setTimeout(() =>
+                $("#intro-link").popover('destroy');
+            , 3000);
             # Check if the forceTour parameter is present at the end of the tour.
             params = @getUrlParamArray()
             if 'forceTour=1' in params
