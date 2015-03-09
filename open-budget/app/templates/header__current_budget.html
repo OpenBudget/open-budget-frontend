@@ -1,14 +1,15 @@
-<!-- <% if(year == new Date().getFullYear()) { %>
-	<%= window.format_date_diff(new Date() - new Date(year,1,1)) %> מאז
-<% } %> -->
-<% up_down_arr = up_or_down(net_allocated,net_revised) %>
+<% up_down_arr = up_or_down(previous.net_allocated,previous.net_revised) %>
 
-מתחילת <%= year %>,
+מתחילת <%= previous.year %>,
 <%= up_down_arr[0] %>
-תקציב זה <%= up_down_arr[1] %> <strong class="approved"><%= number_with_commas(net_allocated*1000) %> ₪</strong>
-<% if(net_allocated != net_revised) { %>
-ל<strong class="<%= color_classname(net_revised-net_allocated) %>"><%= number_with_commas(net_revised*1000) %> ₪</strong>
+תקציב זה <%= up_down_arr[1] %> <strong class="approved"><%= number_with_commas(previous.net_allocated*1000) %> ₪</strong>
+<% if(previous.net_allocated != previous.net_revised) { %>
+ל<strong class="<%= color_classname(previous.net_revised-previous.net_allocated) %>"><%= number_with_commas(previous.net_revised*1000) %> ₪</strong>
 <br/>
- ועדת הכספים אישרה <%= num_of_transfers_in_year_text(year) %> בסך כולל של <strong><span><%= number_with_commas((net_revised-net_allocated)*1000) %><%= number_plus_minus(net_revised-net_allocated) %></span> ₪ <%= increase_or_cut(net_allocated,net_revised) %></strong>, לכדי <strong class="<%= color_classname(net_revised-net_allocated) %>"><%= parseInt(Math.abs( (net_revised/net_allocated)) * 100) %>%<%= up_or_down_arrow(net_revised,net_allocated) %></strong> מהתקציב המקורי
+ ועדת הכספים אישרה <%= num_of_transfers_in_year_text(previous.year) %> בסך כולל של <strong><span><%= number_with_commas((previous.net_revised-previous.net_allocated)*1000) %><%= number_plus_minus(previous.net_revised-previous.net_allocated) %></span>₪</strong>, לכדי <%= increase_or_cut(previous.net_allocated,previous.net_revised) %><strong class="<%= color_classname(previous.net_revised-previous.net_allocated) %>"><%= parseInt(Math.abs( (previous.net_revised/previous.net_allocated) - 1) * 100) %>%<%= up_or_down_arrow(previous.net_allocated,previous.net_revised) %></strong> מהתקציב המקורי
 <br/>
 <% } %>
+
+בהצעת התקציב לשנת <%= current.year %> מתוקצב סעיף זה ב<strong class="approved"><%= number_with_commas(current.net_allocated*1000) %> ₪</strong>, <%= increase_or_cut(previous.net_allocated,current.net_allocated) %> <strong class="<%= color_classname(current.net_allocated-previous.net_allocated) %>"><%= parseInt(Math.abs( (current.net_allocated/previous.net_allocated) - 1) * 100) %>%<%= up_or_down_arrow(previous.net_allocated,current.net_allocated) %></strong> ביחס לבסיס התקציב ב <%= previous.year %>
+
+

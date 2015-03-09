@@ -8,9 +8,9 @@ window.up_or_down = (allocated,revised ) ->
 
 window.increase_or_cut = (allocated,revised ) ->
             if allocated > revised
-                return "קיצוץ זה"
+                return "קיצוץ של"
             else
-                return "תוספת זו"
+                return "תוספת של"
 
 window.transfers_by_year = (year) ->
             return arr = $.grep(pageModel.changeGroups.models, (el,i) ->
@@ -22,6 +22,7 @@ window.num_of_transfers_in_year_text = (year) ->
                 return String(arr.length) + " העברות"
             else
                 return "העברה אחת"
+
 
 
 
@@ -44,7 +45,12 @@ class CurrentBudgetAnalyzer extends BudgetAnalyzer
         window.pageModel.get('currentItem').attributes.net_allocated?
 
     analyze: () ->
-        window.JST.header__current_budget( pageModel.get('currentItem').toJSON() )
+        bh = pageModel.budgetHistory;
+        obj = { 
+            current: pageModel.get('currentItem').toJSON(),
+            previous: bh.models[bh.length - 2].toJSON()
+        }
+        window.JST.header__current_budget( obj )
 
 class ChangedThisYearAnalyzer extends BudgetAnalyzer
 
