@@ -432,8 +432,8 @@ class ReadyAggregator
 
 # window.onresize can only hold 1 callback, the ResizeNotifier will serve as
 # an initiator for onresize events
-class ResizeNotifier extends Backbone.Model
-        initialize: ->
+class ResizeNotifier
+        constructor: ->
           @resizeTimer    = 0
           @callbackQueue  = []
 

@@ -8,9 +8,9 @@ window.up_or_down = (allocated,revised ) ->
 
 window.increase_or_cut = (allocated,revised ) ->
             if allocated > revised
-                return "קיצוץ זה"
+                return "קיצוץ זה הביא"
             else
-                return "תוספת זו"
+                return "תוספת זו הביאה"
 
 window.transfers_by_year = (year) ->
             return arr = $.grep(pageModel.changeGroups.models, (el,i) ->

@@ -41,8 +41,12 @@ window.format_full_number = (num) ->
         "&lrm;" + num  + "&rlm;"
 
 window.number_plus_minus = (value) ->
-    if value == 0 then ""
-    return if value > 0 then "+" else "-"
+    sign = ""
+    if value > 0
+      sign = "+"
+    else if value < 0
+      sign = "-"
+    return sign
 
 window.color_classname = (value) ->
     if value == 0 then ""

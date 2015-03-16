@@ -156,15 +156,15 @@
                     </div>
                     <div id="participantThumbnails" class="2digits 4digits 6digits 8digits"></div>
                   </div>
-                  <div id="tabs-label-container">
-                    <div id="list-title" class="tab-label">רשימת השינויים</div>
-                    <div id="support-list-title" class="tab-label">תמיכות בתקנה זו</div>
-                  </div>
-                  <div id="tabs-content-container">
-                    <div id="change-list-content" class="tab-content">
+                  <ul id="tabs-label-container" class="nav nav-pills">
+                    <li id="list-title" role="presentation" class="tab-label"><a href="#change-list-content" data-toggle="tabs">רשימת השינויים</a></li>
+                    <li id="support-list-title" role="presentation" class="tab-label"><a href="#support-list-content" data-toggle="tabs">תמיכות בתקנה זו</a></li>
+                  </ul>
+                  <div id="tabs-content-container" class="tab-content">
+                    <div role="tabpanel" class="tab-pane" id="change-list-content">
                       <div id="change-list" class="container 4digits 6digits"></div>
                     </div>
-                    <div id="support-list-content" class="tab-content">
+                    <div role="tabpanel" class="tab-pane" id="support-list-content">
                       <div class="spinner-container"></div>
                     </div>
                   </div>

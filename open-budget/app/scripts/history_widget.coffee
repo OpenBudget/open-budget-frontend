@@ -8,6 +8,8 @@ class OverviewWidget extends Backbone.View
         HANDLE_HEIGHT = 18
 
         initialize: ->
+                @rendered = false
+                @selectionBarRendered = false
                 @pageModel = window.pageModel
                 @pageModel.on "change:selection", => @renderSelectionBar()
                 @pageModel.on "resized", =>
@@ -55,44 +57,64 @@ class OverviewWidget extends Backbone.View
                                     that.pageModel.set('selection', selection)
                 )
 
+                @render()
+
         renderSelectionBar: ->
 
                 selection = @pageModel.get('selection')
                 selectionLines = @selectionBar.selectAll('.selectionLine').data( selection )
-                selectionLines.enter()
+                if (@selectionBarRendered == false)
+                    selectionLines.enter()
                         .append('line')
                         .attr('class','selectionLine')
-                selectionLines.attr('y1',0)
-                        .attr('y2',@maxHeight+2*MARGIN)
-                        .attr('x1',(d) => @timeScale(d) )
-                        .attr('x2',(d) => @timeScale(d) )
+                else
+                    selectionLines.select(".selectionLine")
+
+                selectionLines
+                    .attr('y1',0)
+                    .attr('y2',@maxHeight+2*MARGIN)
+                    .attr('x1',(d) => @timeScale(d) )
+                    .attr('x2',(d) => @timeScale(d) )
 
                 selectionHandles = @selectionBar.selectAll('.selectionHandle').data( selection )
-                selectionHandles.enter()
-                        .append('rect')
-                        .attr('class','selectionHandle')
-                        .attr('data-selection', (d,i) -> i)
-                        .attr('height', HANDLE_HEIGHT)
-                        .attr('width', HANDLE_WIDTH )
-                        .attr('y',(@maxHeight-HANDLE_HEIGHT)/2 + MARGIN )
-                        .call(@drag)
+                if (@selectionBarRendered == false)
+                    selectionHandles.enter()
+                            .append('rect')
+                            .attr('class','selectionHandle')
+                else
+                    selectionHandles.select(".selectionHandle")
+
                 selectionHandles
-                        .attr('x',(d,i) => @timeScale(d) + if i == 0 then -HANDLE_WIDTH else 0 )
+                    .attr('data-selection', (d,i) -> i)
+                    .attr('height', HANDLE_HEIGHT)
+                    .attr('width', HANDLE_WIDTH )
+                    .attr('y',(@maxHeight-HANDLE_HEIGHT)/2 + MARGIN )
+                    .call(@drag)
+
+                selectionHandles
+                    .attr('x',(d,i) => @timeScale(d) + if i == 0 then -HANDLE_WIDTH else 0 )
 
                 selectionShade = @selectionBar.selectAll('.selectionShade').data( [selection] )
-                selectionShade.enter()
+                if (@selectionBarRendered == false)
+                    selectionShade
+                        .enter()
                         .append('rect')
-                        .attr('class','selectionShade')
-                        .attr('data-selection', '2')
-                        .attr('y',MARGIN)
-                        .attr('height',@maxHeight)
-                        .call(@drag)
+                else
+                    selectionShade.select("rect")
+
                 selectionShade
-                        .attr('x',(d) => @timeScale(d[0]) )
-                        .attr('width',(d) => @timeScale(d[1]) - @timeScale(d[0]) )
+                    .attr('class','selectionShade')
+                    .attr('data-selection', '2')
+                    .attr('y',MARGIN)
+                    .attr('height',@maxHeight)
+                    .call(@drag)
+                selectionShade
+                    .attr('x',(d) => @timeScale(d[0]) )
+                    .attr('width',(d) => @timeScale(d[1]) - @timeScale(d[0]) )
 
+                @selectionBarRendered = true
 
-        render: ->
+        render: () ->
                 @maxWidth = $(@el).width()
                 @maxHeight = $(@el).height() - 2*MARGIN
 
@@ -120,66 +142,102 @@ class OverviewWidget extends Backbone.View
                 @valueScale = (t) =>
                         @pixelPerfecter(@baseValueScale(t))
 
-                if 4 < pageModel.get('budgetCode').length < 10
-                    selectionStart = @model.maxTime - 3500 * 365 * 86400
+                if (@rendered == false)
+                    # Calculate initial selection
+                    if 4 < pageModel.get('budgetCode').length < 10
+                        selectionStart = @model.maxTime - 3500 * 365 * 86400
+                    else
+                        selectionStart = @model.minTime
+                    if selectionStart < @model.minTime
+                        selectionStart = @model.minTime
+                    selectionEnd = @model.maxTime
+                    @pageModel.set('selection', [ selectionStart, selectionEnd ] )
                 else
-                    selectionStart = @model.minTime
-                if selectionStart < @model.minTime
-                    selectionStart = @model.minTime
-                selectionEnd = @model.maxTime
-                @pageModel.set('selection', [ selectionStart, selectionEnd ] )
+                    @renderSelectionBar()
 
                 approvedBarBgs = @approvedBarBgs.selectAll('.approvedBarBg')
                     .data(_.filter(@model.models, (p) -> p.get('kind') == 'yearstart'))
-                    .enter()
+
+                if (@rendered == false)
+                    approvedBarBgs
+                        .enter()
                         .append("g")
                         .attr("class", "approvedBarBg widgetElement")
-                approvedBarBgs
-                        .append("rect")
-                        .attr("class", "lower")
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y", (d) => @valueScale( @maxValue) )
-                        .attr("width", (d) => @timeScale(364*86400*1000 + d.get('timestamp')) - @timeScale( d.get('timestamp')))
-                        .attr("height", @valueScale(0) - @valueScale(@maxValue))
+                            .append("rect")
+                            .attr("class", "lower")
+
+                approvedBarBgs.select(".lower")
+                  .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                  .attr("y", (d) => @valueScale( @maxValue) )
+                  .attr("width", (d) => @timeScale(364*86400*1000 + d.get('timestamp')) - @timeScale( d.get('timestamp')))
+                  .attr("height", @valueScale(0) - @valueScale(@maxValue))
 
                 # Lines of each year's budget
                 approvedBars = @approvedBars.selectAll('.approvedBar')
                     .data(_.filter(@model.models, (p) -> p.get('kind') == 'approved'))
-                    .enter()
+
+                if (@rendered == false)
+                    # Create elements on initial render
+                    approvedBars
+                        .enter()
                         .append("g")
                         .attr("class", "approvedBar widgetElement")
-                approvedBars
                         .append("line")
-                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y1", (d) => @valueScale( d.get('value') ) )
-                        .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
-                        .attr("y2", (d) => @valueScale( d.get('value') ) )
+                else
+                    # Select elements on any subsequent render
+                    approvedBars
+                        .select("line")
+
+                approvedBars
+                    .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                    .attr("y1", (d) => @valueScale( d.get('value') ) )
+                    .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
+                    .attr("y2", (d) => @valueScale( d.get('value') ) )
 
                 # Bars of individual changes
                 changeBars = @changeBars.selectAll('.changeBar')
                     .data(_.filter(@model.models, (p) -> p.get('kind') == 'change'))
-                    .enter()
+
+                if (@rendered == false)
+                    # Create elements on initial render
+                    changeBars
+                        .enter()
                         .append("line")
                         .attr("class", (d) => cls = changeClass( d.get('original_baseline'), d.get('value') ); subkind = d.get('subkind') ; "changeBar widgetElement #{cls} #{subkind}" )
-                        .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
-                        .attr("y1", (d) => @valueScale( d.get('value') ) )
-                        .attr("y2", (d) => @valueScale( d.get('value') ) )
+                else
+                    # Select elements on any subsequent render
+                    changeBars.select("line")
+
+                changeBars
+                    .attr("x1", (d) => @timeScale( d.get('timestamp') ) )
+                    .attr("x2", (d) => @timeScale( d.get('timestamp') + d.get('width') ) )
+                    .attr("y1", (d) => @valueScale( d.get('value') ) )
+                    .attr("y2", (d) => @valueScale( d.get('value') ) )
 
                 # Year numbers
                 yearNumberTexts = @yearNumberTexts.selectAll('.yearNumberText')
                     .data(_.filter(@model.models, (p) -> p.get('kind') == 'yearstart'))
-                    .enter()
-                        .append("text")
-                        .attr("class", "yearNumberText widgetElement")
-                        .attr("x", (d) => @timeScale( d.get('timestamp') ) )
-                        .attr("y", (d) => @valueScale( @maxValue ) )
-                        .attr("dx", 3 )
-                        .attr("dy", 9 )
-                        .style("font-size", 8)
-                        .style("text-anchor", "end")
-                        .text((d) => new Date(d.get('timestamp')).getFullYear() )
 
+                if (@rendered == false)
+                    # Create elements on initial render
+                    yearNumberTexts
+                        .enter()
+                        .append("text")
+                else
+                    # Select elements on any subsequent render
+                    yearNumberTexts.select("text")
+
+                yearNumberTexts
+                    .attr("class", "yearNumberText widgetElement")
+                    .attr("x", (d) => @timeScale( d.get('timestamp') ) )
+                    .attr("y", (d) => @valueScale( @maxValue ) )
+                    .attr("dx", 3 )
+                    .attr("dy", 9 )
+                    .style("font-size", 8)
+                    .style("text-anchor", "end")
+                    .text((d) => new Date(d.get('timestamp')).getFullYear() )
+
+                @rendered = true
 
 
 $( ->
@@ -187,5 +245,4 @@ $( ->
         console.log "history_widget"
         window.pageModel.on 'ready-budget-history', ->
             window.overviewWidget = new OverviewWidget({el: $("#overview-widget"),model: window.combinedHistory});
-            window.overviewWidget.render()
 )
