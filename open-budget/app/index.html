@@ -157,8 +157,8 @@
                     <div id="participantThumbnails" class="2digits 4digits 6digits 8digits"></div>
                   </div>
                   <ul id="tabs-label-container" class="nav nav-pills">
-                    <li id="list-title" role="presentation" class="tab-label"><a href="#change-list-content" data-toggle="tabs">רשימת השינויים</a></li>
-                    <li id="support-list-title" role="presentation" class="tab-label"><a href="#support-list-content" data-toggle="tabs">תמיכות בתקנה זו</a></li>
+                    <li id="list-title" role="presentation" class="tab-label"><a href="#change-list-content" data-toggle="tabs" data-name="changes">רשימת השינויים</a></li>
+                    <li id="support-list-title" role="presentation" class="tab-label"><a href="#support-list-content" data-toggle="tabs" data-name="supports">תמיכות בתקנה זו</a></li>
                   </ul>
                   <div id="tabs-content-container" class="tab-content">
                     <div role="tabpanel" class="tab-pane" id="change-list-content">
@@ -327,6 +327,7 @@
 
         <!-- build:js scripts/main.js -->
         <script src="scripts/templates.js"></script>
+        <script src="scripts/url_scheme.js"></script>
         <script src="scripts/main_page_tabs.js"></script>
         <script src="scripts/models.js"></script>
         <script src="scripts/spinner.js"></script>

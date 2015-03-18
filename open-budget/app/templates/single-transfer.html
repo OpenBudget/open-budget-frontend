@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="col-xs-2 col-sm-1 transfer-list-more">
-      <a href=" <%= linkToTransfer(source.get('group_id'),source.get('year')) %>">></a>
+      <a href=" <%= window.URLSchemeHandlerInstance.linkToTransfer(source.get('group_id'),source.get('year')) %>">></a>
     </div>
     <div class="transfer-list-bar <%= cls %> <%= source.get('pending')?'pending':'' %>" style="width:<%= width_percent %>%">&nbsp</div>
   </div>

@@ -67,7 +67,7 @@
         <ul>
     <% } %>
     <li>
-        <a href="<%= linkToBudget(change.budget_code,year)%>"><%= change.budget_code.slice(2) %> - <%= change.budget_title %></a>
+        <a href="<%= window.URLSchemeHandlerInstance.linkToBudget(change.budget_code,year)%>"><%= change.budget_code.slice(2) %> - <%= change.budget_title %></a>
         <ul>
             <li>שינוי בתקציב הוצאות: <%= format_number( change.expense_change ) %></li>
             <li>שינוי בהרשאה להתחייב: <%= format_number( change.commitment_change ) %></li>

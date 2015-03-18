@@ -5,16 +5,15 @@ class MainPageTabs extends Backbone.View
     @tabList      = $(".tab-label")
     @contentList  = $(".tab-content")
     @tabHeader    = $("#tabs-label-container")
+
     $(".tab-label a").click( (e) ->
         e.preventDefault()
         $(this).tab("show")
+        window.URLSchemeHandlerInstance.addAttribute("tab", $(this).attr("data-name"), false)
       )
 
-    hashTokens = window.location.hash.split("/")
-    lastToken = hashTokens[hashTokens.length - 1]
-
     activeTab = $("#list-title a")
-    switch lastToken
+    switch window.URLSchemeHandlerInstance.getAttribute('tab')
         # Changes are selected by default - no need for explicit selection
         # when 'changes' then $("#list-title")
         when 'supports' then activeTab = $("#support-list-title a")
