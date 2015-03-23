@@ -1,14 +1,16 @@
+window.DEFAULT_HOME = "#main//2014/main"
 class URLSchemeHandler
-        @DEFAULT_HOME = "#main//2014/main"
 
-        constructor: ->
+        constructor: (pageModel) ->
             @oldHash = window.location.hash
             @callbackList = []
             @reload = true
+            @pageModel = pageModel
 
             @parseLink()
 
             window.onhashchange = @handleSchemeChange
+
 
         linkToBudget: (code,year) ->
             @linkParameters['type'] = 'budget'
@@ -37,9 +39,9 @@ class URLSchemeHandler
         buildLink: () ->
             link = ""
             switch @linkParameters['type']
-                when 'budget' then link = "#budget/#{@linkParameters['code'].slice(2)}/#{@linkParameters['year']}/#{window.pageModel.get('flow')}"
-                when 'transfer' then link = "#transfer/#{@linkParameters['code']}/#{@linkParameters['year']}/#{window.pageModel.get('flow')}"
-                when 'entity' then link = "#entity/#{@linkParameters['entityId']}/#{pageModel.get('year')}/#{pageModel.get('flow')}"
+                when 'budget' then link = "#budget/#{@linkParameters['code'].slice(2)}/#{@linkParameters['year']}/#{@pageModel.get('flow')}"
+                when 'transfer' then link = "#transfer/#{@linkParameters['code']}/#{@linkParameters['year']}/#{@pageModel.get('flow')}"
+                when 'entity' then link = "#entity/#{@linkParameters['entityId']}/#{@pageModel.get('year')}/#{@pageModel.get('flow')}"
 
             if Object.keys(@linkParameters['attributes']).length > 0
                 link += "?"+$.param(@linkParameters['attributes'])
@@ -67,7 +69,7 @@ class URLSchemeHandler
                 when 'entity'
                     @linkParameters['entityId'] = identifier
 
-            @linkParameters['year'] = year
+            @linkParameters['year'] = year || new Date().getFullYear()
             @linkParameters['flow'] = flow
             if attributeString && attributeString.length > 0
                 @linkParameters['attributes'] = JSON.parse('{"' + decodeURI(attributeString.replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}')
@@ -88,4 +90,4 @@ class URLSchemeHandler
             @oldHash = window.location.hash
             @reload = true
 
-window.URLSchemeHandlerInstance = new URLSchemeHandler()
+window.URLSchemeHandler = URLSchemeHandler

@@ -9,14 +9,15 @@ class MainPageTabs extends Backbone.View
     $(".tab-label a").click( (e) ->
         e.preventDefault()
         $(this).tab("show")
-        window.URLSchemeHandlerInstance.addAttribute("tab", $(this).attr("data-name"), false)
+        pageModel.URLSchemeHandlerInstance.addAttribute("tab", $(this).attr("data-name"), false)
       )
 
     activeTab = $("#list-title a")
-    switch window.URLSchemeHandlerInstance.getAttribute('tab')
-        # Changes are selected by default - no need for explicit selection
-        # when 'changes' then $("#list-title")
-        when 'supports' then activeTab = $("#support-list-title a")
+    if (pageModel.URLSchemeHandlerInstance)
+        switch pageModel.URLSchemeHandlerInstance.getAttribute('tab')
+            # Changes are selected by default - no need for explicit selection
+            # when 'changes' then $("#list-title")
+            when 'supports' then activeTab = $("#support-list-title a")
 
     activeTab.tab("show")
 

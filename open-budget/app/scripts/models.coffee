@@ -470,6 +470,9 @@ class PageModel extends Backbone.Model
                 @mainPageTabs           = new window.MainPageTabs(@);
                 @resizeNotifier         = new ResizeNotifier()
 
+                @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
+                window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
+
                 @resizeNotifier.registerResizeCallback( =>
                   @.trigger('resized')
                 )
@@ -585,12 +588,12 @@ window.models =
 window.pageModel = new PageModel()
 
 $( ->
-        linkParameters = window.URLSchemeHandlerInstance.linkParameters
+        linkParameters = pageModel.URLSchemeHandlerInstance.linkParameters
 
         if !isNaN(linkParameters['year'])
             pageModel.set('year',linkParameters['year'])
         else
-            window.location.hash = window.URLSchemeHandlerInstance.DEFAULT_HOME
+            window.location.hash = window.DEFAULT_HOME
             return
 
         kind = linkParameters['kind']
@@ -607,7 +610,7 @@ $( ->
             pageModel.article = $("article#main-page-article")
             pageModel.set("mainPage",linkParameters['code'])
         else
-            window.location.hash = window.URLSchemeHandlerInstance.DEFAULT_HOME
+            window.location.hash = window.DEFAULT_HOME
             return
 
         pageModel.set("flow",linkParameters['flow'])
