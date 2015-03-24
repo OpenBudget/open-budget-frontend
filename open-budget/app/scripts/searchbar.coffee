@@ -126,8 +126,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         )
 
     gotoBudgetItem: (code) =>
-        window.location.hash = window.linkToBudget(code,window.pageModel.get('year'))
-        window.location.reload()
+        window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(code,window.pageModel.get('year'))
 
 
     updateChart: (transition=false) =>
@@ -383,8 +382,7 @@ class SearchBar extends Backbone.View
         event.preventDefault()
 
     goToData: (datum) =>
-         window.location.hash = window.linkToBudget(datum.code,window.pageModel.get('year'))
-         window.location.reload()
+         window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(datum.code,window.pageModel.get('year'))
 
     select: (selected) ->
         # Sanity check

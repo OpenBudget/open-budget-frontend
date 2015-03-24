@@ -25,7 +25,7 @@
         <tr>
             <td class='support-year'><%= s.year %></td>
             <td class='support-subject'><%= s.subject %></td>
-            <td class='support-code'><a href="<%= linkToBudget(s.code, s.year) %>"><%= s.code.slice(2) %> - <%= s.title %></a></td>
+            <td class='support-code'><a href="<%= window.URLSchemeHandlerInstance.linkToBudget(s.code, s.year) %>"><%= s.code.slice(2) %> - <%= s.title %></a></td>
             <td class='support-amount-allocated'><%= number_with_commas(s.amount_allocated) %></td>
             <td class='support-amount_supported'><%= number_with_commas(s.amount_supported) %></td>
             <td class='support-kind'><%= s.kind %></td>

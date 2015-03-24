@@ -470,6 +470,9 @@ class PageModel extends Backbone.Model
                 @mainPageTabs           = new window.MainPageTabs(@);
                 @resizeNotifier         = new ResizeNotifier()
 
+                @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
+                window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
+
                 @resizeNotifier.registerResizeCallback( =>
                   @.trigger('resized')
                 )
@@ -584,38 +587,33 @@ window.models =
 
 window.pageModel = new PageModel()
 
-DEFAULT_HOME = "#main//2014/main"
-
 $( ->
-        hash = window.location.hash.substring(1)
-        [kind, identifier, year, flow] = hash.split("/",4)
-        year = parseInt(year)
-        console.log "hash:", kind, identifier, year, flow
-        if !isNaN(year)
-            pageModel.set('year',year)
+        linkParameters = pageModel.URLSchemeHandlerInstance.linkParameters
+
+        if !isNaN(linkParameters['year'])
+            pageModel.set('year',linkParameters['year'])
         else
-            window.location.hash = DEFAULT_HOME
-            window.location.reload()
+            window.location.hash = window.DEFAULT_HOME
             return
 
+        kind = linkParameters['kind']
         if kind == "budget"
             pageModel.article = $("article#budget-item-article")
-            pageModel.set("budgetCode","00"+identifier)
+            pageModel.set("budgetCode","00"+linkParameters['code'])
         else if kind == "transfer"
             pageModel.article = $("article#change-group-article")
-            pageModel.set("changeGroupId",identifier)
+            pageModel.set("changeGroupId",linkParameters['code'])
         else if kind == "entity"
             pageModel.article = $("article#entity-article")
-            pageModel.set("entityId",identifier)
+            pageModel.set("entityId",linkParameters['entityId'])
         else if kind == "main"
             pageModel.article = $("article#main-page-article")
-            pageModel.set("mainPage",identifier)
+            pageModel.set("mainPage",linkParameters['code'])
         else
-            window.location.hash = DEFAULT_HOME
-            window.location.reload()
+            window.location.hash = window.DEFAULT_HOME
             return
 
-        pageModel.set("flow",flow)
+        pageModel.set("flow",linkParameters['flow'])
         $("article.single-page-article").css("display","none")
         pageModel.article.css("display","inherit")
         pageModel.addKind(kind)

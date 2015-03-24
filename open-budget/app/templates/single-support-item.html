@@ -2,7 +2,7 @@
   <td class='support-year'><%= year %></td>
   <td class='support-recipient'>
       <% if ( entity_kind != null ) { %>
-          <a href="<%= linkToEntity(entity_id) %>"><%= recipient %></a>
+          <a href="<%= window.URLSchemeHandlerInstance.linkToEntity(entity_id) %>"><%= recipient %></a>
       <% } else { %>
           <%= recipient %>
       <% } %>

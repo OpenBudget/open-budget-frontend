@@ -146,7 +146,7 @@ class MainPageVis extends Backbone.View
         @toggle = parseInt($(e.currentTarget).attr('data-toggle'))
         @recalc_centers()
         @chart.start()
-    
+
     addBubbleLabels: ->
       # Check if labels already exist
       @$bubbleContainer.find(".bubble-group-label").remove();
@@ -158,12 +158,12 @@ class MainPageVis extends Backbone.View
             top: (group.y - center.item_height/2) + "px",
             left: group.x + "px"
           }).appendTo(@$bubbleContainer);
-            
-    
+
+
     prepareData: ->
         fill_color = -> "#aabbcc"
         stroke_color = -> "#ccbbaa"
-        
+
         # Create data for bubble chart
         @data = []
         that = this
@@ -184,7 +184,7 @@ class MainPageVis extends Backbone.View
                 stroke_color: null
                 tooltip_contents: -> JST.bubble_tooltip(this)
                 click: ->
-                    window.location.hash = linkToBudget(this.id,2015)
+                    window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(this.id,2015)
                     false
                 center: null
             @data.push node
@@ -248,10 +248,10 @@ class MainPageVis extends Backbone.View
             if node.center?.x? or node.center?.y?
                 @nodes.push node
         @chart.updateNodes(@nodes, @centers[@toggle].getCenters().length)
-        
+
         # We need to refresh the bubble labels based on the new centers
         @addBubbleLabels()
-        
+
         d3.select(@el).selectAll(".bubbleTitle#{@toggle}")
                         .data(@centers[@toggle].getCenters())
                         .transition()

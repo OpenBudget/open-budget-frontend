@@ -12,14 +12,14 @@
   <!-- Issue title -->
   <div class="pull-right">
     <%= last ? '<h1>' : '<h3>' %>
-      <a class="dropdown-toggle" href="<%= linkToBudget(main.get('code'),main.get('year')) %>">
+      <a class="dropdown-toggle" href="<%= window.URLSchemeHandlerInstance.linkToBudget(main.get('code'),main.get('year')) %>">
         <%= main.get('title') %></a>
 
         <span class="dropdown">
            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <% for ( var _kid in kids.models ) { var kid=kids.models[_kid];  %>
-                <li><a href="<%= linkToBudget(kid.get('code'),main.get('year')) %>">#<%= kid.get('code').slice(2) %>  - <%= kid.get('title')%></a></li>
+                <li><a href="<%= window.URLSchemeHandlerInstance.linkToBudget(kid.get('code'),main.get('year')) %>">#<%= kid.get('code').slice(2) %>  - <%= kid.get('title')%></a></li>
             <% } %>
           </ul>
         </span>
