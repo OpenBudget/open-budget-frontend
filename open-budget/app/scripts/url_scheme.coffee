@@ -68,6 +68,8 @@ class URLSchemeHandler
                 when 'budget', \
                      'transfer', \
                      'main'
+                    if identifier.search("00") == 0
+                        identifier = identifier.substring(2)
                     @linkParameters['code'] = identifier
                 when 'entity'
                     @linkParameters['entityId'] = identifier
@@ -81,7 +83,7 @@ class URLSchemeHandler
 
 
         onSchemeChange: (callback) ->
-            @influencerList.push(callback)
+            @callbackList.push(callback)
 
         handleSchemeChange: =>
             for callback in @callbackList
