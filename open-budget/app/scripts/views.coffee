@@ -12,6 +12,7 @@ class IssueView extends Backbone.View
 class IssueNumber extends IssueView
 
         render: ->
+            if @currentItem
                 code = @currentItem.get('code')
                 @$('a').remove()
                 $("<a>").toggleClass('home').attr("href","#").text('#').appendTo(@el)
@@ -24,6 +25,7 @@ class IssueNumber extends IssueView
 class IssueTitle extends IssueView
 
         render: ->
+            if @currentItem
                 title = @currentItem.get('title')
                 $(@el).text(title)
 

@@ -159,12 +159,28 @@
                   <ul id="tabs-label-container" class="nav nav-pills">
                     <li id="list-title" role="presentation" class="tab-label"><a href="#change-list-content" data-toggle="tabs" data-name="changes">רשימת השינויים</a></li>
                     <li id="support-list-title" role="presentation" class="tab-label"><a href="#support-list-content" data-toggle="tabs" data-name="supports">תמיכות בתקנה זו</a></li>
+                    <li id="support-pivottable-title" role="presentation" class="tab-label"><a href="#support-pivottable-content" data-toggle="tabs" data-name="supports">טבלת תמיכות</a></li>
                   </ul>
                   <div id="tabs-content-container" class="tab-content">
                     <div role="tabpanel" class="tab-pane" id="change-list-content">
                       <div id="change-list" class="container 4digits 6digits"></div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="support-list-content">
+                        <table id="support-table" class="table table-hover table-striped">
+                            <thead>
+                              <th>שנה</th>
+                              <th>שם</th>
+                              <th>אושר</th>
+                              <th>הועבר</th>
+                              <th>סוג</th>
+                              <th>עוד</th>
+                            </thead>
+                            <tbody id="support-lines">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="support-pivottable-content">
                       <div class="spinner-container"></div>
                     </div>
                   </div>
@@ -343,6 +359,7 @@
         <script src="scripts/bubble_chart.js"></script>
         <script src="scripts/main_page_vis.js"></script>
         <script src="scripts/support_list.js"></script>
+        <script src="scripts/support_pivot_table.js"></script>
         <script src="scripts/searchbar.js"></script>
         <script src="scripts/subscribe.js"></script>
         <script src="scripts/hello.js"></script>

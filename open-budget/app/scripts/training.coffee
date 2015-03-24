@@ -73,8 +73,8 @@ class TrainingView extends Backbone.View
             if step.path? and step.path != ''
                 step.path = document.location.pathname + step.path
 
-        console.log "step 0", steps[0], steps[0].path
-        console.log "step 1", steps[1], steps[1].path
+        #console.log "step 0", steps[0], steps[0].path
+        #console.log "step 1", steps[1], steps[1].path
 
         # Split the steps into the redirection tour step and the rest.
         # TODO: This will only work with the 'main' flow, unless we add the redirection

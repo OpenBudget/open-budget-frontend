@@ -13,38 +13,41 @@ class URLSchemeHandler
 
 
         linkToBudget: (code,year) ->
-            @linkParameters['type'] = 'budget'
-            @linkParameters['code'] = code
-            @linkParameters['year'] = year
-            @buildLink()
+            parameters = $.extend(true, {}, @linkParameters)
+            parameters['kind'] = 'budget'
+            parameters['code'] = code
+            parameters['year'] = year
+            @buildLink(parameters)
 
         linkToTransfer: (code,year) ->
-            @linkParameters['type'] = 'transfer'
-            @linkParameters['code'] = code
-            @linkParameters['year'] = year
-            @buildLink()
+            parameters = $.extend(true, {}, @linkParameters)
+            parameters['kind'] = 'transfer'
+            parameters['code'] = code
+            parameters['year'] = year
+            @buildLink(parameters)
 
         linkToEntity: (entityId) ->
-            @linkParameters['type'] = 'entity'
-            @buildLink()
+            parameters = $.extend(true, {}, @linkParameters)
+            parameters['kind'] = 'entity'
+            @buildLink(parameters)
 
         addAttribute: (key, value, reload) ->
             @linkParameters['attributes'][key] = value
             @reload = reload || false
-            window.location.hash = @buildLink()
+            window.location.hash = @buildLink(@linkParameters)
 
         getAttribute: (key) ->
             @linkParameters['attributes'][key]
 
-        buildLink: () ->
+        buildLink: (parameters) ->
             link = ""
-            switch @linkParameters['type']
-                when 'budget' then link = "#budget/#{@linkParameters['code'].slice(2)}/#{@linkParameters['year']}/#{@pageModel.get('flow')}"
-                when 'transfer' then link = "#transfer/#{@linkParameters['code']}/#{@linkParameters['year']}/#{@pageModel.get('flow')}"
-                when 'entity' then link = "#entity/#{@linkParameters['entityId']}/#{@pageModel.get('year')}/#{@pageModel.get('flow')}"
+            switch parameters['kind']
+                when 'budget' then link = "#budget/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
+                when 'transfer' then link = "#transfer/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
+                when 'entity' then link = "#entity/#{parameters['entityId']}/#{parameters['year']}/#{parameters['flow']}"
 
-            if Object.keys(@linkParameters['attributes']).length > 0
-                link += "?"+$.param(@linkParameters['attributes'])
+            if Object.keys(parameters['attributes']).length > 0
+                link += "?"+$.param(parameters['attributes'])
 
             return link
 
