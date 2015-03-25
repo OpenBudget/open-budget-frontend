@@ -98,10 +98,13 @@ class MainPageVis extends Backbone.View
             @chart = new BubbleChart( el: @$el.find("#bubble-chart") )
             @chart_el = d3.select(@chart.el)
             @$bubbleContainer = @$el.find("#bubble-chart-container");
-            @toggle = 0
             @centers = [ new SimpleCentering(), new TopGroupCentering(), new FullGroupCentering(), new ParentCentering() ]
             @prepareData()
-            @recalc_centers()
+            @toggle = 0
+            if @model.URLSchemeHandlerInstance &&
+                @model.URLSchemeHandlerInstance.getAttribute('toggle')
+                then @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
+            $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
             @render()
         @model.on 'ready-main-budget', =>
             @$el.find("#main-budget-header").html(JST.main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
@@ -144,6 +147,9 @@ class MainPageVis extends Backbone.View
                     .style('opacity', 0)
         console.log $(e.currentTarget).attr('data-toggle')
         @toggle = parseInt($(e.currentTarget).attr('data-toggle'))
+        # Add URL attribute
+        @model.URLSchemeHandlerInstance.addAttribute("toggle", @toggle, false)
+
         @recalc_centers()
         @chart.start()
 
