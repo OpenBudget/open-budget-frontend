@@ -45,6 +45,7 @@ class URLSchemeHandler
                 when 'budget' then link = "#budget/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
                 when 'transfer' then link = "#transfer/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
                 when 'entity' then link = "#entity/#{parameters['entityId']}/#{parameters['year']}/#{parameters['flow']}"
+                when 'main' then link = "#main/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
 
             if Object.keys(parameters['attributes']).length > 0
                 link += "?"+$.param(parameters['attributes'])
@@ -68,6 +69,8 @@ class URLSchemeHandler
                 when 'budget', \
                      'transfer', \
                      'main'
+                    if identifier.search("00") == 0
+                        identifier = identifier.substring(2)
                     @linkParameters['code'] = identifier
                 when 'entity'
                     @linkParameters['entityId'] = identifier
@@ -81,7 +84,7 @@ class URLSchemeHandler
 
 
         onSchemeChange: (callback) ->
-            @influencerList.push(callback)
+            @callbackList.push(callback)
 
         handleSchemeChange: =>
             for callback in @callbackList
