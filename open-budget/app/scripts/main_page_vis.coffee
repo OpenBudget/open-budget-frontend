@@ -101,11 +101,12 @@ class MainPageVis extends Backbone.View
             @centers = [ new SimpleCentering(), new TopGroupCentering(), new FullGroupCentering(), new ParentCentering() ]
             @prepareData()
             @toggle = 0
-            if @model.URLSchemeHandlerInstance &&
-                @model.URLSchemeHandlerInstance.getAttribute('toggle')
-                then @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
-            $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
+            if @model.URLSchemeHandlerInstance && @model.URLSchemeHandlerInstance.getAttribute('toggle')
+                @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
+                $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
+            @recalc_centers()
             @render()
+			
         @model.on 'ready-main-budget', =>
             @$el.find("#main-budget-header").html(JST.main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
             if @rendered
