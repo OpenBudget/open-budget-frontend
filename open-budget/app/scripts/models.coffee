@@ -322,6 +322,44 @@ class SupportLine extends Backbone.Model
 
       return resultJSON
 
+class SpendingLine extends Backbone.Model
+
+    defaults:
+        entity_id: null
+        budget_code: null
+        supplier_id: null
+        decision: null
+        regulation: null
+        subjects: []
+        supplier: null
+        start_date: null
+        entity_kind: null
+        description: null
+        end_date: null
+        volume: 0
+        reason: null
+        documents: [ ]
+        contact_email: null
+        last_update_date: null
+        publisher: null
+        url: null
+        claim_date: null
+        publication_id: null
+        contact: null
+        history: [ ]
+
+    # toLocaleJSON: (requestedLocale) ->
+    #   locale = requestedLocale || "he"
+    #   baseJSON = @toJSON()
+    #   resultJSON = {}
+    #   pageModel = window.pageModel
+    #   for key, value of baseJSON
+    #     normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
+    #     if normalizedKey?
+    #       resultJSON[normalizedKey] = value
+    #
+    #   return resultJSON
+
 class TakanaSupports extends Backbone.Collection
 
     model: SupportLine
@@ -334,6 +372,19 @@ class TakanaSupports extends Backbone.Collection
 
     url: ->
             "#{pageModel.get('baseURL')}/api/supports/#{@pageModel.get('budgetCode')}?limit=2000"
+
+class TakanaSpending extends Backbone.Collection
+
+    model: SpendingLine
+
+    comparator: (m) -> m.get('publication_id')
+
+    initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+    url: ->
+            "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=2000"
 
 
 class BudgetHistory extends Backbone.Collection
@@ -505,6 +556,9 @@ class PageModel extends Backbone.Model
                             @supports = new TakanaSupports([], pageModel: @)
                             @readyEvents.push new ReadyAggregator("ready-supports")
                                                         .addCollection(@supports)
+                            @spending = new TakanaSpending([], pageModel: @)
+                            @readyEvents.push new ReadyAggregator("ready-spending")
+                                                        .addCollection(@spending)
                         )
                     readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs")
                                                     .addCollection(@budgetHistory)
