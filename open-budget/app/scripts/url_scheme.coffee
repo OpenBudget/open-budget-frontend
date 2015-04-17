@@ -29,12 +29,16 @@ class URLSchemeHandler
         linkToEntity: (entityId) ->
             parameters = $.extend(true, {}, @linkParameters)
             parameters['kind'] = 'entity'
+            parameters['entityId'] = entityId
             @buildLink(parameters)
 
         addAttribute: (key, value, reload) ->
             @linkParameters['attributes'][key] = value
-            @reload = reload || false
-            window.location.hash = @buildLink(@linkParameters)
+            newHash = @buildLink(@linkParameters)
+            if newHash != window.location.hash
+                @reload = reload || false
+                window.location.hash = newHash
+
 
         getAttribute: (key) ->
             @linkParameters['attributes'][key]
@@ -87,6 +91,8 @@ class URLSchemeHandler
             @callbackList.push(callback)
 
         handleSchemeChange: =>
+            console.log "handleSchemeChange "+@reload+" "+window.location.hash
+            console.log "callbackList "+@callbackList
             for callback in @callbackList
                 @reload &= callback(@oldHash, window.location.hash)
 
@@ -95,5 +101,7 @@ class URLSchemeHandler
 
             @oldHash = window.location.hash
             @reload = true
+            console.log "handleSchemeChange reload --> "+@reload
+
 
 window.URLSchemeHandler = URLSchemeHandler
