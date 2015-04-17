@@ -371,7 +371,7 @@ class TakanaSupports extends Backbone.Collection
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
     url: ->
-            "#{pageModel.get('baseURL')}/api/supports/#{@pageModel.get('budgetCode')}?limit=2000"
+            "#{pageModel.get('baseURL')}/api/supports/#{@pageModel.get('budgetCode')}?limit=10000"
 
 class TakanaSpending extends Backbone.Collection
 
@@ -384,7 +384,7 @@ class TakanaSpending extends Backbone.Collection
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
     url: ->
-            "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=2000"
+            "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=10000"
 
 
 class BudgetHistory extends Backbone.Collection
@@ -431,7 +431,7 @@ class Participants extends Backbone.Collection
             @fetch(dataType: window.pageModel.get('dataType'), reset: true)
 
         url: ->
-            "#{pageModel.get('baseURL')}/api/participants/#{@code}"
+            "#{pageModel.get('baseURL')}/api/participants/#{@code}?limit=1000"
 
 class Entity extends Backbone.Model
 

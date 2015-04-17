@@ -1,6 +1,12 @@
 <tr>
     <td class='exemption-start'><%= start_date %></td>
-    <td class='exemption-publisher'><%= publisher %></td>
+    <td class='exemption-supplier'>
+        <% if ( entity_id != null ) { %>
+            <a href="<%= window.URLSchemeHandlerInstance.linkToEntity(entity_id) %>"><%= supplier %></a>
+        <% } else { %>
+            <%= supplier %>
+        <% } %>
+    </td>
     <td class='exemption-volume'><%= number_with_commas(volume==null? 0 : volume) %></td>
     <td class='exemption-budget-code'><a href="<%= URLSchemeHandlerInstance.linkToBudget(budget_code,pageModel.get('year')) %>"><%= budget_code.slice(2) %></a></td>
     <td class='exemption-description'><%= description %></td>
