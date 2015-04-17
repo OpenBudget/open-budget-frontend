@@ -656,11 +656,16 @@ class IndepthWidget extends Backbone.View
 
 $( ->
         console.log "indepth_widget"
-        indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.combinedHistory});
+        indepthWidget = null
+        getInstance = () ->
+            if indepthWidget == null
+                indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.combinedHistory})
+                window.indepthWidget = indepthWidget
+            indepthWidget
         window.pageModel.on 'ready-budget-history', ->
-            indepthWidget.render()
+            getInstance().render()
         window.pageModel.on 'ready-participants', ->
-            indepthWidget.setParticipants( window.pageModel.participants.models )
-            indepthWidget.render()
-        window.indepthWidget = indepthWidget
+            getInstance().setParticipants( window.pageModel.participants.models )
+            getInstance().render()
+
 )
