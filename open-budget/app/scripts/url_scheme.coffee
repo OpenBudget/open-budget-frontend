@@ -49,7 +49,8 @@ class URLSchemeHandler
                 when 'budget' then link = "#budget/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
                 when 'transfer' then link = "#transfer/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
                 when 'entity' then link = "#entity/#{parameters['entityId']}/#{parameters['year']}/#{parameters['flow']}"
-                when 'main' then link = "#main/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
+                when 'main' then link = "#main//#{parameters['year']}/#{parameters['flow']}"
+                when 'spending' then link = "#spending//#{parameters['year']}/#{parameters['flow']}"
 
             if Object.keys(parameters['attributes']).length > 0
                 link += "?"+$.param(parameters['attributes'])

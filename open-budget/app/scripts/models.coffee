@@ -386,6 +386,18 @@ class TakanaSpending extends Backbone.Collection
     url: ->
             "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=10000"
 
+class NewSpendings extends Backbone.Collection
+
+    model: SpendingLine
+
+    initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+
+    url: ->
+            "#{pageModel.get('baseURL')}/api/exemption/new?limit=100"
+
+
 
 class BudgetHistory extends Backbone.Collection
 
@@ -505,6 +517,7 @@ class PageModel extends Backbone.Model
                 year: null
                 changeGroupId: null
                 mainPage: null
+                spendingPage: null
                 baseURL: "http://www.obudget.org"
                 selection: [ 0, 0 ]
                 currentItem: null
@@ -624,6 +637,10 @@ class PageModel extends Backbone.Model
                     @mainBudgetItem.do_fetch()
                     @newBudgetItem.do_fetch()
 
+                @on 'change:spendingsPage', ->
+                    @newSpendings = new NewSpendings([], pageModel: @)
+                    @readyEvents.push new ReadyAggregator("ready-spendings-page")
+                                                        .addCollection(@newSpendings)
 
                 @on 'change:kinds', =>
                     for kind in @get('kinds')
@@ -662,7 +679,10 @@ $( ->
             pageModel.set("entityId",linkParameters['entityId'])
         else if kind == "main"
             pageModel.article = $("article#main-page-article")
-            pageModel.set("mainPage",linkParameters['code'])
+            pageModel.set("mainPage",true)
+        else if kind == "spending"
+            pageModel.article = $("article#spendings-page-article")
+            pageModel.set("spendingsPage",true)
         else
             window.location.hash = window.DEFAULT_HOME
             return
