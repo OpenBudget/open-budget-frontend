@@ -89,7 +89,7 @@ class IndepthWidget extends Backbone.View
                             hook_width = hook.attr('width')
                             compensation = hook_ofs - hook_width/2
                             sub_compensation = 0
-                            tip_width = $('.d3-tip').width()
+                            tip_width = $('.timeline-tip').width()
                             overflow = mouse[0] - tip_width/2
                             if overflow < 0
                                 compensation -= overflow
