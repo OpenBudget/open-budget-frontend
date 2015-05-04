@@ -1,25 +1,37 @@
-<h3>פטורים אחרונים ממכרז</h3>
-<table id="latest-exemption-table" class="table table-hover table-striped">
-    <thead>
-        <th>התחלה</th>
-        <th>מזמין</th>
-        <th>סכום</th>
-        <th>הסבר</th>
-        <th>נושאים</th>
-        <th>קישור</th>
-    </thead>
-    <tbody>
-        <% for ( var i = 0 ; i < exemptions.length ; i++ ) { var e = exemptions[i]; console.log(e);%>
-            <tr>
-                <td class='exemption-start'><%= e.start_date %></td>
-                <td class='exemption-publisher'><%= e.publisher %></td>
-                <td class='exemption-volume'><%= number_with_commas(e.volume==null? 0 : e.volume) %></td>
-                <td class='exemption-description'><%= e.description %></td>
-                <td class='exemption-subjects'><% for ( var j = 0 ; j < e.subjects.length ; j++ ) { %>
-                    <span class='exemption-subjects-item'><%= e.subjects[j] %></span>
-                <% } %></td>
-                <td><a target="_blank" href="<%= e.url %>" class="glyphicon glyphicon-link"></a></td>
-            </tr>
-        <% } %>
-    </tbody>
-</table>
+<!--div id="navbar">
+    <div id="logo" class="fill">התקשרויות בפטור ממרכז</div>
+    <div id="search" class="pull-left">חיפוש<i class="fa fa-search"></i></div>
+</div-->
+<div id="exemptions-alerts" class="col-md-3 fill">
+    <div id="exemptions-alerts-header">
+        <h2>התראות יומיות</h2>
+    </div>
+    <div id="exemptions-alerts-content" class="selected">
+        <div class="exemption-alert">
+            <div class="exemption-flags"><i class="fa fa-circle irregular"></i>עילות פטור חריגות</div>
+            <h3 class="exemption-title">משרד הכלכלה: מרכז שקר כלשהו - שירותי ייעוץ כלכלי ועריכת מחקרים</h3>
+            <h4 class="exemption-supplier">שם ספק: תבור כלכלה</h4>
+
+            <div class="exemption-info">בלה בלה יאדה יאדה</div>
+        </div>
+    </div>
+    <div id="exemptions-alerts-content">
+        <div class="exemption-alert">
+            <div class="exemption-flags"><i class="fa fa-circle senior-approval"></i>אישור ע"י גורם בכיר</div>
+            <h3 class="exemption-title">משרד הבינוי: הגדלה בגין תכנון</h3>
+            <h4 class="exemption-supplier">שם ספק: חברת חסן ירושלמי</h4>
+
+            <div class="exemption-info">בלה בלה יאדה יאדה אחר</div>
+        </div>
+    </div>
+    <div id="exemptions-alerts-content">
+        <div class="exemption-alert">
+            <div class="exemption-flags"><i class="fa fa-circle senior-approval"></i>אישור ע"י גורם בכיר</div>
+            <h3 class="exemption-title">משרד הבינוי: הגדלה בגין תכנון</h3>
+            <h4 class="exemption-supplier">שם ספק: חברת חסן ירושלמי</h4>
+
+            <div class="exemption-info">בלה בלה יאדה יאדה אחר</div>
+        </div>
+    </div>
+</div>
+<div id="info" class="col-md-9 fill"></div>
