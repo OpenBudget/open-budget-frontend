@@ -16,11 +16,18 @@ class TrainingStep extends Backbone.Model
 class TrainingSteps extends Backbone.Collection
     model: TrainingStep
 
+    buildTrainingUrl: ->
+      # Choose the appropriate language
+      lang = "#{window.pageModel.get('flow')}"
+      if navigator.languages.indexOf("he") == -1
+        lang = "en"
+      return "#{window.pageModel.get('baseURL')}/api/training/"+lang+"?rand=#{Math.random()}"
+
     initialize: (models) ->
         @fetch(dataType: window.pageModel.get('dataType'), reset: true)
 
     url: ->
-        "#{window.pageModel.get('baseURL')}/api/training/#{window.pageModel.get('flow')}?rand=#{Math.random()}"
+        @buildTrainingUrl()
 
 
 class TrainingView extends Backbone.View
@@ -103,6 +110,19 @@ class TrainingView extends Backbone.View
         options = @createTourOptions("tour-#{window.pageModel.get('flow')}",
                                      @mainTourSteps)
         options.onEnd = () =>
+            # Show popover under the הדרכה link on top
+            $("#intro-link").popover({
+              content: "לחץ כאן בכל שלב על מנת לחזור על ההדרכה",
+              placement: "bottom"
+              })
+              .data('bs.popover')
+              .tip()
+              .addClass("tour-reminder");
+            $("#intro-link").popover('show');
+            # Destroy the popover after 3 seconds
+            setTimeout(() =>
+                $("#intro-link").popover('destroy');
+            , 3000);
             # Check if the forceTour parameter is present at the end of the tour.
             params = @getUrlParamArray()
             if 'forceTour=1' in params

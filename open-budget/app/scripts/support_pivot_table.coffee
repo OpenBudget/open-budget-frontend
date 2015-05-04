@@ -11,11 +11,14 @@ class SupporPivotTable extends Backbone.View
             locale = "he"
             jsons = _.map(@pageModel.supports.models, (x) -> x.toLocaleJSON(locale))
             @$el.pivotUI(jsons, {
-              rows: [pageModel.supportFieldNormalizer.normalize("recipient", locale)],
+              rows: [pageModel.supportFieldNormalizer.normalize("subject", locale),
+                     pageModel.supportFieldNormalizer.normalize("title", locale),
+                     pageModel.supportFieldNormalizer.normalize("recipient", locale)],
+              cols: [pageModel.supportFieldNormalizer.normalize("year", locale)],
               aggregatorName: "Sum",
               renderers: @renderes,
               rendererName: "Heatmap",
-              vals: [pageModel.supportFieldNormalizer.normalize("amount_allocated", locale)]
+              vals: [pageModel.supportFieldNormalizer.normalize("amount_supported", locale)]
             });
 
 $( ->

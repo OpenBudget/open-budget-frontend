@@ -115,6 +115,6 @@ class SubscribeMainButtonView extends SubscribeView
 $( ->
   subscribeModel = new SubscribeModel()
   modal = $("#subscribeModal")
-  window.subscribeModalButtonView = new SubscribeModalButtonView(model: subscribeModel,el: $("#subscribeModal .btn-primary"), modal: modal)
+  window.subscribeModalButtonView = new SubscribeModalButtonView(model: subscribeModel,el: $("#subscribeModal .subscribe-button"), modal: modal)
   window.subscribeMainButtonView = new SubscribeMainButtonView(model: subscribeModel,el: $("#subscribeWidget"), modal: modal)
 )

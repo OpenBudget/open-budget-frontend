@@ -72,7 +72,7 @@
                       </ul>
                     </li> -->
                     <li><a href="#glossaryModal" data-toggle="modal" >מונחון התקציב</a></li>
-                    <li><a href="#" id="intro-link">הדרכה</a></li>
+                    <li><a href="#tour" id="intro-link">הדרכה</a></li>
                     <li><a href="http://www.hasadna.org.il/%D7%94%D7%AA%D7%A0%D7%93%D7%91%D7%95%D7%AA/">הצטרפו אלינו</a></li>
                     <li><a href="/email/">השבוע בתקציב</a></li>
                     <li>
@@ -159,7 +159,11 @@
                   <ul id="tabs-label-container" class="nav nav-pills">
                     <li id="list-title" role="presentation" class="tab-label"><a href="#change-list-content" data-toggle="tabs" data-name="changes">רשימת השינויים</a></li>
                     <li id="support-list-title" role="presentation" class="tab-label"><a href="#support-list-content" data-toggle="tabs" data-name="supports">תמיכות בתקנה זו</a></li>
-                    <li id="support-pivottable-title" role="presentation" class="tab-label"><a href="#support-pivottable-content" data-toggle="tabs" data-name="supports">טבלת תמיכות</a></li>
+                    <li id="support-pivottable-title" role="presentation" class="tab-label">
+                        <a href="#support-pivottable-content" data-toggle="tabs" data-name="supports">טבלת תמיכות</a></li>
+                    <li id="spending-list-title" role="presentation" class="tab-label"><a href="#spending-list-content" data-toggle="tabs" data-name="spending">התקשרויות בתקנה זו</a></li>
+                    <li id="spending-pivottable-title" role="presentation" class="tab-label">
+                        <a href="#spending-pivottable-content" data-toggle="tabs" data-name="spending">טבלת התקשרויות</a></li>
                   </ul>
                   <div id="tabs-content-container" class="tab-content">
                     <div role="tabpanel" class="tab-pane" id="change-list-content">
@@ -183,6 +187,26 @@
                     <div role="tabpanel" class="tab-pane" id="support-pivottable-content">
                       <div class="spinner-container"></div>
                     </div>
+                    <div role="tabpanel" class="tab-pane" id="spending-list-content">
+                        <table id="spending-table" class="table table-hover table-striped">
+                            <thead>
+                                <th>התחלה</th>
+                                <th>ספק</th>
+                                <th>סכום</th>
+                                <th>תקנה</th>
+                                <th>הסבר</th>
+                                <th>נושאים</th>
+                                <th>קישור</th>
+                            </thead>
+                            <tbody id="spending-lines">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="spending-pivottable-content">
+                      <div class="spinner-container"></div>
+                    </div>
+
                   </div>
                 </section>
 
@@ -200,6 +224,14 @@
 
                 <!-- Entity details -->
                 <div id="entity-details" class="center-block">
+                </div>
+
+            </article>
+
+            <article id="spendings-page-article" class="single-page-article">
+
+                <!-- Latest Exemptions -->
+                <div class="latest-updates center-block">
                 </div>
 
             </article>
@@ -288,7 +320,7 @@
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">סגירה</button>
-                  <button type="button" class="btn btn-primary">רשמו אותי</button>
+                  <button type="button" class="btn btn-default subscribe-button">רשמו אותי</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
@@ -354,12 +386,15 @@
         <script src="scripts/detailed_history.js"></script>
         <script src="scripts/single_changegroup.js"></script>
         <script src="scripts/entity_details.js"></script>
+        <script src="scripts/spendings_page.js"></script>
         <script src="scripts/breadcrumb_header.js"></script>
         <script src="scripts/analysis_header.js"></script>
         <script src="scripts/bubble_chart.js"></script>
         <script src="scripts/main_page_vis.js"></script>
         <script src="scripts/support_list.js"></script>
         <script src="scripts/support_pivot_table.js"></script>
+        <script src="scripts/spending_list.js"></script>
+        <script src="scripts/spending_pivot_table.js"></script>
         <script src="scripts/searchbar.js"></script>
         <script src="scripts/subscribe.js"></script>
         <script src="scripts/hello.js"></script>
