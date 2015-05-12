@@ -518,7 +518,8 @@ class PageModel extends Backbone.Model
                 changeGroupId: null
                 mainPage: null
                 spendingPage: null
-                baseURL: "http://www.obudget.org"
+                #baseURL: "http://www.obudget.org"
+                baseURL: "http://127.0.0.1:8080"
                 selection: [ 0, 0 ]
                 currentItem: null
                 dataType: "json"#p"

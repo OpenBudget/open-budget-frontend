@@ -110,14 +110,14 @@ class BudgetPartitionLayoutView extends Backbone.View
         @cls = (d,suffix="") => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + suffix
 
         onSuccess = (root) =>
+            if @root
+                @root = root.value
+                @data = @partition.nodes(@root)
 
-            @root = root.value
-            @data = @partition.nodes(@root)
-
-            @codes = {}
-            for datum in @data
-                @codes[datum.c] = datum
-            @updateChart()
+                @codes = {}
+                for datum in @data
+                    @codes[datum.c] = datum
+                @updateChart()
 
         $.ajax(
             dataType: window.pageModel.get('dataType')
@@ -130,6 +130,9 @@ class BudgetPartitionLayoutView extends Backbone.View
 
 
     updateChart: (transition=false) =>
+        if not @root
+            return
+
         if not transition?
             transition = false
         console.log "PL","updateChart"
@@ -382,7 +385,13 @@ class SearchBar extends Backbone.View
         event.preventDefault()
 
     goToData: (datum) =>
-         window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(datum.code,window.pageModel.get('year'))
+        newHash = switch datum.type
+            when 'bl' then pageModel.URLSchemeHandlerInstance.linkToBudget(datum.code,window.pageModel.get('year'))
+            when 'en' then pageModel.URLSchemeHandlerInstance.linkToEntity(datum.id)
+            else null
+
+        if newHash
+            window.location.hash = newHash
 
     select: (selected) ->
         # Sanity check
@@ -396,10 +405,12 @@ class SearchBar extends Backbone.View
         @selectedItem.toggleClass('selected',true)
         @selectedItem[0].scrollIntoView(false)
         @selected = selected
-        @partition.selectCode( @suggestions[selected].code )
+        if (@suggestions[selected].type == "bl")
+            @partition.selectCode( @suggestions[selected].code )
 
     url: (query,limit) ->
-        "#{window.pageModel.get('baseURL')}/api/search/budget/#{window.pageModel.get('year')}?q=#{query}&limit=#{limit}"
+        "#{window.pageModel.get('baseURL')}/api/search/full_text?year=#{window.pageModel.get('year')}&q=#{query}&limit=#{limit}"
+        #"#{window.pageModel.get('baseURL')}/api/search/budget/#{window.pageModel.get('year')}?q=#{query}&limit=#{limit}"
 
     initialize: () ->
         @state = STATE_IDLE
@@ -417,9 +428,17 @@ class SearchBar extends Backbone.View
                             url: url
                             ajax:
                                 dataType: dataType
-                        dupDetector: (x,y) -> x.code==y.code && x.year==y.year
+                        dupDetector: (x,y) ->
+                            return switch
+                                when x.type == 'bl' then x.type==y.type && x.code==y.code && x.year==y.year
+                                when x.type == 'en' then x.type==y.type && x.name==y.name && x.id==y.id
+                                else false
                         limit: 20
-                        datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace(d.title)
+                        datumTokenizer: (d) ->
+                            return switch
+                                when d.type == 'bl' then Bloodhound.tokenizers.whitespace(d.title)
+                                when d.type == 'en' then Bloodhound.tokenizers.whitespace(d.name)
+                                else ""
                         queryTokenizer: Bloodhound.tokenizers.whitespace
         @engine.initialize()
         @partition = new BudgetPartitionLayoutView(el: @$el.find('.search-partition-layout'))
