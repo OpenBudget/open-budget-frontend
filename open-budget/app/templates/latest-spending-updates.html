@@ -6,24 +6,23 @@
     <div id="exemptions-alerts-header">
         <h2>התראות יומיות</h2>
     </div>
-    <%
+    <div id="exemptions-alerts-content">
+        <%
         for ( var i = 0 ; i < exemptions.length ; i++) {
             var e = exemptions[i];
-    %>
-    <div id="exemptions-alerts-content" supplier="<%= e.supplier_id %>" <%= (i == 0) ? 'class="selected"' : "" %> >
-        <div class="exemption-alert">
+        %>
+        <div class="exemption-alert<%= (i == 0) ? ' selected' : ''%>" supplier="<%= e.supplier_id %>">
             <div class="exemption-flags"><i class="fa fa-circle irregular"></i></div>
             <h3 class="exemption-title"><%= e.subjects.join(". ")%></h3>
             <h4 class="exemption-supplier"><%= e.supplier %></h4>
-
             <div class="exemption-info"><%= e.description %></div>
         </div>
+        <% } %>
     </div>
-    <% } %>
 </div>
 <div id="info" class="col-md-9 fill">
     <h2 class="exemptions-supplier-name">
-    jddkjsdk
+    dhfgdfg
         <small>
             נימוקים לבקשת הפטור: עמותת ״מנורה״ ספק יחיד בתחום פעילות זה
         </small>
