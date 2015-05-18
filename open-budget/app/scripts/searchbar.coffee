@@ -409,7 +409,7 @@ class SearchBar extends Backbone.View
             @partition.selectCode( @suggestions[selected].code )
 
     url: (query,limit) ->
-        "#{window.pageModel.get('baseURL')}/api/search/full_text?year=#{window.pageModel.get('year')}&q=#{query}&limit=#{limit}"
+        "#{window.pageModel.get('baseURL')}/api/search/autocomplete?year=#{window.pageModel.get('year')}&q=#{query}&limit=#{limit}"
         #"#{window.pageModel.get('baseURL')}/api/search/budget/#{window.pageModel.get('year')}?q=#{query}&limit=#{limit}"
 
     initialize: () ->
