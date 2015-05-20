@@ -1,8 +1,8 @@
 <div class='search-dropdown-item' data-index='<%= index %>'>
-<% if (type == "bl") { %>
+<% if (type == "BudgetLine") { %>
   <span class="item-title"><%= title %></span>
   <span class="item-code"><%= code %></span>
-<% } else if (type == "en") { %>
+<% } else if (type == "Entity") { %>
     <span class="item-title"><%= name.replace(/\"/g,"'") %></span>
     <span class="item-code"><%= id %></span>
 <% } %>

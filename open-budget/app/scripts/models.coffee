@@ -518,8 +518,11 @@ class PageModel extends Backbone.Model
                 changeGroupId: null
                 mainPage: null
                 spendingPage: null
-                #baseURL: "http://www.obudget.org"
-                baseURL: "http://127.0.0.1:8080"
+                baseURL: "http://www.obudget.org"
+                # For debugging with local API
+                # Uses default port 8080, make sure this matches your GAE
+                # configuration
+                #baseURL: "http://127.0.0.1:8080"
                 selection: [ 0, 0 ]
                 currentItem: null
                 dataType: "json"#p"
