@@ -110,7 +110,7 @@ class BudgetPartitionLayoutView extends Backbone.View
         @cls = (d,suffix="") => window.changeClass( d.value, d.value*(d.o+100)/100.0 ) + suffix
 
         onSuccess = (root) =>
-            if @root
+            if root
                 @root = root.value
                 @data = @partition.nodes(@root)
 
