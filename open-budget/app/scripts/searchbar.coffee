@@ -334,6 +334,29 @@ class SearchBar extends Backbone.View
         index = parseInt(index)
         @select(index)
 
+    aggregateSuggestions: (rawSuggestionList) ->
+        budgetCodes = {}
+        suggestionList = []
+        for s in rawSuggestionList
+            if s.type == "Entity"
+                # Nothing to do for entities
+                suggestionList.push(s)
+            else if s.type == "BudgetLine"
+                if not budgetCodes[s.code]
+                    # place a marker
+                    suggestionList.push(s.code)
+                    # start a new aggregate for this code
+                    budgetCodes[s.code] = s
+
+                if s.year > budgetCodes[s.code].year
+                    budgetCodes[s.code] = s
+
+        for index, s of suggestionList
+            if typeof s == "string"
+                suggestionList[index] = budgetCodes[s]
+
+        return suggestionList
+
     getSuggestions: (event) =>
         event.preventDefault()
         val = @$el.find('#search-item').val()
@@ -343,7 +366,7 @@ class SearchBar extends Backbone.View
             @engine.get( val
                         ,
                          (suggestions) =>
-                            @suggestions = suggestions
+                            @suggestions = @aggregateSuggestions(suggestions)
                             @suggestionNum = suggestions.length
                             @selected = -1
                             @transition(EV_GOT_RESULTS) )
@@ -409,8 +432,7 @@ class SearchBar extends Backbone.View
             @partition.selectCode( @suggestions[selected].code )
 
     url: (query,limit) ->
-        "#{window.pageModel.get('baseURL')}/api/search/full_text?year=#{window.pageModel.get('year')}&q=#{query}&limit=#{limit}"
-        #"#{window.pageModel.get('baseURL')}/api/search/budget/#{window.pageModel.get('year')}?q=#{query}&limit=#{limit}"
+        "#{window.pageModel.get('baseURL')}/api/search/full_text?q=#{query}&limit=#{limit}"
 
     initialize: () ->
         @state = STATE_IDLE
