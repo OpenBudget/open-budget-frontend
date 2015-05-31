@@ -1601,31 +1601,51 @@ svg rect{
     margin-left: 5px;
 }
 
+.participant-photo-normal {
+    position:absolute;
+    left: 0px;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #eee;
+    border-radius: 16px;
+    margin: 0;
+}
+.participant-photo-empahsized {
+    width: 48px;
+    height: 48px;
+    margin: -8px;
+    border-radius: 24px;
+    border-color: @text;
+}
+.participantThumbnail {
+    position: absolute;
+    height:32px;
+    margin-left:-16px;
+    margin-top:24px;
+}
+
 #participantThumbnails {
     overflow: hidden;
     position: relative;
     height: 240px;
     margin-top: -240px;
     .participantThumbnail {
-        position: absolute;
-        height:32px;
-        margin-left:16px;
-        margin-top:24px;
-        img {
-            position:absolute;
-            right: 0px;
-            width: 32px;
-            height: 32px;
-            border: 2px solid #eee;
-            border-radius: 16px;
-            margin: 0;
+        .participantThumbnail;
+        .participant-hide-photo {
+            .participant-photo {
+                display: none;
+            }
+        }
+        .participant-photo {
+            .participant-photo-normal;
             transition: width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s, border-color 0.5s;
         }
-        div {
+        .participant-name {
             font-size: 12px;
-            position: absolute;
+            position: relative;
+            float: right;
+            right: 100%;
             top: 7px;
-            right: 20px;
             text-align: right;
             padding: 0;
             height: 18px;
@@ -1637,20 +1657,33 @@ svg rect{
             overflow: hidden;
             transition: text-indent 0.5s, background-color 0.5s, color 0.5s, width 0.5s;
         }
+        .participant-term-bar {
+            position: absolute;
+            background-color: @darkgray;
+            width: 100%;
+            height: 2px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+        .participant-end-term-bar {
+            position: absolute;
+            background-color: @darkgray;
+            width: 2px;
+            height: 16px;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
 
         &:hover {
           z-index:1000;
           width:150px;
-          margin-left:-134px;
-          img {
-            width: 48px;
-            height: 48px;
-            margin: -8px -8px 0 0;
-            border-radius: 24px;
-            border-color: @text;
+          .participant-photo {
+              .participant-photo-empahsized;
           }
-          div {
-            right: 28px;
+          .participant-name {
             text-indent: 0;
             padding: 0 14px 0 8px;
             background-color: @text;
@@ -1658,6 +1691,15 @@ svg rect{
             width: auto;
           }
         }
+    }
+}
+
+.guide-line-photo {
+    .participantThumbnail;
+    margin-left: 0;
+
+    .participant-photo {
+        .participant-photo-normal;
     }
 }
 
