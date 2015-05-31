@@ -52,7 +52,6 @@ class IndepthWidget extends Backbone.View
                             that.tipBG.attr(a, hook.attr(a))
                         that.tipBGleft.attr('width',hook.attr('x'))
                         that.tipBGright.attr('x',parseInt(hook.attr('x'))+parseInt(hook.attr('width')))
-
                         true
                         # selector = '.tipFocus'
                         # s = that.chart.selectAll(selector)[0][i]  #.data([d])
@@ -79,6 +78,23 @@ class IndepthWidget extends Backbone.View
                         date = that.baseTimeScale.invert(mouse[0])
                         date = new Date(date)
                         ofs = $(that.svg[0]).offset()
+
+                        if that.termSegmentTree
+                            termList = that.termSegmentTree.queryPoint(that.baseInverseTimeScale(d3.event.pageX + 16))
+
+                            $(".guide-line-photo").remove()
+                            $(".participant-hide-photo").removeClass("participant-hide-photo")
+                            for term in termList
+                                participant = term.data
+                                $("#participant-"+participant.get("unique_id")).addClass("participant-hide-photo")
+                                $(JST.participant_photo(participant.attributes))
+                                    .css({
+                                        left: d3.event.pageX+"px",
+                                        top: (that.titleIndexScale(participant.get('title')) +
+                                                that.participantThumbnailsOffset.top - 240) + "px"
+                                    })
+                                    .appendTo('body')
+
                         d3.select("#indepth-guideline-date")
                             .html(date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear())
                             .style('display','block')
@@ -113,6 +129,10 @@ class IndepthWidget extends Backbone.View
                         d3.select("#indepth-guideline-date")
                             .html("")
                             .style('display','none')
+
+                        $(".guide-line-photo").remove()
+                        $(".participant-hide-photo").removeClass("participant-hide-photo")
+
                         true
 
                 @scrollToChange = (d, i) ->
@@ -428,7 +448,7 @@ class IndepthWidget extends Backbone.View
                         .attr("x", get_x )
                         .attr("y", 0 )
                         .attr("width", get_width )
-                        .attr("height", @maxHeight )
+                        .attr("height", "100%" )
                         .on('mouseenter', @showTip)
                         .on('mouseleave', @hideTip)
                         .on('mousemove',@showGuideline)
@@ -437,14 +457,14 @@ class IndepthWidget extends Backbone.View
 
         render__timeline_titles: ->
                 @titleIndexScale = (title) -> TOP_PART_SIZE + YEAR_LINE_HANG_LENGTH + (@titleToIndex[title]+1)*32
-                @chart.selectAll('.timelineTitle').data(@titles)
-                        .enter()
-                        .append("text")
-                        .attr('class','timelineTitle')
-                        .text((d)->d)
-                        .attr('x',@maxWidth-8)
-                        .attr('y',(d) => @titleIndexScale(d)+3 )
-                        #.style("text-anchor", "end")
+                #@chart.selectAll('.timelineTitle').data(@titles)
+                #        .enter()
+                #        .append("text")
+                #        .attr('class','timelineTitle')
+                #        .text((d)->d)
+                #        .attr('x',@maxWidth-8)
+                #        .attr('y',(d) => @titleIndexScale(d)+3 )
+                #        #.style("text-anchor", "end")
 
         render__timeline_terms: ->
                 newGroups = @chart.selectAll('.timelineTerm').data(@participants)
@@ -471,22 +491,29 @@ class IndepthWidget extends Backbone.View
                                  .selectAll('.participantThumbnail')
                                  .data(@participants)
                                  .enter()
+
+                if @participants.length > 0
+                    # Build an interval tree to quickly search invervals overlapping
+                    # a point/segment
+                    @centerEpoch = @minTime + (@maxTime - @minTime)/2
+                    @termSegmentTree = new segmentTree;
+                    for participant, index in @participants
+                        @termSegmentTree.pushInterval(participant.get("start_timestamp"), participant.get("end_timestamp"), participant)
+                    @termSegmentTree.buildTree();
+
                 divs = newTumbnails.append("div")
                                 .attr('class','participantThumbnail')
-                name = (d) ->
-                    ret = d.get('name')
-                    if d.get('full_title')?
-                        if d.get('full_title') != d.get('title')
-                            ret += " - "+d.get('full_title')
-                    ret
-                divs.append("div")
-                        .html(name)
-                divs.append("img")
-                        .attr('src', (d)=> d.get('photo_url'))
+                renderParticipant = (d) ->
+                    participant = JST.participant_term(d.attributes)
+
+                divs.html(renderParticipant)
+                #divs.append("img")
+                #        .attr('src', (d)=> d.get('photo_url'))
                 divs = d3.select('#participantThumbnails')
                          .selectAll('.participantThumbnail')
                          .data(@participants)
                          .style("left", (d)=>@timeScale( d.get('start_timestamp')) + "px")
+                         .style("width", (d)=>(@timeScale( d.get('end_timestamp')) - @timeScale( d.get('start_timestamp'))) + "px")
                          .style("top", (d)=>(@titleIndexScale(d.get('title')) - 240) + "px")
 
         render__yearly_lines: ->
@@ -575,6 +602,10 @@ class IndepthWidget extends Backbone.View
                 @baseTimeScale = d3.scale.linear()
                         .domain([@minTime, @maxTime])
                         .range([0, @maxWidth])
+                @baseInverseTimeScale = d3.scale.linear()
+                        .domain([0, @maxWidth])
+                        .range([@minTime, @maxTime])
+
                 @roundToYearStart = (t) =>
                         year = new Date(t).getFullYear()
                         base = new Date(year,0).valueOf()
@@ -596,6 +627,10 @@ class IndepthWidget extends Backbone.View
                 else
                     @timeScale = (t) =>
                             @pixelPerfecter(@baseTimeScale(t))
+
+                @inverseTimeScale = (t) =>
+                            @pixelPerfecter(@baseInverseTimeScale(t))
+
                 @baseValueScale = d3.scale.linear()
                         .domain([@minValue, @maxValue])
                         .range([TOP_PART_SIZE, 0])
@@ -645,13 +680,29 @@ class IndepthWidget extends Backbone.View
         setParticipants: ( participants ) ->
             title = null
             @titles = []
-            for participant in participants
+            dupDetector = {}
+            dupIndices = []
+            for participant, index in participants
                 participant.setTimestamps()
+                unique_id = participant.get('unique_id')
+                if (dupDetector[unique_id])
+                    # Push to the begining of the array because we must
+                    # remove the indicies in reverse order to presrve location
+                    dupIndices.unshift(index)
+                    continue
+
+                dupDetector[unique_id] = participant
                 if participant.get("title") != title
                     title = participant.get("title")
                     @titleToIndex[title] = @titles.length
                     @titles.push title
+
+            for index in dupIndices
+                participants.splice(index, 1)
+
             @participants = participants #_.groupBy(participants, (x) -> x.get('title') )
+
+            @participantThumbnailsOffset = $("#participantThumbnails").offset()
 
 
 $( ->

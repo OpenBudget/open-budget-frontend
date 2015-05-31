@@ -426,6 +426,7 @@ class Participant extends Backbone.Model
                 title: null
                 start_timestamp: null
                 end_timestamp: null
+                unique_id: null
 
         setTimestamps: ->
             @set 'start_timestamp', dateToTimestamp(@get 'start_date')
@@ -433,6 +434,8 @@ class Participant extends Backbone.Model
                 @set 'end_timestamp', dateToTimestamp(@get 'end_date')
             else
                 @set 'end_timestamp', window.combinedHistory.maxTime
+
+            @set('unique_id', @get('kind')+"-"+"-"+@get('start_timestamp')+"-"+@get('end_timestamp'))
 
 class Participants extends Backbone.Collection
         model: Participant
