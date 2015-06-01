@@ -1639,12 +1639,13 @@ svg rect{
     border-radius: 16px;
     text-indent: -120px;
     overflow: hidden;
+    /* margin-right: -10px; */
 }
 .participant-name-visible {
     text-indent: 0;
     padding: 0 14px 0 8px;
-    background-color: @text;
-    color: white;
+    background-color: #eee;
+    color: @text;
     width: auto;
 }
 
@@ -1669,7 +1670,7 @@ svg rect{
         }
         .participant-term-bar {
             position: absolute;
-            background-color: @darkgray;
+            background-color: @gray;
             width: 100%;
             height: 2px;
             top: 0;
@@ -1678,7 +1679,7 @@ svg rect{
         }
         .participant-end-term-bar {
             position: absolute;
-            background-color: @darkgray;
+            background-color: @gray;
             width: 2px;
             height: 16px;
             right: 0;
@@ -1702,8 +1703,9 @@ svg rect{
 
 .guide-line-photo {
     .participantThumbnail;
-    margin-left: 0;
+    margin-left: -16px;
     .participant-name {
+        margin-right: -10px;
         .participant-name-visible;
     }
     .participant-photo {
