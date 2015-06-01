@@ -88,7 +88,7 @@ class IndepthWidget extends Backbone.View
                             $(".participant-hide-photo").removeClass("participant-hide-photo")
                             for term in termList
                                 participant = term.data
-                                $("#participant-"+participant.get("unique_id")).addClass("participant-hide-photo")
+                                that.participantThumbnails.find("#participant-"+participant.get("unique_id")).addClass("participant-hide-photo")
                                 $(JST.participant_photo(participant.attributes))
                                     .css({
                                         left: d3.event.pageX+"px",
@@ -699,12 +699,14 @@ class IndepthWidget extends Backbone.View
                     @titleToIndex[title] = @titles.length
                     @titles.push title
 
+            # Remove duplicates
             for index in dupIndices
                 participants.splice(index, 1)
 
             @participants = participants #_.groupBy(participants, (x) -> x.get('title') )
 
-            @participantThumbnailsOffset = $("#participantThumbnails").offset()
+            @participantThumbnails = $("#participantThumbnails")
+            @participantThumbnailsOffset = @participantThumbnails.offset()
 
 
 $( ->

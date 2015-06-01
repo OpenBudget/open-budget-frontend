@@ -435,7 +435,7 @@ class Participant extends Backbone.Model
             else
                 @set 'end_timestamp', window.combinedHistory.maxTime
 
-            @set('unique_id', @get('kind')+"-"+"-"+@get('start_timestamp')+"-"+@get('end_timestamp'))
+            @set('unique_id', @get('title')+"-"+"-"+@get('start_timestamp')+"-"+@get('end_timestamp'))
 
 class Participants extends Backbone.Collection
         model: Participant
