@@ -1623,6 +1623,29 @@ svg rect{
     margin-left:-16px;
     margin-top:24px;
 }
+.participant-name {
+    font-size: 12px;
+    position: relative;
+    float: right;
+    right: 100%;
+    top: 7px;
+    text-align: right;
+    padding: 0;
+    height: 18px;
+    width: 0;
+    overflow: hidden;
+    // background: transparent;
+    border-radius: 16px;
+    text-indent: -120px;
+    overflow: hidden;
+}
+.participant-name-visible {
+    text-indent: 0;
+    padding: 0 14px 0 8px;
+    background-color: @text;
+    color: white;
+    width: auto;
+}
 
 #participantThumbnails {
     overflow: hidden;
@@ -1641,20 +1664,6 @@ svg rect{
             transition: width 0.5s, height 0.5s, margin 0.5s, border-radius 0.5s, border-color 0.5s;
         }
         .participant-name {
-            font-size: 12px;
-            position: relative;
-            float: right;
-            right: 100%;
-            top: 7px;
-            text-align: right;
-            padding: 0;
-            height: 18px;
-            width: 0;
-            overflow: hidden;
-            // background: transparent;
-            border-radius: 16px;
-            text-indent: -120px;
-            overflow: hidden;
             transition: text-indent 0.5s, background-color 0.5s, color 0.5s, width 0.5s;
         }
         .participant-term-bar {
@@ -1684,11 +1693,7 @@ svg rect{
               .participant-photo-empahsized;
           }
           .participant-name {
-            text-indent: 0;
-            padding: 0 14px 0 8px;
-            background-color: @text;
-            color: white;
-            width: auto;
+            .participant-name-visible;
           }
         }
     }
@@ -1697,7 +1702,9 @@ svg rect{
 .guide-line-photo {
     .participantThumbnail;
     margin-left: 0;
-
+    .participant-name {
+        .participant-name-visible;
+    }
     .participant-photo {
         .participant-photo-normal;
     }

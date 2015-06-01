@@ -46,7 +46,9 @@ class IndepthWidget extends Backbone.View
                 @showTip = (d,i) ->
                         hook = d3.select(this)
                         that.change_tip.show(d)
-                        $(".timeline-tip").toggleClass('active',true)
+                        $(".timeline-tip")
+                            .toggleClass('active',true)
+                            .css('pointer-events', 'none')
                         that.tipBG.style('opacity',1)
                         for a in ['x','y','width','height']
                             that.tipBG.attr(a, hook.attr(a))
