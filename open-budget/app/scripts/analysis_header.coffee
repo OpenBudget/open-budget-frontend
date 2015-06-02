@@ -42,8 +42,7 @@ class CurrentBudgetAnalyzer extends BudgetAnalyzer
 
     shouldParticipate: () ->
         # make sure currentItem exists - /equivs api can return an empty result
-        window.pageModel.get('currentItem')? and
-        window.pageModel.get('currentItem').attributes.net_allocated?
+        window.pageModel.get('currentItem')?.attributes.net_allocated?
 
     analyze: () ->
         window.JST.header__current_budget( pageModel.get('currentItem').toJSON() )
