@@ -409,7 +409,7 @@ class SearchBar extends Backbone.View
 
     goToData: (datum) =>
         newHash = switch datum.type
-            when 'BudgetLine' then pageModel.URLSchemeHandlerInstance.linkToBudget(datum.code,window.pageModel.get('year'))
+            when 'BudgetLine' then pageModel.URLSchemeHandlerInstance.linkToBudget(datum.code, datum.year)
             when 'Entity' then pageModel.URLSchemeHandlerInstance.linkToEntity(datum.id)
             else null
 

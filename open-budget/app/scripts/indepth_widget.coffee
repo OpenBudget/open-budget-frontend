@@ -500,7 +500,10 @@ class IndepthWidget extends Backbone.View
                     @centerEpoch = @minTime + (@maxTime - @minTime)/2
                     @termSegmentTree = new segmentTree;
                     for participant, index in @participants
-                        @termSegmentTree.pushInterval(participant.get("start_timestamp"), participant.get("end_timestamp"), participant)
+                        startTimestamp = participant.get("start_timestamp")
+                        endTimestamp = participant.get("end_timestamp")
+                        if startTimestamp? and endTimestamp?
+                            @termSegmentTree.pushInterval(startTimestamp, endTimestamp, participant)
                     @termSegmentTree.buildTree();
 
                 divs = newTumbnails.append("div")
