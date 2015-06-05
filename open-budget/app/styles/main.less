@@ -2350,3 +2350,20 @@ div.exemption-flags {
   color: #999a9d;
   padding-top: 1em;
 }
+
+table.table-expandable {
+  thead {
+    color: @darkgray;
+  }
+  tbody {
+    background-color: @ultralightgray;
+    td:not(:last-child){
+      border-left: 1px solid @lightgray;
+    }
+    tr:last-child {
+      td{
+        border-bottom: 1px solid @lightgray;
+      }
+    }
+  }
+}
