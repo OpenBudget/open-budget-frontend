@@ -2917,19 +2917,29 @@ svg rect {
 // Exemptions
 
 div#exemptions-alerts {
-  background-color: #f7f7f7;
   padding: 0;
   height: 92%;
   border-left: 5px solid #cfd1d2;
 
-  div#exemptions-alerts-header h2 {
-    margin: 0;
-    padding: 0.5em 2em 0.5em 0;
-    font-size: 1em;
-    font-weight: 700;
+  div#exemptions-alerts-header {
+    padding: 1em 0 1em 0;
+    border-bottom: 3px solid #f3f3f4;
+    text-align: center;
+
+    h2 {
+      color: #000000;
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    select {
+      background-color: #ececec;
+    }
   }
 
   div#exemptions-alerts-content {
+    background-color: #f7f7f7;
     max-height: 65vh;
     overflow-y: auto;
     direction: ltr;
@@ -2976,14 +2986,6 @@ div#exemptions-alerts {
 
     div.exemption-alert.selected {
       background-color: #ffffff;
-
-      h3.exemption-title {
-        color: #0E0E0E;
-      }
-
-      h4.exemption-supplier {
-        color: #aeafb1;
-      }
     }
   }
 }
