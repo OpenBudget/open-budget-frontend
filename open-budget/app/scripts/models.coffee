@@ -458,12 +458,13 @@ class Entity extends Backbone.Model
 
         initialize: (options) ->
                 @pageModel = options.pageModel
+                @entity_id = options.entityId
 
         doFetch: ->
                 @fetch(dataType: @pageModel.get('dataType'), success: @handleFetchResult)
 
-        url: ->
-                "#{pageModel.get('baseURL')}/api/entity/#{pageModel.get('entityId')}"
+        url: =>
+                "#{pageModel.get('baseURL')}/api/entity/#{@entity_id}"
 
         handleFetchResult: (collection, response) =>
             @supports = response.supports
@@ -571,6 +572,10 @@ class ResizeNotifier
         registerResizeCallback: (callback) ->
           @callbackQueue.push(callback)
 
+class SelectedEntity extends Backbone.Model
+    defaults:
+        selected: null
+
 class PageModel extends Backbone.Model
 
         defaults:
@@ -594,6 +599,7 @@ class PageModel extends Backbone.Model
                 @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
                 @mainPageTabs           = new window.MainPageTabs(@);
                 @resizeNotifier         = new ResizeNotifier()
+                @selectedEntity         = new SelectedEntity()
 
                 @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
                 window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
@@ -634,8 +640,7 @@ class PageModel extends Backbone.Model
                             @readyEvents.push new ReadyAggregator("ready-spending")
                                                         .addCollection(@spending)
                         )
-                    readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs")
-                                                    .addCollection(@budgetHistory)
+                    readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs").addCollection(@budgetHistory)
                     @readyEvents.push readyBreadcrumbs
                     @breadcrumbs = []
                     maxlen=(budgetCode.length/2)-1
@@ -659,8 +664,7 @@ class PageModel extends Backbone.Model
 
                     @on('ready-budget-history', ->
                         @participants = new Participants([], code: budgetCode, pageModel: @)
-                        readyParticipants = new ReadyAggregator('ready-participants')
-                                                        .addCollection(@participants)
+                        readyParticipants = new ReadyAggregator('ready-participants').addCollection(@participants)
                         @readyEvents.push readyParticipants
                     )
 
@@ -677,11 +681,6 @@ class PageModel extends Backbone.Model
                         for part in title_template
                             @addKind(part)
 
-                @on 'change:entityId', ->
-                    @entity = new Entity(pageModel: @)
-                    @readyEvents.push new ReadyAggregator("ready-entity")
-                                                .addModel(@entity)
-                    @entity.doFetch()
 
                 @on 'change:mainPage', ->
                     @budgetItems4 = new CompareRecords([], pageModel: @)
@@ -753,3 +752,5 @@ $( ->
         pageModel.article.css("display","inherit")
         pageModel.addKind(kind)
 )
+
+window.Entity = Entity
