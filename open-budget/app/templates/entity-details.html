@@ -10,7 +10,7 @@
 </h4>
 <% if ( supports.length > 0 ) { %>
 <h3>תמיכות</h3>
-<table id="support-table" class="table table-hover table-striped">
+<table id="support-table" class="table table-expandable">
     <thead>
         <th>שנה</th>
         <th>נושא</th>
@@ -43,10 +43,10 @@
 <% } %>
 <% if ( exemptions.length > 0 ) { %>}
 <h3>פטורים ממכרז</h3>
-<table id="exemption-table" class="table table-hover table-striped">
+<table id="exemption-table" class="table table-expandable">
     <thead>
+        <th>שם המשרד</th>
         <th>התחלה</th>
-        <th>מזמין</th>
         <th>סכום</th>
         <th>הסבר</th>
         <th>נושאים</th>
@@ -55,8 +55,8 @@
     <tbody>
         <% for ( var i = 0 ; i < exemptions.length ; i++ ) { var e = exemptions[i]; console.log(e);%>
             <tr>
-                <td class='exemption-start'><%= e.start_date %></td>
                 <td class='exemption-publisher'><%= e.publisher %></td>
+                <td class='exemption-start'><%= e.start_date %></td>
                 <td class='exemption-volume'><%= number_with_commas(e.volume==null? 0 : e.volume) %></td>
                 <td class='exemption-description'><%= e.description %></td>
                 <td class='exemption-subjects'><% for ( var j = 0 ; j < e.subjects.length ; j++ ) { %>

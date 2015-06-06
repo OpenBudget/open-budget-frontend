@@ -463,6 +463,14 @@ class Entity extends Backbone.Model
         url: ->
                 "#{pageModel.get('baseURL')}/api/entity/#{pageModel.get('entityId')}"
 
+#        exemptionsByPublisher: ->
+#            _.reduce(@exemptions, (result, exemption) =>
+#                if result[exemption.publisher]?
+#                    result[exemption.publisher].append(exemption)
+#                else
+#                    result[exemption.publisher] = [exemption]
+#            , {})
+
 class ReadyAggregator
 
     constructor: (event) ->
