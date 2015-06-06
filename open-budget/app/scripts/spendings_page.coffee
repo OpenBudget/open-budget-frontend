@@ -10,6 +10,12 @@ class SpendingsPageView extends Backbone.View
                 exemptions: _.map( @model.newSpendings.models, (x) -> x.toJSON() )
             @$el.html window.JST.latest_spending_updates( data )
 
+            # Initialize the on click event of the alerts
+            $("div.exemption-alert").on("click", (d) ->
+              $("div.exemption-alert.selected").removeClass("selected");
+              $(d.target).closest("div.exemption-alert").addClass("selected");
+            );
+
 $( ->
         console.log "spendings-page"
         if window.pageModel.get("spendingsPage")?
