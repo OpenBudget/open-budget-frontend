@@ -1,7 +1,8 @@
 class EntityDetailsView extends Backbone.View
 
         initialize: ->
-            @model.on 'ready-entity', => @render()
+#            @model.on 'ready-entity', => @render()
+            @model.entity.on 'ready', => @render()
             console.log 'EntityDetailsView init'
 
         render: ->
