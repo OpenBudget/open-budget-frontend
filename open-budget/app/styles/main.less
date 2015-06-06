@@ -3000,6 +3000,9 @@ table.table-expandable {
   }
   tbody {
     background-color: @ultralightgray;
+    .detailsRow {
+      background-color: white;
+    }
     td:not(:last-child){
       border-left: 1px solid @lightgray;
     }
@@ -3009,4 +3012,24 @@ table.table-expandable {
       }
     }
   }
+
+  .exemption-expander {
+    .glyphicon {
+      cursor: pointer;
+      display: block;
+      margin: auto;
+    }
+  }
+}
+
+table#exemption-details {
+ td.exemption-volume {
+  width: 200px;
+ }
+ td.exemption-publisher {
+   width: 500px;
+ }
+ td.exemption-start {
+   width: 100px;
+ }
 }

@@ -486,7 +486,7 @@ class Entity extends Backbone.Model
             exemptions_by_publisher = {}
             for exemption in @exemptions
                 if not exemptions_by_publisher[exemption.publisher]?
-                    exemptions_by_publisher[exemption.publisher] = {exemptions: [], total_volume: 0}
+                    exemptions_by_publisher[exemption.publisher] = {publisher: exemption.publisher, exemptions: [], total_volume: 0}
                 exemptions_by_publisher[exemption.publisher].exemptions.push(exemption)
                 exemptions_by_publisher[exemption.publisher].total_volume += exemption.volume
                 exemptions_by_publisher[exemption.publisher].start_date = @min_date(exemptions_by_publisher[exemption.publisher].start_date, @convert_str_to_date(exemption.start_date))
@@ -496,8 +496,8 @@ class Entity extends Backbone.Model
                 if (exemptions_by_publisher.hasOwnProperty(publisher))
                     exemptions_by_publisher[publisher].start_date = @convert_date_to_str(exemptions_by_publisher[publisher].start_date)
                     exemptions_by_publisher[publisher].end_date = @convert_date_to_str(exemptions_by_publisher[publisher].end_date)
-            @set('exemptions_by_publisher', exemptions_by_publisher)
-            console.log "&&&&&&&&&&&&&&&&&&& exemptions_by_publisher", exemptions_by_publisher
+
+            exemptions_by_publisher
 
 
         convert_str_to_date: (date_str) ->
@@ -575,6 +575,7 @@ class ResizeNotifier
 class SelectedEntity extends Backbone.Model
     defaults:
         selected: null
+        expandedDetails: {}
 
 class PageModel extends Backbone.Model
 
