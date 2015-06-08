@@ -1,25 +1,30 @@
-<h3>פטורים אחרונים ממכרז</h3>
-<table id="latest-exemption-table" class="table table-hover table-striped">
-    <thead>
-        <th>התחלה</th>
-        <th>מזמין</th>
-        <th>סכום</th>
-        <th>הסבר</th>
-        <th>נושאים</th>
-        <th>קישור</th>
-    </thead>
-    <tbody>
-        <% for ( var i = 0 ; i < exemptions.length ; i++ ) { var e = exemptions[i]; console.log(e);%>
-            <tr>
-                <td class='exemption-start'><%= e.start_date %></td>
-                <td class='exemption-publisher'><%= e.publisher %></td>
-                <td class='exemption-volume'><%= number_with_commas(e.volume==null? 0 : e.volume) %></td>
-                <td class='exemption-description'><%= e.description %></td>
-                <td class='exemption-subjects'><% for ( var j = 0 ; j < e.subjects.length ; j++ ) { %>
-                    <span class='exemption-subjects-item'><%= e.subjects[j] %></span>
-                <% } %></td>
-                <td><a target="_blank" href="<%= e.url %>" class="glyphicon glyphicon-link"></a></td>
-            </tr>
+<!--div id="navbar">
+    <div id="logo" class="fill">התקשרויות בפטור ממרכז</div>
+    <div id="search" class="pull-left">חיפוש<i class="fa fa-search"></i></div>
+</div-->
+<div id="exemptions-alerts">
+    <div id="exemptions-alerts-header">
+        <h2>
+            עדכונים
+            <select>
+                <option>הכי חדש (100)</option>
+            </select>
+        </h2>
+    </div>
+    <div id="exemptions-alerts-content" class="container-fluid">
+        <%
+        for ( var i = 0 ; i < exemptions.length ; i++) {
+            var e = exemptions[i];
+        %>
+        <div class="exemption-alert<%= (i == 0) ? ' selected' : ''%>" supplier="<%= e.supplier_id %>">
+                <div class="exemption-flags">
+                    <span class="label label-success">דגל</span>
+                </div>
+                <h5 class="exemption-publisher"><%= e.publisher%></h5>
+                <h4 class="exemption-supplier"><%= e.supplier %></h4>
+                <h4 class="exemption-data"><%= (e.volume) ? (number_with_commas(e.volume) + ' ש"ח') : ("סכום לא ידוע") %> | <%= e.start_date %> - <%= e.end_date %></h4>
+                <h3 class="exemption-title"><%= (e.description.length < 137) ? e.description : (e.description.substring(0,137) + "...") %></h3>
+        </div>
         <% } %>
-    </tbody>
-</table>
+    </div>
+</div>

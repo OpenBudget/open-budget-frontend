@@ -384,7 +384,7 @@ class TakanaSpending extends Backbone.Collection
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
     url: ->
-            "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=10000"
+            "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=100"
 
 class NewSpendings extends Backbone.Collection
 
@@ -456,15 +456,77 @@ class Entity extends Backbone.Model
                 supports: []
                 exemptions: []
                 id: null
+                exemptions_by_publisher: {}
+                exemptions_sum: null
 
         initialize: (options) ->
                 @pageModel = options.pageModel
+                @entity_id = options.entityId
 
         doFetch: ->
-                @fetch(dataType: @pageModel.get('dataType'))
+                @fetch(dataType: @pageModel.get('dataType'), success: @handleFetchResult)
 
-        url: ->
-                "#{pageModel.get('baseURL')}/api/entity/#{pageModel.get('entityId')}"
+        url: =>
+                "#{pageModel.get('baseURL')}/api/entity/#{@entity_id}"
+
+        handleFetchResult: (collection, response) =>
+            @supports = response.supports
+            @exemptions = response.exemptions
+
+            @set('exemptions_sum', @get_exemptions_total_volume())
+
+            @exemptionsByPublisher()
+
+            @trigger('ready')
+
+        get_exemptions_total_volume: =>
+            exemptions_sum = 0
+            for exemption in @exemptions
+                exemptions_sum += exemption.volume
+            return exemptions_sum
+
+        exemptionsByPublisher: =>
+            exemptions_by_publisher = {}
+            for exemption in @exemptions
+                if not exemptions_by_publisher[exemption.publisher]?
+                    exemptions_by_publisher[exemption.publisher] = {publisher: exemption.publisher, exemptions: [], total_volume: 0}
+                exemptions_by_publisher[exemption.publisher].exemptions.push(exemption)
+                exemptions_by_publisher[exemption.publisher].total_volume += exemption.volume
+                exemptions_by_publisher[exemption.publisher].start_date = @min_date(exemptions_by_publisher[exemption.publisher].start_date, @convert_str_to_date(exemption.start_date))
+                exemptions_by_publisher[exemption.publisher].end_date = @max_date(exemptions_by_publisher[exemption.publisher].end_date, @convert_str_to_date(exemption.end_date))
+
+            for publisher of exemptions_by_publisher
+                if (exemptions_by_publisher.hasOwnProperty(publisher))
+                    exemptions_by_publisher[publisher].start_date = @convert_date_to_str(exemptions_by_publisher[publisher].start_date)
+                    exemptions_by_publisher[publisher].end_date = @convert_date_to_str(exemptions_by_publisher[publisher].end_date)
+
+            exemptions_by_publisher
+
+
+        convert_str_to_date: (date_str) ->
+            date_arr = date_str.split("/")
+            return new Date(date_arr[2], parseInt(date_arr[1]) - 1, date_arr[0])
+
+        convert_date_to_str: (d) ->
+            return "" + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear()
+
+        min_date: (a,b) ->
+            if not a?
+                return b
+            if not b?
+                return a
+            if a.getTime() < b.getTime()
+                return a
+            return b
+
+        max_date: (a,b) ->
+            if not a?
+                return b
+            if not b?
+                return a
+            if a.getTime() < b.getTime()
+                return b
+            return a
 
 class ReadyAggregator
 
@@ -513,6 +575,11 @@ class ResizeNotifier
         registerResizeCallback: (callback) ->
           @callbackQueue.push(callback)
 
+class SelectedEntity extends Backbone.Model
+    defaults:
+        selected: null
+        expandedDetails: {}
+
 class PageModel extends Backbone.Model
 
         defaults:
@@ -540,6 +607,7 @@ class PageModel extends Backbone.Model
                 @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
                 @mainPageTabs           = new window.MainPageTabs(@);
                 @resizeNotifier         = new ResizeNotifier()
+                @selectedEntity         = new SelectedEntity()
 
                 @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
                 window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
@@ -580,8 +648,7 @@ class PageModel extends Backbone.Model
                             @readyEvents.push new ReadyAggregator("ready-spending")
                                                         .addCollection(@spending)
                         )
-                    readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs")
-                                                    .addCollection(@budgetHistory)
+                    readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs").addCollection(@budgetHistory)
                     @readyEvents.push readyBreadcrumbs
                     @breadcrumbs = []
                     maxlen=(budgetCode.length/2)-1
@@ -605,8 +672,7 @@ class PageModel extends Backbone.Model
 
                     @on('ready-budget-history', ->
                         @participants = new Participants([], code: budgetCode, pageModel: @)
-                        readyParticipants = new ReadyAggregator('ready-participants')
-                                                        .addCollection(@participants)
+                        readyParticipants = new ReadyAggregator('ready-participants').addCollection(@participants)
                         @readyEvents.push readyParticipants
                     )
 
@@ -623,11 +689,6 @@ class PageModel extends Backbone.Model
                         for part in title_template
                             @addKind(part)
 
-                @on 'change:entityId', ->
-                    @entity = new Entity(pageModel: @)
-                    @readyEvents.push new ReadyAggregator("ready-entity")
-                                                .addModel(@entity)
-                    @entity.doFetch()
 
                 @on 'change:mainPage', ->
                     @budgetItems4 = new CompareRecords([], pageModel: @)
@@ -699,3 +760,5 @@ $( ->
         pageModel.article.css("display","inherit")
         pageModel.addKind(kind)
 )
+
+window.Entity = Entity

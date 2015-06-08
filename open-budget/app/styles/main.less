@@ -2320,3 +2320,130 @@ svg rect{
     .bubble-group-label-total-sum {
       font-weight: bold;
     }
+
+// Exemptions
+.disclaimer {
+  padding: 10px;
+  color: @darkgray;
+}
+
+div#exemptions-alerts {
+  padding: 0;
+
+  div#exemptions-alerts-header {
+    padding: 1em 0 1em 0;
+    border-bottom: 3px solid #f3f3f4;
+    border-left: 5px solid #cfd1d2;
+    text-align: center;
+
+    h2 {
+      color: #000000;
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    select {
+      background-color: #ececec;
+    }
+  }
+
+  div#exemptions-alerts-content {
+    background-color: #f7f7f7;
+    max-height: 60vh;
+    overflow-y: auto;
+    direction: ltr;
+
+    div.exemption-alert {
+      padding: 1em 0.5em 1em 0.5em;
+      direction: rtl;
+      border-bottom: 3px solid #f3f3f4;
+      border-left: 5px solid #cfd1d2;
+      cursor: pointer;
+
+      h5.exemption-publisher {
+        color: #7E7E7E;
+        margin: 0;
+      }
+
+      div.exemption-flags {
+        display: inline;
+      }
+
+      h3.exemption-title {
+        color: #848584;
+        margin: 0.5em 0 0 0;
+        font-size: 1em;
+
+      }
+
+      h4.exemption-data {
+        color: #000000;
+        font-size: 0.9em;
+        margin: 0.1em 0 0 0;
+        font-weight: bold;
+      }
+
+      h4.exemption-supplier {
+        color: #000000;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin: 0;
+      }
+
+      div.exemption-flags {
+        display: none; // Delete when the flags are needed
+        color: #999a9d;
+        padding-top: 1em;
+      }
+    }
+
+    div.exemption-alert.selected {
+      background-color: #ffffff;
+      border-left: 5px solid #5cb85c;
+    }
+  }
+}
+
+table.table-expandable {
+  thead {
+    color: @darkgray;
+  }
+  tbody {
+    background-color: @ultralightgray;
+    .detailsRow {
+      background-color: white;
+    }
+    td:not(:last-child){
+      border-left: 1px solid @lightgray;
+    }
+    tr:last-child {
+      td{
+        border-bottom: 1px solid @lightgray;
+      }
+    }
+  }
+
+  .exemption-expander {
+    .glyphicon {
+      cursor: pointer;
+      display: block;
+      margin: auto;
+    }
+  }
+}
+
+table#exemption-details {
+ td.exemption-volume {
+  width: 200px;
+ }
+ td.exemption-publisher {
+   width: 500px;
+ }
+ td.exemption-start {
+   width: 100px;
+ }
+}
+
+
+
