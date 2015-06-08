@@ -82,7 +82,7 @@ class IndepthWidget extends Backbone.View
                         ofs = $(that.svg[0]).offset()
 
                         if that.termSegmentTree
-                            termList = that.termSegmentTree.queryPoint(that.baseInverseTimeScale(d3.event.pageX + 16))
+                            termList = that.termSegmentTree.queryPoint(that.baseInverseTimeScale(d3.event.pageX + 4))
 
                             $(".guide-line-photo").remove()
                             $(".participant-hide-photo").removeClass("participant-hide-photo")
