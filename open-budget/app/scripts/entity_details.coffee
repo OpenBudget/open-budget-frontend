@@ -5,7 +5,7 @@ class EntityDetailsView extends Backbone.View
         initialize:  ->
             @model.selectedEntity.on 'change:selected', =>
                 eid = @model.selectedEntity.get('selected')
-                @entity = new Entity(pageModel: window.pageModel, entityId: eid)
+                @entity = new models.Entity(pageModel: window.pageModel, entityId: eid)
                 @entity.doFetch()
                 @entity.on 'ready', => @render()
             console.log 'EntityDetailsView init'
@@ -18,8 +18,9 @@ class EntityDetailsView extends Backbone.View
 
             # for each exemption by publisher, build a view and render it, and append it
             # to the table body
-            exemptionByPublisherBody = @$el.find('#exemption-table tbody')
-            for exemptionByPublisher in _.values(@entity.exemptionsByPublisher())
+            exemptionByPublisherBody = @$el.find('.exemption-table tbody')
+            exemptionsByPublisher = @entity.get 'exemptions_by_publisher'
+            for exemptionByPublisher in _.values(exemptionsByPublisher)
               rowView = new ExemptionByPublisherRowView(model: exemptionByPublisher)
               exemptionByPublisherBody.append(rowView.render().el)
             @
@@ -75,7 +76,7 @@ class ExemptionDetailsRowView extends Backbone.View
 $( ->
         console.log "entity-details"
         if window.pageModel.get("entityId")?
-            window.entityDetails = new EntityDetailsView({el: $("#entity-details"),model: window.pageModel});
-)
+            window.entityDetails = new EntityDetailsView({el: $("#standalone-entity-details"),model: window.pageModel})
+            window.pageModel.selectedEntity.set 'selected',window.pageModel.get("entityId"))
 
 window.EntityDetailsView = EntityDetailsView

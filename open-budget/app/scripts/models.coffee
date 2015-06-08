@@ -460,16 +460,16 @@ class Entity extends Backbone.Model
                 exemptions_sum: null
 
         initialize: (options) ->
-                @pageModel = options.pageModel
                 @entity_id = options.entityId
 
         doFetch: ->
-                @fetch(dataType: @pageModel.get('dataType'), success: @handleFetchResult)
+                @fetch(dataType: pageModel.get('dataType'), success: @handleFetchResult)
 
         url: =>
                 "#{pageModel.get('baseURL')}/api/entity/#{@entity_id}"
 
         handleFetchResult: (collection, response) =>
+            console.log 'got',response,'for',@entity_id
             @supports = response.supports
             @exemptions = response.exemptions
 
@@ -500,7 +500,7 @@ class Entity extends Backbone.Model
                     exemptions_by_publisher[publisher].start_date = @convert_date_to_str(exemptions_by_publisher[publisher].start_date)
                     exemptions_by_publisher[publisher].end_date = @convert_date_to_str(exemptions_by_publisher[publisher].end_date)
 
-            exemptions_by_publisher
+            @set('exemptions_by_publisher',exemptions_by_publisher)
 
 
         convert_str_to_date: (date_str) ->
@@ -723,6 +723,7 @@ window.models =
         BudgetItem: BudgetItem
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
+        Entity: Entity
 
 window.pageModel = new PageModel()
 
@@ -760,5 +761,3 @@ $( ->
         pageModel.article.css("display","inherit")
         pageModel.addKind(kind)
 )
-
-window.Entity = Entity

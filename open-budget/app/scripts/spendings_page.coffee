@@ -23,5 +23,5 @@ $(->
     console.log "spendings-page"
     if window.pageModel.get("spendingsPage")?
         window.spendingsPageView = new SpendingsPageView({el: $("#spendings-page-article .latest-updates"), model: window.pageModel});
-        window.entityDetails = new EntityDetailsView({el: $("#entity-details"), model: window.pageModel});
+        window.entityDetails = new window.EntityDetailsView({el: $("#entity-details"), model: window.pageModel});
 )

@@ -12,8 +12,8 @@
 
 
 <% if ( exemptions.length > 0 ) { %>
-<h3><%= exemptions.length %> התקשרויות עם <%= Object.keys(exemptions_by_publisher).length %> משרדים בסך <%= number_with_commas(exemptions_sum==null? 0 : exemptions_sum) %> ש"ח</h3>
-<table id="exemption-table" class="table table-expandable">
+<h3><%= exemptions.length %> התקשרויות עם <%= _.keys(exemptions_by_publisher).length %> משרדים בסך <%= number_with_commas(exemptions_sum==null? 0 : exemptions_sum) %> ש"ח</h3>
+<table class="exemption-table table table-expandable">
     <thead>
         <th>שם המשרד</th>
         <th>מס'</th>
@@ -30,7 +30,7 @@
 
 <% if ( supports.length > 0 ) { %>
 <h3>תמיכות</h3>
-<table id="support-table" class="table table-expandable">
+<table class="support-table table table-expandable">
     <thead>
         <th>שנה</th>
         <th>נושא</th>
