@@ -536,6 +536,10 @@ class PageModel extends Backbone.Model
         initialize: ->
                 if window.location.origin == @get('baseURL')
                     @set('dataType','json')
+
+                @api = {
+                    BudgetItemKids: BudgetItemKids
+                }
                 @readyEvents = []
                 @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
                 @mainPageTabs           = new window.MainPageTabs(@);

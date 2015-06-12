@@ -32,9 +32,12 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+MAX_RADIUS = 85
+
+d3.selection.prototype.moveToFront = ->
+  this.each( -> this.parentNode.appendChild(this) )
 
 class BubbleChart extends Backbone.View
-
   initialize: (options) ->
     @options = options
 
@@ -58,6 +61,7 @@ class BubbleChart extends Backbone.View
       .attr("height", @height)
       .call(@tooltip)
     @nodes = null
+
     @force = d3.layout.force()
                 .size([@width, @height])
                 .gravity(@layout_gravity)
@@ -65,10 +69,34 @@ class BubbleChart extends Backbone.View
                 .friction(0.9)
                 .on "tick", (e) =>
                     @calc_averages()
-                    @circles
+                    if not @centeredNode? or not @centeredNode.transformationComplete
+                        selection = @circles
+                    else
+                        selection = @childCircles
+                    selection
                       .each(this.move_towards_centers(e.alpha))
-                      .attr("cx", (d) => d.x - @get_offset(e.alpha,d).dx)
-                      .attr("cy", (d) => d.y - @get_offset(e.alpha,d).dy)
+                      .attr("cx", (d) =>
+                          d.x - @get_offset(e.alpha,d).dx
+                      )
+                      .attr("cy", (d) =>
+                          d.y - @get_offset(e.alpha,d).dy
+                      )
+                .on "end", (e) =>
+                    if @centeredNode? and not @centeredNode.transformationComplete
+                        @centeredNode.transformationComplete = true
+                        @centeredNode.radius = MAX_RADIUS
+                        @vis.select("#bubble_#{@centeredNode.id}")
+                            .transition()
+                            .duration(1000)
+                            .attr("r", (d) -> d.radius)
+                            .each 'end',  =>
+                                if @options.focusComplete?
+                                    @options.focusComplete()
+                                @vis.select("#bubble_#{@centeredNode.id}")
+                                    .transition()
+                                    .duration(1000)
+                                    .attr("stroke-dasharray", "5,5")
+                                    .style("fill", "transparent")
 
     @circles = null
 
@@ -78,39 +106,47 @@ class BubbleChart extends Backbone.View
         .attr("height", @height)
       @force.size([@width, @height])
 
-  updateNodes: (data, numParts) ->
-    if not @data?
+  updateNodes: (data, numParts, centeredNode) ->
+    if not @data? or @data.length != data.length
         @data = data
+
     @numParts = numParts
     # use the max total_amount in the data as the max in the scale's domain
-    max_amount = d3.max(@data, (d) -> d.value)
-    @total_amount = d3.sum(@data, (d) -> d.value)
-    @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
+    max_amount = d3.max(@data, (d) -> if d.center.category() != "focused" then d.value else null)
+    @total_amount = d3.sum(@data, (d) -> if d.center.category() != "focused" then d.value else null)
+    @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, MAX_RADIUS])
     @boundingRadius = @radius_scale(@total_amount/@numParts)
 
-    if not @nodes?
+    @centeredNode = centeredNode
+
+    if not @nodes? or @nodes.length != @data.length
         @create_nodes()
         @force.nodes(@nodes)
+        @render(true)
 
   # create node objects from original data
   # that will serve as the data behind each
   # bubble in the vis, then add each node
   # to @nodes to be used later
   create_nodes: () =>
-    @nodes = []
-    @data.forEach (d) =>
-      d.radius = @radius_scale(d.value)
-      d.x = if d.x? then d.x else Math.random() * @width
-      d.y = if d.y? then d.y else Math.random()*50 - d.part*@boundingRadius + d.center.y
-      if d.radius < 0
-          return
-      @nodes.push d
+      if not @nodes?
+          @nodes = []
 
-    @nodes.sort (a,b) -> b.value - a.value
+      @data.forEach (d) =>
+          if @nodes.indexOf(d) is -1
+              d.radius = @radius_scale(d.value)
+              d.x = if d.x? then d.x else Math.random() * @width
+              d.y = if d.y? then d.y else Math.random()*50 - d.part*@boundingRadius + d.center.y
+              if d.radius < 0
+                  return
+
+              @nodes.push d
+
+      @nodes.sort (a,b) -> b.value - a.value
 
   # create svg at #vis and then
   # create circle representation for each node
-  render: () =>
+  render: (keepRadius) =>
     @circles = @vis.selectAll("circle")
                     .data(@nodes, (d) -> d.id)
 
@@ -120,14 +156,22 @@ class BubbleChart extends Backbone.View
 
     # radius will be set to 0 initially.
     # see transition below
-    @circles.enter().append("circle")
-      .attr("r", 0)
+    newCircles = @circles.enter().append("circle")
       .attr("stroke-width", 2)
       .attr("id", (d) -> "bubble_#{d.id}")
       .on("click", (d,i) -> d.click())
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
+
+    if not keepRadius
+        newCircles.attr("r", 0)
+
     @reapply_values()
+
+    if @centeredNode?
+        @vis.select("#bubble_#{@centeredNode.id}").moveToFront()
+
+    @childCircles = @vis.selectAll(".child-bubble")
 
   reapply_values: () =>
       # Fancy transition to make bubbles appear, ending with the
@@ -172,9 +216,10 @@ class BubbleChart extends Backbone.View
         extents[cat].miny = d3.min([extents[cat].miny,d.y])
     for cat in _.keys(extents)
         extent = extents[cat]
-        @averages[cat] =
-            x: (extent.maxx + extent.minx)/2
-            y: (extent.maxy + extent.miny)/2
+        if not @centeredNode? or not @centeredNode.transformationComplete or cat == "focused"
+            @averages[cat] =
+                x: (extent.maxx + extent.minx)/2
+                y: (extent.maxy + extent.miny)/2
 
   get_offset: (alpha,d) =>
       cat = d.center.category()
@@ -191,10 +236,10 @@ class BubbleChart extends Backbone.View
   # Moves all circles towards the @center
   # of the visualization
   move_towards_centers: (alpha) =>
-    (d) =>
-      d.x = d.x + (d.center.x - d.x) * (@damper + 0.02) * alpha
-      targetY =  d.center.y - d3.min([1,d.part]) * @boundingRadius
-      d.y = d3.max([0, d.y + (d.center.y - d.y) * (@damper + 0.02) * alpha + (targetY - d.y) * (@damper) * alpha * alpha * alpha * 500])
+      (d) =>
+          d.x = d.x + (d.center.x - d.x) * (@damper + 0.02) * alpha
+          targetY =  d.center.y - d3.min([1,d.part]) * @boundingRadius
+          d.y = d3.max([0, d.y + (d.center.y - d.y) * (@damper + 0.02) * alpha + (targetY - d.y) * (@damper) * alpha * alpha * alpha * 500])
 
   show_details: (data, i, element) =>
     d3.select(element)

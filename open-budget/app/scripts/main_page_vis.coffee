@@ -1,6 +1,17 @@
 globalWidth = 0
 
-class SimpleCentering
+class BaseCentering
+
+    setFocusedCenter: ($el) ->
+        @focusedCenter =
+            index: 0
+            category: -> "focused"
+            x: $el.width()/2
+            y: @item_height/2
+
+        @focusedCenter
+
+class SimpleCentering extends BaseCentering
 
     constructor: ->
         @center =
@@ -12,7 +23,7 @@ class SimpleCentering
     item_width: 600
     item_height: 600
 
-class ParentCentering
+class ParentCentering extends BaseCentering
 
     constructor: ->
         # 2 digit prefix separation
@@ -38,7 +49,7 @@ class ParentCentering
     item_width: 200
     item_height: 250
 
-class TopGroupCentering
+class TopGroupCentering extends BaseCentering
 
     constructor: ->
         items = pageModel.budgetItems4.models
@@ -64,7 +75,7 @@ class TopGroupCentering
     item_height: 300
 
 
-class FullGroupCentering
+class FullGroupCentering extends BaseCentering
 
     constructor: ->
         items = pageModel.budgetItems4.models
@@ -94,8 +105,14 @@ class MainPageVis extends Backbone.View
 
     initialize: ->
         @rendered = false
+        @shiftBubbles = false
         @model.on 'ready-budget-bubbles', =>
-            @chart = new BubbleChart( el: @$el.find("#bubble-chart") )
+            @chart = new BubbleChart(
+                el: @$el.find("#bubble-chart"),
+                focusComplete: =>
+                    @recalc_centers(true)
+                    @chart.start()
+            )
             @chart_el = d3.select(@chart.el)
             @$bubbleContainer = @$el.find("#bubble-chart-container");
             @centers = [ new SimpleCentering(), new TopGroupCentering(), new FullGroupCentering(), new ParentCentering() ]
@@ -106,7 +123,7 @@ class MainPageVis extends Backbone.View
                 $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
             @recalc_centers()
             @render()
-			
+
         @model.on 'ready-main-budget', =>
             @$el.find("#main-budget-header").html(JST.main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
             if @rendered
@@ -115,6 +132,7 @@ class MainPageVis extends Backbone.View
             if @rendered
                 @recalc_centers()
                 @chart.start()
+
 
 
     events:
@@ -159,12 +177,23 @@ class MainPageVis extends Backbone.View
       @$bubbleContainer.find(".bubble-group-label").remove();
       center = @centers[@toggle]
       title_data = center.getCenters()
+
+      if @centeredNode?
+          $(JST.bubble_group_label({
+                total: @centeredNode.rev,
+                title: @centeredNode.src.get("title")
+            })).css({
+                top: "50px",
+                left: @$bubbleContainer.width()/2 + "px"
+            }).appendTo(@$bubbleContainer);
+
       for group, i in title_data
         if group.title?
           $(JST.bubble_group_label(group)).css({
             top: (group.y - center.item_height/2) + "px",
             left: group.x + "px"
           }).appendTo(@$bubbleContainer);
+
 
 
     prepareData: ->
@@ -191,7 +220,33 @@ class MainPageVis extends Backbone.View
                 stroke_color: null
                 tooltip_contents: -> JST.bubble_tooltip(this)
                 click: ->
-                    window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(this.id,2015)
+                    #window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(this.id,2015)
+                    that.centeredNode = this
+                    code = that.centeredNode.src.get('code')
+                    that.subNodes = []
+                    that.centeredNodeKids = new pageModel.api.BudgetItemKids([], year: 2015, code: code, pageModel: pageModel)
+                    that.centeredNodeKids.on('sync', ->
+                        console.log("kids are ready")
+                        for model in that.centeredNodeKids.models
+                            node =
+                                id: model.get('code')
+                                src: model
+                                orig: model.get('net_allocated')
+                                rev:  model.get('net_revised')
+                                click: -> return
+                                value: model.get('net_revised')
+                                className: -> "child-bubble "+changeClass(this.orig,this.rev)+"_svg"
+                                fill_color: null
+                                stroke_color: null
+                                tooltip_contents: -> JST.bubble_tooltip(this)
+                                center: null
+
+                            that.subNodes.push(node)
+                    )
+
+                    that.shiftBubbles = true
+                    that.recalc_centers()
+                    that.chart.start()
                     false
                 center: null
             @data.push node
@@ -199,8 +254,10 @@ class MainPageVis extends Backbone.View
 
     switchComparison: (selected) =>
         console.log 'switchComparison'
+        @selectedComparison = selected
+
         scaling = 20.0
-        [orig_field, rev_field] = selected.split('/')
+        [orig_field, rev_field] = @selectedComparison.split('/')
         console.log orig_field, rev_field
         increased = 0
         decreased = 0
@@ -226,8 +283,8 @@ class MainPageVis extends Backbone.View
             @chart.reapply_values()
             @chart.start()
 
-    recalc_centers: =>
-        globalWidth = @$el.width()
+    recalc_centers: (includeSubNodes) =>
+        globalWidth = if @shiftBubbles then 0 else @$el.width()
         @nodes = []
         center_strategy = @centers[@toggle]
         centers = center_strategy.getCenters()
@@ -252,9 +309,25 @@ class MainPageVis extends Backbone.View
             node.center = center_strategy.elToCenter(node)
             # Accumulate the total allocated budget for each center
             if node.center? then node.center.total += node.rev
+
+            # The focused node has its own unique center
+            if node == @centeredNode
+                node.center = $.extend(true, {}, center_strategy.setFocusedCenter(@$el))
+                node.center.category = -> "mainFocus"
+
             if node.center?.x? or node.center?.y?
                 @nodes.push node
-        @chart.updateNodes(@nodes, @centers[@toggle].getCenters().length)
+
+        # Add any subNodes if they are available - subNodes are the kids
+        # of the focused node
+        if includeSubNodes and @subNodes?
+            for node in @subNodes
+                node.center = center_strategy.focusedCenter
+
+                if node.center?.x? or node.center?.y?
+                    @nodes.push node
+
+        @chart.updateNodes(@nodes, @centers[@toggle].getCenters().length, @centeredNode)
 
         # We need to refresh the bubble labels based on the new centers
         @addBubbleLabels()
