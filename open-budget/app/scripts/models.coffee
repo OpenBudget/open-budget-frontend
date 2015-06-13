@@ -504,8 +504,10 @@ class Entity extends Backbone.Model
 
 
         convert_str_to_date: (date_str) ->
-            date_arr = date_str.split("/")
-            return new Date(date_arr[2], parseInt(date_arr[1]) - 1, date_arr[0])
+            if date_str?
+                date_arr = date_str.split("/")
+                return new Date(date_arr[2], parseInt(date_arr[1]) - 1, date_arr[0])
+            return null
 
         convert_date_to_str: (d) ->
             return "" + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear()
