@@ -369,7 +369,9 @@ class SearchBar extends Backbone.View
                             @suggestions = @aggregateSuggestions(suggestions)
                             @suggestionNum = suggestions.length
                             @selected = -1
-                            @transition(EV_GOT_RESULTS) )
+                            @transition(EV_GOT_RESULTS)
+                            ga('send', 'event', 'searchbar', 'results', val, @suggestionNum) )
+            ga('send', 'event', 'searchbar', 'search', val, 1);
         else
             @transition(EV_CLEAR_RESULTS)
 

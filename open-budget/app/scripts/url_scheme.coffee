@@ -99,6 +99,8 @@ class URLSchemeHandler
 
             if @reload
                 window.location.reload()
+            else
+                ga('send', 'pageview')
 
             @oldHash = window.location.hash
             @reload = true

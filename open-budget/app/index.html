@@ -367,17 +367,6 @@
         <!-- endbower -->
         <!-- endbuild -->
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <!-- <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create', 'UA-10203855-7', 'open-budget.org.il');
-            /*ga('send','pageview');*/
-        </script> -->
-
         <script src="//hasadna-notifications.appspot.com/static/hn.js"></script>
 
         <!-- build:js scripts/main.js -->
@@ -409,19 +398,14 @@
         <!-- endbuild -->
 
         <!-- Piwik -->
-        <script type="text/javascript">
-          var _paq = _paq || [];
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://visitors.hasadna.org.il/";
-            _paq.push(['setTrackerUrl', u+'piwik.php']);
-            _paq.push(['setSiteId', 4]);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
-            g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-          })();
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-10203855-7', 'auto');
+          ga('send', 'pageview');
         </script>
-        <noscript><p><img src="http://visitors.hasadna.org.il/piwik.php?idsite=4" style="border:0;" alt="" /></p></noscript>
         <!-- End Piwik Code -->
 
         <!-- Twitter -->
