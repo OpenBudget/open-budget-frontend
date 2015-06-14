@@ -501,7 +501,13 @@ class IndepthWidget extends Backbone.View
                     @termSegmentTree = new segmentTree;
                     for participant, index in @participants
                         startTimestamp = participant.get("start_timestamp")
-                        endTimestamp = participant.get("end_timestamp")
+                        if participant.get("end_date")
+                            endTimestamp = participant.get("end_timestamp")
+                        else
+                            # if there is no end_date we need
+                            # to use the current timestam
+                            endTimestamp = new Date().getTime()
+
                         if startTimestamp? and endTimestamp?
                             @termSegmentTree.pushInterval(startTimestamp, endTimestamp, participant)
                     @termSegmentTree.buildTree();
