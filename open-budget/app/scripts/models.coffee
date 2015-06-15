@@ -469,7 +469,6 @@ class Entity extends Backbone.Model
         handleFetchResult: (collection, response) =>
             @supports = response.supports
             @exemptions = response.exemptions
-            console.log "&&&&&&&&&&&&&&&&&& @exemptions", @exemptions
 
             @set('exemptions_sum', @get_exemptions_total_volume())
 
