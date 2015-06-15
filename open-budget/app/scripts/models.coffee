@@ -469,6 +469,7 @@ class Entity extends Backbone.Model
         handleFetchResult: (collection, response) =>
             @supports = response.supports
             @exemptions = response.exemptions
+            console.log "&&&&&&&&&&&&&&&&&& @exemptions", @exemptions
 
             @set('exemptions_sum', @get_exemptions_total_volume())
 
@@ -478,19 +479,21 @@ class Entity extends Backbone.Model
 
         get_exemptions_total_volume: =>
             exemptions_sum = 0
-            for exemption in @exemptions
-                exemptions_sum += exemption.volume
+            if @exemptions?
+                for exemption in @exemptions
+                    exemptions_sum += exemption.volume
             return exemptions_sum
 
         exemptionsByPublisher: =>
             exemptions_by_publisher = {}
-            for exemption in @exemptions
-                if not exemptions_by_publisher[exemption.publisher]?
-                    exemptions_by_publisher[exemption.publisher] = {publisher: exemption.publisher, exemptions: [], total_volume: 0}
-                exemptions_by_publisher[exemption.publisher].exemptions.push(exemption)
-                exemptions_by_publisher[exemption.publisher].total_volume += exemption.volume
-                exemptions_by_publisher[exemption.publisher].start_date = @min_date(exemptions_by_publisher[exemption.publisher].start_date, @convert_str_to_date(exemption.start_date))
-                exemptions_by_publisher[exemption.publisher].end_date = @max_date(exemptions_by_publisher[exemption.publisher].end_date, @convert_str_to_date(exemption.end_date))
+            if @exemptions?
+                for exemption in @exemptions
+                    if not exemptions_by_publisher[exemption.publisher]?
+                        exemptions_by_publisher[exemption.publisher] = {publisher: exemption.publisher, exemptions: [], total_volume: 0}
+                    exemptions_by_publisher[exemption.publisher].exemptions.splice(0, 0, exemption)
+                    exemptions_by_publisher[exemption.publisher].total_volume += exemption.volume
+                    exemptions_by_publisher[exemption.publisher].start_date = @min_date(exemptions_by_publisher[exemption.publisher].start_date, @convert_str_to_date(exemption.start_date))
+                    exemptions_by_publisher[exemption.publisher].end_date = @max_date(exemptions_by_publisher[exemption.publisher].end_date, @convert_str_to_date(exemption.end_date))
 
             for publisher of exemptions_by_publisher
                 if (exemptions_by_publisher.hasOwnProperty(publisher))
