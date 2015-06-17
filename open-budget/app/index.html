@@ -275,7 +275,7 @@
             <div class="footer">
                 <ul class="pull-right">
                     <li><a class="hasadna" title="הסדנא לידע ציבורי" href="http://hasadna.org.il" target="_blank">הסדנא לידע ציבורי</a></li>
-                    <li><a href="#">♥ הצוות</a></li>
+                    <li><a href="#teamModal" data-toggle="modal">♥ הצוות</a></li>
                     <li><a target="_blank" href="https://github.com/OpenBudget/">קוד האתר</a></li>
                     <li><a target="_blank" href="https://github.com/OpenBudget/open-budget-frontend/issues">דווחו על תקלה</a></li>
                     <li><a target="_blank" href="http://forum.hasadna.org.il/c/5-category/13-category">קבוצת הדיון שלנו</a></li>
@@ -330,6 +330,7 @@
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+
         <div id="glossaryModal" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width:90%">
             <div class="modal-content">
@@ -345,7 +346,6 @@
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-
 
         <style id="arrow-helper"></style>
         <!-- build:js scripts/vendor.js -->
@@ -397,14 +397,15 @@
         <script src="scripts/training.js"></script>
         <!-- endbuild -->
 
-        <!-- Piwik -->
+        <!-- Google Analytics -->
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
           ga('create', 'UA-10203855-7', 'auto');
-          ga('send', 'pageview');
+          ga('send', 'pageview', {'page':window.location.pathname+window.location.search+window.location.hash});
+          ga('send', 'event', 'navigation', 'visit', window.location.hash, 1);
         </script>
         <!-- End Piwik Code -->
 
@@ -440,5 +441,58 @@
            }(document, 'script', 'facebook-jssdk'));
         </script>
         <!-- End Facebook Code -->
+
+        <div id="teamModal" class="modal fade" role="dialog">
+          <div class="modal-dialog" style="width:90%">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">צוות הפרויקט</h4>
+              </div>
+              <div class="modal-body">
+                  <p>זהו צוות הפרויקט (כל הפרויקט מפותח על ידי מתנדבים ונתמך על ידי הסדנא לידע ציבורי)</p>
+                  <div class="row">
+                      <script>
+                      var team = [
+                          {name:'אדם קריב',
+                           avatar:'cd511289b5773fff5e7efe328846eef3',
+                           email:'adam kruchit obudget.org',
+                           twitter:'ikramvada',
+                           website:null},
+                          {name:'מושון זר-אביב',
+                           avatar:'b3458a2e3eed95ba26ecca523397e06a',
+                           email:null,
+                           twitter:'mushon',
+                           website:'http://mushon.com'},
+                          {name:'סער אלון-ברקת',
+                           avatar:'8a1ae50e012e3a5d6accfe9fe6ebd0f2',
+                           email:null,
+                           twitter:null,
+                           website:null
+                          },
+                          {name:'ניר בט',
+                           avatar:'9b5b5ecb1cebb8cb3d7294c04a5f68d2',
+                           email:null,
+                           twitter:null,
+                           website:null
+                          },
+                      ];
+                      for ( var _i in team ) {
+                          var member = team[_i];
+                          document.write(JST.team_card(member));
+                          if ( _i % 4 == 3 ) {
+                              document.write('</div><div class="row">');
+                          }
+                      }
+                      window.setTimeout( function() { twttr.widgets.load(); }, 1000);
+                      </script>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">סגירה</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 </body>
 </html>
