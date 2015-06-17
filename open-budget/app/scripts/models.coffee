@@ -634,7 +634,9 @@ class PageModel extends Backbone.Model
                                       () =>
                                           console.log 'setting currentItem', @budgetHistory
                                           @set('currentItem', @budgetHistory.getLast())
-                                          console.log 'setting currentItem done'
+                                          title = @budgetHistory.getLast().get('title')
+                                          ga('send', 'event', 'navigation', 'budget', title, 1);
+                                          console.log 'setting currentItem done', title
 
                     @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
                                                 .addCollection(@changeGroups)
