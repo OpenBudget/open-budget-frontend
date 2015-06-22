@@ -48,12 +48,15 @@ class ExemptionByPublisherRowView extends Backbone.View
             @$el.find('.open').hide()
             @$el.find('.collapse').show()
         else
-            @$el.find('.collapse').hide()
             @$el.find('.open').show()
+            @$el.find('.collapse').hide()
 
     clearDetailViews: ->
         _.each @detailViews, (detailView) =>
             detailView.remove()
+
+        #TODO: Now there's a bug that when we close the upper row, it closes ALL the details exemptions. Contact Johnny or Shay
+        $(@$el[0]).parent().find(".exemption-full-details").remove()
 
         # clear array
         @detailViews = []
@@ -65,11 +68,14 @@ class ExemptionByPublisherRowView extends Backbone.View
 
 class ExemptionDetailsRowView extends Backbone.View
     events:
-        'click .exemption-expander .glyphicon': 'toggleDetails'
+        'click .exemption-full-details-expander .open': 'toggleDetails'
+        'click .exemption-full-details-expander .collapse': 'toggleDetails'
     tagName: 'tr'
     className: 'detailsRow'
     render: ->
         @$el.html window.JST.exemption_details_row(@model)
+        @$el.find('.open').show()
+        @$el.find('.collapse').hide()
         @
     remove: ->
         @$el.detach()
@@ -79,7 +85,9 @@ class ExemptionDetailsRowView extends Backbone.View
         @model.expanded = !@model.expanded
 
         # make sure to clear all views in case we for some reason double add them below
-#        @clearDetailViews()
+        @clearFullDetailsView()
+
+        console.log "&&&&&&&&&&&&&&&&&&&&", @model
 
         if(@model.expanded)
             # insert details view row for each exemption after the current publisher row
@@ -88,11 +96,32 @@ class ExemptionDetailsRowView extends Backbone.View
 #                detailView = new ExemptionDetailsRowView(model: exemption)
 #                @$el.after(detailView.render().$el)
 #                @detailViews.push(detailView)
+
+            detailView = new ExemptionFullDetailsView(model: @model)
+            @$el.after(detailView.render().$el)
+            @detailView = detailView
+            @fullDetailsViews
             @$el.find('.open').hide()
             @$el.find('.collapse').show()
         else
             @$el.find('.collapse').hide()
             @$el.find('.open').show()
+
+    clearFullDetailsView: ->
+        if @detailView?
+            @detailView.remove()
+
+
+class ExemptionFullDetailsView extends Backbone.View
+    tagName: 'tr'
+    className: 'fullDetailsRow'
+    render: ->
+        @$el.html window.JST.exemption_full_details(@model)
+        @
+    remove: ->
+        @$el.detach()
+        @undelegateEvents()
+
 $(->
     console.log "entity-details"
     if window.pageModel.get("entityId")?
