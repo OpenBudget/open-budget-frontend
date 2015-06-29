@@ -3,37 +3,46 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
+    <head itemscope>
+
+        <title>מפתח התקציב - {{ title }}</title>
+
+        <link rel="canonical" href="http://www.obudget.org/{{url}}">
+        <link rel="shortcut icon" href="/favicon.ico">
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>מפתח התקציב</title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-        <link rel="shortcut icon" href="/favicon.ico">
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <link rel="stylesheet" href="styles/spinner.css">
-        <!-- endbuild -->
-        <!-- build:css(.tmp) styles/tour.css -->
-        <link rel="stylesheet" href="bower_components/bootstrap-tour/build/css/bootstrap-tour.css">
-        <!-- endbuild -->
 
-        <!-- build:js scripts/vendor/modernizr.js -->
-        <script src="bower_components/modernizr/modernizr.js"></script>
-        <!-- endbuild -->
+        <meta name="author" content="הסדנא לידע ציבורי">
+        <meta name="description" content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות.">
+        <meta name="keywords" content="מפתח התקציב,תקציב המדינה,התקציב הפתוח,הסדנא לידע ציבורי,הסדנה לידע ציבורי,תקציב 2014,תקציב 2015,הצעת התקציב,העברות תקציביות, תמיכות ממשלתיות">
 
-        <meta content="מפתח התקציב - פותחים את תקציב המדינה" property="og:title">
+        <meta content="מפתח התקציב - {{ title }}" property="og:title">
         <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." property="og:description">
-        <meta content="http://www.obudget.org" property="og:url">
+        <meta content="http://www.obudget.org/{{url}}" property="og:url">
         <meta content="http://www.obudget.org/styles/assets/obudget.org.png" property="og:image">
+
+        <!-- Twitter Meta Data -->
         <meta content="summary_large_image" name="twitter:card">
         <meta content="@hasadna" name="twitter:site">
         <meta content="@mushon" name="twitter:creator">
         <meta content="@ikramvada" name="twitter:creator">
-        <meta content="מפתח התקציב - פותחים את תקציב המדינה" name="twitter:title">
+        <meta content="מפתח התקציב - {{title}}" name="twitter:title">
         <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." name="twitter:description">
         <meta content="http://www.obudget.org/styles/assets/obudget.org.png" name="twitter:image:src">
+
+        <!-- build:css(.tmp) /styles/main.css -->
+        <link rel="stylesheet" href="/styles/main.css">
+        <link rel="stylesheet" href="/styles/spinner.css">
+        <!-- endbuild -->
+        <!-- build:css(.tmp) /styles/tour.css -->
+        <link rel="stylesheet" href="/bower_components/bootstrap-tour/build/css/bootstrap-tour.css">
+        <!-- endbuild -->
+
+        <!-- build:js /scripts/vendor/modernizr.js -->
+        <script src="/bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
 
     </head>
     <body>
@@ -53,7 +62,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="#">מפתח התקציב</a>
+                  <a class="navbar-brand" href="/">מפתח התקציב</a>
                   <!-- <a href="#" class="obudget-icon"></a> -->
                 </div>
 
@@ -73,7 +82,7 @@
                     </li> -->
                     <li><a href="#glossaryModal" data-toggle="modal" >מונחון התקציב</a></li>
                     <li><a href="#tour" id="intro-link">הדרכה</a></li>
-                    <li><a href="http://www.hasadna.org.il/%D7%94%D7%AA%D7%A0%D7%93%D7%91%D7%95%D7%AA/">הצטרפו אלינו</a></li>
+                    <li><a href="http://www.hasadna.org.il/%D7%94%D7%AA%D7%A0%D7%93%D7%91%D7%95%D7%AA/" target="_blank">הצטרפו אלינו</a></li>
                     <li><a href="/email/">השבוע בתקציב</a></li>
                     <li>
                   </ul>
@@ -137,6 +146,37 @@
                 </div>
             </div>
 
+            <article id="faux-content-article" class="single-page-article" itemscope itemtype="http://schema.org/Dataset">
+                <h1 itemprop="headline">מפתח התקציב - {{ title }}</h1>
+                <h2 itemprop="about">שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות.</h2>
+
+                {% if kind|string() == "bl" %}
+                <p itemprop="text">בשנת <span itemprop="dateCreated" datetime="{{year}}-01-01">{{year}}</span>, תקציב {{ title }} ({{code}}) הוא {{net_revised}}000 ₪</p>
+                <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+                  {% for item in breadcrumbs %}
+                  <li itemprop="itemListElement" itemscope
+                      itemtype="http://schema.org/ListItem">
+                    <a itemprop="item" href="http://www.obudget.org/{{item.url}}">
+                        <span itemprop="name">{{item.title}}</span></a>
+                    <meta itemprop="position" content="{{item.index}}" />
+                  </li>
+                  ›
+                  {% endfor %}
+                </ol>
+                <script>
+                    if ( window.location.hash == "" ) window.location.hash = "{{hash}}";
+                </script>
+                {% endif %}
+
+                <script type="application/ld+json">
+                {  "@context" : "http://schema.org",
+                   "@type" : "WebSite",
+                   "name" : "מפתח התקציב",
+                   "alternateName" : "מפתח התקציב - פותחים את תקציב המדינה",
+                   "url" : "http://www.obudget.org"
+                }
+                </script>
+            </article>
 
             <article id="budget-item-article" class="six-fig single-page-article">
 
@@ -348,7 +388,7 @@
         </div><!-- /.modal -->
 
         <style id="arrow-helper"></style>
-        <!-- build:js scripts/vendor.js -->
+        <!-- build:js /scripts/vendor.js -->
         <!-- bower:js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
         <script src="bower_components/jquery/jquery.js"></script>
@@ -369,7 +409,7 @@
 
         <script src="//hasadna-notifications.appspot.com/static/hn.js"></script>
 
-        <!-- build:js scripts/main.js -->
+        <!-- build:js /scripts/main.js -->
         <script src="scripts/templates.js"></script>
         <script src="scripts/url_scheme.js"></script>
         <script src="scripts/main_page_tabs.js"></script>

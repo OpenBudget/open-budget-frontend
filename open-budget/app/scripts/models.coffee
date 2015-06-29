@@ -603,9 +603,11 @@ class PageModel extends Backbone.Model
                 ready: false
                 kinds: []
                 flow: null
+                local: true
 
         initialize: ->
                 if window.location.origin == @get('baseURL')
+                    @set('local', false)
                     @set('dataType','json')
                 @readyEvents = []
                 @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
@@ -746,18 +748,23 @@ $( ->
         if kind == "budget"
             pageModel.article = $("article#budget-item-article")
             pageModel.set("budgetCode","00"+linkParameters['code'])
+            pageModel.URLSchemeHandlerInstance.updateUrl('bl',linkParameters['code'])
         else if kind == "transfer"
             pageModel.article = $("article#change-group-article")
             pageModel.set("changeGroupId",linkParameters['code'])
+            pageModel.URLSchemeHandlerInstance.updateUrl('tr',linkParameters['code'])
         else if kind == "entity"
             pageModel.article = $("article#entity-article")
             pageModel.set("entityId",linkParameters['entityId'])
+            pageModel.URLSchemeHandlerInstance.updateUrl('en',linkParameters['entityId'])
         else if kind == "main"
             pageModel.article = $("article#main-page-article")
             pageModel.set("mainPage",true)
+            pageModel.URLSchemeHandlerInstance.updateUrl('main',"")
         else if kind == "spending"
             pageModel.article = $("article#spendings-page-article")
             pageModel.set("spendingsPage",true)
+            pageModel.URLSchemeHandlerInstance.updateUrl('spending',"")
         else
             window.location.hash = window.DEFAULT_HOME
             return

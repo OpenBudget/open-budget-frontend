@@ -269,7 +269,8 @@ module.exports = function (grunt) {
             'styles/assets/fonts/*.ttf',
             'bower_components/bootstrap-rtl/assets/fonts/*ttf',
             'bower_components/bootstrap-rtl/assets/fonts/*woff',
-            'images/{,*/}*.{webp,gif}'
+            'images/{,*/}*.{webp,gif}',
+            'site-map*.txt'
           ]
         }]
       },
