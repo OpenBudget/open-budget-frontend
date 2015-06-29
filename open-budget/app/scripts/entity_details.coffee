@@ -87,8 +87,6 @@ class ExemptionDetailsRowView extends Backbone.View
         # make sure to clear all views in case we for some reason double add them below
         @clearFullDetailsView()
 
-        console.log "&&&&&&&&&&&&&&&&&&&&", @model
-
         if(@model.expanded)
             # insert details view row for each exemption after the current publisher row
             # this essentially adds rows to the main table
