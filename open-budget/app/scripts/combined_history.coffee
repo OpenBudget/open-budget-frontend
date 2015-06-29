@@ -151,7 +151,7 @@ class CombinedHistory extends Backbone.Collection
                                     point.set("source", m)
                                     point.set("kind", "approved")
                                     point.set("value", m.get("net_revised"))
-                                    startYear = endYear
+                                    startYear = new Date(m.get('year')+1,0).valueOf()
                                     point.set('timestamp',startYear)
                                     point.set('width', endEffect - startYear)
                                     point.set('participants', approvedRec.get('participants'))
