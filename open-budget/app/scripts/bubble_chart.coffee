@@ -97,22 +97,32 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           @force.size([@width, @height])
 
       revertCenteredNode: (node) ->
-          @buildLayoutForceObject()
-          node.forceCenter = false
-          @vis.select("#bubble_#{node.id}")
-              .transition().duration(200)
-              .attr("stroke-dasharray", null)
-              .attr("fill-opacity", null)
-              .style("pointer-events", null)
-              .attr("r", (d) -> d.radius())
+          if node?
+              node.center = node.origCenter || node.center
+              @buildLayoutForceObject()
+              node.forceCenter = false
+              @vis.select("#bubble_#{node.id}")
+                  .transition().duration(200)
+                  .attr("stroke-dasharray", null)
+                  .attr("fill-opacity", null)
+                  .style("pointer-events", null)
+                  .attr("r", (d) -> d.radius())
 
-      replaceCenteredNode: (node) ->
+      updateFocusCenter: (focusCenter) ->
+          @mainFocusCenter = $.extend({}, focusCenter)
+          @mainFocusCenter.category = -> "mainFocus"
+          @focusCenter = $.extend({}, focusCenter)
+          @focusCenter.category = -> "focused"
+
+      replaceCenteredNode: (node, doNotQueue) ->
           if node?
               node.forceCenter = true
-              if @centeredNode?
-                  node.origCenter = @centeredNode.center
-                  @centeredNode.center = @centeredNode.origCenter
-                  @centerNodeQueue.push(@centeredNode)
+              node.origCenter = node.center
+              node.center = @mainFocusCenter
+              #if @centeredNode? and @centeredNode != node and !doNotQueue
+              #     @centerNodeQueue.push(@centeredNode)
+
+          @revertCenteredNode(@centeredNode)
           @centeredNode = node
 
 
@@ -122,13 +132,20 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
         @numParts = numParts
         # use the max total_amount in the data as the max in the scale's domain
-        @max_amount = d3.max(@data, (d) -> if d.center.category() != "focused" then d.value else null)
-        @total_amount = d3.sum(@data, (d) -> if d.center.category() != "focused" then d.value else null)
-        @radius_scale = d3.scale.pow().exponent(0.5).domain([0, @max_amount]).range([2, MAX_RADIUS])
-        @boundingRadius = @radius_scale(@total_amount/@numParts)
-        console.log("boundingRadius: #{@boundingRadius}, Max amount: #{@max_amount}, total amount: #{@total_amount}")
+        @max_amount = d3.max(@data, (d) -> if !d.subNode then d.value else null)
+        @total_amount = d3.sum(@data, (d) -> if !d.subNode then d.value else null)
 
-        @replaceCenteredNode(centeredNode)
+        range = [0, MAX_RADIUS]
+        @radius_scale = d3.scale.sqrt().domain([0, @max_amount]).range(range)
+        @boundingRadius = @radius_scale(@total_amount/@numParts)
+
+        if @centeredNode?
+            targetMax = @centeredNode.value
+            newSpan = (range[1] - range[0])/Math.sqrt(targetMax)/Math.sqrt(@max_amount)*@max_amount
+            range = [range[0], (range[0] + newSpan)]
+            @radius_scale_center = d3.scale.sqrt().domain([0, @max_amount]).range(range)
+
+        console.log("boundingRadius: #{@boundingRadius}, Max amount: #{@max_amount}, total amount: #{@total_amount}")
 
         if not @nodes? or @nodes.length != @data.length or forceCreate
             @create_nodes(true)
@@ -148,7 +165,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
               if @nodes.indexOf(d) is -1
                   d.radius = () ->
                       radius = that.radius_scale(@value)
-                      if @center.category() == "focused"
+                      if that.centeredNode? and d.subNode
                           radius * MAX_RADIUS / that.radius_scale(that.centeredNode.value)
                       else if that.centeredNode == @
                           MAX_RADIUS
@@ -157,12 +174,59 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
                   d.x = if d.x? then d.x else Math.random() * @width
                   d.y = if d.y? then d.y else Math.random()*50 - d.part*@boundingRadius + d.center.y
+
+                  #console.watch(d, "x", NaN)
+
                   if d.radius() < 0
                       return
 
                   @nodes.push d
 
+          @rendered = true
           @nodes.sort (a,b) -> b.value - a.value
+
+      renderLegend: (maxValue, scalingFunction) ->
+          legendData = [
+              {value: maxValue},
+              {value: maxValue/2},
+              {value: maxValue/4}
+          ]
+          legendCircles = @vis.selectAll(".legend-circle").data(legendData)
+          legendCircles.enter().append("circle")
+              .attr("stroke-width", 2)
+              .attr("stroke", "black")
+              .attr("fill", "transparent")
+              .attr("class", "legend-circle legend")
+          legendCircles
+              .attr("r", 0)
+              .transition().duration(2000)
+              .attr("r", (d) => scalingFunction(d.value))
+              .attr("cx", (d) => @width - scalingFunction(maxValue) - 4)
+              .attr("cy", (d) => @height - scalingFunction(d.value) - 4)
+          legendLines = @vis.selectAll(".legend-line").data(legendData)
+          legendLines.enter().append("line")
+              .attr("stroke-width", 2)
+              .attr("stroke", "black")
+              .attr("class", "legend-line legend")
+          legendLines
+              .attr("x1", (d) => @width - scalingFunction(maxValue) - 4)
+              .attr("x2", (d) => @width - scalingFunction(maxValue) - 4)
+              .attr("y1", (d) => @height - 2*scalingFunction(d.value) - 4)
+              .attr("y2", (d) => @height - 2*scalingFunction(d.value) - 4)
+              .transition().delay(2000).duration(1000).ease("elastic")
+              .attr("x2", (d) => @width - scalingFunction(maxValue) - 4 - scalingFunction(maxValue) - 50)
+          legendText = @vis.selectAll(".legend-text").data(legendData)
+          legendText.enter().append("text")
+              .style("fill", "black")
+              .attr("class", "legend-text legend")
+          legendText
+              .attr("opacity", 0)
+              .attr("x", (d) => @width - scalingFunction(maxValue) - 4)
+              .attr("y", (d) => @height - 2*scalingFunction(d.value) - 4)
+              .text((d) -> window.format_number(d.value, false, false, false))
+              .transition().delay(2000).duration(1000).ease("elastic")
+              .attr("opacity", 1)
+              .attr("x", (d) => @width - scalingFunction(maxValue) - 4 - scalingFunction(maxValue) - 50)
 
       # create svg at #vis and then
       # create circle representation for each node
@@ -170,39 +234,20 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
         @circles = @vis.selectAll("circle")
                         .data(@nodes, (d) -> d.id)
 
-        legendData = [
-            {value: @max_amount},
-            {value: @max_amount/2},
-            {value: @max_amount/4}
-        ]
-        @vis.selectAll(".legend-circle").data(legendData).enter().append("circle")
-            .attr("stroke-width", 2)
-            .attr("stroke", "black")
-            .attr("fill", "transparent")
-            .attr("class", "legend-circle")
-            .attr("r", (d) => @radius_scale(d.value))
-            .attr("cx", (d) => @width - @radius_scale(@max_amount) - 4)
-            .attr("cy", (d) => @height - @radius_scale(d.value) - 4)
-        @vis.selectAll(".legend-line").data(legendData).enter().append("line")
-            .attr("stroke-width", 2)
-            .attr("stroke", "black")
-            .attr("class", "legend-line")
-            .attr("x1", (d) => @width - @radius_scale(@max_amount) - 4)
-            .attr("y1", (d) => @height - 2*@radius_scale(d.value) - 4)
-            .attr("x2", (d) => @width - @radius_scale(@max_amount) - 4 - @radius_scale(@max_amount) - 50)
-            .attr("y2", (d) => @height - 2*@radius_scale(d.value) - 4)
-        @vis.selectAll(".legend-text").data(legendData).enter().append("text")
-            .style("fill", "black")
-            .attr("class", "legend-text")
-            .attr("x", (d) => @width - @radius_scale(@max_amount) - 4 - @radius_scale(@max_amount) - 50)
-            .attr("y", (d) => @height - 2*@radius_scale(d.value) - 4)
-            .text((d) -> window.format_number(d.value, false, false, false))
+        if @centeredNode?
+            maxValue = @centeredNode.value
+            scaleFunction = @radius_scale_center
+        else
+            maxValue = @max_amount
+            scaleFunction = @radius_scale
+        @renderLegend(maxValue, scaleFunction)
 
         actionButtons = [
             {content: ">", class: "main-vis-back-button", location: {x: @width/4, y: @height/2}},
             {content: "+", class: "main-vis-zoom-button", location: {x: @width/2, y: @height*3/4}}
         ]
-        @actionButtons = @vis.selectAll(".main-vis-action-buttons").data(actionButtons).enter()
+        @actionButtons = @vis.selectAll(".main-vis-action-buttons").data(actionButtons)
+        @actionButtons.enter()
             .append("text")
             .attr("text-anchor", "middle")
             .attr("class", (d) -> "main-vis-action-buttons #{d.class}")
@@ -211,27 +256,33 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
             .text((d) -> d.content)
             .on("click", (d) =>
                 if d.class == "main-vis-back-button"
-                    @revertCenteredNode(@centeredNode)
-                    @centeredNode = @centerNodeQueue.splice(0, 1)
-
-                    if !@centeredNode?
-                        @vis.selectAll(".child-bubble").remove()
-
-                        @nodeIndicesToRemove = []
-                        @data.map( (d, i) =>
-                            if d.center.category() == "focused"
-                                @nodeIndicesToRemove.push(i)
-
-                            d.center = d.origCenter || d.center
-                        )
-                        for nodeIndex in @nodeIndicesToRemove by -1
-                            @nodes.splice(nodeIndex, 1)
-                            @data.splice(nodeIndex, 1)
-
+                    if @centerNodeQueue.length > 0
+                        newCenterNode = @centerNodeQueue.splice(0, 1)[0]
+                    else
+                        newCenterNode = null
                         @vis.selectAll(".main-vis-action-buttons").transition().duration(2000).style("opacity", 0)
 
-                    @updateNodes(@data, @numParts, @centeredNode, true)
-                    @force.stop().start()
+                    newCenterId = if newCenterNode then newCenterNode.id else ""
+                    @$el.find(".child-bubble").not("#bubble_#{newCenterId}").remove()
+                    @replaceCenteredNode(newCenterNode, true)
+
+                    @nodeIndicesToRemove = []
+                    @data.map( (d, i) =>
+                        if d.subNode
+                            @nodeIndicesToRemove.push(i)
+
+                        d.center = d.origCenter || d.center
+                    )
+                    for nodeIndex in @nodeIndicesToRemove by -1
+                        @nodes.splice(nodeIndex, 1)
+                        @data.splice(nodeIndex, 1)
+
+                    if @centeredNode?
+                        @options.addSubNodes(@centeredNode, @subNodesReady)
+                        @start()
+                    else
+                        @updateNodes(@data, @numParts, @centeredNode, true)
+                        @start()
                 else if d.class == "main-vis-zoom-button"
                     @centeredNode.onMoreInfo()
             )
@@ -246,30 +297,31 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           .attr("stroke-width", 2)
           .attr("id", (d) -> "bubble_#{d.id}")
           .style("display", (d) ->
-              if d.center.category() == "focused"
+              if d.subNode
                   "none"
               else
                   ""
             )
           .on("click", (d,i) =>
-              if typeof d.click == "function"
-                  # 8 digit codes (2 leading zeros) have no kids
-                  if d.id.length >= 10 then return
+              # 8 digit codes (2 leading zeros) have no kids
+              if d.id.length >= 10 then return
 
-                  if @centeredNode?
-                      @revertCenteredNode(@centeredNode)
-                      @vis.select("#bubble_#{@centeredNode.id}")
-                        .transition().duration(2000).attr("opacity", 0)
+              if @centeredNode?
+                  oldCenterId = @centeredNode.id
 
-                      @replaceCenteredNode(d)
+              @replaceCenteredNode(d)
 
-                      @vis.selectAll(".child-bubble")
-                        .transition().duration(2000).attr("opacity", (d) =>
-                            if d == @centeredNode then 1 else 0
-                        )
+              if @centeredNode?
+                  #@vis.select("#bubble_#{oldCenterId}")
+                  #    .transition().duration(2000).attr("opacity", 0)
 
-                  d.click(d)
+                  @vis.selectAll(".child-bubble").remove()
+                    #.transition().duration(2000).attr("opacity", (d) =>
+                    #    if d == @centeredNode then 1 else 0
+                    #)
 
+              @options.addSubNodes(@centeredNode, @subNodesReady)
+              @start()
             )
           .on("mouseover", (d,i) -> that.show_details(d,i,this))
           .on("mouseout", (d,i) -> that.hide_details(d,i,this))
@@ -283,6 +335,20 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
             @vis.select("#bubble_#{@centeredNode.id}").moveToFront()
 
         @childCircles = @vis.selectAll(".child-bubble")
+
+      subNodesReady: (subNodes) =>
+          for node in subNodes
+              node.center = @focusCenter
+
+              if node.center?.x? or node.center?.y?
+                  @data.push node
+
+          @updateNodes(@data, @numParts, @centeredNode, true)
+
+          totalAmount = d3.sum(subNodes, (d) -> d.value)
+          @centerBoundingRadius = @radius_scale_center(totalAmount)
+
+          @start()
 
       reapply_values: () =>
           # Fancy transition to make bubbles appear, ending with the
@@ -301,8 +367,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
       # repel.
       # Dividing by 8 scales down the charge to be
       # appropriate for the visualization dimensions.
-      charge: (d) ->
-          if !d.forceCenter
+      charge: (d) =>
+          if d != @centeredNode
               -Math.pow(d.radius(), 2.0) / 8
           else
               0
@@ -326,6 +392,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 .attr("r", (d) -> d.radius())
                 .each 'end',  =>
                   if @centeredNode?
+                      @actionButtons.moveToFront()
+                      @vis.selectAll(".legend").moveToFront()
                       @vis.selectAll(".child-bubble").style("display", "")
                       @vis.select("#bubble_#{@centeredNode.id}")
                         .transition()
@@ -357,15 +425,21 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 x: (extent.maxx + extent.minx)/2
                 y: (extent.maxy + extent.miny)/2
 
+      centerX: (d) ->
+          if @centeredNode? and !d.forceCenter and !d.subNode
+              0
+          else
+              d.center.x
+
       get_offset: (alpha,d) =>
           cat = d.center.category()
           if !@averages[cat]?
-              { dx: 0, dy: 0 }
+              res = { dx: 0, dy: 0 }
           else
               avg = @averages[cat]
               s = ((0.1-alpha)/0.1)
-              x = if @centeredNode? and !d.forceCenter and d.center.category() != "focused" then 0 else d.center.x
-              {
+              x = @centerX(d)
+              res = {
                 dx: s*(avg.x - x),
                 dy: s*(avg.y - d.center.y)
               }
@@ -374,9 +448,10 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
       # of the visualization
       move_towards_centers: (alpha) =>
           (d) =>
-              x = if @centeredNode? and !d.forceCenter and d.center.category() != "focused" then 0 else d.center.x
+              boundingRadius = if d.subNode then @centerBoundingRadius else @boundingRadius
+              x = @centerX(d)
               d.x = d.x + (x - d.x) * (@damper + 0.02) * alpha
-              targetY =  d.center.y - d3.min([1,d.part]) * @boundingRadius
+              targetY =  d.center.y - d3.min([1,d.part]) * boundingRadius
               d.y = d3.max([0, d.y + (d.center.y - d.y) * (@damper + 0.02) * alpha + (targetY - d.y) * (@damper) * alpha * alpha * alpha * 500])
 
       show_details: (data, i, element) =>

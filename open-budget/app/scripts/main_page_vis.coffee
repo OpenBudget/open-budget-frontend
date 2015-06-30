@@ -4,7 +4,7 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
 
     `
     console = console || {}; // just in case
-    console.watch = function(oObj, sProp) {
+    console.watch = function(oObj, sProp, targetVal) {
        sPrivateProp = "$_"+sProp+"_$"; // to minimize the name clash risk
        oObj[sPrivateProp] = oObj[sProp];
 
@@ -16,7 +16,9 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
 
            set: function (value) {
                //console.log("setting " + sProp + " to " + value);
-               debugger; // sets breakpoint
+               if (!value) {
+                   debugger; // sets breakpoint
+               }
                oObj[sPrivateProp] = value;
            }
        });
@@ -128,12 +130,12 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
 
         initialize: ->
             console.log("MainPageVis: initialize")
-            @subNodes = []
             @rendered = false
             @model.on 'ready-budget-bubbles', =>
                 console.log("MainPageVis: Received event ready-budget-bubbles")
                 @chart = new BubbleChart(
-                    el: @$el.find("#bubble-chart")
+                    el: @$el.find("#bubble-chart"),
+                    addSubNodes: @addKids
                 )
                 @chart_el = d3.select(@chart.el)
                 @$bubbleContainer = @$el.find("#bubble-chart-container");
@@ -216,56 +218,34 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                 left: group.x + "px"
               }).appendTo(@$bubbleContainer);
 
-        addKids: (node) ->
+        addKids: (node, readyCallback) =>
             code = node.src.get('code')
             # TODO get the year from the model
             year = 2014
             centeredNodeKids = new pageModel.api.BudgetItemKids([], year: year, code: code, pageModel: pageModel)
             centeredNodeKids.on('sync', =>
                 console.log("kids are ready")
+                kidNodes = []
                 for model in centeredNodeKids.models
                     node =
                         id: model.get('code')
                         src: model
                         orig: model.get('net_allocated')
                         rev:  model.get('net_revised')
-                        click: @clickHandler,
-                        onMoreInfo: (node) ->
-                            # TODO get the year from the model
-                            year = 2014
-                            window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(node.id, year)
-                            ###
-                            TODO: build a new view controller architecture
-
-                            code = @src.get('code')
-                            pageModel.switchView({
-                                kind: "budget",
-                                flow: "main",
-                                code: code,
-                                year: @src.get('year')
-                            })
-                            ###
+                        onMoreInfo: @moreInfo
                         value: model.get('net_revised')
                         className: -> "child-bubble "+changeClass(node.orig,node.rev)+"_svg"
                         fill_color: null
                         stroke_color: null
                         tooltip_contents: -> JST.bubble_tooltip(node)
-                        center: null
+                        center: null,
+                        part: 0,
+                        subNode: true
 
-                    @subNodes.push(node)
+                    kidNodes.push(node)
 
-                @recalc_centers()
-                @render()
+                readyCallback(kidNodes)
             )
-
-        clickHandler: (node) =>
-            @subNodes = []
-            @centeredNode = node
-
-            @addKids(node)
-            @recalc_centers()
-            @chart.start()
-            false
 
         prepareData: ->
             # Create data for bubble chart
@@ -287,10 +267,26 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                     fill_color: null
                     stroke_color: null
                     tooltip_contents: -> JST.bubble_tooltip(this)
-                    click: @clickHandler
-                    center: null
+                    center: null,
+                    onMoreInfo: @moreInfo
                 @data.push node
             @compare_2014()
+
+        moreInfo: (node) ->
+            # TODO get the year from the model
+            year = 2014
+            window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(@id, year)
+            ###
+            TODO: build a new view controller architecture
+
+            code = @src.get('code')
+            pageModel.switchView({
+                kind: "budget",
+                flow: "main",
+                code: code,
+                year: @src.get('year')
+            })
+            ###
 
         switchComparison: (selected) =>
             console.log 'switchComparison'
@@ -345,30 +341,14 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                 center.y = (Math.floor(center.index / items_in_line))*center_strategy.item_height + start_y
                 center.total = 0
 
+            @chart.updateFocusCenter(center_strategy.setFocusedCenter(@$el))
             for node in @data
                 node.center = center_strategy.elToCenter(node)
                 # Accumulate the total allocated budget for each center
                 if node.center? then node.center.total += node.rev
 
-                # The focused node has its own unique center
-                if node == @centeredNode
-                    node.origCenter = node.center
-                    # Deep copy the center so that it can be changed without affecting
-                    # the original object
-                    node.center = $.extend(true, {}, center_strategy.setFocusedCenter(@$el))
-                    node.center.category = -> "mainFocus"
-
                 if node.center?.x? or node.center?.y?
                     @nodes.push node
-
-            # Add any subNodes if they are available - subNodes are the kids
-            # of the focused node
-            if @subNodes?
-                for node in @subNodes
-                    node.center = center_strategy.focusedCenter
-
-                    if node.center?.x? or node.center?.y?
-                        @nodes.push node
 
             @chart.updateNodes(@nodes, @centers[@toggle].getCenters().length, @centeredNode)
 

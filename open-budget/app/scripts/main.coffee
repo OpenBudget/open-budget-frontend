@@ -46,7 +46,7 @@ require.config({
             deps: ['jquery', 'jquery-ui']
         }
         bootstrap: {
-            deps: ['jquery']
+            deps: ['jquery', 'jquery-ui']
         },
         underscore: {
             exports: '_'
