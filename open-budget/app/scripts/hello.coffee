@@ -63,7 +63,7 @@ define(['jquery'], ($) ->
         else if revised_value < 0.8*orig_value  then "decreased_b"
         else if revised_value < orig_value      then "decreased_a"
         else "unchanged"
-            
+
     $('#glossaryModal').on('show.bs.modal', (event) ->
           console.log "glossaryModal open"
           modal = $(this)

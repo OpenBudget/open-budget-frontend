@@ -35,81 +35,81 @@ define(['jquery', 'backbone', 'models'] , ($, Backbone, models) ->
                         @postProcess()
                     @minValue = @maxValue = @minTime = @maxTime = null
 
-            postProcess: () ->
-                    last_baseline = null
-                    baseline = null
-                    lastPoint = null
-                    changes = 0
-                    for point in @models
-                            time = point.get('timestamp')
-                            point.set('date', new Date(time) )
-                            kind = point.get('kind')
-                            if kind  == 'approved'
-                                    last_baseline = original_baseline
-                                    original_baseline = point.get('value')
-                                    if baseline != null && changes > 1
-                                        point.set('diff_value',original_baseline - baseline)
-                                    baseline = original_baseline
-                                    lastPoint = null
-                                    if last_baseline != null
-                                        point.set('diff_yearly', baseline-last_baseline)
-                                        point.set('last_baseline', last_baseline)
-                                    point.set('original_baseline', original_baseline)
-                                    changes = 0
-                            else if kind == 'change'
-                                    changes += 1
-                                    if baseline != null
-                                            baseline += point.get('diff_value')
-                                            point.set('diff_baseline',baseline - original_baseline)
-                                            point.set('original_baseline', original_baseline)
-                                            point.set('value', baseline)
-                                            if lastPoint != null
-                                                    lastPoint.set('width',time - lastPoint.get('timestamp'))
-                                            if point.get('src') == 'budgetline'
-                                                source = point.get('source')
-                                                code = source.get('code')
-                                                orig_codes = source.get('orig_codes')
-                                                point.set('exact',orig_codes[0] == code)
-                                            lastPoint = point
-                                    else
-                                            continue
-                            else if kind == 'revised'
-                                    point.set('disabled',changes > 1)
-                                    if baseline != null
-                                            point.set('diff_baseline',point.get('value') - original_baseline)
-                                            point.set('diff_value',point.get('value') - original_baseline)
-                                            point.set('original_baseline', original_baseline)
-                                            point.set('value', point.get('value'))
-                                            if lastPoint != null
-                                                    lastPoint.set('width',time - lastPoint.get('timestamp'))
-                                            lastPoint = point
-                                    else
-                                            continue
-                            else if kind == 'used'
-                                    if baseline != null
-                                            point.set('diff_baseline',point.get('value') - original_baseline)
-                                            point.set('diff_value',point.get('revised_value') - original_baseline)
-                                            point.set('original_baseline', original_baseline)
-                                            point.set('value', point.get('value'))
-                                    else
-                                            continue
-                            else
-                                    continue
-                            value = point.get('value')
-                            if @minValue == null or @minValue > value
-                                    @minValue = value
-                            if @maxValue == null or @maxValue < value
-                                    @maxValue = value
-                            width = point.get('width')
-                            if @minTime == null or @minTime > time
-                                    @minTime = time
-                            if @maxTime == null or @maxTime < time
-                                    @maxTime = time
-                    for model in @models
-                        model.set('max_value',@maxValue)
-                        model.set('min_value',@minValue)
-                    @reset(@models)
-                    @pageModel.trigger 'ready-budget-history'
+        postProcess: () ->
+                last_baseline = null
+                baseline = null
+                lastPoint = null
+                changes = 0
+                for point in @models
+                        time = point.get('timestamp')
+                        point.set('date', new Date(time) )
+                        kind = point.get('kind')
+                        if kind  == 'approved'
+                                last_baseline = original_baseline
+                                original_baseline = point.get('value')
+                                if baseline != null && changes > 1
+                                    point.set('diff_value',original_baseline - baseline)
+                                baseline = original_baseline
+                                lastPoint = null
+                                if last_baseline != null
+                                    point.set('diff_yearly', baseline-last_baseline)
+                                    point.set('last_baseline', last_baseline)
+                                point.set('original_baseline', original_baseline)
+                                changes = 0
+                        else if kind == 'change'
+                                changes += 1
+                                if baseline != null
+                                        baseline += point.get('diff_value')
+                                        point.set('diff_baseline',baseline - original_baseline)
+                                        point.set('original_baseline', original_baseline)
+                                        point.set('value', baseline)
+                                        if lastPoint != null
+                                                lastPoint.set('width',time - lastPoint.get('timestamp'))
+                                        if point.get('src') == 'budgetline'
+                                            source = point.get('source')
+                                            code = source.get('code')
+                                            orig_codes = source.get('orig_codes')
+                                            point.set('exact',orig_codes[0] == code)
+                                        lastPoint = point
+                                else
+                                        continue
+                        else if kind == 'revised'
+                                point.set('disabled',changes > 1)
+                                if baseline != null
+                                        point.set('diff_baseline',point.get('value') - original_baseline)
+                                        point.set('diff_value',point.get('value') - original_baseline)
+                                        point.set('original_baseline', original_baseline)
+                                        point.set('value', point.get('value'))
+                                        if lastPoint != null
+                                                lastPoint.set('width',time - lastPoint.get('timestamp'))
+                                        lastPoint = point
+                                else
+                                        continue
+                        else if kind == 'used'
+                                if baseline != null
+                                        point.set('diff_baseline',point.get('value') - original_baseline)
+                                        point.set('diff_value',point.get('revised_value') - original_baseline)
+                                        point.set('original_baseline', original_baseline)
+                                        point.set('value', point.get('value'))
+                                else
+                                        continue
+                        else
+                                continue
+                        value = point.get('value')
+                        if @minValue == null or @minValue > value
+                                @minValue = value
+                        if @maxValue == null or @maxValue < value
+                                @maxValue = value
+                        width = point.get('width')
+                        if @minTime == null or @minTime > time
+                                @minTime = time
+                        if @maxTime == null or @maxTime < time + width
+                                @maxTime = time + width
+                for model in @models
+                    model.set('max_value',@maxValue)
+                    model.set('min_value',@minValue)
+                @reset(@models)
+                @pageModel.trigger 'ready-budget-history'
 
             processBudgetHistory: (models,approvedModels) ->
                     approved = _.groupBy(approvedModels, (x) -> x.get('year'))
@@ -129,35 +129,35 @@ define(['jquery', 'backbone', 'models'] , ($, Backbone, models) ->
                                     point.set('src','dummy')
                                     @add point
 
-                                    endYear = new Date(m.get('year'),11,31).valueOf()
-                                    endEffect = approvedRec.get('end_timestamp')
-                                    if !endEffect? then endEffect = endYear
+                                endYear = new Date(m.get('year'),11,31).valueOf()
+                                endEffect = approvedRec.get('end_timestamp')
+                                if !endEffect? then endEffect = Date.now()
 
+                                point = new CombinedHistoryPoint()
+                                point.set("source", m)
+                                point.set("kind", "approved")
+                                point.set("value", m.get("net_allocated"))
+                                startYear = approvedRec.get('effect_timestamp')
+                                if !startYear? then startYear = new Date(m.get('year'),0).valueOf()
+                                point.set('timestamp',startYear)
+                                point.set('width', endYear - startYear)
+                                point.set('participants', approvedRec.get('participants'))
+                                point.set('src','budgetline')
+                                point.set('continued',false)
+                                @add point
+
+                                if endEffect > endYear
                                     point = new CombinedHistoryPoint()
                                     point.set("source", m)
                                     point.set("kind", "approved")
-                                    point.set("value", m.get("net_allocated"))
-                                    startYear = approvedRec.get('effect_timestamp')
-                                    if !startYear? then startYear = new Date(m.get('year'),0).valueOf()
+                                    point.set("value", m.get("net_revised"))
+                                    startYear = new Date(m.get('year')+1,0).valueOf()
                                     point.set('timestamp',startYear)
-                                    point.set('width', endYear - startYear)
+                                    point.set('width', endEffect - startYear)
                                     point.set('participants', approvedRec.get('participants'))
                                     point.set('src','budgetline')
-                                    point.set('continued',false)
+                                    point.set('continued',true)
                                     @add point
-
-                                    if endEffect > endYear
-                                        point = new CombinedHistoryPoint()
-                                        point.set("source", m)
-                                        point.set("kind", "approved")
-                                        point.set("value", m.get("net_allocated"))
-                                        startYear = endYear
-                                        point.set('timestamp',startYear)
-                                        point.set('width', endEffect - startYear)
-                                        point.set('participants', approvedRec.get('participants'))
-                                        point.set('src','budgetline')
-                                        point.set('continued',true)
-                                        @add point
 
                                     # period between start of year and first committee
                                     point = new CombinedHistoryPoint()

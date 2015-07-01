@@ -1,11 +1,20 @@
-define([
-    'jquery',
-    'backbone',
-    'models',
-    "ecma_5",
-    "segment-tree-browser"
-    ], ($, Backbone, models, ecma_t, segmentTree) ->
-    class IndepthWidget extends Backbone.View
+define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
+    (models, $, Backbone, ecma_t, segmentTree) ->
+        console.log "indepth_widget"
+        indepthWidget = null
+        getInstance = () ->
+            if indepthWidget == null
+                indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.combinedHistory})
+                window.indepthWidget = indepthWidget
+            indepthWidget
+
+        models.pageModel.on 'ready-budget-history', ->
+            getInstance().render()
+        models.pageModel.on 'ready-participants', ->
+            getInstance().setParticipants( models.pageModel.participants.models )
+            getInstance().render()
+
+        class IndepthWidget extends Backbone.View
 
             TOP_PART_SIZE = 200 #p
             TICKS = 10
@@ -15,159 +24,159 @@ define([
             CHANGE_LINE_HANG_LENGTH = 18 # px
 
             initialize: ->
-                    @pageModel = window.pageModel
-                    @pageModel.on 'change:selection', => @render()
-                    @pageModel.on 'resized', => @render()
+                @pageModel = window.pageModel
+                @pageModel.on 'change:selection', => @render()
+                @pageModel.on 'resized', => @render()
 
-                    @$el.html('')
-                    @svg = d3.select(@el).append('svg')
-                            .attr('width','100%')
-                            .attr('height','100%')
+                @$el.html('')
+                @svg = d3.select(@el).append('svg')
+                        .attr('width','100%')
+                        .attr('height','100%')
 
-                    @chart = @svg.append('g').attr('class','chart')
-                    @bars = @svg.append('g').attr('class','bar')
+                @chart = @svg.append('g').attr('class','chart')
+                @bars = @svg.append('g').attr('class','bar')
 
-                    that = @
-                    @drag = d3.behavior.drag()
-                            .on("drag", (d) ->
-                                    selection_orig = that.pageModel.get('selection')
-                                    selection = selection_orig[0..1]
-                                    x = d3.event.x
-                                    newX = that.baseTimeScale.invert(x)
-                                    dx = d3.event.dx
-                                    dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
+                that = @
+                @drag = d3.behavior.drag()
+                        .on("drag", (d) ->
+                                selection_orig = that.pageModel.get('selection')
+                                selection = selection_orig[0..1]
+                                x = d3.event.x
+                                newX = that.baseTimeScale.invert(x)
+                                dx = d3.event.dx
+                                dx = that.baseTimeScale.invert(dx) - that.baseTimeScale.invert(0)
 
-                                    if (selection[0]-dx) > that.model.minTime && (selection[1]-dx) < that.model.maxTime
-                                        selection[0] -= dx
-                                        selection[1] -= dx
-                                        that.pageModel.set('selection', selection)
-                    )
-                    @tooltipYOffset = (d) -> -TOOLTIP_SIZE+45+@valueScale( d.get('value') )
-                    @change_tip = d3.tip()
-                                   .attr('class', 'd3-tip timeline-tip')
-                                   .direction((d) => "n") #if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
-                                   .offset((d) => [@tooltipYOffset(d) ,0])
-                                   .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
-                    @chart.call( @change_tip )
-                    that = this
-                    @showTip = (d,i) ->
-                            hook = d3.select(this)
-                            that.change_tip.show(d)
-                            $(".timeline-tip")
-                                .toggleClass('active',true)
-                                .css('pointer-events', 'none')
-                            that.tipBG.style('opacity',1)
-                            for a in ['x','y','width','height']
-                                that.tipBG.attr(a, hook.attr(a))
-                            that.tipBGleft.attr('width',hook.attr('x'))
-                            that.tipBGright.attr('x',parseInt(hook.attr('x'))+parseInt(hook.attr('width')))
-                            true
-                            # selector = '.tipFocus'
-                            # s = that.chart.selectAll(selector)[0][i]  #.data([d])
-                            # d3.select(s).style('display','block')
+                                if (selection[0]-dx) > that.model.minTime && (selection[1]-dx) < that.model.maxTime
+                                    selection[0] -= dx
+                                    selection[1] -= dx
+                                    that.pageModel.set('selection', selection)
+                )
+                @tooltipYOffset = (d) -> -TOOLTIP_SIZE+45+@valueScale( d.get('value') )
+                @change_tip = d3.tip()
+                               .attr('class', 'd3-tip timeline-tip')
+                               .direction((d) => "n") #if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
+                               .offset((d) => [@tooltipYOffset(d) ,0])
+                               .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
+                @chart.call( @change_tip )
+                that = this
+                @showTip = (d,i) ->
+                        hook = d3.select(this)
+                        that.change_tip.show(d)
+                        $(".timeline-tip")
+                            .toggleClass('active',true)
+                            .css('pointer-events', 'none')
+                        that.tipBG.style('opacity',1)
+                        for a in ['x','y','width','height']
+                            that.tipBG.attr(a, hook.attr(a))
+                        that.tipBGleft.attr('width',hook.attr('x'))
+                        that.tipBGright.attr('x',parseInt(hook.attr('x'))+parseInt(hook.attr('width')))
+                        true
+                        # selector = '.tipFocus'
+                        # s = that.chart.selectAll(selector)[0][i]  #.data([d])
+                        # d3.select(s).style('display','block')
 
-                    @hideTip = (d,i) ->
-                            #d3.select(this).style('opacity',0)
-                            that.change_tip.hide(d)
-                            that.tipBG.style('opacity',0.1)
-                            $(".timeline-tip").toggleClass('active',false)
-                            true
-                            # that.participant_tip.hide(d)
-                            # selector = '.tipFocus'
-                            # s = that.chart.selectAll(selector)[0][i]  #.data([d])
-                            # d3.select(s).style('display','none')
+                @hideTip = (d,i) ->
+                        #d3.select(this).style('opacity',0)
+                        that.change_tip.hide(d)
+                        that.tipBG.style('opacity',0.1)
+                        $(".timeline-tip").toggleClass('active',false)
+                        true
+                        # that.participant_tip.hide(d)
+                        # selector = '.tipFocus'
+                        # s = that.chart.selectAll(selector)[0][i]  #.data([d])
+                        # d3.select(s).style('display','none')
 
-                    @showGuideline = ->
-                            hook = d3.select(this)
-                            mouse = d3.mouse(this)
-                            that.chart.selectAll('.guideline')
-                                .attr('x1',mouse[0])
-                                .attr('x2',mouse[0])
-                                .style('visibility','visible')
-                            date = that.baseTimeScale.invert(mouse[0])
-                            date = new Date(date)
-                            ofs = $(that.svg[0]).offset()
+                @showGuideline = ->
+                        hook = d3.select(this)
+                        mouse = d3.mouse(this)
+                        that.chart.selectAll('.guideline')
+                            .attr('x1',mouse[0])
+                            .attr('x2',mouse[0])
+                            .style('visibility','visible')
+                        date = that.baseTimeScale.invert(mouse[0])
+                        date = new Date(date)
+                        ofs = $(that.svg[0]).offset()
 
-                            if that.termSegmentTree
-                                termList = that.termSegmentTree.queryPoint(that.baseInverseTimeScale(d3.event.pageX + 4))
-
-                                $(".guide-line-photo").remove()
-                                $(".participant-hide-photo").removeClass("participant-hide-photo")
-                                for term in termList
-                                    participant = term.data
-                                    that.participantThumbnails.find("#participant-"+participant.get("unique_id")).addClass("participant-hide-photo")
-                                    $(JST.participant_photo(participant.attributes))
-                                        .css({
-                                            left: d3.event.pageX+"px",
-                                            top: (that.titleIndexScale(participant.get('title')) +
-                                                    that.participantThumbnailsOffset.top - 240) + "px"
-                                        })
-                                        .appendTo('body')
-
-                            d3.select("#indepth-guideline-date")
-                                .html(date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear())
-                                .style('display','block')
-                                .style('left', d3.event.pageX+"px")
-                                .style('top',ofs.top+that.valueScale(0)+"px")
-                            if this.tagName=='rect'
-                                hook_ofs = mouse[0] - hook.attr('x')
-                                hook_width = hook.attr('width')
-                                compensation = hook_ofs - hook_width/2
-                                sub_compensation = 0
-                                tip_width = $('.timeline-tip').width()
-                                overflow = mouse[0] - tip_width/2
-                                if overflow < 0
-                                    compensation -= overflow
-                                    sub_compensation = overflow
-                                overflow = mouse[0] + tip_width/2 - that.maxWidth
-                                if overflow > 0
-                                    compensation -= overflow
-                                    sub_compensation = overflow
-
-                                $('.timeline-tip').css('margin-left',compensation+"px")
-                                sheet = document.getElementById('arrow-helper').sheet
-                                while sheet.cssRules.length > 0
-                                    sheet.deleteRule(0)
-                                if sub_compensation != 0
-                                    sheet.insertRule(".timeline-tip .arrow.arrow-bottom:before { margin-left: #{sub_compensation-8}px }")
-                                    sheet.insertRule(".timeline-tip .arrow.arrow-bottom:after { margin-left: #{sub_compensation-5}px }")
-                            d3.event.preventDefault()
-                    @hideGuideline = ->
-                            that.chart.selectAll('.guideline')
-                                .style('visibility','hidden')
-                            d3.select("#indepth-guideline-date")
-                                .html("")
-                                .style('display','none')
+                        if that.termSegmentTree
+                            termList = that.termSegmentTree.queryPoint(that.baseInverseTimeScale(d3.event.pageX + 4))
 
                             $(".guide-line-photo").remove()
                             $(".participant-hide-photo").removeClass("participant-hide-photo")
+                            for term in termList
+                                participant = term.data
+                                that.participantThumbnails.find("#participant-"+participant.get("unique_id")).addClass("participant-hide-photo")
+                                $(JST.participant_photo(participant.attributes))
+                                    .css({
+                                        left: d3.event.pageX+"px",
+                                        top: (that.titleIndexScale(participant.get('title')) +
+                                                that.participantThumbnailsOffset.top - 240) + "px"
+                                    })
+                                    .appendTo('body')
 
-                            true
+                        d3.select("#indepth-guideline-date")
+                            .html(date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear())
+                            .style('display','block')
+                            .style('left', d3.event.pageX+"px")
+                            .style('top',ofs.top+that.valueScale(0)+"px")
+                        if this.tagName=='rect'
+                            hook_ofs = mouse[0] - hook.attr('x')
+                            hook_width = hook.attr('width')
+                            compensation = hook_ofs - hook_width/2
+                            sub_compensation = 0
+                            tip_width = $('.timeline-tip').width()
+                            overflow = mouse[0] - tip_width/2
+                            if overflow < 0
+                                compensation -= overflow
+                                sub_compensation = overflow
+                            overflow = mouse[0] + tip_width/2 - that.maxWidth
+                            if overflow > 0
+                                compensation -= overflow
+                                sub_compensation = overflow
 
-                    @scrollToChange = (d, i) ->
-                            # TODO someone with eastetic skills should take a look
-                            # at the animation types and duration
-                            source = d.get("source")
-                            uniqueId = source.get("uniqueId")
-                            $target = $("#"+uniqueId)
-                            # Scroll the window to the selected target
-                            $('html, body').animate({
-                                scrollTop: $target.offset().top -
-                                  window.breadcrumbHeaderView.headerHeight()
-                            }, 1000, ->
-                                # once the scroll is complete,
-                                # make the target visually stand out
-                                $target.animate({
-                                    "background-color": "#efefef"
-                                }, 200).animate({
-                                    "background-color": "white"
-                                }, 200)
-                              )
-                            true
+                            $('.timeline-tip').css('margin-left',compensation+"px")
+                            sheet = document.getElementById('arrow-helper').sheet
+                            while sheet.cssRules.length > 0
+                                sheet.deleteRule(0)
+                            if sub_compensation != 0
+                                sheet.insertRule(".timeline-tip .arrow.arrow-bottom:before { margin-left: #{sub_compensation-8}px }")
+                                sheet.insertRule(".timeline-tip .arrow.arrow-bottom:after { margin-left: #{sub_compensation-5}px }")
+                        d3.event.preventDefault()
+                @hideGuideline = ->
+                        that.chart.selectAll('.guideline')
+                            .style('visibility','hidden')
+                        d3.select("#indepth-guideline-date")
+                            .html("")
+                            .style('display','none')
 
-                    @participants = []
-                    @titles = []
-                    @titleToIndex = {}
+                        $(".guide-line-photo").remove()
+                        $(".participant-hide-photo").removeClass("participant-hide-photo")
+
+                        true
+
+                @scrollToChange = (d, i) ->
+                        # TODO someone with eastetic skills should take a look
+                        # at the animation types and duration
+                        source = d.get("source")
+                        uniqueId = source.get("uniqueId")
+                        $target = $("#"+uniqueId)
+                        # Scroll the window to the selected target
+                        $('html, body').animate({
+                            scrollTop: $target.offset().top -
+                              window.breadcrumbHeaderView.headerHeight()
+                        }, 1000, ->
+                            # once the scroll is complete,
+                            # make the target visually stand out
+                            $target.animate({
+                                "background-color": "#efefef"
+                            }, 200).animate({
+                                "background-color": "white"
+                            }, 200)
+                          )
+                        true
+
+                @participants = []
+                @titles = []
+                @titleToIndex = {}
 
             render__chart_bg: ->
 
@@ -506,7 +515,6 @@ define([
                         # a point/segment
                         @centerEpoch = @minTime + (@maxTime - @minTime)/2
                         @termSegmentTree = new segmentTree;
-                        
                         for participant, index in @participants
                             startTimestamp = participant.get("start_timestamp")
                             if participant.get("end_date")
@@ -520,20 +528,20 @@ define([
                                 @termSegmentTree.pushInterval(startTimestamp, endTimestamp, participant)
                         @termSegmentTree.buildTree();
 
-                    divs = newTumbnails.append("div")
-                                    .attr('class','participantThumbnail')
-                    renderParticipant = (d) ->
-                        participant = JST.participant_term(d.attributes)
+                        divs = newTumbnails.append("div")
+                                        .attr('class','participantThumbnail')
+                        renderParticipant = (d) ->
+                            participant = JST.participant_term(d.attributes)
 
-                    divs.html(renderParticipant)
-                    #divs.append("img")
-                    #        .attr('src', (d)=> d.get('photo_url'))
-                    divs = d3.select('#participantThumbnails')
-                             .selectAll('.participantThumbnail')
-                             .data(@participants)
-                             .style("left", (d)=>@timeScale( d.get('start_timestamp')) + "px")
-                             .style("width", (d)=>(@timeScale( d.get('end_timestamp')) - @timeScale( d.get('start_timestamp'))) + "px")
-                             .style("top", (d)=>(@titleIndexScale(d.get('title')) - 240) + "px")
+                        divs.html(renderParticipant)
+                        #divs.append("img")
+                        #        .attr('src', (d)=> d.get('photo_url'))
+                        divs = d3.select('#participantThumbnails')
+                                 .selectAll('.participantThumbnail')
+                                 .data(@participants)
+                                 .style("left", (d)=>@timeScale( d.get('start_timestamp')) + "px")
+                                 .style("width", (d)=>(@timeScale( d.get('end_timestamp')) - @timeScale( d.get('start_timestamp'))) + "px")
+                                 .style("top", (d)=>(@titleIndexScale(d.get('title')) - 240) + "px")
 
             render__yearly_lines: ->
 
@@ -724,18 +732,3 @@ define([
 
                 @participantThumbnails = $("#participantThumbnails")
                 @participantThumbnailsOffset = @participantThumbnails.offset()
-
-
-    console.log "indepth_widget"
-    indepthWidget = null
-    getInstance = () ->
-        if indepthWidget == null
-            indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.combinedHistory})
-            window.indepthWidget = indepthWidget
-        indepthWidget
-    models.pageModel.on 'ready-budget-history', ->
-        getInstance().render()
-    models.pageModel.on 'ready-participants', ->
-        getInstance().setParticipants( models.pageModel.participants.models )
-        getInstance().render()
-)

@@ -15,7 +15,7 @@ class URLSchemeHandler
         linkToBudget: (code,year) ->
             parameters = $.extend(true, {}, @linkParameters)
             parameters['kind'] = 'budget'
-            parameters['code'] = code
+            parameters['code'] = code.slice(2)
             parameters['year'] = year
             @buildLink(parameters)
 
@@ -39,6 +39,12 @@ class URLSchemeHandler
                 @reload = reload || false
                 window.location.hash = newHash
 
+        updateUrl: (key, value) ->
+            if window.history?.replaceState?
+                if !pageModel.get('local')
+                    title = window.title
+                    url = "/g2/#{key}/#{value}"+window.location.hash
+                    window.history.replaceState("#{key}/#{value}", title, url);
 
         getAttribute: (key) ->
             @linkParameters['attributes'][key]
@@ -99,6 +105,8 @@ class URLSchemeHandler
 
             if @reload
                 window.location.reload()
+            else
+                ga('send', 'pageview')
 
             @oldHash = window.location.hash
             @reload = true

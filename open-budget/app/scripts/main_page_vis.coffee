@@ -158,13 +158,12 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                     @chart.start()
 
 
-
         events:
             'click #grouping-kind .btn': 'switchToggle'
             'click .compare-2014': 'compare_2014'
-            'click .compare-2015': 'compare_2015_start'
-            'click .compare-2015 .compare-year-start': 'compare_2015_start'
-            'click .compare-2015 .compare-year-end': 'compare_2015_end'
+            # 'click .compare-2015': 'compare_2015_start'
+            # 'click .compare-2015 .compare-year-start': 'compare_2015_start'
+            # 'click .compare-2015 .compare-year-end': 'compare_2015_end'
 
         compare_2014: =>
             @set_actives('.compare-2014')
@@ -248,6 +247,9 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
             )
 
         prepareData: ->
+            fill_color = -> "#aabbcc"
+            stroke_color = -> "#ccbbaa"
+
             # Create data for bubble chart
             @data = []
             that = @
@@ -258,7 +260,6 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                 #     continue
                 if model.get('code').substring(2,4)=="00"
                     continue
-
                 node =
                     id: model.get('code')
                     src: model
@@ -270,6 +271,7 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                     center: null,
                     onMoreInfo: @moreInfo
                 @data.push node
+
             @compare_2014()
 
         moreInfo: (node) ->
