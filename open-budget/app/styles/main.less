@@ -885,9 +885,40 @@ strong.approved {
       background-size: 20px;
       text-align: right;
       .revised-diff,
-      .approved-sum {
+      .approved-sum,
+      .approved{
         margin-top: -9px;
         padding: 5px 10px 6px;
+        position: relative;
+        &:after {
+          background: rgba(0,0,0,0.15);
+          border-radius: 10px;
+          display: inline-block;
+          position: absolute;
+          top: 7px;
+          left: 6px;
+          font-weight: 300;
+          font-size: 12px;
+          padding: 2px 6px;
+        }
+        &.increased:after {
+          content: "תוספת";
+        }
+        &.decreased:after {
+          content: "קיצוץ";
+        }
+        &.approved-sum:after{
+          background: darken(@approved, 5%);
+          content: "ספר התקציב";
+        }
+        &.approved:after {
+          background: none;
+          box-shadow: 0 0 0 1px darken(@approved, 5%);
+          content: "ספר התקציב";
+        }
+      }
+      .widget-popover-title div{
+        font-size: 12px;
       }
       .revised {
         padding: 0 10px;
@@ -2321,6 +2352,40 @@ svg rect{
       font-weight: bold;
     }
 
+    .main-vis-action-buttons {
+        font-weight: bold;
+        fill: grey;
+        font-size: 5em;
+        opacity: 0;
+
+// Team Card
+#teamModal {
+    .team-card {
+        border: 1px solid #888;
+        margin: 20px;
+        min-height: 200px;
+        padding-top:5px;
+        text-align: center;
+
+        .team-name {
+            display: block;
+            font-size: 1.5em;
+        }
+
+        .email, .twitter, .website {
+            display: block;
+            direction: ltr;
+        }
+
+        .email {
+
+        }
+        .twitter {
+
+        }
+    }
+}
+
 // Exemptions
 .disclaimer {
   padding: 10px;
@@ -2406,6 +2471,7 @@ div#exemptions-alerts {
 }
 
 table.table-expandable {
+    table-layout: fixed;
   thead {
     color: @darkgray;
   }

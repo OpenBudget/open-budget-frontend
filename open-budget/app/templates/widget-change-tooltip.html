@@ -6,19 +6,19 @@
         <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode'))*1000; %>
         <% var yeardiff = (get("value") - get("original_baseline"))*1000; %>
         <% var revised = get("value")*1000; %>
-        <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
-        <h2 class="revised">=<br/>
-        <%= format_full_number( revised ) %>₪</h2>
+        <h2 class="revised-diff <%= color_classname(get("diff_value")) %>">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
+        <div>סה״כ מעודכן</div>
+        <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
     </div>
     <div class="widget-popover-content">
       <% if ( yeardiff < 0 ) { %>
           <p class="tooltip-note"><%= (100 * (-yeardiff / (revised - yeardiff))).toFixed(1) + "%" %>
-              קיצוץ מתקציב
+              קיצוץ מתחת לתקציב
               <%= get("source").get("year") %></p>
       <% } %>
       <% if ( yeardiff > 0 ) { %>
           <p class="tooltip-note"><%= (100 * (yeardiff / (revised - yeardiff))).toFixed(1) + "%" %>
-              תוספת לתקציב
+              תוספת מעבר לתקציב
               <%= get("source").get("year") %></p>
       <% } %>
     </div>
@@ -46,17 +46,17 @@
             <h2 class="approved"><%= format_full_number( get("source").get('net_allocated')*1000 ) %>₪</h2>
             <% var diff = (get("source").get('net_revised') - get("source").get('net_allocated'))*1000; %>
             <% var revised = get("source").get('net_revised')*1000; %>
-            <h2 class="revised-diff ">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
-            <h2 class="revised">=<br/>
-            <%= format_full_number( revised ) %>₪</h2>
+            <h2 class="revised-diff <%= color_classname(get('diff_value')) %>">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
+            <div>סה״כ מעודכן</div>
+            <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
                 <% if ( diff < 0 ) { %>
                   <p class="tooltip-note"><%= (100 * (-diff / (revised - diff))).toFixed(1) + "%" %>
-                      קיצוץ מתקציב
+                      קיצוץ מתחת לתקציב
                       <%= get("source").get("year") %></p>
                 <% } %>
                 <% if ( diff > 0 ) { %>
                   <p class="tooltip-note"><%= (100 * (diff / (revised - diff))).toFixed(1) + "%" %>
-                      תוספת לתקציב
+                      תוספת מעבר לתקציב
                       <%= get("source").get("year") %></p>
                 <% } %>
         </div>

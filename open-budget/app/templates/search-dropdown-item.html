@@ -2,7 +2,7 @@
 <% if (type == "BudgetLine") { %>
     <span class="item-title">
         <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-        <%= title %></span>
+        <%= title %> <small>(<%= year %>)</small></span>
     <span class="item-code"><%= code.slice(2) %></span>
 <% } else if (type == "Entity") { %>
     <span class="item-title">
