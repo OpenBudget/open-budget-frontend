@@ -17,23 +17,23 @@ define(['jquery', 'backbone', 'models'] , ($, Backbone, models) ->
 
     class CombinedHistory extends Backbone.Collection
 
-            model: CombinedHistoryPoint
+        model: CombinedHistoryPoint
 
-            comparator: 'timestamp'
+        comparator: 'timestamp'
 
-            initialize: (models, options) ->
-                    @pageModel = options.pageModel
-                    if @pageModel.get('digits') >= 4
-                        @changeGroups = @pageModel.changeGroups
-                    else
-                        @changeGroups = { models: [] }
-                    @budgetHistory = @pageModel.budgetHistory
-                    @budgetApprovals = @pageModel.budgetApprovals
-                    @pageModel.waitFor "ready-budget-history-pre", =>
-                        @processChangeLines(@changeGroups.models)
-                        @processBudgetHistory(@budgetHistory.models,@budgetApprovals.models)
-                        @postProcess()
-                    @minValue = @maxValue = @minTime = @maxTime = null
+        initialize: (models, options) ->
+                @pageModel = options.pageModel
+                if @pageModel.get('digits') >= 4
+                    @changeGroups = @pageModel.changeGroups
+                else
+                    @changeGroups = { models: [] }
+                @budgetHistory = @pageModel.budgetHistory
+                @budgetApprovals = @pageModel.budgetApprovals
+                @pageModel.waitFor "ready-budget-history-pre", =>
+                    @processChangeLines(@changeGroups.models)
+                    @processBudgetHistory(@budgetHistory.models,@budgetApprovals.models)
+                    @postProcess()
+                @minValue = @maxValue = @minTime = @maxTime = null
 
         postProcess: () ->
                 last_baseline = null
@@ -111,131 +111,131 @@ define(['jquery', 'backbone', 'models'] , ($, Backbone, models) ->
                 @reset(@models)
                 @pageModel.trigger 'ready-budget-history'
 
-            processBudgetHistory: (models,approvedModels) ->
-                    approved = _.groupBy(approvedModels, (x) -> x.get('year'))
-                    for m in models
-                            approvedRec = approved[m.get('year')][0]
-                            approvedRec.setTimestamps()
-                            value = m.get("net_allocated")
-                            if value?
-
-                                    point = new CombinedHistoryPoint()
-                                    point.set("source", m)
-                                    point.set("kind", "yearstart")
-                                    point.set("value", m.get("net_allocated"))
-                                    startYear = new Date(m.get('year'),0).valueOf()
-                                    point.set('timestamp',startYear)
-                                    point.set('width', 1)
-                                    point.set('src','dummy')
-                                    @add point
-
-                                endYear = new Date(m.get('year'),11,31).valueOf()
-                                endEffect = approvedRec.get('end_timestamp')
-                                if !endEffect? then endEffect = Date.now()
+        processBudgetHistory: (models,approvedModels) ->
+                approved = _.groupBy(approvedModels, (x) -> x.get('year'))
+                for m in models
+                        approvedRec = approved[m.get('year')][0]
+                        approvedRec.setTimestamps()
+                        value = m.get("net_allocated")
+                        if value?
 
                                 point = new CombinedHistoryPoint()
                                 point.set("source", m)
-                                point.set("kind", "approved")
+                                point.set("kind", "yearstart")
                                 point.set("value", m.get("net_allocated"))
-                                startYear = approvedRec.get('effect_timestamp')
-                                if !startYear? then startYear = new Date(m.get('year'),0).valueOf()
+                                startYear = new Date(m.get('year'),0).valueOf()
                                 point.set('timestamp',startYear)
-                                point.set('width', endYear - startYear)
-                                point.set('participants', approvedRec.get('participants'))
-                                point.set('src','budgetline')
-                                point.set('continued',false)
+                                point.set('width', 1)
+                                point.set('src','dummy')
                                 @add point
 
-                                if endEffect > endYear
-                                    point = new CombinedHistoryPoint()
-                                    point.set("source", m)
-                                    point.set("kind", "approved")
-                                    point.set("value", m.get("net_revised"))
-                                    startYear = new Date(m.get('year')+1,0).valueOf()
-                                    point.set('timestamp',startYear)
-                                    point.set('width', endEffect - startYear)
-                                    point.set('participants', approvedRec.get('participants'))
-                                    point.set('src','budgetline')
-                                    point.set('continued',true)
-                                    @add point
+                            endYear = new Date(m.get('year'),11,31).valueOf()
+                            endEffect = approvedRec.get('end_timestamp')
+                            if !endEffect? then endEffect = Date.now()
 
-                                    # period between start of year and first committee
-                                    point = new CombinedHistoryPoint()
-                                    point.set("source",m)
-                                    point.set('kind','change')
-                                    point.set('diff_value',0)
-                                    point.set('timestamp',startYear+1)
-                                    point.set('width',endYear-startYear-1)
-                                    point.set('src','budgetline')
-                                    @add point
+                            point = new CombinedHistoryPoint()
+                            point.set("source", m)
+                            point.set("kind", "approved")
+                            point.set("value", m.get("net_allocated"))
+                            startYear = approvedRec.get('effect_timestamp')
+                            if !startYear? then startYear = new Date(m.get('year'),0).valueOf()
+                            point.set('timestamp',startYear)
+                            point.set('width', endYear - startYear)
+                            point.set('participants', approvedRec.get('participants'))
+                            point.set('src','budgetline')
+                            point.set('continued',false)
+                            @add point
 
-                            value = m.get("net_used")
-                            if value?
-                                    point = new CombinedHistoryPoint()
-                                    point.set("source", m)
-                                    point.set("kind", "used")
-                                    point.set("value", m.get("net_used"))
-                                    point.set("revised_value", m.get("net_revised"))
-                                    startYear = new Date(m.get('year'),11,31).valueOf()
-                                    endYear = new Date(m.get('year')+1,0).valueOf()
-                                    point.set('timestamp',startYear)
-                                    point.set('width', endYear - startYear)
-                                    point.set('src','budgetline')
-                                    @add point
+                            if endEffect > endYear
+                                point = new CombinedHistoryPoint()
+                                point.set("source", m)
+                                point.set("kind", "approved")
+                                point.set("value", m.get("net_revised"))
+                                startYear = new Date(m.get('year')+1,0).valueOf()
+                                point.set('timestamp',startYear)
+                                point.set('width', endEffect - startYear)
+                                point.set('participants', approvedRec.get('participants'))
+                                point.set('src','budgetline')
+                                point.set('continued',true)
+                                @add point
 
-                            value = m.get("net_revised")
-                            if value?
-                                    point = new CombinedHistoryPoint()
-                                    point.set("source", m)
-                                    point.set("kind", "revised")
-                                    point.set("value", value)
-                                    startYear = new Date(m.get('year'),0).valueOf()
-                                    endYear = new Date(m.get('year'),11,31).valueOf()
-                                    point.set('timestamp',endYear)
-                                    point.set('width', endYear - startYear)
-                                    point.set('src','budgetline')
-                                    @add point
+                                # period between start of year and first committee
+                                point = new CombinedHistoryPoint()
+                                point.set("source",m)
+                                point.set('kind','change')
+                                point.set('diff_value',0)
+                                point.set('timestamp',startYear+1)
+                                point.set('width',endYear-startYear-1)
+                                point.set('src','budgetline')
+                                @add point
 
-            processChangeLines: (models) ->
-                    changesPerYear = _.groupBy( models, (m) => m.get('year') )
-                    changesPerYear = _.pairs( changesPerYear )
-                    changesPerYear = _.sortBy( changesPerYear, (pair) => pair[0] )
-                    for pair in changesPerYear
-                            [year, yearly] = [parseInt(pair[0]), pair[1]]
-                            yearly = _.sortBy( yearly, (m) => m.get('timestamp') )
-                            yearStart = new Date(year,0).valueOf()
-                            yearEnd = new Date(year,11,31).valueOf()
-                            actualLen = _.filter(yearly, (m) -> m.getCodeChanges(@pageModel.get("budgetCode")) != 0).length
+                        value = m.get("net_used")
+                        if value?
+                                point = new CombinedHistoryPoint()
+                                point.set("source", m)
+                                point.set("kind", "used")
+                                point.set("value", m.get("net_used"))
+                                point.set("revised_value", m.get("net_revised"))
+                                startYear = new Date(m.get('year'),11,31).valueOf()
+                                endYear = new Date(m.get('year')+1,0).valueOf()
+                                point.set('timestamp',startYear)
+                                point.set('width', endYear - startYear)
+                                point.set('src','budgetline')
+                                @add point
 
-                            timestamp = yearStart
-                            lastPoint = null
-                            for m, i in yearly
-                                    value = m.getCodeChanges(@pageModel.get("budgetCode"))
-                                    if value? and value != 0
-                                            point = new CombinedHistoryPoint()
-                                            point.set("source",m)
-                                            point.set('kind','change')
-                                            point.set('diff_value',value)
-                                            point.set('subkind',m.getDateType())
-                                            date = m.get('timestamp')
-                                            diff = date - timestamp
-                                            timestamp = date
-                                            if lastPoint
-                                                    lastPoint.set('width', diff)
-                                            lastPoint = point
+                        value = m.get("net_revised")
+                        if value?
+                                point = new CombinedHistoryPoint()
+                                point.set("source", m)
+                                point.set("kind", "revised")
+                                point.set("value", value)
+                                startYear = new Date(m.get('year'),0).valueOf()
+                                endYear = new Date(m.get('year'),11,31).valueOf()
+                                point.set('timestamp',endYear)
+                                point.set('width', endYear - startYear)
+                                point.set('src','budgetline')
+                                @add point
 
-                                    else
-                                            point = new CombinedHistoryPoint()
-                                            point.set("source",m)
-                                            point.set('kind','change-misc')
+        processChangeLines: (models) ->
+                changesPerYear = _.groupBy( models, (m) => m.get('year') )
+                changesPerYear = _.pairs( changesPerYear )
+                changesPerYear = _.sortBy( changesPerYear, (pair) => pair[0] )
+                for pair in changesPerYear
+                        [year, yearly] = [parseInt(pair[0]), pair[1]]
+                        yearly = _.sortBy( yearly, (m) => m.get('timestamp') )
+                        yearStart = new Date(year,0).valueOf()
+                        yearEnd = new Date(year,11,31).valueOf()
+                        actualLen = _.filter(yearly, (m) -> m.getCodeChanges(@pageModel.get("budgetCode")) != 0).length
 
-                                    point.set('timestamp',timestamp)
-                                    point.set('src', 'changeline')
+                        timestamp = yearStart
+                        lastPoint = null
+                        for m, i in yearly
+                                value = m.getCodeChanges(@pageModel.get("budgetCode"))
+                                if value? and value != 0
+                                        point = new CombinedHistoryPoint()
+                                        point.set("source",m)
+                                        point.set('kind','change')
+                                        point.set('diff_value',value)
+                                        point.set('subkind',m.getDateType())
+                                        date = m.get('timestamp')
+                                        diff = date - timestamp
+                                        timestamp = date
+                                        if lastPoint
+                                                lastPoint.set('width', diff)
+                                        lastPoint = point
 
-                                    @add point
-                            if lastPoint?
-                                    lastPoint.set('width', yearEnd - timestamp)
-                                    lastPoint.set('last', true)
+                                else
+                                        point = new CombinedHistoryPoint()
+                                        point.set("source",m)
+                                        point.set('kind','change-misc')
+
+                                point.set('timestamp',timestamp)
+                                point.set('src', 'changeline')
+
+                                @add point
+                        if lastPoint?
+                                lastPoint.set('width', yearEnd - timestamp)
+                                lastPoint.set('last', true)
 
     if models.pageModel.get('budgetCode')?
         combinedHistory = new CombinedHistory([], pageModel: models.pageModel)
