@@ -126,6 +126,30 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           @centeredNode = node
 
 
+
+      focusOnCode: (code) ->
+          @focusOnNode(@vis.select("#bubble_#{code}").datum())
+
+      focusOnNode: (d) =>
+          # 8 digit codes (2 leading zeros) have no kids
+          # subNodes should not be centered
+          if d.id.length >= 10 or d.subNode then return
+          if typeof d.click == "function" then d.click.call(d, d)
+
+          if @centeredNode?
+              oldCenterId = @centeredNode.id
+
+          @replaceCenteredNode(d)
+
+          if @centeredNode?
+              @vis.selectAll(".child-bubble").remove()
+              if @subNodes?
+                  for subNode in @subNodes
+                      @data.splice(@data.indexOf(subNode), 1)
+
+          @options.addSubNodes(@centeredNode, @subNodesReady)
+          @start()
+
       updateNodes: (data, numParts, centeredNode, forceCreate) ->
         if not @data? or @data != data
             @data = data
@@ -256,6 +280,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
             .text((d) -> d.content)
             .on("click", (d) =>
                 if d.class == "main-vis-back-button"
+                    if typeof @options.stateChange == "function"
+                        @options.stateChange.call(null, "initial")
                     if @centerNodeQueue.length > 0
                         newCenterNode = @centerNodeQueue.splice(0, 1)[0]
                     else
@@ -302,27 +328,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
               else
                   ""
             )
-          .on("click", (d,i) =>
-              # 8 digit codes (2 leading zeros) have no kids
-              if d.id.length >= 10 then return
-
-              if @centeredNode?
-                  oldCenterId = @centeredNode.id
-
-              @replaceCenteredNode(d)
-
-              if @centeredNode?
-                  #@vis.select("#bubble_#{oldCenterId}")
-                  #    .transition().duration(2000).attr("opacity", 0)
-
-                  @vis.selectAll(".child-bubble").remove()
-                    #.transition().duration(2000).attr("opacity", (d) =>
-                    #    if d == @centeredNode then 1 else 0
-                    #)
-
-              @options.addSubNodes(@centeredNode, @subNodesReady)
-              @start()
-            )
+          .on("click", @focusOnNode)
           .on("mouseover", (d,i) -> that.show_details(d,i,this))
           .on("mouseout", (d,i) -> that.hide_details(d,i,this))
 
@@ -337,6 +343,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
         @childCircles = @vis.selectAll(".child-bubble")
 
       subNodesReady: (subNodes) =>
+          @subNodes = subNodes
           for node in subNodes
               node.center = @focusCenter
 

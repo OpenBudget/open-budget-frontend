@@ -135,7 +135,12 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                 console.log("MainPageVis: Received event ready-budget-bubbles")
                 @chart = new BubbleChart(
                     el: @$el.find("#bubble-chart"),
-                    addSubNodes: @addKids
+                    addSubNodes: @addKids,
+                    stateChange: (state) ->
+                        if (state == "initial")
+                            models.pageModel.URLSchemeHandlerInstance.removeAttribute(
+                                "focusOn", false
+                            )
                 )
                 @chart_el = d3.select(@chart.el)
                 @$bubbleContainer = @$el.find("#bubble-chart-container");
@@ -147,6 +152,10 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                     $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
                 @recalc_centers()
                 @render()
+
+                focusCode = models.pageModel.URLSchemeHandlerInstance.getAttribute('focusOn')
+                if focusCode
+                    @chart.focusOnCode(focusCode)
 
             @model.on 'ready-main-budget', =>
                 @$el.find("#main-budget-header").html(JST.main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
@@ -195,16 +204,16 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
             @recalc_centers()
             @chart.start()
 
-        addBubbleLabels: ->
+        addBubbleLabels: (centeredNode) ->
           # Check if labels already exist
           @$bubbleContainer.find(".bubble-group-label").remove();
           center = @centers[@toggle]
           title_data = center.getCenters()
 
-          if @centeredNode?
+          if centeredNode?
               $(JST.bubble_group_label({
-                    total: @centeredNode.rev,
-                    title: @centeredNode.src.get("title")
+                    total: centeredNode.rev,
+                    title: centeredNode.src.get("title")
                 })).css({
                     top: "50px",
                     left: @$bubbleContainer.width()/2 + "px"
@@ -233,10 +242,10 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                         rev:  model.get('net_revised')
                         onMoreInfo: @moreInfo
                         value: model.get('net_revised')
-                        className: -> "child-bubble "+changeClass(node.orig,node.rev)+"_svg"
+                        className: -> "child-bubble "+changeClass(model.orig,model.rev)+"_svg"
                         fill_color: null
                         stroke_color: null
-                        tooltip_contents: -> JST.bubble_tooltip(node)
+                        tooltip_contents: -> JST.bubble_tooltip(@)
                         center: null,
                         part: 0,
                         subNode: true
@@ -269,7 +278,12 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                     stroke_color: null
                     tooltip_contents: -> JST.bubble_tooltip(this)
                     center: null,
-                    onMoreInfo: @moreInfo
+                    onMoreInfo: @moreInfo,
+                    click: (d) =>
+                        models.pageModel.URLSchemeHandlerInstance.addAttribute(
+                            "focusOn", d.src.get("code"), false
+                        )
+                        @addBubbleLabels(d)
                 @data.push node
 
             @compare_2014()
