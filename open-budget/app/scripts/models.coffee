@@ -700,7 +700,7 @@ class PageModel extends Backbone.Model
 
                 @on 'change:mainPage', ->
                     @budgetItems4 = new CompareRecords([], pageModel: @)
-                    @budgetItems2 = new BudgetItemKids([], year: 2015, code: '00', pageModel: @)
+                    @budgetItems2 = new BudgetItemKids([], year: 2014, code: '00', pageModel: @)
                     @readyEvents.push new ReadyAggregator("ready-budget-bubbles")
                                                         .addCollection(@budgetItems2)
                                                         .addCollection(@budgetItems4)
