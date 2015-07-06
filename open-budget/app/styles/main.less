@@ -500,17 +500,17 @@ strong.approved {
         }
       }
   }
-  .trans-increased{
+  [class*="trans-increased"]{
     .widget-popover{
-      border-bottom-color: @increased;
+      //border-bottom-color: @increased;
     }
     .widget-popover-title p,
     .date:before
       { color: @increased }
     }
-  .trans-decreased{
+  [class*="trans-decreased"]{
     .widget-popover{
-      border-bottom-color: @decreased;
+      //border-bottom-color: @decreased;
     }
     .widget-popover-title p,
     .date:before
@@ -835,8 +835,8 @@ strong.approved {
       .item-title,
       .revised-diff,
       .approved-sum {
-        background: @darkgray;
-        color: white;
+        //background: @darkgray;
+        color: @darkgray;
       }
     }
 
@@ -888,8 +888,15 @@ strong.approved {
       .approved-sum,
       .approved{
         margin-top: -9px;
-        padding: 5px 10px 6px;
+        padding: 1px 10px 2px;
         position: relative;
+        &.approved-sum {
+          padding: 5px 10px 6px;
+          color: #fff;
+        }
+        &.approved {
+          padding: 5px 10px 6px;
+        }
         &:after {
           background: rgba(0,0,0,0.15);
           border-radius: 10px;
@@ -900,11 +907,12 @@ strong.approved {
           font-weight: 300;
           font-size: 12px;
           padding: 2px 6px;
+          color: #fff;
         }
-        &.increased:after {
+        &[class*='increased']:after {
           content: "תוספת";
         }
-        &.decreased:after {
+        &[class*='decreased']:after {
           content: "קיצוץ";
         }
         &.approved-sum:after{
@@ -913,7 +921,7 @@ strong.approved {
         }
         &.approved:after {
           background: none;
-          box-shadow: 0 0 0 1px darken(@approved, 5%);
+          box-shadow: 0 0 0 1px @approved;
           content: "ספר התקציב";
         }
       }
@@ -921,8 +929,9 @@ strong.approved {
         font-size: 12px;
       }
       .revised {
-        padding: 0 10px;
+        padding: 5px 10px 6px;
         line-height: 20px;
+        color: #fff;
       }
       .tooltip-note {
         padding-top: 2px;
@@ -938,12 +947,17 @@ strong.approved {
       &.tooltip-approved {
         h2 {background-color: @approved;}
         p { color: @approved; margin-bottom: -6px;}
+        .approved_border;
+        &::before { border-top-color: @approved}
       }
       &.tooltip-used {
         .widget-popover-title {
           .approved {
             margin-top: -10px;
             .approved_text;
+            &::after {
+              .approved_text;
+            }
           }
           .revised-diff {
             margin-top: -5px;
@@ -977,68 +991,77 @@ strong.approved {
     }
   }
 
-  .increased_a{
-    .widget-popover,.widget-popover-content { .increased_a_border !important}
-    .item-title,.revised-diff,#trans-tip{     .increased_a_bg     !important}
-    .widget-popover-title span,.percentage {  .increased_a_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @increased_a}
-    .widget-popover.arrow-left:before{        border-right-color: @increased_a}
+  .increased_a {
+    &.widget-popover,.widget-popover,.widget-popover-content { .increased_a_border !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .increased_a_bg     !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .increased_a_text   !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @increased_a}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @increased_a}
+    .widget-popover.arrow-left:before                        { border-right-color: @increased_a}
   }
-  .increased_b{
-    .widget-popover,.widget-popover-content { .increased_b_border !important}
-    .item-title,.revised-diff,#trans-tip{     .increased_b_bg     !important}
-    .widget-popover-title span,.percentage {  .increased_b_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @increased_b}
-    .widget-popover.arrow-left:before{        border-right-color: @increased_b}
+  .increased_b {
+    &.widget-popover,.widget-popover,.widget-popover-content { .increased_b_border !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .increased_b_bg     !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .increased_b_text   !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @increased_b}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @increased_b}
+    .widget-popover.arrow-left:before                        { border-right-color: @increased_b}
   }
-  .increased_c{
-    .widget-popover,.widget-popover-content { .increased_c_border !important}
-    .item-title,.revised-diff,#trans-tip{     .increased_c_bg     !important}
-    .widget-popover-title span,.percentage {  .increased_c_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @increased_c}
-    .widget-popover.arrow-left:before{        border-right-color: @increased_c}
+  .increased_c {
+    &.widget-popover,.widget-popover,.widget-popover-content { .increased_c_border !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .increased_c_bg     !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .increased_c_text   !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @increased_c}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @increased_c}
+    .widget-popover.arrow-left:before                        { border-right-color: @increased_c}
   }
-  .increased_d{
-    .widget-popover,.widget-popover-content { .increased_d_border !important}
-    .item-title,.revised-diff,#trans-tip{     .increased_d_bg     !important}
-    .widget-popover-title span,.percentage {  .increased_d_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @increased_d}
-    .widget-popover.arrow-left:before{        border-right-color: @increased_d}
+  .increased_d {
+    &.widget-popover,.widget-popover,.widget-popover-content { .increased_d_border !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .increased_d_bg     !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .increased_d_text   !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @increased_d}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @increased_d}
+    .widget-popover.arrow-left:before                        { border-right-color: @increased_d}
   }
-  .decreased_a{
-    .widget-popover,.widget-popover-content { .decreased_a_border !important}
-    .item-title,.revised-diff,#trans-tip{     .decreased_a_bg     !important}
-    .widget-popover-title span,.percentage {  .decreased_a_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @decreased_a}
-    .widget-popover.arrow-left:before{        border-right-color: @decreased_a}
+  .decreased_a {
+    &.widget-popover,.widget-popover,.widget-popover-content { .decreased_a_border !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .decreased_a_bg     !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .decreased_a_text   !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @decreased_a}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @decreased_a}
+    .widget-popover.arrow-left:before                        { border-right-color: @decreased_a}
   }
-  .decreased_b{
-    .widget-popover,.widget-popover-content { .decreased_b_border !important}
-    .item-title,.revised-diff,#trans-tip{     .decreased_b_bg     !important}
-    .widget-popover-title span,.percentage {  .decreased_b_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @decreased_b}
-    .widget-popover.arrow-left:before{        border-right-color: @decreased_b}
+  .decreased_b {
+    &.widget-popover,.widget-popover,.widget-popover-content { .decreased_b_border !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .decreased_b_bg     !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .decreased_b_text   !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @decreased_b}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @decreased_b}
+    .widget-popover.arrow-left:before                        { border-right-color: @decreased_b}
   }
-  .decreased_c{
-    .widget-popover,.widget-popover-content { .decreased_c_border !important}
-    .item-title,.revised-diff,#trans-tip{     .decreased_c_bg     !important}
-    .widget-popover-title span,.percentage {  .decreased_c_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @decreased_c}
-    .widget-popover.arrow-left:before{        border-right-color: @decreased_c}
+  .decreased_c {
+    &.widget-popover,.widget-popover,.widget-popover-content { .decreased_c_border !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .decreased_c_bg     !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .decreased_c_text   !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @decreased_c}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @decreased_c}
+    .widget-popover.arrow-left:before                        { border-right-color: @decreased_c}
   }
-  .decreased_d{
-    .widget-popover,.widget-popover-content { .decreased_d_border !important}
-    .item-title,.revised-diff,#trans-tip{     .decreased_d_bg     !important}
-    .widget-popover-title span,.percentage {  .decreased_d_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @decreased_d}
-    .widget-popover.arrow-left:before{        border-right-color: @decreased_d}
+  .decreased_d {
+    &.widget-popover,.widget-popover,.widget-popover-content { .decreased_d_border !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .decreased_d_bg     !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .decreased_d_text   !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @decreased_d}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @decreased_d}
+    .widget-popover.arrow-left:before                        { border-right-color: @decreased_d}
   }
-  .approved{
-    .widget-popover,.widget-popover-content { .approved_border !important}
-    .item-title,.revised-diff,#trans-tip{     .approved_bg     !important}
-    .widget-popover-title span,.percentage {  .approved_text   !important}
-    .widget-popover.arrow-bottom:before{      border-top-color: @approved!important}
-    .widget-popover.arrow-left:before{        border-right-color: @approved!important}
+  .approved {
+    &.widget-popover,.widget-popover,.widget-popover-content { .approved_border    !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after     { .approved_bg        !important}
+    .widget-popover-title span,.percentage,&.revised-diff    { .approved_text      !important}
+    .widget-popover.arrow-bottom:before                      { border-top-color:   @approved!important}
+    &.widget-popover.arrow-bottom:before                     { border-top-color:   @approved!important}
+    .widget-popover.arrow-left:before                        { border-right-color: @approved!important}
   }
 
 }

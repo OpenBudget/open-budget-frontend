@@ -1,12 +1,20 @@
-<div class="trans-<%= color_classname(get("diff_value")) %> <%= changeClass(get("original_baseline"), get("original_baseline") + get("diff_value")) %> <% if ( get('kind') == 'approved' ) { %>approved<% } %> arrow arrow-bottom">
+<%/*
+"original_baseline"  - the approved budget
+"value"              - the issue's total after this transaction
+"diff_value"         - this specific transaction change
+*/%>
+
 <% if ( get("src") == "changeline" ) { %>
+  <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode'))*1000; %>
+  <% var yeardiff = (get("value") - get("original_baseline"))*1000; %>
+  <% var revised = get("value")*1000; %>
+
+<div class="<%= changeClass(get("original_baseline"),get("value")) %> trans-<%= changeClass(get("original_baseline"), get("original_baseline") + get("diff_value")) %> <% if ( get('kind') == 'approved' ) { %>approved<% } %> arrow arrow-bottom">
+
   <!-- <div class="arrow"></div> -->
   <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-changeline">
     <div class="widget-popover-title">
-        <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode'))*1000; %>
-        <% var yeardiff = (get("value") - get("original_baseline"))*1000; %>
-        <% var revised = get("value")*1000; %>
-        <h2 class="revised-diff <%= color_classname(get("diff_value")) %>">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
+        <h2 class="revised-diff <%= changeClass(get("original_baseline"), get("original_baseline") + get("diff_value")) %>">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
         <div>סה״כ מעודכן</div>
         <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
     </div>
@@ -41,12 +49,12 @@
             <% } %>
         </div>
       <% } else if ( get('kind') == 'used' ) { %>
-      <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-used">
+      <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-used <%= changeClass(get("original_baseline"), get("original_baseline") + get("diff_value")) %>">
         <div class="widget-popover-title">
             <h2 class="approved"><%= format_full_number( get("source").get('net_allocated')*1000 ) %>₪</h2>
             <% var diff = (get("source").get('net_revised') - get("source").get('net_allocated'))*1000; %>
             <% var revised = get("source").get('net_revised')*1000; %>
-            <h2 class="revised-diff <%= color_classname(get('diff_value')) %>">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
+            <h2 class="revised-diff <%= changeClass(get("original_baseline"), get("original_baseline") + get("diff_value")) %>">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
             <div>סה״כ מעודכן</div>
             <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
                 <% if ( diff < 0 ) { %>
