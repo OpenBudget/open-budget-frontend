@@ -1,8 +1,8 @@
-<%/*
+<% /*
 "original_baseline"  - the approved budget
 "value"              - the issue's total after this transaction
 "diff_value"         - this specific transaction change
-*/%>
+*/ %>
 
 <% if ( get("src") == "changeline" ) { %>
   <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode'))*1000; %>
@@ -15,7 +15,7 @@
   <div id="trans-tip" class="widget-popover fade in bottom arrow arrow-bottom tooltip-changeline">
     <div class="widget-popover-title">
         <h2 class="revised-diff <%= changeClass(get("original_baseline"), get("original_baseline") + get("diff_value")) %>">&lrm;<%= number_plus_minus(diff) %> ₪<%= format_full_number( Math.abs(diff) ) %>&rlm; </h2>
-        <div>סה״כ מעודכן</div>
+        <div class="label-revised">סה״כ מעודכן</div>
         <h2 class="revised"><%= format_full_number( revised ) %>₪</h2>
     </div>
     <div class="widget-popover-content">
