@@ -893,6 +893,9 @@ strong.approved {
         &.approved-sum {
           padding: 5px 10px 6px;
           color: #fff;
+          &::after{
+            top:8px;
+          }
         }
         &.approved {
           padding: 5px 10px 6px;
@@ -953,10 +956,11 @@ strong.approved {
       &.tooltip-used {
         .widget-popover-title {
           .approved {
-            margin-top: -10px;
+            margin-top: -12px;
             .approved_text;
             &::after {
               .approved_text;
+              top: 8px;
             }
           }
           .revised-diff {
@@ -993,7 +997,8 @@ strong.approved {
 
   .increased_a {
     &.widget-popover,.widget-popover,.widget-popover-content { .increased_a_border !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .increased_a_bg     !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .increased_a_bg     !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .increased_a_text   !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @increased_a}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @increased_a}
@@ -1001,7 +1006,8 @@ strong.approved {
   }
   .increased_b {
     &.widget-popover,.widget-popover,.widget-popover-content { .increased_b_border !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .increased_b_bg     !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .increased_b_bg     !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .increased_b_text   !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @increased_b}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @increased_b}
@@ -1009,7 +1015,8 @@ strong.approved {
   }
   .increased_c {
     &.widget-popover,.widget-popover,.widget-popover-content { .increased_c_border !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .increased_c_bg     !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .increased_c_bg     !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .increased_c_text   !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @increased_c}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @increased_c}
@@ -1017,7 +1024,8 @@ strong.approved {
   }
   .increased_d {
     &.widget-popover,.widget-popover,.widget-popover-content { .increased_d_border !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .increased_d_bg     !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .increased_d_bg     !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .increased_d_text   !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @increased_d}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @increased_d}
@@ -1025,7 +1033,8 @@ strong.approved {
   }
   .decreased_a {
     &.widget-popover,.widget-popover,.widget-popover-content { .decreased_a_border !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .decreased_a_bg     !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .decreased_a_bg     !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .decreased_a_text   !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @decreased_a}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @decreased_a}
@@ -1033,7 +1042,8 @@ strong.approved {
   }
   .decreased_b {
     &.widget-popover,.widget-popover,.widget-popover-content { .decreased_b_border !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .decreased_b_bg     !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .decreased_b_bg     !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .decreased_b_text   !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @decreased_b}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @decreased_b}
@@ -1041,7 +1051,8 @@ strong.approved {
   }
   .decreased_c {
     &.widget-popover,.widget-popover,.widget-popover-content { .decreased_c_border !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .decreased_c_bg     !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .decreased_c_bg     !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .decreased_c_text   !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @decreased_c}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @decreased_c}
@@ -1049,7 +1060,8 @@ strong.approved {
   }
   .decreased_d {
     &.widget-popover,.widget-popover,.widget-popover-content { .decreased_d_border !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .decreased_d_bg     !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .decreased_d_bg     !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .decreased_d_text   !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @decreased_d}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @decreased_d}
@@ -1057,7 +1069,8 @@ strong.approved {
   }
   .approved {
     &.widget-popover,.widget-popover,.widget-popover-content { .approved_border    !important}
-    .item-title,#trans-tip,.revised,&.revised-diff:after     { .approved_bg        !important}
+    .item-title,#trans-tip,.revised,&.revised-diff:after,
+    &.tooltip-used                                           { .approved_bg        !important}
     .widget-popover-title span,.percentage,&.revised-diff    { .approved_text      !important}
     .widget-popover.arrow-bottom:before                      { border-top-color:   @approved!important}
     &.widget-popover.arrow-bottom:before                     { border-top-color:   @approved!important}
