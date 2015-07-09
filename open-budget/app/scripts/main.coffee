@@ -8,8 +8,8 @@ require.config({
         "d3-tip":               "bower_components/d3-tip/index",
         "underscore":           "bower_components/underscore/underscore",
         "backbone":             "bower_components/backbone/backbone",
-        "bloodhound":           "bower_components/typeahead/dist/bloodhound.min",
-        "bootstrap-tour":       "bower_components/bootstrap-tour/build/bootstrap-tour",
+        "bloodhound":           "bower_components/typeahead.js/dist/bloodhound.min",
+        "bootstrap-tour":       "bower_components/bootstrap-tour/build/js/bootstrap-tour",
         "pivot":                "bower_components/pivottable/dist/pivot",
         "d3_renderers":         "bower_components/pivottable/dist/d3_renderers",
         "ecma_5":               "scripts/interval-query/lib/browser/ecma_5",
@@ -60,10 +60,25 @@ require.config({
         },
         "segment-tree-browser": {
             exports: "segmentTree"
+        },
+        "bloodhound": {
+            deps: ['jquery'],
+            exports: "Bloodhound"
+        },
+        "bootstrap-tour": {
+            deps: ['jquery'],
+            exports: "Tour"
         }
     }
 })
 
-require(["hello", "templates", "main_page_vis", "budget_view", "models"], () ->
+require([
+    "hello",
+    "templates",
+    "searchbar",
+    "main_page_vis",
+    "budget_view",
+    "models",
+    "bootstrap-tour"], () ->
 
 )
