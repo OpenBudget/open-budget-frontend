@@ -4,6 +4,7 @@ require.config({
         "jquery":               "bower_components/jquery/jquery",
         "jquery-ui":            "bower_components/jquery-ui/jquery-ui.min",
         "bootstrap":            "bower_components/bootstrap/dist/js/bootstrap",
+        "twitter":              "//platform.twitter.com/widgets"
         "d3":                   "bower_components/d3/d3",
         "d3-tip":               "bower_components/d3-tip/index",
         "underscore":           "bower_components/underscore/underscore",
@@ -14,6 +15,7 @@ require.config({
         "d3_renderers":         "bower_components/pivottable/dist/d3_renderers",
         "ecma_5":               "scripts/interval-query/lib/browser/ecma_5",
         "segment-tree-browser": "scripts/interval-query/lib/browser/segment-tree-browser",
+        "team":                 "scripts/team",
         "templates":            "scripts/templates",
         "url_scheme":           "scripts/url_scheme",
         "main_page_tabs":       "scripts/main_page_tabs",
@@ -58,6 +60,13 @@ require.config({
         ecma_5: {
             exports: "Array.prototype.forEach"
         },
+        templates: {
+            deps: ['underscore'],
+            exports: 'JST'
+        },
+        "twitter": {
+            exports: "twttr.widgets"
+        },
         "segment-tree-browser": {
             exports: "segmentTree"
         },
@@ -76,6 +85,9 @@ require([
     "hello",
     "templates",
     "searchbar",
+    "training",
+    "subscribe",
+    "team",
     "main_page_vis",
     "budget_view",
     "models",

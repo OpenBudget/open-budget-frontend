@@ -408,19 +408,6 @@
         </script>
         <!-- End Piwik Code -->
 
-        <!-- Twitter -->
-        <script>!function(d,s,id){
-                    var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
-                    if(!d.getElementById(id)){
-                        js=d.createElement(s);
-                        js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
-                        fjs.parentNode.insertBefore(js,fjs);
-                    }
-                }
-                (document, 'script', 'twitter-wjs');
-        </script>
-        <!-- End twitter code -->
-
         <!-- Facebook -->
         <div id="fb-root"></div>
         <script>
@@ -450,44 +437,6 @@
               </div>
               <div class="modal-body">
                   <p>זהו צוות הפרויקט (כל הפרויקט מפותח על ידי מתנדבים ונתמך על ידי הסדנא לידע ציבורי)</p>
-                  <div class="row">
-                      <script>
-                      define('JST', function(JST) {
-                          var team = [
-                              {name:'אדם קריב',
-                               avatar:'cd511289b5773fff5e7efe328846eef3',
-                               email:'adam kruchit obudget.org',
-                               twitter:'ikramvada',
-                               website:null},
-                              {name:'מושון זר-אביב',
-                               avatar:'b3458a2e3eed95ba26ecca523397e06a',
-                               email:null,
-                               twitter:'mushon',
-                               website:'http://mushon.com'},
-                              {name:'סער אלון-ברקת',
-                               avatar:'8a1ae50e012e3a5d6accfe9fe6ebd0f2',
-                               email:null,
-                               twitter:null,
-                               website:null
-                              },
-                              {name:'ניר בט',
-                               avatar:'9b5b5ecb1cebb8cb3d7294c04a5f68d2',
-                               email:null,
-                               twitter:null,
-                               website:null
-                              },
-                          ];
-                          for ( var _i in team ) {
-                              var member = team[_i];
-                              document.write(JST.team_card(member));
-                              if ( _i % 4 == 3 ) {
-                                  document.write('</div><div class="row">');
-                              }
-                          }
-                          window.setTimeout( function() { twttr.widgets.load(); }, 1000);
-                      })
-                      </script>
-                  </div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">סגירה</button>
