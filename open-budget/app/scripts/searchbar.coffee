@@ -1,4 +1,4 @@
-define(['backbone', 'models', 'bloodhound'], (Backbone, models, Bloodhound) ->
+define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Bloodhound, templates) ->
 
     class BudgetPartitionLayoutView extends Backbone.View
 
