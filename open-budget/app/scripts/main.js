@@ -66,7 +66,7 @@
         exports: 'JST'
       },
       "twitter": {
-        exports: "twttr.widgets"
+        exports: "twttr"
       },
       "segment-tree-browser": {
         exports: "segmentTree"

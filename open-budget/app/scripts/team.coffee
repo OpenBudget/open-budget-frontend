@@ -1,4 +1,4 @@
-define(['jquery', 'templates', 'twitter'], ($, templates, widgets) ->
+define(['jquery', 'templates', 'twitter'], ($, templates, twttr) ->
     team = [
         {
             name:'אדם קריב',
@@ -41,5 +41,5 @@ define(['jquery', 'templates', 'twitter'], ($, templates, widgets) ->
             row = teamModalBody.append("<div class='row'></div>")
         row.append(JST.team_card(member));
 
-    widgets.load();
+    twttr.ready(() -> twttr.widgets.load())
 )
