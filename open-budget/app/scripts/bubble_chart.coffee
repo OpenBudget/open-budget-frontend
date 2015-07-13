@@ -89,7 +89,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           @filter.append("feMorphology")
               .attr("in", "SourceAlpha")
               .attr("operator", "dilate")
-              .attr("radius", 3)
+              .attr("radius", 0.5)
               .attr("result", "dilatedSource")
           # ComponentTransfer will allow changing the color of the shadow
           feComponentTransfer = @filter.append("feComponentTransfer")
@@ -295,7 +295,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 .duration(DURATION)
                 .attr("r", (d) -> maxEndRadius*d.factor)
                 .attr("cx", (d) => @width - MAX_RADIUS - 4)
-                .attr("cy", (d) => @height - maxEndRadius*d.factor - 4)
+                .attr("cy", (d) => @height / 2 - maxEndRadius*d.factor)
                 .attr("opacity", 0)
                 .each("end", () -> d3.select(@).remove())
 
@@ -303,8 +303,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 .attr("opacity", 1)
                 .transition()
                 .duration(DURATION)
-                .attr("y1", (d) => @height - 2*maxEndRadius*d.factor - 4)
-                .attr("y2", (d) => @height - 2*maxEndRadius*d.factor - 4)
+                .attr("y1", (d) => @height / 2 - 2*maxEndRadius*d.factor)
+                .attr("y2", (d) => @height / 2 - 2*maxEndRadius*d.factor)
                 .attr("x2", (d) => @width - scalingFunction(maxValue) - 4 - scalingFunction(maxValue))
                 .attr("opacity", 0)
                 .each("end", () -> d3.select(@).remove())
@@ -313,7 +313,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 .attr("opacity", 1)
                 .transition()
                 .duration(DURATION)
-                .attr("y", (d) => @height - 2*maxEndRadius*d.factor - 4)
+                .attr("y", (d) => @height / 2 - 2*maxEndRadius*d.factor)
                 .attr("x", (d) => @width - scalingFunction(maxValue) - 4 - scalingFunction(maxValue))
                 .attr("opacity", 0)
                 .each("end", () -> d3.select(@).remove())
@@ -326,12 +326,12 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
               .attr("class", "legend-circle legend")
           legendCircles
               .attr("r", (d) -> maxStartRadius*d.factor)
-              .attr("cy", (d) => @height - maxStartRadius*d.factor - 4)
+              .attr("cy", (d) => @height / 2 - maxStartRadius*d.factor)
               .attr("opacity", 0)
               .transition().duration(DURATION)
               .attr("r", (d) => scalingFunction(d.value*d.factor))
               .attr("cx", (d) => @width - scalingFunction(maxValue) - 4)
-              .attr("cy", (d) => @height - scalingFunction(d.value*d.factor) - 4)
+              .attr("cy", (d) => @height / 2 - scalingFunction(d.value*d.factor))
               .attr("opacity", 1)
               .each("end", (d) ->
                   d3.select(@)
@@ -345,12 +345,12 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           legendLines
               .attr("x1", (d) => @width - scalingFunction(maxValue) - 4)
               .attr("x2", (d) => @width - 2*scalingFunction(maxValue) - 4)
-              .attr("y1", (d) => @height - 2*maxStartRadius*d.factor - 4)
-              .attr("y2", (d) => @height - 2*maxStartRadius*d.factor - 4)
+              .attr("y1", (d) => @height / 2 - 2*maxStartRadius*d.factor)
+              .attr("y2", (d) => @height / 2 - 2*maxStartRadius*d.factor)
               .attr("opacity", 0)
               .transition().duration(DURATION)
-              .attr("y1", (d) => @height - 2*scalingFunction(d.value*d.factor) - 4)
-              .attr("y2", (d) => @height - 2*scalingFunction(d.value*d.factor) - 4)
+              .attr("y1", (d) => @height / 2 - 2*scalingFunction(d.value*d.factor))
+              .attr("y2", (d) => @height / 2 - 2*scalingFunction(d.value*d.factor))
               .attr("x2", (d) => @width - 2*scalingFunction(maxValue) - 4)
               .attr("opacity", 1)
               .each("end", (d) ->
@@ -365,11 +365,11 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           legendText
               .attr("opacity", 0)
               .attr("x", (d) => @width - 2*scalingFunction(maxValue) - 4)
-              .attr("y", (d) => @height - 2*maxStartRadius*d.factor - 4)
+              .attr("y", (d) => @height / 2 - 2*maxStartRadius*d.factor)
               .text((d) -> window.format_number(d.value*d.factor, false, false, false))
               .transition().duration(DURATION)
               .attr("opacity", 1)
-              .attr("y", (d) => @height - 2*scalingFunction(d.value*d.factor) - 4)
+              .attr("y", (d) => @height / 2 - 2*scalingFunction(d.value*d.factor))
               .attr("x", (d) => @width - 2*scalingFunction(maxValue) - 4)
               .each("end", (d) ->
                   d3.select(@)
@@ -514,7 +514,6 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                         .attr("fill-opacity", "1")
                         .transition()
                         .duration(DURATION)
-                        .attr("stroke-dasharray", "5,5")
                         .attr("fill-opacity", "0")
                         .style("filter", "url(#shadow)")
 
@@ -531,7 +530,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                     maxx: 0
                     maxy: 0
                     minx: @width
-                    miny: @height
+                    miny: @height / 2
             extents[cat].maxx = d3.max([extents[cat].maxx,d.x])
             extents[cat].maxy = d3.max([extents[cat].maxy,d.y])
             extents[cat].minx = d3.min([extents[cat].minx,d.x])
@@ -582,7 +581,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
       hide_details: () =>
           if @activeTooltip?
               d3.select(@activeTooltip.element)
-                .style('stroke-width',2)
+                .style('stroke-width',1)
               @tooltip.hide(@activeTooltip.data)
               $(".bubble-chart-tip").toggleClass('active',false)
 
