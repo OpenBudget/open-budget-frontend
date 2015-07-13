@@ -17,10 +17,13 @@
             var e = exemptions[i];
         %>
         <div class="exemption-alert<%= (i == 0) ? ' selected' : ''%>" supplier="<%= e.supplier_id %>">
-                <div class="exemption-flags">
-                    <span class="label label-success">דגל</span>
-                </div>
-                <h5 class="exemption-publisher"><%= e.publisher%></h5>
+
+                <h5 class="exemption-publisher">
+                    <div class="exemption-flags">
+                        <span class="label label-success">דגל</span>
+                    </div>
+                    <%= e.publisher%>
+                </h5>
                 <h4 class="exemption-supplier"><%= e.supplier %></h4>
                 <h4 class="exemption-data"><%= (e.volume) ? (number_with_commas(e.volume) + ' ש"ח') : ("סכום לא ידוע") %> | <%= e.start_date %> - <%= e.end_date %></h4>
                 <h3 class="exemption-title"><%= (e.description.length < 137) ? e.description : (e.description.substring(0,137) + "...") %></h3>
