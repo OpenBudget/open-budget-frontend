@@ -242,7 +242,7 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                         rev:  model.get('net_revised')
                         onMoreInfo: @moreInfo
                         value: model.get('net_revised')
-                        className: -> "child-bubble "+changeClass(model.orig,model.rev)+"_svg"
+                        className: -> "child-bubble "+changeClass(this.orig,this.rev)+"_svg"
                         fill_color: null
                         stroke_color: null
                         tooltip_contents: -> JST.bubble_tooltip(@)

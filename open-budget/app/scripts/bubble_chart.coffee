@@ -41,7 +41,10 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
     d3.tip = d3tip
 
     d3.selection.prototype.moveToFront = ->
-      this.each( -> this.parentNode.appendChild(this) )
+      this.each( -> this.parentNode.appendChild(this))
+
+    d3.selection.prototype.sendToBack = ->
+      this.each( -> $(this).parent().prepend(this))
 
     class BubbleChart extends Backbone.View
       initialize: (options) ->
