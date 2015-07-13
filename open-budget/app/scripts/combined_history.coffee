@@ -103,8 +103,8 @@ class CombinedHistory extends Backbone.Collection
                         width = point.get('width')
                         if @minTime == null or @minTime > time
                                 @minTime = time
-                        if @maxTime == null or @maxTime < time
-                                @maxTime = time
+                        if @maxTime == null or @maxTime < time + width
+                                @maxTime = time + width
                 for model in @models
                     model.set('max_value',@maxValue)
                     model.set('min_value',@minValue)
@@ -131,7 +131,7 @@ class CombinedHistory extends Backbone.Collection
 
                                 endYear = new Date(m.get('year'),11,31).valueOf()
                                 endEffect = approvedRec.get('end_timestamp')
-                                if !endEffect? then endEffect = endYear
+                                if !endEffect? then endEffect = Date.now()
 
                                 point = new CombinedHistoryPoint()
                                 point.set("source", m)
@@ -150,8 +150,8 @@ class CombinedHistory extends Backbone.Collection
                                     point = new CombinedHistoryPoint()
                                     point.set("source", m)
                                     point.set("kind", "approved")
-                                    point.set("value", m.get("net_allocated"))
-                                    startYear = endYear
+                                    point.set("value", m.get("net_revised"))
+                                    startYear = new Date(m.get('year')+1,0).valueOf()
                                     point.set('timestamp',startYear)
                                     point.set('width', endEffect - startYear)
                                     point.set('participants', approvedRec.get('participants'))

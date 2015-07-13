@@ -1,0 +1,9 @@
+<div class="col-lg-3">
+    <div class="team-card">
+        <span class='team-name'><%= name %></span>
+        <img class='team-img' src="http://www.gravatar.com/avatar/<%= avatar %>?s=100"/>
+        <% if (website) { %><span class='website'><a href="<%= website %>" target="_blank"><%= website %></a></span><% } %>
+        <% if (email) { %><span class='email'><%= email %></span><% } %>
+        <% if (twitter) { %><a href="https://twitter.com/<%= twitter %>" class="twitter-follow-button" data-show-count="false">@<%= twitter %></a><% } %>
+    </div>
+</div>

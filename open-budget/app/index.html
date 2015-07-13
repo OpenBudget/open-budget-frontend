@@ -3,37 +3,46 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
+    <head itemscope>
+
+        <title>מפתח התקציב - {{ title }}</title>
+
+        <link rel="canonical" href="http://www.obudget.org/{{url}}">
+        <link rel="shortcut icon" href="/favicon.ico">
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>מפתח התקציב</title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-        <link rel="shortcut icon" href="/favicon.ico">
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <link rel="stylesheet" href="styles/spinner.css">
-        <!-- endbuild -->
-        <!-- build:css(.tmp) styles/tour.css -->
-        <link rel="stylesheet" href="bower_components/bootstrap-tour/build/css/bootstrap-tour.css">
-        <!-- endbuild -->
 
-        <!-- build:js scripts/vendor/modernizr.js -->
-        <script src="bower_components/modernizr/modernizr.js"></script>
-        <!-- endbuild -->
+        <meta name="author" content="הסדנא לידע ציבורי">
+        <meta name="description" content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות.">
+        <meta name="keywords" content="מפתח התקציב,תקציב המדינה,התקציב הפתוח,הסדנא לידע ציבורי,הסדנה לידע ציבורי,תקציב 2014,תקציב 2015,הצעת התקציב,העברות תקציביות, תמיכות ממשלתיות">
 
-        <meta content="מפתח התקציב - פותחים את תקציב המדינה" property="og:title">
+        <meta content="מפתח התקציב - {{ title }}" property="og:title">
         <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." property="og:description">
-        <meta content="http://www.obudget.org" property="og:url">
+        <meta content="http://www.obudget.org/{{url}}" property="og:url">
         <meta content="http://www.obudget.org/styles/assets/obudget.org.png" property="og:image">
+
+        <!-- Twitter Meta Data -->
         <meta content="summary_large_image" name="twitter:card">
         <meta content="@hasadna" name="twitter:site">
         <meta content="@mushon" name="twitter:creator">
         <meta content="@ikramvada" name="twitter:creator">
-        <meta content="מפתח התקציב - פותחים את תקציב המדינה" name="twitter:title">
+        <meta content="מפתח התקציב - {{title}}" name="twitter:title">
         <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." name="twitter:description">
         <meta content="http://www.obudget.org/styles/assets/obudget.org.png" name="twitter:image:src">
+
+        <!-- build:css(.tmp) /styles/main.css -->
+        <link rel="stylesheet" href="/styles/main.css">
+        <link rel="stylesheet" href="/styles/spinner.css">
+        <!-- endbuild -->
+        <!-- build:css(.tmp) /styles/tour.css -->
+        <link rel="stylesheet" href="/bower_components/bootstrap-tour/build/css/bootstrap-tour.css">
+        <!-- endbuild -->
+
+        <!-- build:js /scripts/vendor/modernizr.js -->
+        <script src="/bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
 
     </head>
     <body>
@@ -53,7 +62,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="#">מפתח התקציב</a>
+                  <a class="navbar-brand" href="/">מפתח התקציב</a>
                   <!-- <a href="#" class="obudget-icon"></a> -->
                 </div>
 
@@ -73,7 +82,7 @@
                     </li> -->
                     <li><a href="#glossaryModal" data-toggle="modal" >מונחון התקציב</a></li>
                     <li><a href="#tour" id="intro-link">הדרכה</a></li>
-                    <li><a href="http://www.hasadna.org.il/%D7%94%D7%AA%D7%A0%D7%93%D7%91%D7%95%D7%AA/">הצטרפו אלינו</a></li>
+                    <li><a href="http://www.hasadna.org.il/%D7%94%D7%AA%D7%A0%D7%93%D7%91%D7%95%D7%AA/" target="_blank">הצטרפו אלינו</a></li>
                     <li><a href="/email/">השבוע בתקציב</a></li>
                     <li>
                   </ul>
@@ -137,6 +146,37 @@
                 </div>
             </div>
 
+            <article id="faux-content-article" class="single-page-article" itemscope itemtype="http://schema.org/Dataset">
+                <h1 itemprop="headline">מפתח התקציב - {{ title }}</h1>
+                <h2 itemprop="about">שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות.</h2>
+
+                {% if kind|string() == "bl" %}
+                <p itemprop="text">בשנת <span itemprop="dateCreated" datetime="{{year}}-01-01">{{year}}</span>, תקציב {{ title }} ({{code}}) הוא {{net_revised}}000 ₪</p>
+                <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+                  {% for item in breadcrumbs %}
+                  <li itemprop="itemListElement" itemscope
+                      itemtype="http://schema.org/ListItem">
+                    <a itemprop="item" href="http://www.obudget.org/{{item.url}}">
+                        <span itemprop="name">{{item.title}}</span></a>
+                    <meta itemprop="position" content="{{item.index}}" />
+                  </li>
+                  ›
+                  {% endfor %}
+                </ol>
+                <script>
+                    if ( window.location.hash == "" ) window.location.hash = "{{hash}}";
+                </script>
+                {% endif %}
+
+                <script type="application/ld+json">
+                {  "@context" : "http://schema.org",
+                   "@type" : "WebSite",
+                   "name" : "מפתח התקציב",
+                   "alternateName" : "מפתח התקציב - פותחים את תקציב המדינה",
+                   "url" : "http://www.obudget.org"
+                }
+                </script>
+            </article>
 
             <article id="budget-item-article" class="six-fig single-page-article">
 
@@ -220,6 +260,14 @@
 
             </article>
 
+            <article id="entity-article" class="single-page-article">
+
+                <!-- Entity details -->
+                <div id="standalone-entity-details" class="center-block">
+                </div>
+
+            </article>
+
             <article id="spendings-page-article" class="single-page-article">
                 <div class='disclaimer center-block col-sm-12 fill'>
                   חלק זה מציג עדכונים על התקשרויות משרדי ממשלה בפטורים ממכרז ותמיכות ממשלתיות, בהסתמך על אתר "מינהל הרכש הממשלתי" ו"אתר התמיכות הממשלתי". חלק זה מצוי עדיין בשלבי פיתוח, ולכן עדיין ייתכנו בשלב זה "באגים" שונים. השימוש במידע על אחריות המשתמש.
@@ -240,10 +288,10 @@
                     <strong>תקציב 2014</strong><br/>
                     אחרי העברות תקציביות לעומת התקציב המקורי
                   </div>
-                  <div class="compare-2015 active">
+                  <div class="compare-2015" title="השוואה זו תופעל אחרי שתוגש הצעת תקציב 2015">
                     <strong>הצעת תקציב 2015</strong><br/>
                     ביחס לתקציב 2014<br/>
-                    <span class="compare-year-start active">בתחילת השנה</span> / <span class="compare-year-end active">אחרי העברות</span>
+                    <span class="compare-year-start">בתחילת השנה</span> / <span class="compare-year-end">אחרי העברות</span>
                   </div>
                 </div>
 
@@ -267,7 +315,7 @@
             <div class="footer">
                 <ul class="pull-right">
                     <li><a class="hasadna" title="הסדנא לידע ציבורי" href="http://hasadna.org.il" target="_blank">הסדנא לידע ציבורי</a></li>
-                    <li><a href="#">♥ הצוות</a></li>
+                    <li><a href="#teamModal" data-toggle="modal">♥ הצוות</a></li>
                     <li><a target="_blank" href="https://github.com/OpenBudget/">קוד האתר</a></li>
                     <li><a target="_blank" href="https://github.com/OpenBudget/open-budget-frontend/issues">דווחו על תקלה</a></li>
                     <li><a target="_blank" href="http://forum.hasadna.org.il/c/5-category/13-category">קבוצת הדיון שלנו</a></li>
@@ -322,6 +370,7 @@
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+
         <div id="glossaryModal" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width:90%">
             <div class="modal-content">
@@ -338,9 +387,8 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-
         <style id="arrow-helper"></style>
-        <!-- build:js scripts/vendor.js -->
+        <!-- build:js /scripts/vendor.js -->
         <!-- bower:js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
         <script src="bower_components/jquery/jquery.js"></script>
@@ -354,23 +402,14 @@
         <script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.js"></script>
         <script src="bower_components/pivottable/dist/pivot.js"></script>
         <script src="bower_components/pivottable/dist/d3_renderers.js"></script>
+        <script src="scripts/ecma_5.js"></script>
+        <script src="scripts/segment-tree-browser.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <!-- <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create', 'UA-10203855-7', 'open-budget.org.il');
-            /*ga('send','pageview');*/
-        </script> -->
-
         <script src="//hasadna-notifications.appspot.com/static/hn.js"></script>
 
-        <!-- build:js scripts/main.js -->
+        <!-- build:js /scripts/main.js -->
         <script src="scripts/templates.js"></script>
         <script src="scripts/url_scheme.js"></script>
         <script src="scripts/main_page_tabs.js"></script>
@@ -398,20 +437,16 @@
         <script src="scripts/training.js"></script>
         <!-- endbuild -->
 
-        <!-- Piwik -->
-        <script type="text/javascript">
-          var _paq = _paq || [];
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://visitors.hasadna.org.il/";
-            _paq.push(['setTrackerUrl', u+'piwik.php']);
-            _paq.push(['setSiteId', 4]);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
-            g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-          })();
+        <!-- Google Analytics -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-10203855-7', 'auto');
+          ga('send', 'pageview', {'page':window.location.pathname+window.location.search+window.location.hash});
+          ga('send', 'event', 'navigation', 'visit', window.location.hash, 1);
         </script>
-        <noscript><p><img src="http://visitors.hasadna.org.il/piwik.php?idsite=4" style="border:0;" alt="" /></p></noscript>
         <!-- End Piwik Code -->
 
         <!-- Twitter -->
@@ -446,5 +481,61 @@
            }(document, 'script', 'facebook-jssdk'));
         </script>
         <!-- End Facebook Code -->
+
+        <div id="teamModal" class="modal fade" role="dialog">
+          <div class="modal-dialog" style="width:90%">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">צוות הפרויקט</h4>
+              </div>
+              <div class="modal-body">
+                  <p>זהו צוות הפרויקט (כל הפרויקט מפותח על ידי מתנדבים ונתמך על ידי הסדנא לידע ציבורי)</p>
+                  <div class="row">
+                      <script>
+                      var team = [
+                          {name:'אדם קריב',
+                           avatar:'cd511289b5773fff5e7efe328846eef3',
+                           email:'adam kruchit obudget.org',
+                           twitter:'ikramvada',
+                           website:null},
+                          {name:'מושון זר-אביב',
+                           avatar:'b3458a2e3eed95ba26ecca523397e06a',
+                           email:null,
+                           twitter:'mushon',
+                           website:'http://mushon.com'},
+                          {name:'סער אלון-ברקת',
+                           avatar:'8a1ae50e012e3a5d6accfe9fe6ebd0f2',
+                           email:null,
+                           twitter:null,
+                           website:null},
+                          {name:'ניר בט',
+                           avatar:'9b5b5ecb1cebb8cb3d7294c04a5f68d2',
+                           email:null,
+                           twitter:null,
+                           website:null},
+                          {name:'יונתן נאור',
+                           avatar:'a0cd16d5fe9c3abd6b03e463f2b55ef3',
+                           email:null,
+                           twitter:null,
+                           website:null},
+                      ];
+                      for ( var _i in team ) {
+                          var member = team[_i];
+                          document.write(JST.team_card(member));
+                          if ( _i % 4 == 3 ) {
+                              document.write('</div><div class="row">');
+                          }
+                      }
+                      window.setTimeout( function() { twttr.widgets.load(); }, 1000);
+                      </script>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">סגירה</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 </body>
 </html>

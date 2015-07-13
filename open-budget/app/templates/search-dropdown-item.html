@@ -1,4 +1,13 @@
 <div class='search-dropdown-item' data-index='<%= index %>'>
-  <span class="item-title"><%= title %></span>
-  <span class="item-code"><%= code %></span>
+<% if (type == "BudgetLine") { %>
+    <span class="item-title">
+        <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+        <%= title %> <small>(<%= year %>)</small></span>
+    <span class="item-code"><%= code.slice(2) %></span>
+<% } else if (type == "Entity") { %>
+    <span class="item-title">
+        <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+        <%= name.replace(/\"/g,"'") %></span>
+    <span class="item-code"><%= id %></span>
+<% } %>
 </div>

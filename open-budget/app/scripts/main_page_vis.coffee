@@ -106,7 +106,7 @@ class MainPageVis extends Backbone.View
                 $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
             @recalc_centers()
             @render()
-			
+
         @model.on 'ready-main-budget', =>
             @$el.find("#main-budget-header").html(JST.main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
             if @rendered
@@ -120,9 +120,9 @@ class MainPageVis extends Backbone.View
     events:
         'click #grouping-kind .btn': 'switchToggle'
         'click .compare-2014': 'compare_2014'
-        'click .compare-2015': 'compare_2015_start'
-        'click .compare-2015 .compare-year-start': 'compare_2015_start'
-        'click .compare-2015 .compare-year-end': 'compare_2015_end'
+        # 'click .compare-2015': 'compare_2015_start'
+        # 'click .compare-2015 .compare-year-start': 'compare_2015_start'
+        # 'click .compare-2015 .compare-year-end': 'compare_2015_end'
 
     compare_2014: =>
         @set_actives('.compare-2014')
@@ -191,7 +191,7 @@ class MainPageVis extends Backbone.View
                 stroke_color: null
                 tooltip_contents: -> JST.bubble_tooltip(this)
                 click: ->
-                    window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(this.id,2015)
+                    window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(this.id,2014)
                     false
                 center: null
             @data.push node

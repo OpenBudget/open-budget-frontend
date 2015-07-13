@@ -426,6 +426,7 @@ class Participant extends Backbone.Model
                 title: null
                 start_timestamp: null
                 end_timestamp: null
+                unique_id: null
 
         setTimestamps: ->
             @set 'start_timestamp', dateToTimestamp(@get 'start_date')
@@ -433,6 +434,8 @@ class Participant extends Backbone.Model
                 @set 'end_timestamp', dateToTimestamp(@get 'end_date')
             else
                 @set 'end_timestamp', window.combinedHistory.maxTime
+
+            @set('unique_id', @get('title')+"-"+"-"+@get('start_timestamp')+"-"+@get('end_timestamp'))
 
 class Participants extends Backbone.Collection
         model: Participant
@@ -588,15 +591,21 @@ class PageModel extends Backbone.Model
                 mainPage: null
                 spendingPage: null
                 baseURL: "http://www.obudget.org"
+                # For debugging with local API
+                # Uses default port 8080, make sure this matches your GAE
+                # configuration
+                #baseURL: "http://127.0.0.1:8080"
                 selection: [ 0, 0 ]
                 currentItem: null
                 dataType: "json"#p"
                 ready: false
                 kinds: []
                 flow: null
+                local: true
 
         initialize: ->
                 if window.location.origin == @get('baseURL')
+                    @set('local', false)
                     @set('dataType','json')
                 @readyEvents = []
                 @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
@@ -627,7 +636,9 @@ class PageModel extends Backbone.Model
                                       () =>
                                           console.log 'setting currentItem', @budgetHistory
                                           @set('currentItem', @budgetHistory.getLast())
-                                          console.log 'setting currentItem done'
+                                          title = @budgetHistory.getLast().get('title')
+                                          ga('send', 'event', 'navigation', 'budget', title, 1);
+                                          console.log 'setting currentItem done', title
 
                     @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
                                                 .addCollection(@changeGroups)
@@ -687,7 +698,7 @@ class PageModel extends Backbone.Model
 
                 @on 'change:mainPage', ->
                     @budgetItems4 = new CompareRecords([], pageModel: @)
-                    @budgetItems2 = new BudgetItemKids([], year: 2015, code: '00', pageModel: @)
+                    @budgetItems2 = new BudgetItemKids([], year: 2014, code: '00', pageModel: @)
                     @readyEvents.push new ReadyAggregator("ready-budget-bubbles")
                                                         .addCollection(@budgetItems2)
                                                         .addCollection(@budgetItems4)
@@ -718,6 +729,7 @@ window.models =
         BudgetItem: BudgetItem
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
+        Entity: Entity
 
 window.pageModel = new PageModel()
 
@@ -734,18 +746,23 @@ $( ->
         if kind == "budget"
             pageModel.article = $("article#budget-item-article")
             pageModel.set("budgetCode","00"+linkParameters['code'])
+            pageModel.URLSchemeHandlerInstance.updateUrl('bl',linkParameters['code'])
         else if kind == "transfer"
             pageModel.article = $("article#change-group-article")
             pageModel.set("changeGroupId",linkParameters['code'])
+            pageModel.URLSchemeHandlerInstance.updateUrl('tr',linkParameters['code'])
         else if kind == "entity"
             pageModel.article = $("article#entity-article")
             pageModel.set("entityId",linkParameters['entityId'])
+            pageModel.URLSchemeHandlerInstance.updateUrl('en',linkParameters['entityId'])
         else if kind == "main"
             pageModel.article = $("article#main-page-article")
             pageModel.set("mainPage",true)
+            pageModel.URLSchemeHandlerInstance.updateUrl('main',"")
         else if kind == "spending"
             pageModel.article = $("article#spendings-page-article")
             pageModel.set("spendingsPage",true)
+            pageModel.URLSchemeHandlerInstance.updateUrl('spending',"")
         else
             window.location.hash = window.DEFAULT_HOME
             return

@@ -24,4 +24,5 @@ Thumbs.db
 node_modules
 dist
 .tmp
+*.map
 app/bower_components
