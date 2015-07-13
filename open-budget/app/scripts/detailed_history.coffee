@@ -4,12 +4,15 @@ class HistoryItem extends Backbone.View
 
         initialize: ->
             @render()
+            @filled = false
             if @model.get('src') == 'changeline' and @model.get('source') != 'dummy'
                 s = @model.get('source')
                 @explanation = new window.models.ChangeExplanation(req_id: s.get('group_id'), year: s.get('year'))
                 @explanation.on 'change:explanation', =>
                     @$el.find(".transfer-list-explanation-text").html(@explanation.get('explanation').replace(/\n/g,'<br/>'))
-                @explanation.doFetch()
+                    @filled = true
+
+                @$el.on('mouseenter',   => if ! @filled then @explanation.doFetch())
 
         render: ->
             if @model.get('original_baseline')?

@@ -1,29 +1,28 @@
 class EntityDetailsView extends Backbone.View
-    events:
-        'click .exemption-expander': 'toggleExemptionDetails'
+        events:
+          'click .exemption-expander': 'toggleExemptionDetails'
 
-    initialize: ->
-        @model.selectedEntity.on 'change:selected', =>
-            eid = @model.selectedEntity.get('selected')
-            @entity = new Entity(pageModel: window.pageModel, entityId: eid)
-            @entity.doFetch()
-            @entity.on 'ready', =>
-                @render()
-        console.log 'EntityDetailsView init'
+        initialize: ->
+            @model.selectedEntity.on 'change:selected', =>
+                eid = @model.selectedEntity.get('selected')
+                @entity = new models.Entity(pageModel: window.pageModel, entityId: eid)
+                @entity.doFetch()
+                @entity.on 'ready', => @render()
 
-    render: ->
-        @$el.css('display', 'inherit')
-        data = @entity.toJSON()
-        console.log 'render', data
-        @$el.html window.JST.entity_details(data)
-
-        # for each exemption by publisher, build a view and render it, and append it
-        # to the table body
-        exemptionByPublisherBody = @$el.find('#exemption-table tbody')
-        for exemptionByPublisher in _.values(@entity.exemptionsByPublisher())
-            rowView = new ExemptionByPublisherRowView(model: exemptionByPublisher)
-            exemptionByPublisherBody.append(rowView.render().el)
-        @
+        render: ->
+            @$el.css('display','inherit')
+            data = @entity.toJSON()
+            @$el.html window.JST.entity_details( data )
+            
+            # for each exemption by publisher, build a view and render it, and append it
+            # to the table body
+            exemptionByPublisherBody = @$el.find('#exemption-table tbody')
+            exemptionsByPublisher = @entity.exemptionsByPublisher()
+            for exemptionByPublisher in _.values(exemptionsByPublisher)
+                rowView = new ExemptionByPublisherRowView(model: exemptionByPublisher)
+                exemptionByPublisherBody.append(rowView.render().el)
+            @$el.find('h3#entity-title span#total').text(Object.keys(exemptionsByPublisher).length);
+            @
 
 class ExemptionByPublisherRowView extends Backbone.View
     events:

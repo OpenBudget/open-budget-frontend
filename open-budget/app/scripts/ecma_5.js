@@ -1,0 +1,1 @@
+interval-query/lib/browser/ecma_5.js

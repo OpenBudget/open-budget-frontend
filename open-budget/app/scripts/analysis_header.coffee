@@ -41,7 +41,8 @@ class BudgetAnalyzer extends HeaderAnalyzer
 class CurrentBudgetAnalyzer extends BudgetAnalyzer
 
     shouldParticipate: () ->
-        window.pageModel.get('currentItem').attributes.net_allocated?
+        # make sure currentItem exists - /equivs api can return an empty result
+        window.pageModel.get('currentItem')?.attributes.net_allocated?
 
     analyze: () ->
         window.JST.header__current_budget( pageModel.get('currentItem').toJSON() )
@@ -49,8 +50,14 @@ class CurrentBudgetAnalyzer extends BudgetAnalyzer
 class ChangedThisYearAnalyzer extends BudgetAnalyzer
 
     shouldParticipate: () ->
-        year = window.pageModel.get('currentItem').attributes.year
-        transfers_by_year(year).length > 0
+        res = false
+        # make sure currentItem exists - /equivs api can return an empty result
+        if window.pageModel.get('currentItem')
+            year = window.pageModel.get('currentItem').attributes.year
+            res = transfers_by_year(year).length > 0
+
+        return res
+
 
     analyze: () ->
         window.JST.header__changed_this_year( pageModel.get('currentItem').toJSON())
