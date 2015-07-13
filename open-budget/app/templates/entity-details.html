@@ -12,7 +12,7 @@
 
 
 <% if ( exemptions.length > 0 ) { %>
-<h3><%= exemptions.length %> התקשרויות עם <%= Object.keys(exemptions_by_publisher).length %> משרדים בסך <%= number_with_commas(exemptions_sum==null? 0 : exemptions_sum) %> ש"ח</h3>
+<h3 id="entity-title"><%= exemptions.length %> התקשרויות עם <span id="total"></span> משרדים בסך <%= number_with_commas(exemptions_sum==null? 0 : exemptions_sum) %> ש"ח</h3>
 <table id="exemption-table" class="table table-expandable">
     <thead>
         <th>שם המשרד</th>

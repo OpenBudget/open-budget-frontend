@@ -1,4 +1,6 @@
 class SpendingsPageView extends Backbone.View
+    events:
+
 
     initialize: ->
         @model.on 'ready-spendings-page', =>

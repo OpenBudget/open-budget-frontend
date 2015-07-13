@@ -20,9 +20,12 @@ class EntityDetailsView extends Backbone.View
         # for each exemption by publisher, build a view and render it, and append it
         # to the table body
         exemptionByPublisherBody = @$el.find('#exemption-table tbody')
-        for exemptionByPublisher in _.values(@entity.exemptionsByPublisher())
+        exemptionsByPublisher = @entity.exemptionsByPublisher()
+        for exemptionByPublisher in _.values(exemptionsByPublisher)
             rowView = new ExemptionByPublisherRowView(model: exemptionByPublisher)
             exemptionByPublisherBody.append(rowView.render().el)
+        @$el.find('h3#entity-title span#total').text(Object.keys(exemptionsByPublisher).length);
+        console.log exemptionByPublisher
         @
 
 class ExemptionByPublisherRowView extends Backbone.View
