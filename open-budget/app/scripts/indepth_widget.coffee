@@ -523,15 +523,18 @@ define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
                                 # if there is no end_date we need
                                 # to use the current timestam
                                 endTimestamp = new Date().getTime()
+                                participant.set("end_timestamp", endTimestamp)
 
-                            if startTimestamp? and endTimestamp?
+                            if startTimestamp? and endTimestamp? and endTimestamp > startTimestamp
                                 @termSegmentTree.pushInterval(startTimestamp, endTimestamp, participant)
+
                         @termSegmentTree.buildTree();
 
                         divs = newTumbnails.append("div")
                                         .attr('class','participantThumbnail')
                         renderParticipant = (d) ->
-                            participant = JST.participant_term(d.attributes)
+                            if d.get("end_timestamp") > d.get("start_timestamp")
+                                participant = JST.participant_term(d.attributes)
 
                         divs.html(renderParticipant)
                         #divs.append("img")

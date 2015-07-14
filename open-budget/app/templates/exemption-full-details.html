@@ -1,0 +1,27 @@
+<!--td class='exemption-description' colspan=2><a href="<%= url %>" target="_blank"><%= description %></a></td>
+<td><%= number_with_commas(volume==null? 0 : volume)%> ש"ח</td>
+<td><%= start_date %></td>
+<td><%= end_date %></td>
+<td class='exemption-expander'>
+  <span class="glyphicon glyphicon-chevron-down open" aria-hidden="true"></span>
+  <span class="glyphicon glyphicon-chevron-up collapse" aria-hidden="true"></span>
+</td-->
+<td colspan="6" class="exemption-full-details">
+    <div>
+        <h4>תקופת התקשרות</h4>
+        <%= start_date %>-<%= end_date %>
+    </div>
+    <div>
+        <h4>סכום התקשרות</h4>
+        <%= number_with_commas(volume==null? 0 : volume)%> ש"ח
+    </div>
+    <div>
+        <h4>סטטוס</h4>
+        <%= decision %>
+    </div>
+    <div>
+        <h4>תקנה</h4>
+        <%= regulation %>
+    </div>
+
+</td>

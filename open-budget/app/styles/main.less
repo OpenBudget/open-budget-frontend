@@ -2430,10 +2430,10 @@ svg rect{
   color: @darkgray;
 }
 
-div#exemptions-alerts {
+div.exemptions-alerts {
   padding: 0;
 
-  div#exemptions-alerts-header {
+  div.exemptions-alerts-header {
     padding: 1em 0 1em 0;
     border-bottom: 3px solid #f3f3f4;
     border-left: 5px solid #cfd1d2;
@@ -2451,7 +2451,7 @@ div#exemptions-alerts {
     }
   }
 
-  div#exemptions-alerts-content {
+  div.exemptions-alerts-content {
     background-color: #f7f7f7;
     max-height: 60vh;
     overflow-y: auto;
@@ -2466,7 +2466,7 @@ div#exemptions-alerts {
 
       h5.exemption-publisher {
         color: #7E7E7E;
-        margin: 0;
+        margin: 0.5em;
       }
 
       div.exemption-flags {
@@ -2495,7 +2495,7 @@ div#exemptions-alerts {
       }
 
       div.exemption-flags {
-        display: none; // Delete when the flags are needed
+        display: inline-flex; // Delete when the flags are needed
         color: #999a9d;
         padding-top: 1em;
       }
@@ -2509,7 +2509,7 @@ div#exemptions-alerts {
 }
 
 table.table-expandable {
-    table-layout: fixed;
+  table-layout: fixed;
   thead {
     color: @darkgray;
   }
@@ -2534,6 +2534,20 @@ table.table-expandable {
       display: block;
       margin: auto;
     }
+  }
+
+  .exemption-full-details-expander {
+    .open, .collapse {
+      cursor: pointer;
+      display: block;
+      margin: auto;
+      font-weight: bold;
+    }
+  }
+}
+.exemption-full-details {
+  h4 {
+    font-weight: bold;
   }
 }
 
