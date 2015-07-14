@@ -582,12 +582,12 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
             @resizeTimer    = 0
             @callbackQueue  = []
 
-        window.onresize = (event) =>
-            clearTimeout(@resizeTimer)
-            @resizeTimer = setTimeout ( =>
-              for callback in @callbackQueue
-                callback()
-            ), 100
+            window.onresize = (event) =>
+                clearTimeout(@resizeTimer)
+                @resizeTimer = setTimeout ( =>
+                  for callback in @callbackQueue
+                    callback()
+                ), 100
 
         registerResizeCallback: (callback) ->
             @callbackQueue.push(callback)
@@ -725,7 +725,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                         @addKind(part)
 
             @on 'change:entityId', ->
-                @entity = new Entity(pageModel: @)
+                @entity = new Entity(pageModel: @, entityId: @URLSchemeHandlerInstance.linkParameters.entityId)
                 @readyEvents.push new ReadyAggregator("ready-entity")
                                             .addModel(@entity)
                 @entity.doFetch()
@@ -796,6 +796,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
         BudgetItem: BudgetItem
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
+        Entity: Entity,
         pageModel: new PageModel()
     }
 

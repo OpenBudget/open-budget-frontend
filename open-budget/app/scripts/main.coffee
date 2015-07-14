@@ -8,6 +8,7 @@ require([
     "team",
     "main_page_vis",
     "budget_view",
+    "entity_details",
     "models",
     "bootstrap-tour"], () ->
 
