@@ -202,6 +202,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           if d?
               if d.id.length >= 10 or d.subNode then return
               if typeof d.click == "function" then d.click.call(d, d)
+              @options.stateChange.call(null, "centered")
 
           @replaceCenteredNode(d)
 

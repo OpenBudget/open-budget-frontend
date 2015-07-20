@@ -136,11 +136,14 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                 @chart = new BubbleChart(
                     el: @$el.find("#bubble-chart"),
                     addSubNodes: @addKids,
-                    stateChange: (state) ->
+                    stateChange: (state) =>
                         if (state == "initial")
+                            @$el.find("#grouping-kind").fadeIn()
                             models.pageModel.URLSchemeHandlerInstance.removeAttribute(
                                 "focusOn", false
                             )
+                        else if (state == "centered")
+                            @$el.find("#grouping-kind").fadeOut()
                 )
                 @chart_el = d3.select(@chart.el)
                 @$bubbleContainer = @$el.find("#bubble-chart-container");
