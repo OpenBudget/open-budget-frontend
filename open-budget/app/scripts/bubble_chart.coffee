@@ -203,6 +203,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
               if d.id.length >= 10 or d.subNode then return
               if typeof d.click == "function" then d.click.call(d, d)
               @options.stateChange.call(null, "centered")
+              @vis.selectAll(".color-legend").transition().duration(DURATION).attr("opacity", 0)
 
           @replaceCenteredNode(d)
 
@@ -380,6 +381,45 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                     .classed("mature-text", true)
                     .classed("legend-text", false))
 
+          colorLegend = @vis.selectAll(".color-legend-box").data(window.changeClassThreshold)
+          colorLegend.enter().append("rect")
+                .attr("x", 20)
+                .attr("y", (d) => @height/2 + 20*(window.changeClassThreshold.indexOf(d) - window.changeClassThreshold.length/2))
+                .attr("class", (d) -> "color-legend-box color-legend "+d.class+"_svg")
+
+          colorLegendText = @vis.selectAll(".color-legend-text").data(window.changeClassThreshold)
+          colorLegendText.enter().append("text")
+                .text((d) ->
+                    if d.legend == "min"
+                        change = d.minRatio - 1
+                    else if d.legend == "max"
+                        change = d.maxRatio - 1
+                    else
+                        return "ללא שינוי"
+
+                    if change == 0 then return ""
+
+                    sign = if change > 0 then "+" else ""
+                    "#{sign}#{Math.round(change*100)}%"
+                    )
+                .attr("class", "color-legend-text color-legend")
+                .attr("text-anchor", "start")
+                .style("direction", "ltr")
+                .style("font-size", "12px")
+                .style("fill", "#9b9b9b")
+                .style("dominant-baseline", "mathematical")
+                .attr("x", 35)
+                .attr("y", (d) =>
+                    y = @height/2 + 20*(window.changeClassThreshold.indexOf(d) - window.changeClassThreshold.length/2)
+
+                    if (d.legend == "min")
+                        y += 20
+                    else if (d.legend == "center")
+                        y += 10
+
+                    y
+                    )
+
       # create svg at #vis and then
       # create circle representation for each node
       render: (keepRadius) =>
@@ -410,6 +450,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 if d.class == "main-vis-back-button"
                     if typeof @options.stateChange == "function"
                         @options.stateChange.call(null, "initial")
+                        @vis.selectAll(".color-legend").transition().duration(DURATION).attr("opacity", 1)
                     if @centerNodeQueue.length > 0
                         newCenterNode = @centerNodeQueue.splice(0, 1)[0]
                     else

@@ -1,4 +1,4 @@
-define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, BubbleChart) ->
+define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbone, models, JST, BubbleChart) ->
 
     globalWidth = 0
 
