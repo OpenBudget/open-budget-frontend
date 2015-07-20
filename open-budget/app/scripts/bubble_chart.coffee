@@ -92,7 +92,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           @filter.append("feMorphology")
               .attr("in", "SourceAlpha")
               .attr("operator", "dilate")
-              .attr("radius", 0.5)
+              .attr("radius", 1)
               .attr("result", "dilatedSource")
           # ComponentTransfer will allow changing the color of the shadow
           feComponentTransfer = @filter.append("feComponentTransfer")
