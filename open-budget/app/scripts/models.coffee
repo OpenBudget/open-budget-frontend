@@ -280,14 +280,15 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
       model: SupportLineDescription
 
       initialize: (models, options) ->
-        @pageModel = options.pageModel
-        @fetch(dataType: @pageModel.get('dataType'), reset: true)
-        @on("reset", ->
-          _json = @toJSON()
           @normalizationStructure = {}
-          for fieldStructure in _json
-            @normalizationStructure[fieldStructure["field"]] = fieldStructure
-        )
+          @pageModel = options.pageModel
+          @fetch(dataType: @pageModel.get('dataType'), reset: true)
+          @on("reset", ->
+              _json = @toJSON()
+              @normalizationStructure = {}
+              for fieldStructure in _json
+                  @normalizationStructure[fieldStructure["field"]] = fieldStructure
+          )
 
       normalize: (field, locale) ->
         if @normalizationStructure[field]
@@ -466,13 +467,12 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
             @pageModel = options.pageModel
 
         doFetch: ->
-            @fetch(dataType: pageModel.get('dataType'), success: @handleFetchResult)
+                @fetch(dataType: @pageModel.get('dataType'), success: @handleFetchResult)
 
         url: =>
             "#{pageModel.get('baseURL')}/api/entity/#{@entity_id}"
 
         handleFetchResult: (collection, response) =>
-            console.log 'got',response,'for',@entity_id
             @supports = response.supports
             @exemptions = response.exemptions
 
@@ -495,7 +495,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                 for exemption in @exemptions
                     if not exemptions_by_publisher[exemption.publisher]?
                         exemptions_by_publisher[exemption.publisher] = {publisher: exemption.publisher, exemptions: [], total_volume: 0}
-                    exemptions_by_publisher[exemption.publisher].exemptions.push(exemption)
+                    exemptions_by_publisher[exemption.publisher].exemptions.splice(0, 0, exemption)
                     exemptions_by_publisher[exemption.publisher].total_volume += exemption.volume
                     exemptions_by_publisher[exemption.publisher].start_date = @min_date(exemptions_by_publisher[exemption.publisher].start_date, @convert_str_to_date(exemption.start_date))
                     exemptions_by_publisher[exemption.publisher].end_date = @max_date(exemptions_by_publisher[exemption.publisher].end_date, @convert_str_to_date(exemption.end_date))
@@ -505,7 +505,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                     exemptions_by_publisher[publisher].start_date = @convert_date_to_str(exemptions_by_publisher[publisher].start_date)
                     exemptions_by_publisher[publisher].end_date = @convert_date_to_str(exemptions_by_publisher[publisher].end_date)
 
-            @set('exemptions_by_publisher',exemptions_by_publisher)
+            exemptions_by_publisher
 
 
         convert_str_to_date: (date_str) ->
@@ -582,12 +582,12 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
             @resizeTimer    = 0
             @callbackQueue  = []
 
-        window.onresize = (event) =>
-            clearTimeout(@resizeTimer)
-            @resizeTimer = setTimeout ( =>
-              for callback in @callbackQueue
-                callback()
-            ), 100
+            window.onresize = (event) =>
+                clearTimeout(@resizeTimer)
+                @resizeTimer = setTimeout ( =>
+                  for callback in @callbackQueue
+                    callback()
+                ), 100
 
         registerResizeCallback: (callback) ->
             @callbackQueue.push(callback)
@@ -663,9 +663,10 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                                   () =>
                                       console.log 'setting currentItem', @budgetHistory
                                       @set('currentItem', @budgetHistory.getLast())
-                                      title = @budgetHistory.getLast().get('title')
-                                      ga('send', 'event', 'navigation', 'budget', title, 1);
-                                      console.log 'setting currentItem done', title
+                                      if @budgetHistory.length > 0
+                                          title = @budgetHistory.getLast().get('title')
+                                          ga('send', 'event', 'navigation', 'budget', title, 1);
+                                          console.log 'setting currentItem done', title
 
                 @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
                                             .addCollection(@changeGroups)
@@ -725,7 +726,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                         @addKind(part)
 
             @on 'change:entityId', ->
-                @entity = new Entity(pageModel: @)
+                @entity = new Entity(pageModel: @, entityId: @URLSchemeHandlerInstance.linkParameters.entityId)
                 @readyEvents.push new ReadyAggregator("ready-entity")
                                             .addModel(@entity)
                 @entity.doFetch()
@@ -796,6 +797,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
         BudgetItem: BudgetItem
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
+        Entity: Entity,
         pageModel: new PageModel()
     }
 

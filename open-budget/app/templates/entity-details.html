@@ -12,15 +12,15 @@
 
 
 <% if ( exemptions.length > 0 ) { %>
-<h3><%= exemptions.length %> התקשרויות עם <%= _.keys(exemptions_by_publisher).length %> משרדים בסך <%= number_with_commas(exemptions_sum==null? 0 : exemptions_sum) %> ש"ח</h3>
+<h3 class="entity-title"><%= exemptions.length %> התקשרויות עם <span class="total"></span> משרדים בסך <%= number_with_commas(exemptions_sum==null? 0 : exemptions_sum) %> ש"ח</h3>
 <table class="exemption-table table table-expandable">
     <thead>
         <th>שם המשרד</th>
-        <th>מס'</th>
-        <th>בסך</th>
-        <th>התחלה</th>
-        <th>סיום</th>
-        <th></th>
+        <th style="width: 4%;">מס'</th>
+        <th style="width: 10%;">בסך</th>
+        <th style="width: 9%;">התחלה</th>
+        <th style="width: 9%;">סיום</th>
+        <th style="width: 5%;"></th>
     </thead>
     <tbody>
 
