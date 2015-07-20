@@ -114,6 +114,7 @@ define(['jquery', 'backbone', 'models'] , ($, Backbone, models) ->
         processBudgetHistory: (models,approvedModels) ->
                 approved = _.groupBy(approvedModels, (x) -> x.get('year'))
                 for m in models
+                    if approved[m.get('year')]?
                         approvedRec = approved[m.get('year')][0]
                         approvedRec.setTimestamps()
                         value = m.get("net_allocated")

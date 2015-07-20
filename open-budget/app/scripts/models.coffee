@@ -663,9 +663,10 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                                   () =>
                                       console.log 'setting currentItem', @budgetHistory
                                       @set('currentItem', @budgetHistory.getLast())
-                                      title = @budgetHistory.getLast().get('title')
-                                      ga('send', 'event', 'navigation', 'budget', title, 1);
-                                      console.log 'setting currentItem done', title
+                                      if @budgetHistory.length > 0
+                                          title = @budgetHistory.getLast().get('title')
+                                          ga('send', 'event', 'navigation', 'budget', title, 1);
+                                          console.log 'setting currentItem done', title
 
                 @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
                                             .addCollection(@changeGroups)
