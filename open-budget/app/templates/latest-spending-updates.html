@@ -6,8 +6,10 @@
     <div id="exemptions-alerts-header">
         <h2>
             עדכונים
-            <select>
-                <option>הכי חדש (100)</option>
+            <select id="spendings-day-limit"  name="spendings-day-limit">
+                <option value="1" <%= (daysLimit == "1") ? 'selected="selected"' : '' %>>יום אחרון</option>
+                <option value="7" <%= (daysLimit == "7") ? 'selected="selected"' : '' %>>שבוע אחרון</option>
+                <option value="30" <%= (daysLimit == "30") ? 'selected="selected"' : '' %>>חודש אחרון</option>
             </select>
         </h2>
     </div>
