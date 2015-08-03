@@ -137,12 +137,12 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                     stateChange: (state) =>
                         if (state == "initial")
                             @$bubbleContainer.find(".bubble-group-label").remove()
-                            @$el.find("#grouping-kind").fadeIn()
+                            @$el.find("#grouping-kind").css("pointer-events", "").fadeTo(500, 1)
                             models.pageModel.URLSchemeHandlerInstance.removeAttribute(
                                 "focusOn", false
                             )
                         else if (state == "centered")
-                            @$el.find("#grouping-kind").fadeOut()
+                            @$el.find("#grouping-kind").css("pointer-events", "none").fadeTo(500, 0)
                 )
                 @chart_el = d3.select(@chart.el)
                 @$bubbleContainer = @$el.find("#bubble-chart-container")
