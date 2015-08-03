@@ -54,7 +54,6 @@ window.color_classname = (value) ->
     return if value > 0 then "increased" else "decreased"
 
 window.changeClass = (orig_value,revised_value) ->
-    console.log "changeClass", orig_value,revised_value
     if      revised_value > 3*orig_value    then "increased_d"
     else if revised_value > 1.5*orig_value  then "increased_c"
     else if revised_value > 1.2*orig_value  then "increased_b"
