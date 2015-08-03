@@ -1,4 +1,4 @@
-define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, BubbleChart) ->
+define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbone, models, JST, BubbleChart) ->
 
     globalWidth = 0
 
@@ -16,9 +16,7 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
 
            set: function (value) {
                //console.log("setting " + sProp + " to " + value);
-               if (!value) {
-                   debugger; // sets breakpoint
-               }
+               debugger; // sets breakpoint
                oObj[sPrivateProp] = value;
            }
        });
@@ -136,14 +134,18 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                 @chart = new BubbleChart(
                     el: @$el.find("#bubble-chart"),
                     addSubNodes: @addKids,
-                    stateChange: (state) ->
+                    stateChange: (state) =>
                         if (state == "initial")
+                            @$bubbleContainer.find(".bubble-group-label").remove()
+                            @$el.find("#grouping-kind").css("pointer-events", "").fadeTo(500, 1)
                             models.pageModel.URLSchemeHandlerInstance.removeAttribute(
                                 "focusOn", false
                             )
+                        else if (state == "centered")
+                            @$el.find("#grouping-kind").css("pointer-events", "none").fadeTo(500, 0)
                 )
                 @chart_el = d3.select(@chart.el)
-                @$bubbleContainer = @$el.find("#bubble-chart-container");
+                @$bubbleContainer = @$el.find("#bubble-chart-container")
                 @centers = [ new SimpleCentering(), new TopGroupCentering(), new FullGroupCentering(), new ParentCentering() ]
                 @prepareData()
                 @toggle = 0
@@ -206,7 +208,7 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
 
         addBubbleLabels: (centeredNode) ->
           # Check if labels already exist
-          @$bubbleContainer.find(".bubble-group-label").remove();
+          @$bubbleContainer.find(".bubble-group-label").remove()
           center = @centers[@toggle]
           title_data = center.getCenters()
 
@@ -217,14 +219,14 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                 })).css({
                     top: "50px",
                     left: @$bubbleContainer.width()/2 + "px"
-                }).appendTo(@$bubbleContainer);
+                }).appendTo(@$bubbleContainer)
 
           for group, i in title_data
             if group.title?
               $(JST.bubble_group_label(group)).css({
                 top: (group.y - center.item_height/2) + "px",
                 left: group.x + "px"
-              }).appendTo(@$bubbleContainer);
+              }).appendTo(@$bubbleContainer)
 
         addKids: (node, readyCallback) =>
             code = node.src.get('code')
@@ -379,8 +381,8 @@ define(['jquery','backbone', 'models', 'bubble_chart'], ($, Backbone, models, Bu
                             .attr('y', (d) -> d.y)
 
         render: ->
-            @chart.render()
-            @chart.start()
+            #@chart.render()
+            #@chart.start()
             @rendered = true
 
     console.log "main_page"

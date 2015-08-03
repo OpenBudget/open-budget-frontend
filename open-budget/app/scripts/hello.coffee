@@ -53,16 +53,23 @@ define(['jquery'], ($) ->
         if value == 0 then ""
         return if value > 0 then "increased" else "decreased"
 
+    window.changeClassThreshold = [
+        {minRatio: 3,       maxRatio: Infinity,  class: "increased_d", legend: "min"},
+        {minRatio: 1.5,     maxRatio: 3,         class: "increased_c", legend: "min"},
+        {minRatio: 1.2,     maxRatio: 1.5,       class: "increased_b", legend: "min"},
+        {minRatio: 1,       maxRatio: 1.2,       class: "increased_a", legend: "min"},
+        {minRatio: 1,       maxRatio: 1,         class: "unchanged",   legend: "center"},
+        {minRatio: 0.8,     maxRatio: 1,         class: "decreased_a", legend: "max"},
+        {minRatio: 0.5,     maxRatio: 0.8,       class: "decreased_b", legend: "max"},
+        {minRatio: 0.1,     maxRatio: 0.5,       class: "decreased_c", legend: "max"},
+        {minRatio: -1,      maxRatio: 0.1,       class: "decreased_d", legend: "max"},
+    ]
+
     window.changeClass = (orig_value,revised_value) ->
-        if      revised_value > 3*orig_value    then "increased_d"
-        else if revised_value > 1.5*orig_value  then "increased_c"
-        else if revised_value > 1.2*orig_value  then "increased_b"
-        else if revised_value > orig_value      then "increased_a"
-        else if revised_value < 0.1*orig_value  then "decreased_d"
-        else if revised_value < 0.5*orig_value  then "decreased_c"
-        else if revised_value < 0.8*orig_value  then "decreased_b"
-        else if revised_value < orig_value      then "decreased_a"
-        else "unchanged"
+        threshold = revised_value/orig_value
+        for changeClass in window.changeClassThreshold
+            if  threshold >= changeClass.minRatio and threshold <= changeClass.maxRatio
+                return changeClass.class
 
     $('#glossaryModal').on('show.bs.modal', (event) ->
           console.log "glossaryModal open"
