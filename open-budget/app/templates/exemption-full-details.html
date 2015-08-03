@@ -23,5 +23,22 @@
         <h4>תקנה</h4>
         <%= regulation %>
     </div>
-
+    <% if ( documents.length > 0 ) { %>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th colspan="3">מסמכים</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for ( var j = 0 ; j < documents.length ; j++ ) { %>
+        <tr>
+            <td><%= documents[j].update_time %></td>
+            <td><%= documents[j].description %></td>
+            <td><a href="http://www.obudget.org/api/exemption/document?url=<%= documents[j].link %>">קובץ</a></td>
+        </tr>
+        <% } %>
+        </tbody>
+    </table>
+    <% } %>
 </td>
