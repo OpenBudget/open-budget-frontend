@@ -52,6 +52,10 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
         @width = @$el.width()
         @height = @$el.height()
+        @range = [0, MAX_RADIUS]
+
+        @circles = d3.select()
+        @childCircles = d3.select()
 
         @centerNodeQueue = []
         @tooltip = d3.tip()
@@ -148,10 +152,32 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                           @circles
                             .each(this.move_towards_centers(e.alpha))
                             .attr("cx", (d) =>
-                                d.x - @get_offset(e.alpha,d).dx
+                                offset = @get_offset(e.alpha,d).dx
+                                d.x - offset
                             )
                             .attr("cy", (d) =>
-                                d.y - @get_offset(e.alpha,d).dy
+                                offset = @get_offset(e.alpha,d).dy
+                                d.y - offset
+                            )
+          that = @
+          @subNodeForce = d3.layout.force()
+                      .size([85, 85])
+                      .gravity(@layout_gravity)
+                      .charge(this.charge)
+                      .friction(0.9)
+                      .alpha(1)
+                      .on "tick", (e) =>
+                          alpha = e.alpha
+                          @calc_averages()
+                          @childCircles
+                            .each(this.move_towards_centers(alpha))
+                            .attr("cx", (d) =>
+                                offset = @get_offset(alpha,d).dx
+                                d.x - offset
+                            )
+                            .attr("cy", (d) =>
+                                offset = @get_offset(alpha,d).dy
+                                d.y - offset
                             )
 
 
@@ -178,6 +204,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           @mainFocusCenter = $.extend({}, focusCenter)
           @mainFocusCenter.category = -> "mainFocus"
           @focusCenter = $.extend({}, focusCenter)
+          @focusCenter.x = @width / 2 - 42.5
+          @focusCenter.y = @height / 2 - 42.5
           @focusCenter.category = -> "focused"
 
       replaceCenteredNode: (node, doNotQueue) ->
@@ -221,43 +249,43 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
               @updateNodes(@data, @numParts, @centeredNode, true)
               @start()
 
+      updateRadiusScale: () ->
+          # use the max total_amount in the data as the max in the scale's domain
+          @max_amount = d3.max(@data, (d) -> if !d.subNode then d.value else null)
+          @total_amount = d3.sum(@data, (d) -> if !d.subNode then d.value else null)
+
+          @radius_scale = d3.scale.sqrt().domain([0, @max_amount]).range(@range)
+          @boundingRadius = @radius_scale(@total_amount/@numParts)
+
+          if @centeredNode?
+              targetMax = @centeredNode.value
+              newSpan = (@range[1] - @range[0])/Math.sqrt(targetMax)/Math.sqrt(@max_amount)*@max_amount
+              newRange = [@range[0], (@range[0] + newSpan)]
+              @radius_scale_center = d3.scale.sqrt().domain([0, @max_amount]).range(newRange)
+
       updateNodes: (data, numParts, centeredNode, forceCreate) ->
         if not @data? or @data != data
             @data = data
 
         @numParts = numParts
-        # use the max total_amount in the data as the max in the scale's domain
-        @max_amount = d3.max(@data, (d) -> if !d.subNode then d.value else null)
-        @total_amount = d3.sum(@data, (d) -> if !d.subNode then d.value else null)
-
-        range = [0, MAX_RADIUS]
-        @radius_scale = d3.scale.sqrt().domain([0, @max_amount]).range(range)
-        @boundingRadius = @radius_scale(@total_amount/@numParts)
-
-        if @centeredNode?
-            targetMax = @centeredNode.value
-            newSpan = (range[1] - range[0])/Math.sqrt(targetMax)/Math.sqrt(@max_amount)*@max_amount
-            range = [range[0], (range[0] + newSpan)]
-            @radius_scale_center = d3.scale.sqrt().domain([0, @max_amount]).range(range)
+        @updateRadiusScale()
 
         console.log("boundingRadius: #{@boundingRadius}, Max amount: #{@max_amount}, total amount: #{@total_amount}")
 
         if not @nodes? or @nodes.length != @data.length or forceCreate
-            @create_nodes(true)
+            @nodes = []
+            @create_nodes(@data, @nodes)
             @force.nodes(@nodes)
-            @render(true)
+            @render(@nodes, 'circles', true)
 
       # create node objects from original data
       # that will serve as the data behind each
       # bubble in the vis, then add each node
       # to @nodes to be used later
-      create_nodes: (force) =>
-          if not @nodes? or force
-              @nodes = []
-
+      create_nodes: (data, nodes) =>
           that = @
-          @data.forEach (d, i) =>
-              if @nodes.indexOf(d) is -1
+          data.forEach (d, i) =>
+              if nodes.indexOf(d) is -1
                   d.radius = () ->
                       radius = that.radius_scale(@value)
                       if that.centeredNode? and d.subNode
@@ -267,15 +295,17 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                       else
                           radius
 
-                  d.x = if d.x? then d.x else Math.random() * @width
-                  d.y = if d.y? then d.y else Math.random()*50 - d.part*@boundingRadius + d.center.y
-
-                  #console.watch(d, "x", NaN)
+                  if d.center.category() == "focused"
+                      d.x = d.center.x
+                      d.y = d.center.y
+                  else
+                      d.x = if d.x? then d.x else Math.random() * @width
+                      d.y = if d.y? then d.y else Math.random()*50 - d.part*@boundingRadius + d.center.y
 
                   if d.radius() < 0
                       return
 
-                  @nodes.push d
+                  nodes.push d
 
           @rendered = true
           @nodes.sort (a,b) -> b.value - a.value
@@ -422,9 +452,9 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
       # create svg at #vis and then
       # create circle representation for each node
-      render: (keepRadius) =>
-        @circles = @vis.selectAll(".bubblesCircle")
-                        .data(@nodes, (d) -> d.id)
+      render: (nodes, group, keepRadius) =>
+        @[group] = @vis.selectAll(".bubblesCircle")
+                        .data(nodes, (d) -> d.id)
 
         if @centeredNode?
             maxValue = @centeredNode.value
@@ -470,7 +500,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
         # radius will be set to 0 initially.
         # see transition below
-        newCircles = @circles.enter().append("circle")
+        newCircles = @[group].enter().append("circle")
           .attr("stroke-width", 2)
           .attr("id", (d) -> "bubble_#{d.id}")
           .style("display", (d) ->
@@ -491,20 +521,26 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
         if @centeredNode?
             @vis.select("#bubble_#{@centeredNode.id}").moveToFront()
 
-        @childCircles = @vis.selectAll(".child-bubble")
+        #@childCircles = @vis.selectAll(".child-bubble")
 
-      subNodesReady: (subNodes) =>
-          @subNodes = subNodes
-          for node in subNodes
+      subNodesReady: (subNodeData) =>
+          @subNodeData = subNodeData
+          for node in @subNodeData
               node.center = @focusCenter
+              node.x = @width/2
+              node.y = @height/2
+              node.px = node.x
+              node.py = node.y
 
-              if node.center?.x? or node.center?.y?
-                  @data.push node
+          @subNodes = []
+          @updateRadiusScale()
+          @create_nodes(@subNodeData, @subNodes)
+          @render(@subNodes, 'childCircles', true)
 
-          @updateNodes(@data, @numParts, @centeredNode, true)
-
-          totalAmount = d3.sum(subNodes, (d) -> d.value)
+          totalAmount = d3.sum(@subNodeData, (d) -> d.value)
           @centerBoundingRadius = @radius_scale_center(totalAmount)
+
+          @subNodeForce.nodes(@subNodes)
 
           @start()
 
@@ -512,6 +548,9 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           # Fancy transition to make bubbles appear, ending with the
           # correct radius
           @circles
+              .attr("class", (d) -> d.className())
+              .transition().duration(DURATION).attr("r", (d) -> d.radius())
+          @childCircles
               .attr("class", (d) -> d.className())
               .transition().duration(DURATION).attr("r", (d) -> d.radius())
 
@@ -564,12 +603,14 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
           @boundingRadius = @radius_scale(@total_amount/@numParts)
           @force.start()
+          @subNodeForce.start()
 
       calc_averages: () =>
         @averages = {}
         extents = {}
         for d in @nodes
             cat = d.center.category()
+            if cat == "focused" then continue
             if !extents[cat]?
                 extents[cat] =
                     maxx: 0
@@ -609,6 +650,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
       # of the visualization
       move_towards_centers: (alpha) =>
           (d) =>
+              if (@subNodes? and @subNodes.indexOf(d) == 0)
+                  console.log("x: #{d.x}")
               boundingRadius = if d.subNode then @centerBoundingRadius else @boundingRadius
               x = @centerX(d)
               d.x = d.x + (x - d.x) * (@damper + 0.02) * alpha
