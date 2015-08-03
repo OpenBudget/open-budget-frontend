@@ -32,16 +32,8 @@
         <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." name="twitter:description">
         <meta content="http://www.obudget.org/styles/assets/obudget.org.png" name="twitter:image:src">
 
-        <!-- build:css(.tmp) /styles/main.css -->
+        <!-- build:css /styles/main.css -->
         <link rel="stylesheet" href="/styles/main.css">
-        <link rel="stylesheet" href="/styles/spinner.css">
-        <!-- endbuild -->
-        <!-- build:css(.tmp) /styles/tour.css -->
-        <link rel="stylesheet" href="/bower_components/bootstrap-tour/build/css/bootstrap-tour.css">
-        <!-- endbuild -->
-
-        <!-- build:js /scripts/vendor/modernizr.js -->
-        <script src="/bower_components/modernizr/modernizr.js"></script>
         <!-- endbuild -->
 
     </head>
@@ -308,6 +300,7 @@
                 <!-- Bubble chart -->
                 <div id="bubble-chart-container" class="center-block">
                     <svg id="bubble-chart"></svg>
+                    <svg id="subnode-bubble-chart"></svg>
                 </div>
 
             </article>
@@ -389,53 +382,16 @@
         </div><!-- /.modal -->
 
         <style id="arrow-helper"></style>
-        <!-- build:js /scripts/vendor.js -->
-        <!-- bower:js -->
-        <script src="bower_components/modernizr/modernizr.js"></script>
-        <script src="bower_components/jquery/jquery.js"></script>
-        <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="bower_components/d3/d3.js"></script>
-        <script src="bower_components/d3-tip/index.js"></script>
-        <script src="bower_components/underscore/underscore.js"></script>
-        <script src="bower_components/backbone/backbone.js"></script>
-        <script src="bower_components/typeahead.js/dist/bloodhound.min.js"></script>
-        <script src="bower_components/bootstrap-tour/build/js/bootstrap-tour.js"></script>
-        <script src="bower_components/pivottable/dist/pivot.js"></script>
-        <script src="bower_components/pivottable/dist/d3_renderers.js"></script>
-        <script src="scripts/ecma_5.js"></script>
-        <script src="scripts/segment-tree-browser.js"></script>
-        <!-- endbower -->
-        <!-- endbuild -->
-
+        <script src="//platform.twitter.com/widgets.js"></script>
+        <script>twttr.ready(function(){twttr.widgets.load()})</script>
         <script src="//hasadna-notifications.appspot.com/static/hn.js"></script>
-
+        <script src="bower_components/requirejs/require.js"></script>
         <!-- build:js /scripts/main.js -->
-        <script src="scripts/templates.js"></script>
-        <script src="scripts/url_scheme.js"></script>
-        <script src="scripts/main_page_tabs.js"></script>
-        <script src="scripts/models.js"></script>
-        <script src="scripts/spinner.js"></script>
-        <script src="scripts/combined_history.js"></script>
-        <script src="scripts/history_widget.js"></script>
-        <script src="scripts/indepth_widget.js"></script>
-        <script src="scripts/views.js"></script>
-        <script src="scripts/detailed_history.js"></script>
-        <script src="scripts/single_changegroup.js"></script>
-        <script src="scripts/entity_details.js"></script>
-        <script src="scripts/spendings_page.js"></script>
-        <script src="scripts/breadcrumb_header.js"></script>
-        <script src="scripts/analysis_header.js"></script>
-        <script src="scripts/bubble_chart.js"></script>
-        <script src="scripts/main_page_vis.js"></script>
-        <script src="scripts/support_list.js"></script>
-        <script src="scripts/support_pivot_table.js"></script>
-        <script src="scripts/spending_list.js"></script>
-        <script src="scripts/spending_pivot_table.js"></script>
-        <script src="scripts/searchbar.js"></script>
-        <script src="scripts/subscribe.js"></script>
-        <script src="scripts/hello.js"></script>
-        <script src="scripts/training.js"></script>
+        <script>
+            require(['scripts/config'], function(){
+                require(['scripts/main'])
+            });
+        </script>
         <!-- endbuild -->
 
         <!-- Google Analytics -->
@@ -449,19 +405,6 @@
           ga('send', 'event', 'navigation', 'visit', window.location.hash, 1);
         </script>
         <!-- End Piwik Code -->
-
-        <!-- Twitter -->
-        <script>!function(d,s,id){
-                    var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
-                    if(!d.getElementById(id)){
-                        js=d.createElement(s);
-                        js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
-                        fjs.parentNode.insertBefore(js,fjs);
-                    }
-                }
-                (document, 'script', 'twitter-wjs');
-        </script>
-        <!-- End twitter code -->
 
         <!-- Facebook -->
         <div id="fb-root"></div>
@@ -492,45 +435,6 @@
               </div>
               <div class="modal-body">
                   <p>זהו צוות הפרויקט (כל הפרויקט מפותח על ידי מתנדבים ונתמך על ידי הסדנא לידע ציבורי)</p>
-                  <div class="row">
-                      <script>
-                      var team = [
-                          {name:'אדם קריב',
-                           avatar:'cd511289b5773fff5e7efe328846eef3',
-                           email:'adam kruchit obudget.org',
-                           twitter:'ikramvada',
-                           website:null},
-                          {name:'מושון זר-אביב',
-                           avatar:'b3458a2e3eed95ba26ecca523397e06a',
-                           email:null,
-                           twitter:'mushon',
-                           website:'http://mushon.com'},
-                          {name:'סער אלון-ברקת',
-                           avatar:'8a1ae50e012e3a5d6accfe9fe6ebd0f2',
-                           email:null,
-                           twitter:null,
-                           website:null},
-                          {name:'ניר בט',
-                           avatar:'9b5b5ecb1cebb8cb3d7294c04a5f68d2',
-                           email:null,
-                           twitter:null,
-                           website:null},
-                          {name:'יונתן נאור',
-                           avatar:'a0cd16d5fe9c3abd6b03e463f2b55ef3',
-                           email:null,
-                           twitter:null,
-                           website:null},
-                      ];
-                      for ( var _i in team ) {
-                          var member = team[_i];
-                          document.write(JST.team_card(member));
-                          if ( _i % 4 == 3 ) {
-                              document.write('</div><div class="row">');
-                          }
-                      }
-                      window.setTimeout( function() { twttr.widgets.load(); }, 1000);
-                      </script>
-                  </div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">סגירה</button>

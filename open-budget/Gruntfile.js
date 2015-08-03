@@ -255,35 +255,45 @@ module.exports = function (grunt) {
 	}
     },
     copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            'styles/assets/*.png',
-            'styles/assets/fonts/*.woff',
-            'styles/assets/fonts/*.ttf',
-            'bower_components/bootstrap-rtl/assets/fonts/*ttf',
-            'bower_components/bootstrap-rtl/assets/fonts/*woff',
-            'images/{,*/}*.{webp,gif}',
-            'site-map*.txt'
-          ]
-        }]
-      },
-      server: {
-        files: [{
-        }, {
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>/bower_components/bootstrap/fonts/',
-          dest: '<%= yeoman.app %>/fonts/glyphicons',
-          src: ['*']
-        }]
-      }
+        dist: {
+            files: [{
+              expand: true,
+              dot: true,
+              cwd: '<%= yeoman.app %>',
+              dest: '<%= yeoman.dist %>',
+              src: [
+                '*.{ico,png,txt}',
+                '.htaccess',
+                'styles/assets/*.png',
+                'styles/assets/fonts/*.woff',
+                'styles/assets/fonts/*.ttf',
+                'bower_components/bootstrap-rtl/assets/fonts/*ttf',
+                'bower_components/bootstrap-rtl/assets/fonts/*woff',
+                'bower_components/requirejs/require.js',
+                'images/{,*/}*.{webp,gif}',
+                'site-map*.txt'
+              ]
+            }]
+        },
+        server: {
+            files: [{
+            }, {
+                expand: true,
+                dot: true,
+                cwd: '<%= yeoman.app %>/bower_components/bootstrap/fonts/',
+                dest: '<%= yeoman.app %>/fonts/glyphicons',
+                src: ['*']
+            }]
+        },
+        requirejs: {
+            files: [
+                { src:"target/scripts/main.js", dest:"dist/scripts/main.js" },
+                { src:"target/scripts/main.js", dest:"dist/scripts/main.js" },
+                { src:"target/scripts/main.js.map", dest:"dist/scripts/main.js.map" },
+                { src:"target/styles/main.css", dest:"dist/styles/main.css" },
+                { src:"target/styles/main.css.map", dest:"dist/styles/main.css.map" }
+            ]
+        }
     },
     concurrent: {
       dist: [
@@ -294,6 +304,37 @@ module.exports = function (grunt) {
         'htmlmin',
 	    'jst'
       ]
+    },
+    requirejs: {
+      compile: {
+        // !! You can drop your app.build.js config wholesale into 'options'
+        options: {
+          appDir: "app/",
+          baseUrl: ".",
+          dir: "target/",
+          optimize: 'uglify2',
+          // Uncomment to debug
+          //optimize: 'none',
+          mainConfigFile:'app/scripts/config.js',
+          paths: {
+              main: "scripts/main",
+              "hasadna-notifications": 'empty:'
+          },
+          modules:[
+              {
+                  name: "main"
+              }
+          ],
+          logLevel: 0,
+          findNestedDependencies: true,
+          // TODO there must be a better way to handle the ilegal charecters
+          fileExclusionRegExp: /^run.js$|^release.+|^src$|^data$|^test$|^test.+/,
+          inlineText: true,
+          preserveLicenseComments: false,
+          generateSourceMaps: true,
+          useSourceUrl: true
+        }
+      }
     }
   });
 
@@ -332,17 +373,13 @@ module.exports = function (grunt) {
     'copy:server',
     'useminPrepare',
     'concurrent',
-    'concat',
-    'cssmin',
-    'uglify',
+    'requirejs',
     'copy',
     'rev',
     'usemin'
   ]);
 
   grunt.registerTask('default', [
-    //'jshint',
-    //'test',
     'build'
   ]);
 };

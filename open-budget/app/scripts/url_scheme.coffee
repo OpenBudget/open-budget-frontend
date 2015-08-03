@@ -32,12 +32,19 @@ class URLSchemeHandler
             parameters['entityId'] = entityId
             @buildLink(parameters)
 
-        addAttribute: (key, value, reload) ->
-            @linkParameters['attributes'][key] = value
+        updateHash: (reload) ->
             newHash = @buildLink(@linkParameters)
             if newHash != window.location.hash
                 @reload = reload || false
                 window.location.hash = newHash
+
+        addAttribute: (key, value, reload) ->
+            @linkParameters['attributes'][key] = value
+            @updateHash(reload)
+
+        removeAttribute: (key, reload) ->
+            delete @linkParameters['attributes'][key]
+            @updateHash(reload)
 
         updateUrl: (key, value) ->
             if window.history?.replaceState?
