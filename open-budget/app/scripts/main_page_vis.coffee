@@ -153,6 +153,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                     @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
                     $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
                 @recalc_centers()
+                @chart.start()
                 @render()
 
                 focusCode = models.pageModel.URLSchemeHandlerInstance.getAttribute('focusOn')
