@@ -395,7 +395,7 @@ class NewSpendings extends Backbone.Collection
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
     url: ->
-            "#{pageModel.get('baseURL')}/api/exemption/new?limit=100"
+        "#{@pageModel.get('baseURL')}/api/exemption/new?limit=" + @pageModel.daysLimit.get("value")
 
 
 
@@ -584,6 +584,10 @@ class SelectedEntity extends Backbone.Model
         selected: null
         expandedDetails: {}
 
+class DaysLimit extends Backbone.Model
+    defaults:
+        value: "1"
+
 class PageModel extends Backbone.Model
 
         defaults:
@@ -614,6 +618,7 @@ class PageModel extends Backbone.Model
                 @mainPageTabs           = new window.MainPageTabs(@);
                 @resizeNotifier         = new ResizeNotifier()
                 @selectedEntity         = new SelectedEntity()
+                @daysLimit              = new DaysLimit()
 
                 @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
                 window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
@@ -714,9 +719,9 @@ class PageModel extends Backbone.Model
                     @newBudgetItem.do_fetch()
 
                 @on 'change:spendingsPage', ->
-                    @newSpendings = new NewSpendings([], pageModel: @)
+                    @newSpendings = new NewSpendings([], {pageModel: @})
                     @readyEvents.push new ReadyAggregator("ready-spendings-page")
-                                                        .addCollection(@newSpendings)
+                                                        .addCollection(@newSpendings);
 
                 @on 'change:kinds', =>
                     for kind in @get('kinds')
@@ -732,6 +737,7 @@ window.models =
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
         Entity: Entity
+        NewSpendings: NewSpendings
 
 window.pageModel = new PageModel()
 
@@ -776,3 +782,4 @@ $( ->
 )
 
 window.Entity = Entity
+window.ReadyAggregator = ReadyAggregator
