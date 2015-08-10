@@ -2414,18 +2414,18 @@ svg rect{
 
         }
     }
-}    
-    
+}
+
 // Exemptions
 .disclaimer {
   padding: 10px;
   color: @darkgray;
 }
 
-div#exemptions-alerts {
+div.exemptions-alerts {
   padding: 0;
 
-  div#exemptions-alerts-header {
+  div.exemptions-alerts-header {
     padding: 1em 0 1em 0;
     border-bottom: 3px solid #f3f3f4;
     border-left: 5px solid #cfd1d2;
@@ -2443,7 +2443,7 @@ div#exemptions-alerts {
     }
   }
 
-  div#exemptions-alerts-content {
+  div.exemptions-alerts-content {
     background-color: #f7f7f7;
     max-height: 60vh;
     overflow-y: auto;
@@ -2501,6 +2501,7 @@ div#exemptions-alerts {
 }
 
 table.table-expandable {
+  table-layout: fixed;
   thead {
     color: @darkgray;
   }
@@ -2542,7 +2543,7 @@ table.table-expandable {
   }
 }
 
-table#exemption-details {
+table.exemption-details {
  td.exemption-volume {
   width: 200px;
  }
@@ -2553,6 +2554,3 @@ table#exemption-details {
    width: 100px;
  }
 }
-
-
-
