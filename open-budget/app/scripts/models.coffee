@@ -395,7 +395,7 @@ class NewSpendings extends Backbone.Collection
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
     url: ->
-        "#{@pageModel.get('baseURL')}/api/exemption/new?limit=" + @pageModel.daysLimit.get("value")
+        "#{@pageModel.get('baseURL')}/api/exemption/new/" + @pageModel.daysLimit.get("value")
 
 
 
