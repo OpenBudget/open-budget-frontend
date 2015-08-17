@@ -21,6 +21,7 @@ class SpendingsPageView extends Backbone.View
                 $(d.target).closest("div.exemption-alert").addClass("selected");
                 @model.selectedEntity.set("selected", $(d.target).closest("div.exemption-alert").attr("supplier"))
             );
+    
             $("div.exemption-alert:first").trigger("click")
 
             # Initialize the one change event of the days limit
@@ -32,5 +33,5 @@ class SpendingsPageView extends Backbone.View
 $( ->
     if window.pageModel.get("spendingsPage")?
         window.spendingsPageView = new SpendingsPageView({el: $("#spendings-page-article .latest-updates"), model: window.pageModel});
-        window.entityDetails = new EntityDetailsView({el: $("#entity-details"), model: window.pageModel});
+        window.entityDetails = new EntityDetailsView({el: $("#spendings-page-article .entity-details"), model: window.pageModel});
 )
