@@ -832,12 +832,6 @@ strong.approved {
         margin-top: -7px;
         display: block;
       }
-      .item-title,
-      .revised-diff,
-      .approved-sum {
-        //background: @darkgray;
-        color: @darkgray;
-      }
     }
 
     .widget-popover-content {
@@ -992,6 +986,15 @@ strong.approved {
     }
     &.arrow-left:before {
       border-right-color: @darkgray;
+    }
+  }
+  
+  &.bubble-chart-tip .widget-popover{
+    .item-title,
+    .revised-diff,
+    .approved-sum {
+      background: @darkgray;
+      color: white;
     }
   }
 
