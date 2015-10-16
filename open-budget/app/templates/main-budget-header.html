@@ -1,22 +1,26 @@
-<div id="orig_2014/orig_2015" class="main-budget-title">
-  <h1><strong>תקציב המדינה המיועד לשנת 2015</strong> הוא <span class="approved"><%= format_number(newb.net_allocated,false,false) %></span></h1>
-  <p>כיצד ניתן להבין אותו <strong>ביחס לתקציב 2014?</strong></p>
-</div>
-<div id="rev_2014/orig_2015" class="main-budget-title hide">
-  <h1><strong>תקציב המדינה המיועד לשנת 2015</strong> הוא <span class="approved"><%= format_number(newb.net_allocated,false,false) %></span></h1>
-  <p>כיצד ניתן להבין אותו <strong>ביחס לשינויים שחלו בתקציב הקודם לאורך 2014?</strong></p>
-</div>
-<div id="orig_2014/rev_2014" class="main-budget-title hide">
-  <h1><strong>תקציב המדינה לשנת 2014</strong> הוא <span class="approved"><%= format_number(main.net_allocated,false,false) %></span></h1>
-  <p>מה הם <strong>השינויים שחלו בו מתחילת השנה?</strong></p>
-</div>
+<div id="orig_2014/rev_2014" class="main-budget-title">
+  <h1>
+    <div class="dropdown">
+    כיצד השתנה
+      <a class="dropdown-toggle" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <strong>תקציב 2014</strong> מתחילת השנה? <span class="drop-caret"></span>
+      </a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#"><strong>תקציב 2015</strong> מתחילת השנה?</a></li>
+        <li><a href="#"><strong>תקציב 2015</strong> ביחס לתקציב 2014?</a></li>
+        <li><a href="#"><strong>תקציב 2015</strong> ביחס להצעה של לפיד?</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#" class="active"><strong>תקציב 2014</strong> מתחילת השנה?</a></li>
+        <li><a href="#"><strong>תקציב 2014</strong> ביחס לתקציב 2012?</a></li>
+        <li><a href="#" class="disabled"><strong>תקציב 2014</strong> בפועל ביחס לתכנון שלו? [מידע חסר]</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#"><strong>תקציב 2013</strong> בפועל ביחס לתכנון שלו?</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#" class="disabled">בנו את ההשוואות שלכם</a></li>
 
-<p><span id='num-items-increased'></span> התחומים שגדלו
-<span class="increased_a_text">מופיעים</span>
-<span class="increased_b_text">בצבעים </span>
-<span class="increased_c_text">חמים</span>,
-<span id='num-items-decreased'></span> אלה שקטנו
-<span class="decreased_a_text">מופיעים</span>
-<span class="decreased_b_text">בצבעים </span>
-<span class="decreased_c_text">קרים</span>
-</p>
+
+      </ul>
+    </div>
+    <p>תקציב 2014 המיועד הוא <span class="approved"><%= format_number(newb.net_allocated,false,false) %></span></p>
+  </h1>
+</div>

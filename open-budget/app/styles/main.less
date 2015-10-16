@@ -651,13 +651,51 @@ strong.approved {
   padding: 0 20px;
   h1, p{
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
     line-height: 43px;
     margin-bottom: 0;
 
     .approved {
       .approved_text;
       font-weight: 700;
+    }
+
+    .dropdown {
+      display: inline-block;
+    }
+
+    a.dropdown-toggle {
+      text-align: right;
+      background: @ultralightgray;
+      border: 1px solid @ultralightgray*0.95;
+      color: @text;
+      border-radius: 20px;
+      padding: 0 10px;
+
+      &:hover,&:focus,&:active {
+        text-decoration: none;
+        background: @ultralightgray*0.95;
+      }
+
+      span.drop-caret{
+        background: url(assets/drop-caret.svg) no-repeat;
+        display: inline-block;
+        height: 14px;
+        width:14px;
+      }
+    }
+
+    .dropdown-menu{
+      border-radius: 15px;
+      border: 1px solid @ultralightgray*0.95;
+      overflow: hidden;
+      text-align: right;
+      left: 0;
+      right: 0;
+
+      a.active {
+        background: @ultralightgray;
+      }
     }
   }
 }
