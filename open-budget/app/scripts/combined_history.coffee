@@ -1,21 +1,21 @@
+define(['jquery', 'backbone', 'models'] , ($, Backbone, models) ->
+    class CombinedHistoryPoint extends Backbone.Model
 
-class CombinedHistoryPoint extends Backbone.Model
+            defaults:
+                    kind: null
+                    subkind: ""
+                    timestamp: null
+                    value: null
+                    source: null
+                    width: 0
+                    date: null
+                    last: false
+                    exact: true
+                    diff_value: null
+                    participants: null
+                    continued: false
 
-        defaults:
-                kind: null
-                subkind: ""
-                timestamp: null
-                value: null
-                source: null
-                width: 0
-                date: null
-                last: false
-                exact: true
-                diff_value: null
-                participants: null
-                continued: false
-
-class CombinedHistory extends Backbone.Collection
+    class CombinedHistory extends Backbone.Collection
 
         model: CombinedHistoryPoint
 
@@ -29,7 +29,7 @@ class CombinedHistory extends Backbone.Collection
                     @changeGroups = { models: [] }
                 @budgetHistory = @pageModel.budgetHistory
                 @budgetApprovals = @pageModel.budgetApprovals
-                @pageModel.on "ready-budget-history-pre", =>
+                @pageModel.waitFor "ready-budget-history-pre", =>
                     @processChangeLines(@changeGroups.models)
                     @processBudgetHistory(@budgetHistory.models,@budgetApprovals.models)
                     @postProcess()
@@ -114,6 +114,7 @@ class CombinedHistory extends Backbone.Collection
         processBudgetHistory: (models,approvedModels) ->
                 approved = _.groupBy(approvedModels, (x) -> x.get('year'))
                 for m in models
+                    if approved[m.get('year')]?
                         approvedRec = approved[m.get('year')][0]
                         approvedRec.setTimestamps()
                         value = m.get("net_allocated")
@@ -129,35 +130,35 @@ class CombinedHistory extends Backbone.Collection
                                 point.set('src','dummy')
                                 @add point
 
-                                endYear = new Date(m.get('year'),11,31).valueOf()
-                                endEffect = approvedRec.get('end_timestamp')
-                                if !endEffect? then endEffect = Date.now()
+                            endYear = new Date(m.get('year'),11,31).valueOf()
+                            endEffect = approvedRec.get('end_timestamp')
+                            if !endEffect? then endEffect = Date.now()
 
+                            point = new CombinedHistoryPoint()
+                            point.set("source", m)
+                            point.set("kind", "approved")
+                            point.set("value", m.get("net_allocated"))
+                            startYear = approvedRec.get('effect_timestamp')
+                            if !startYear? then startYear = new Date(m.get('year'),0).valueOf()
+                            point.set('timestamp',startYear)
+                            point.set('width', endYear - startYear)
+                            point.set('participants', approvedRec.get('participants'))
+                            point.set('src','budgetline')
+                            point.set('continued',false)
+                            @add point
+
+                            if endEffect > endYear
                                 point = new CombinedHistoryPoint()
                                 point.set("source", m)
                                 point.set("kind", "approved")
-                                point.set("value", m.get("net_allocated"))
-                                startYear = approvedRec.get('effect_timestamp')
-                                if !startYear? then startYear = new Date(m.get('year'),0).valueOf()
+                                point.set("value", m.get("net_revised"))
+                                startYear = new Date(m.get('year')+1,0).valueOf()
                                 point.set('timestamp',startYear)
-                                point.set('width', endYear - startYear)
+                                point.set('width', endEffect - startYear)
                                 point.set('participants', approvedRec.get('participants'))
                                 point.set('src','budgetline')
-                                point.set('continued',false)
+                                point.set('continued',true)
                                 @add point
-
-                                if endEffect > endYear
-                                    point = new CombinedHistoryPoint()
-                                    point.set("source", m)
-                                    point.set("kind", "approved")
-                                    point.set("value", m.get("net_revised"))
-                                    startYear = new Date(m.get('year')+1,0).valueOf()
-                                    point.set('timestamp',startYear)
-                                    point.set('width', endEffect - startYear)
-                                    point.set('participants', approvedRec.get('participants'))
-                                    point.set('src','budgetline')
-                                    point.set('continued',true)
-                                    @add point
 
                                 # period between start of year and first committee
                                 point = new CombinedHistoryPoint()
@@ -237,7 +238,9 @@ class CombinedHistory extends Backbone.Collection
                                 lastPoint.set('width', yearEnd - timestamp)
                                 lastPoint.set('last', true)
 
-$( ->
-    if window.pageModel.get('budgetCode')?
-        window.combinedHistory = new CombinedHistory([], pageModel: window.pageModel)
+    if models.pageModel.get('budgetCode')?
+        combinedHistory = new CombinedHistory([], pageModel: models.pageModel)
+        window.combinedHistory = combinedHistory
+
+    return combinedHistory || CombinedHistory
 )

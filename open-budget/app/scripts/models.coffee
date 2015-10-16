@@ -1,10 +1,11 @@
-dateToTimestamp = (date) ->
-    if !date? then return null
-    date = date.split('/')
-    date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
-    date.valueOf()
+define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
+    dateToTimestamp = (date) ->
+        if !date? then return null
+        date = date.split('/')
+        date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
+        date.valueOf()
 
-class ChangeExplanation extends Backbone.Model
+    class ChangeExplanation extends Backbone.Model
 
         defaults:
                 year: null
@@ -30,7 +31,7 @@ class ChangeExplanation extends Backbone.Model
 
         url: () => "#{window.pageModel.get('baseURL')}/api/change_expl/#{@requestId()}/#{@get('year')}"
 
-class ChangeLine extends Backbone.Model
+    class ChangeLine extends Backbone.Model
 
         defaults:
                 gross_expense_diff: null
@@ -84,7 +85,7 @@ class ChangeLine extends Backbone.Model
         setTimestamp: ->
                 @set 'timestamp', dateToTimestamp(@get 'date')
 
-class BudgetItem extends Backbone.Model
+    class BudgetItem extends Backbone.Model
 
         defaults:
                 net_allocated: null
@@ -116,7 +117,7 @@ class BudgetItem extends Backbone.Model
             "#{pageModel.get('baseURL')}/api/budget/#{@get('code')}/#{@get('year')}"
 
 
-class BudgetItemKids extends Backbone.Collection
+    class BudgetItemKids extends Backbone.Collection
 
         model: BudgetItem
 
@@ -130,7 +131,7 @@ class BudgetItemKids extends Backbone.Collection
             "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/active-kids"
 
 
-class BudgetItemDepth extends Backbone.Collection
+    class BudgetItemDepth extends Backbone.Collection
 
         model: BudgetItem
 
@@ -144,18 +145,19 @@ class BudgetItemDepth extends Backbone.Collection
         url: ->
             "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/depth/#{@depth}?limit=1000"
 
-class CompareRecord extends Backbone.Model
-    defaults:
-        code: null
-        title: null
-        orig_2014: null
-        orig_2015: null
-        rev_2014: null
-        rev_2015: null
-        group_top: null
-        grouo_full: null
+    class CompareRecord extends Backbone.Model
+        defaults:
+            code: null
+            title: null
+            orig_2014: null
+            orig_2015: null
+            rev_2014: null
+            rev_2015: null
+            group_top: null
+            grouo_full: null
+            year: 2014
 
-class CompareRecords extends Backbone.Collection
+    class CompareRecords extends Backbone.Collection
 
         model: CompareRecord
 
@@ -169,34 +171,34 @@ class CompareRecords extends Backbone.Collection
         parse: (response) ->
             response.value
 
-class BudgetApproval extends Backbone.Model
-    defaults:
-        year: null
-        approval_date: null
-        effect_date: null
-        end_date: null
-        approval_timestamp: null
-        effect_timestamp: null
-        end_timestamp: null
-        link: null
+    class BudgetApproval extends Backbone.Model
+        defaults:
+            year: null
+            approval_date: null
+            effect_date: null
+            end_date: null
+            approval_timestamp: null
+            effect_timestamp: null
+            end_timestamp: null
+            link: null
 
-    setTimestamps: ->
-        @set 'approval_timestamp', dateToTimestamp(@get 'approval_date')
-        @set 'effect_timestamp', dateToTimestamp(@get 'effect_date')
-        @set 'end_timestamp', dateToTimestamp(@get 'end_date')
+        setTimestamps: ->
+            @set 'approval_timestamp', dateToTimestamp(@get 'approval_date')
+            @set 'effect_timestamp', dateToTimestamp(@get 'effect_date')
+            @set 'end_timestamp', dateToTimestamp(@get 'end_date')
 
-class BudgetApprovals extends Backbone.Collection
-    model: BudgetApproval
+    class BudgetApprovals extends Backbone.Collection
+        model: BudgetApproval
 
-    initialize: (models, options) ->
-        @pageModel = options.pageModel
-        @fetch(dataType: @pageModel.get('dataType'), reset: true)
+        initialize: (models, options) ->
+            @pageModel = options.pageModel
+            @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
-    url: ->
-        "#{pageModel.get('baseURL')}/api/budget/#{pageModel.get('budgetCode')}/approvals"
+        url: ->
+            "#{pageModel.get('baseURL')}/api/budget/#{pageModel.get('budgetCode')}/approvals"
 
 
-class ChangeLines extends Backbone.Collection
+    class ChangeLines extends Backbone.Collection
 
         model: ChangeLine
 
@@ -209,7 +211,7 @@ class ChangeLines extends Backbone.Collection
 
         comparator: 'req_code'
 
-class ChangeGroup extends Backbone.Model
+    class ChangeGroup extends Backbone.Model
 
         defaults:
                 req_titles: []
@@ -252,7 +254,7 @@ class ChangeGroup extends Backbone.Model
         url: ->
                 "#{pageModel.get('baseURL')}/api/changegroup/#{pageModel.get('changeGroupId')}/#{pageModel.get('year')}"
 
-class ChangeGroups extends Backbone.Collection
+    class ChangeGroups extends Backbone.Collection
 
         model: ChangeGroup
 
@@ -264,142 +266,143 @@ class ChangeGroups extends Backbone.Collection
                 "#{pageModel.get('baseURL')}/api/changegroup/#{@pageModel.get('budgetCode')}/#{@pageModel.get('year')}/equivs?limit=1000"
 
 
-class SupportLineDescription extends Backbone.Model
+    class SupportLineDescription extends Backbone.Model
 
-  defaults:
-    field: null,
-    en: null,
-    he: null,
-    model: null,
-    order: null
+        defaults:
+            field: null,
+            en: null,
+            he: null,
+            model: null,
+            order: null
 
-class SupportFieldNormalizer extends Backbone.Collection
+    class SupportFieldNormalizer extends Backbone.Collection
 
-  model: SupportLineDescription
+      model: SupportLineDescription
 
-  initialize: (models, options) ->
-    @pageModel = options.pageModel
-    @fetch(dataType: @pageModel.get('dataType'), reset: true)
-    @on("reset", ->
-      _json = @toJSON()
-      @normalizationStructure = {}
-      for fieldStructure in _json
-        @normalizationStructure[fieldStructure["field"]] = fieldStructure
-    )
+      initialize: (models, options) ->
+          @normalizationStructure = {}
+          @pageModel = options.pageModel
+          @fetch(dataType: @pageModel.get('dataType'), reset: true)
+          @on("reset", ->
+              _json = @toJSON()
+              @normalizationStructure = {}
+              for fieldStructure in _json
+                  @normalizationStructure[fieldStructure["field"]] = fieldStructure
+          )
 
-  normalize: (field, locale) ->
-    if @normalizationStructure[field]
-    then @normalizationStructure[field][locale]
-    else undefined
+      normalize: (field, locale) ->
+        if @normalizationStructure[field]
+        then @normalizationStructure[field][locale]
+        else undefined
 
-  url: ->
-    "#{@pageModel.get('baseURL')}/api/describe/SupportLine"
+      url: ->
+        "#{@pageModel.get('baseURL')}/api/describe/SupportLine"
 
-class SupportLine extends Backbone.Model
+    class SupportLine extends Backbone.Model
 
-    defaults:
-        kind: null
-        code: null
-        title: null
-        amount_allocated: null
-        amount_supported: null
-        num_used: 1
-        company_id: null
-        ngo_id: null
-        year: null
-        recipient: null
-        subject: null
+        defaults:
+            kind: null
+            code: null
+            title: null
+            amount_allocated: null
+            amount_supported: null
+            num_used: 1
+            company_id: null
+            ngo_id: null
+            year: null
+            recipient: null
+            subject: null
 
-    toLocaleJSON: (requestedLocale) ->
-      locale = requestedLocale || "he"
-      baseJSON = @toJSON()
-      resultJSON = {}
-      pageModel = window.pageModel
-      for key, value of baseJSON
-        normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
-        if normalizedKey?
-          resultJSON[normalizedKey] = value
+        toLocaleJSON: (requestedLocale) ->
+          locale = requestedLocale || "he"
+          baseJSON = @toJSON()
+          resultJSON = {}
+          pageModel = window.pageModel
+          for key, value of baseJSON
+            normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
+            if normalizedKey?
+              resultJSON[normalizedKey] = value
 
-      return resultJSON
+          return resultJSON
 
-class SpendingLine extends Backbone.Model
+    class SpendingLine extends Backbone.Model
 
-    defaults:
-        entity_id: null
-        budget_code: null
-        supplier_id: null
-        decision: null
-        regulation: null
-        subjects: []
-        supplier: null
-        start_date: null
-        entity_kind: null
-        description: null
-        end_date: null
-        volume: 0
-        reason: null
-        documents: [ ]
-        contact_email: null
-        last_update_date: null
-        publisher: null
-        url: null
-        claim_date: null
-        publication_id: null
-        contact: null
-        history: [ ]
+        defaults:
+            entity_id: null
+            budget_code: null
+            supplier_id: null
+            decision: null
+            regulation: null
+            subjects: []
+            supplier: null
+            start_date: null
+            entity_kind: null
+            description: null
+            end_date: null
+            volume: 0
+            reason: null
+            documents: [ ]
+            contact_email: null
+            last_update_date: null
+            publisher: null
+            url: null
+            claim_date: null
+            publication_id: null
+            contact: null
+            history: [ ]
 
-    # toLocaleJSON: (requestedLocale) ->
-    #   locale = requestedLocale || "he"
-    #   baseJSON = @toJSON()
-    #   resultJSON = {}
-    #   pageModel = window.pageModel
-    #   for key, value of baseJSON
-    #     normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
-    #     if normalizedKey?
-    #       resultJSON[normalizedKey] = value
-    #
-    #   return resultJSON
+        # toLocaleJSON: (requestedLocale) ->
+        #   locale = requestedLocale || "he"
+        #   baseJSON = @toJSON()
+        #   resultJSON = {}
+        #   pageModel = window.pageModel
+        #   for key, value of baseJSON
+        #     normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
+        #     if normalizedKey?
+        #       resultJSON[normalizedKey] = value
+        #
+        #   return resultJSON
 
-class TakanaSupports extends Backbone.Collection
+    class TakanaSupports extends Backbone.Collection
 
-    model: SupportLine
+        model: SupportLine
 
-    comparator: (m) -> "#{m.get('year')} #{m.get('recipient')}"
+        comparator: (m) -> "#{m.get('year')} #{m.get('recipient')}"
 
-    initialize: (models, options) ->
-            @pageModel = options.pageModel
-            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+        initialize: (models, options) ->
+                @pageModel = options.pageModel
+                @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
-    url: ->
-            "#{pageModel.get('baseURL')}/api/supports/#{@pageModel.get('budgetCode')}?limit=10000"
+        url: ->
+                "#{pageModel.get('baseURL')}/api/supports/#{@pageModel.get('budgetCode')}?limit=10000"
 
-class TakanaSpending extends Backbone.Collection
+    class TakanaSpending extends Backbone.Collection
 
-    model: SpendingLine
+        model: SpendingLine
 
-    comparator: (m) -> m.get('publication_id')
+        comparator: (m) -> m.get('publication_id')
 
-    initialize: (models, options) ->
-            @pageModel = options.pageModel
-            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+        initialize: (models, options) ->
+                @pageModel = options.pageModel
+                @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
-    url: ->
-            "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=100"
+        url: ->
+                "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=100"
 
-class NewSpendings extends Backbone.Collection
+    class NewSpendings extends Backbone.Collection
 
-    model: SpendingLine
+        model: SpendingLine
 
-    initialize: (models, options) ->
-            @pageModel = options.pageModel
-            @fetch(dataType: @pageModel.get('dataType'), reset: true)
+        initialize: (models, options) ->
+                @pageModel = options.pageModel
+                @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
-    url: ->
-        "#{@pageModel.get('baseURL')}/api/exemption/new/" + @pageModel.daysLimit.get("value")
+        url: ->
+                "#{pageModel.get('baseURL')}/api/exemption/new?limit=100"
 
 
 
-class BudgetHistory extends Backbone.Collection
+    class BudgetHistory extends Backbone.Collection
 
         model: BudgetItem
 
@@ -414,7 +417,7 @@ class BudgetHistory extends Backbone.Collection
 
         getLast: -> @models[@models.length-1]
 
-class Participant extends Backbone.Model
+    class Participant extends Backbone.Model
 
         defaults:
                 kind: ""
@@ -437,7 +440,7 @@ class Participant extends Backbone.Model
 
             @set('unique_id', @get('title')+"-"+"-"+@get('start_timestamp')+"-"+@get('end_timestamp'))
 
-class Participants extends Backbone.Collection
+    class Participants extends Backbone.Collection
         model: Participant
 
         initialize: (models, options) ->
@@ -448,26 +451,26 @@ class Participants extends Backbone.Collection
         url: ->
             "#{pageModel.get('baseURL')}/api/participants/#{@code}?limit=1000"
 
-class Entity extends Backbone.Model
+    class Entity extends Backbone.Model
 
         defaults:
-                kind: null
-                name: null
-                supports: []
-                exemptions: []
-                id: null
-                exemptions_by_publisher: {}
-                exemptions_sum: null
+            kind: null
+            name: null
+            supports: []
+            exemptions: []
+            id: null
+            exemptions_by_publisher: {}
+            exemptions_sum: null
 
         initialize: (options) ->
-                @pageModel = options.pageModel
-                @entity_id = options.entityId
+            @entity_id = options.entityId
+            @pageModel = options.pageModel
 
         doFetch: ->
                 @fetch(dataType: @pageModel.get('dataType'), success: @handleFetchResult)
 
         url: =>
-                "#{pageModel.get('baseURL')}/api/entity/#{@entity_id}"
+            "#{pageModel.get('baseURL')}/api/entity/#{@entity_id}"
 
         handleFetchResult: (collection, response) =>
             @supports = response.supports
@@ -535,252 +538,274 @@ class Entity extends Backbone.Model
                 return b
             return a
 
-class ReadyAggregator
+    class ReadyAggregator
 
-    constructor: (event) ->
-        @readyCounter = 0
-        @collections = []
-        @models = []
-        @event = event
-        @ready = false
+        constructor: (event) ->
+            @readyCounter = 0
+            @collections = []
+            @models = []
+            @event = event
+            @ready = false
+            if typeof pageModel.events[event] == "function"
+                @callback = pageModel.events[event]
+                @callback()
 
-    addModel: (model) ->
-        @models.push model
-        @readyCounter += 1
-        model.on 'change',() => @checkIfReady(model)
-        @
+            pageModel.events[event] = @
 
-    addCollection: (collection) ->
-        @collections.push collection
-        @readyCounter += 1
-        collection.on 'reset',() => @checkIfReady(collection)
-        @
+        addModel: (model) ->
+            @models.push model
+            @readyCounter += 1
+            model.on 'change',() => @checkIfReady()
+            @
 
-    checkIfReady: (what) ->
-        console.log "checkIfReady: "+@event+"="+@readyCounter
-        if @ready
-            return
-        @readyCounter -= 1
-        if @readyCounter == 0
-            @ready = true
-            pageModel.trigger(@event)
+        addCollection: (collection) ->
+            @collections.push collection
+            @readyCounter += 1
+            console.log "addCollection: "+@event+"="+@readyCounter
+            collection.on 'reset',() => @checkIfReady()
+            @
 
-# window.onresize can only hold 1 callback, the ResizeNotifier will serve as
-# an initiator for onresize events
-class ResizeNotifier
+        checkIfReady: (callback) ->
+            if !@ready
+                @readyCounter -= 1
+
+            if callback?
+                @callback = callback
+
+            console.log "checkIfReady: "+@event+"="+@readyCounter
+            if @readyCounter == 0
+                @ready = true
+                pageModel.trigger(@event)
+                if @callback then @callback()
+
+    # window.onresize can only hold 1 callback, the ResizeNotifier will serve as
+    # an initiator for onresize events
+    class ResizeNotifier
         constructor: ->
-          @resizeTimer    = 0
-          @callbackQueue  = []
+            @resizeTimer    = 0
+            @callbackQueue  = []
 
-          window.onresize = (event) =>
-            clearTimeout(@resizeTimer)
-            @resizeTimer = setTimeout ( =>
-              for callback in @callbackQueue
-                callback()
-            ), 100
+            window.onresize = (event) =>
+                clearTimeout(@resizeTimer)
+                @resizeTimer = setTimeout ( =>
+                  for callback in @callbackQueue
+                    callback()
+                ), 100
 
         registerResizeCallback: (callback) ->
-          @callbackQueue.push(callback)
+            @callbackQueue.push(callback)
 
-class SelectedEntity extends Backbone.Model
-    defaults:
-        selected: null
-        expandedDetails: {}
+    class SelectedEntity extends Backbone.Model
+        defaults:
+            selected: null
+            expandedDetails: {}
 
-class DaysLimit extends Backbone.Model
-    defaults:
-        value: "1"
+    class DaysLimit extends Backbone.Model
+        defaults:
+            value: "1"
 
-class PageModel extends Backbone.Model
+    class PageModel extends Backbone.Model
 
         defaults:
-                budgetCode: null
-                year: null
-                changeGroupId: null
-                mainPage: null
-                spendingPage: null
-                baseURL: "http://www.obudget.org"
-                # For debugging with local API
-                # Uses default port 8080, make sure this matches your GAE
-                # configuration
-                #baseURL: "http://127.0.0.1:8080"
-                selection: [ 0, 0 ]
-                currentItem: null
-                dataType: "json"#p"
-                ready: false
-                kinds: []
-                flow: null
-                local: true
+            budgetCode: null
+            year: null
+            changeGroupId: null
+            mainPage: null
+            spendingPage: null
+            baseURL: "http://www.obudget.org"
+            # For debugging with local API
+            # Uses default port 8080, make sure this matches your GAE
+            # configuration
+            #baseURL: "http://127.0.0.1:8080"
+            selection: [ 0, 0 ]
+            currentItem: null
+            dataType: "json"#p"
+            ready: false
+            kinds: []
+            flow: null
+            local: true
 
         initialize: ->
-                if window.location.origin == @get('baseURL')
-                    @set('local', false)
-                    @set('dataType','json')
-                @readyEvents = []
-                @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
-                @mainPageTabs           = new window.MainPageTabs(@);
-                @resizeNotifier         = new ResizeNotifier()
-                @selectedEntity         = new SelectedEntity()
-                @daysLimit              = new DaysLimit()
+            if window.location.origin == @get('baseURL')
+                @set('local', false)
+                @set('dataType','json')
 
-                @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
-                window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
+            @api = {
+                BudgetItemKids: BudgetItemKids
+            }
 
-                @resizeNotifier.registerResizeCallback( =>
-                  @.trigger('resized')
-                )
+            @events = {}
+            @waitFor = (event, callback) ->
+                if pageModel.events[event]?
+                    pageModel.events[event].checkIfReady(callback)
+                else
+                    pageModel.events[event] = callback
 
-                @on 'change:budgetCode', ->
-                    budgetCode = @get('budgetCode')
-                    digits = budgetCode.length - 2
-                    @set('digits',digits)
-                    @article.find(".2digits,.4digits,.6digits,.8digits").css('display','none')
-                    @article.find(".#{digits}digits").css('display','')
+            @readyEvents = []
+            @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
+            @mainPageTabs           = new window.MainPageTabs(@)
+            @resizeNotifier         = new ResizeNotifier()
+            @selectedEntity         = new SelectedEntity()
+            @daysLimit              = new DaysLimit()
 
-                    @mainPageTabs.trigger("change:budgetCode")
-                    #@changeLines = new ChangeLines([], pageModel: @)
-                    @changeGroups = new ChangeGroups([], pageModel: @)
-                    @budgetApprovals = new BudgetApprovals([], pageModel: @)
-                    @budgetHistory = new BudgetHistory([], pageModel: @)
-                    @budgetHistory.on 'reset',
-                                      () =>
-                                          @set('currentItem', @budgetHistory.getLast())
+            @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
+            window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
+
+            @resizeNotifier.registerResizeCallback( =>
+              @.trigger('resized')
+            )
+
+            @on 'change:budgetCode', ->
+                budgetCode = @get('budgetCode')
+                digits = budgetCode.length - 2
+                @set('digits',digits)
+                @article.find(".2digits,.4digits,.6digits,.8digits").css('display','none')
+                @article.find(".#{digits}digits").css('display','')
+
+                @mainPageTabs.trigger("change:budgetCode")
+                #@changeLines = new ChangeLines([], pageModel: @)
+                @changeGroups = new ChangeGroups([], pageModel: @)
+                @budgetApprovals = new BudgetApprovals([], pageModel: @)
+                @budgetHistory = new BudgetHistory([], pageModel: @)
+                @budgetHistory.on 'reset',
+                                  () =>
+                                      @set('currentItem', @budgetHistory.getLast())
+                                      if @budgetHistory.length > 0
                                           title = @budgetHistory.getLast().get('title')
                                           ga('send', 'event', 'navigation', 'budget', title, 1);
 
-                    @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
-                                                .addCollection(@changeGroups)
-                                                .addCollection(@budgetHistory)
-                                                .addCollection(@budgetApprovals)
+                @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
+                                            .addCollection(@changeGroups)
+                                            .addCollection(@budgetHistory)
+                                            .addCollection(@budgetApprovals)
 
-                    if digits >= 4
-                        @on('ready-budget-history', ->
-                            @supports = new TakanaSupports([], pageModel: @)
-                            @readyEvents.push new ReadyAggregator("ready-supports")
-                                                        .addCollection(@supports)
-                            @spending = new TakanaSpending([], pageModel: @)
-                            @readyEvents.push new ReadyAggregator("ready-spending")
-                                                        .addCollection(@spending)
-                        )
-                    readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs").addCollection(@budgetHistory)
-                    @readyEvents.push readyBreadcrumbs
-                    @breadcrumbs = []
-                    maxlen=(budgetCode.length/2)-1
-                    for i in [1..maxlen]
-                        main = null
-                        kids = null
-
-                        if i < 5
-                            code = budgetCode.slice(0,(i+1)*2)
-                            main = new BudgetItem(year: @get('year'), code: code, pageModel: @)
-                            readyBreadcrumbs.addModel(main)
-                            main.on "change:title", ->
-                                window.document.title = "מפתח התקציב - #{main.get('title')}"
-                            main.do_fetch()
-                            kids = new BudgetItemKids([], year: @get('year'), code: code, pageModel: @)
-                            readyBreadcrumbs.addCollection(kids)
-                            @breadcrumbs.push
-                                main: main
-                                kids: kids
-                                last: i == maxlen
-
+                if digits >= 4
                     @on('ready-budget-history', ->
-                        @participants = new Participants([], code: budgetCode, pageModel: @)
-                        readyParticipants = new ReadyAggregator('ready-participants').addCollection(@participants)
-                        @readyEvents.push readyParticipants
+                        @supports = new TakanaSupports([], pageModel: @)
+                        @readyEvents.push new ReadyAggregator("ready-supports")
+                                                    .addCollection(@supports)
+                        @spending = new TakanaSpending([], pageModel: @)
+                        @readyEvents.push new ReadyAggregator("ready-spending")
+                                                    .addCollection(@spending)
                     )
+                readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs")
+                                                .addCollection(@budgetHistory)
+                @readyEvents.push readyBreadcrumbs
+                @breadcrumbs = []
+                maxlen=(budgetCode.length/2)-1
+                for i in [1..maxlen]
+                    main = null
+                    kids = null
 
-                @on 'change:changeGroupId', ->
-                    @changeGroup = new ChangeGroup(pageModel: @)
-                    @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))
-                    @readyEvents.push new ReadyAggregator("ready-changegroup")
-                                                .addModel(@changeGroup)
-                    @changeGroup.doFetch()
-                    @changeGroupExplanation.doFetch()
-                    @changeGroup.on 'change:title_template', =>
-                        title_template = @changeGroup.get('title_template')
-                        title_template = title_template.split('-')
-                        for part in title_template
-                            @addKind(part)
+                    if i < 5
+                        code = budgetCode.slice(0,(i+1)*2)
+                        main = new BudgetItem(year: @get('year'), code: code, pageModel: @)
+                        readyBreadcrumbs.addModel(main)
+                        main.on "change:title", ->
+                            window.document.title = "מפתח התקציב - #{main.get('title')}"
+                        main.do_fetch()
+                        kids = new BudgetItemKids([], year: @get('year'), code: code, pageModel: @)
+                        readyBreadcrumbs.addCollection(kids)
+                        @breadcrumbs.push
+                            main: main
+                            kids: kids
+                            last: i == maxlen
 
+                @on('ready-budget-history', ->
+                    @participants = new Participants([], code: budgetCode, pageModel: @)
+                    readyParticipants = new ReadyAggregator('ready-participants')
+                                                    .addCollection(@participants)
+                    @readyEvents.push readyParticipants
+                )
 
-                @on 'change:mainPage', ->
-                    @budgetItems4 = new CompareRecords([], pageModel: @)
-                    @budgetItems2 = new BudgetItemKids([], year: 2014, code: '00', pageModel: @)
-                    @readyEvents.push new ReadyAggregator("ready-budget-bubbles")
-                                                        .addCollection(@budgetItems2)
-                                                        .addCollection(@budgetItems4)
+            @on 'change:changeGroupId', ->
+                @changeGroup = new ChangeGroup(pageModel: @)
+                @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))
+                @readyEvents.push new ReadyAggregator("ready-changegroup")
+                                            .addModel(@changeGroup)
+                @changeGroup.doFetch()
+                @changeGroupExplanation.doFetch()
+                @changeGroup.on 'change:title_template', =>
+                    title_template = @changeGroup.get('title_template')
+                    title_template = title_template.split('-')
+                    for part in title_template
+                        @addKind(part)
 
-                    @mainBudgetItem = new BudgetItem(year: 2014, code: '00', pageModel: @)
-                    @newBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
-                    @readyEvents.push new ReadyAggregator("ready-main-budget")
-                                                        .addModel(@mainBudgetItem)
-                                                        .addModel(@newBudgetItem)
-                    @mainBudgetItem.do_fetch()
-                    @newBudgetItem.do_fetch()
+            @on 'change:mainPage', ->
+                @budgetItems4 = new CompareRecords([], pageModel: @)
+                @budgetItems2 = new BudgetItemKids([], year: 2014, code: '00', pageModel: @)
+                @readyEvents.push new ReadyAggregator("ready-budget-bubbles")
+                                                    .addCollection(@budgetItems2)
+                                                    .addCollection(@budgetItems4)
 
-                @on 'change:spendingsPage', ->
-                    @newSpendings = new NewSpendings([], {pageModel: @})
-                    @readyEvents.push new ReadyAggregator("ready-spendings-page")
-                                                        .addCollection(@newSpendings);
+                @mainBudgetItem = new BudgetItem(year: 2014, code: '00', pageModel: @)
+                @newBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
+                @readyEvents.push new ReadyAggregator("ready-main-budget")
+                                                    .addModel(@mainBudgetItem)
+                                                    .addModel(@newBudgetItem)
+                @mainBudgetItem.do_fetch()
+                @newBudgetItem.do_fetch()
 
-                @on 'change:kinds', =>
-                    for kind in @get('kinds')
-                        $('body').toggleClass("kind-#{kind}",true)
+            @on 'change:spendingsPage', ->
+                @newSpendings = new NewSpendings([], pageModel: @)
+                @readyEvents.push new ReadyAggregator("ready-spendings-page")
+                                                    .addCollection(@newSpendings)
+
+            @on 'change:kinds', =>
+                for kind in @get('kinds')
+                    $('body').toggleClass("kind-#{kind}",true)
 
         addKind: (kind) ->
             kinds = _.clone(@get('kinds'))
             kinds.push(kind)
             @set('kinds',kinds)
 
-window.models =
+        switchView: (linkParameters) ->
+            if !isNaN(linkParameters['year'])
+                @set('year',linkParameters['year'])
+            else
+                window.location.hash = window.DEFAULT_HOME
+                return
+
+            kind = linkParameters['kind']
+            if kind == "budget"
+                @article = $("article#budget-item-article")
+                @set("budgetCode","00"+linkParameters['code'])
+            else if kind == "transfer"
+                @article = $("article#change-group-article")
+                @set("changeGroupId",linkParameters['code'])
+            else if kind == "entity"
+                @article = $("article#entity-article")
+                @set("entityId",linkParameters['entityId'])
+            else if kind == "main"
+                @article = $("article#main-page-article")
+                @set("mainPage",true)
+            else if kind == "spending"
+                @article = $("article#spendings-page-article")
+                @set("spendingsPage",true)
+            else
+                window.location.hash = window.DEFAULT_HOME
+                return
+
+            @set("flow",linkParameters['flow'])
+            $("article.single-page-article").css("display","none")
+            @article.css("display","inherit")
+            @addKind(kind)
+
+
+    models = {
         BudgetItem: BudgetItem
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
         Entity: Entity
         NewSpendings: NewSpendings
+        pageModel: new PageModel()
+    }
 
-window.pageModel = new PageModel()
+    # TODO remove all global variables and use dependancies
+    window.models = models
+    window.pageModel = models.pageModel
+    window.pageModel
+        .switchView(pageModel.URLSchemeHandlerInstance.linkParameters)
 
-$( ->
-        linkParameters = pageModel.URLSchemeHandlerInstance.linkParameters
-
-        if !isNaN(linkParameters['year'])
-            pageModel.set('year',linkParameters['year'])
-        else
-            window.location.hash = window.DEFAULT_HOME
-            return
-
-        kind = linkParameters['kind']
-        if kind == "budget"
-            pageModel.article = $("article#budget-item-article")
-            pageModel.set("budgetCode","00"+linkParameters['code'])
-            pageModel.URLSchemeHandlerInstance.updateUrl('bl',linkParameters['code'])
-        else if kind == "transfer"
-            pageModel.article = $("article#change-group-article")
-            pageModel.set("changeGroupId",linkParameters['code'])
-            pageModel.URLSchemeHandlerInstance.updateUrl('tr',linkParameters['code'])
-        else if kind == "entity"
-            pageModel.article = $("article#entity-article")
-            pageModel.set("entityId",linkParameters['entityId'])
-            pageModel.URLSchemeHandlerInstance.updateUrl('en',linkParameters['entityId'])
-        else if kind == "main"
-            pageModel.article = $("article#main-page-article")
-            pageModel.set("mainPage",true)
-            pageModel.URLSchemeHandlerInstance.updateUrl('main',"")
-        else if kind == "spending"
-            pageModel.article = $("article#spendings-page-article")
-            pageModel.set("spendingsPage",true)
-            pageModel.URLSchemeHandlerInstance.updateUrl('spending',"")
-        else
-            window.location.hash = window.DEFAULT_HOME
-            return
-
-        pageModel.set("flow",linkParameters['flow'])
-        $("article.single-page-article").css("display","none")
-        pageModel.article.css("display","inherit")
-        pageModel.addKind(kind)
-)
-
-window.Entity = Entity
-window.ReadyAggregator = ReadyAggregator
+    return models
