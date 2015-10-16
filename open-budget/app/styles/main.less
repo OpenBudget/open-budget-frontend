@@ -2423,10 +2423,21 @@ svg rect{
     }
 
     .main-vis-action-buttons {
-        font-weight: bold;
-        fill: grey;
-        font-size: 5em;
-        opacity: 0;
+      font-weight: bold;
+      fill: grey;
+      font-size: 5em;
+      opacity: 0;
+    }
+    .main-vis-back-button,
+    .main-vis-zoom-button{
+      background: url(assets/bubble-back.svg) no-repeat;
+      text-indent: -99999999px;
+      display: block;
+      height: 60px;
+      width: 60px;
+    }
+    .main-vis-zoom-button{
+      background: url(assets/bubble-drill.svg);
     }
 // Team Card
 #teamModal {
