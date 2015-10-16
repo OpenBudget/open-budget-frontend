@@ -315,6 +315,7 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
             sr.html('')
             i = 0
             for suggestion in @suggestions
+              if suggestion?
                 suggestion.index = i
                 i+=1
                 item = $(JST.search_dropdown_item(suggestion))
