@@ -7,7 +7,10 @@
     "jquery": "~1.10.2",
     "underscore": "~1.5.2",
     "jquery.tablesorter": "~2.13.3",
-    "jquery-hashchange": "fujiy/jquery-hashchange" 
+    "jquery-hashchange": "fujiy/jquery-hashchange",
+    "typeahead.js": "=0.9",
+    "hogan": "~3.0.2",
+    "typeahead.js-bootstrap.css": "*"
   },
   "devDependencies": {}
 }

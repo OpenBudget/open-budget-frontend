@@ -50,7 +50,7 @@
 		</div>
 	      </div>
             </div>
-	    
+
             <div class="row">
 	      <div class="col-lg-12">
 		<ol class="breadcrumb template" data-template="breadcrumbs" data-debug="n" data-path="budget/{code}/{year}/parents">
@@ -132,7 +132,7 @@
 	<script src="bower_components/jquery-hashchange/jquery.ba-hashchange.js"></script>
 	<script src="bower_components/typeahead.js/dist/typeahead.min.js"></script>
 	<script src="bower_components/hogan/web/1.0.0/hogan.js"></script>
-	
+
         <!-- endbuild -->
 
         <!-- build:js scripts/main.js -->
@@ -146,8 +146,8 @@
   <h2>בשנת <%= data.year %> תקציב <%= data.title %> הינו </h2>
   <h1>
     <% if ( data.gross_allocated !== null ) { %>
-    <%= format_number(data.gross_allocated) %> 
-    <% } else { %> 
+    <%= format_number(data.gross_allocated) %>
+    <% } else { %>
     <%= format_number(data.net_allocated) %>
     <% } %>
  </h1>
@@ -198,7 +198,7 @@
 	    <% }); %>
 	    </tbody>
 	  </table>
-	  
+
 	  <% }); %>
 	</td>
       </tr>
@@ -285,7 +285,7 @@
       <% }); %>
     </tbody>
   </table>
-  
+
 </script>
 
 <script type="text/plain" id="supports-table">
@@ -339,10 +339,10 @@
       active
       <% } %>">
       <small><%= item.code.substring(2) %></small>
-      <span class="hierarchy-item-title">      
+      <span class="hierarchy-item-title">
 	<%= item.title %>
       </span>
-      <span class="hierarchy-item-sum">      
+      <span class="hierarchy-item-sum">
 	<%= format_number(item.net_allocated) %>
       </span>
     </span>

@@ -69,7 +69,7 @@
                 <% } %>
         </div>
         <div class="widget-popover-content">
-            <h2 class="used"><%= format_full_number( get("source").get('net_used')*1000 ) %>₪</h2>
+            <h2 class="used"><%= format_full_number( Math.round( get("source").get('net_used')*1000 ) ) %>₪</h2>
             <p class="tooltip-note">(ההוצאה בפועל)</p>
         </div>
       <% } %>

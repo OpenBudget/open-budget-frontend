@@ -1,0 +1,242 @@
+<div style="direction:rtl">
+    <div class="alert alert-danger" role="alert" ng-show="main.url!==null &amp;&amp; main.username===null">
+        <p>ברוכים הבאים לאתר! אם זו פעם ראשונה שלכם פה, מומלץ לקרוא קצת על <a href="#/about">מה עושים פה</a></p>
+        <p>שימו לב - על מנת לשמור שינויים בשרת עליכם <a ng-href="{{main.url}}">להיכנס</a></p>
+    </div>
+    <div class="alert alert-success" role="alert" ng-show="main.url!==null &amp;&amp; main.username!==null">
+        {{main.username}}, טוב שחזרת! (לחצו כאן בשביל <a ng-href="{{main.url}}">לצאת</a>)
+    </div>
+</div>
+
+<div ng-controller="YearController as yearCtrl">
+    <nav>
+        <ul class="pagination">
+            <li ng-repeat="year in yearCtrl.years" ng-class="{ 'active':(year == main.selected_year)}">
+                <a role="button" ng-click="main.setYear(year)" >{{ year }}<br/>
+                    <small><center>{{((100 * main.stats[year].matches) / (main.stats[year].matches + main.stats[year].invalid + main.stats[year].missing) | number:0) + "%" }}</center></small>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <a ng-show="yearCtrl.show" ng-click="yearCtrl.toggle()">הצג עוד שנים</a>
+    <a ng-hide="yearCtrl.show" ng-click="yearCtrl.toggle()">הצג פחות שנים</a>
+</div>
+
+<nav ng-controller="LevelController as levelCtrl" style="direction:rtl">
+    <ul class="pagination">
+        <li ng-repeat="level in levelCtrl.levels" ng-class="{ 'active':(level.level == main.selected_level)}">
+            <a role="button" ng-click="main.setLevel(level.level)" >{{ level.name }} ({{ level.level}} ספרות)<br/>
+                <small><center>{{((100 * main.stats[main.selected_year].levels[level.level].matches) / (main.stats[main.selected_year].levels[level.level].matches + main.stats[main.selected_year].levels[level.level].invalid + main.stats[main.selected_year].levels[level.level].missing) | number:0) + "%"}}</center></small>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<nav ng-controller="KindController as kindCtrl" style="direction:rtl">
+    <ul class="pagination">
+        <li ng-repeat="kind in kindCtrl.kinds" ng-class="{ 'active':(kind.kind == main.selected_kind)}">
+            <a role="button" ng-click="main.setKind(kind.kind)" >{{ kind.name }}
+                <br/>
+                <small>({{main.kindCounts[main.selected_level][kind.kind]}})</small>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<div style="direction:rtl">
+    <div ng-repeat="item in main.matches | filter:{match_kind:main.selected_kind,depth:main.selected_level/2} | orderBy:code ">
+        <div class="panel budget-item"
+             ng-class="{ 'panel-danger':(item.match_kind==='invalid'), 'panel-warning': (item.match_kind==='missing'), 'panel-success': (item.match_kind==='curated'), 'panel-info':(item.match_kind==='heuristic') }">
+            <div class="panel-heading budget-item-header"
+                 ng-class="{ open: item.code===main.selected_code, closed: item.code!==main.selected_code}"
+                 ng-click="main.setItem(item)">
+                <div class="panel-title">
+                    <span ng-show="item.match_kind==='invalid'">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        &nbsp;לא תקין:
+                    </span>
+                    <span ng-show="item.match_kind==='missing'">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                        &nbsp;חסר:
+                    </span>
+                    <span ng-show="item.match_kind==='curated'">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        &nbsp;הותאם ידנית:
+                    </span>
+                    <span ng-show="item.match_kind==='heuristic'">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        &nbsp;התאמה משוערת:
+                    </span>
+                    <span class="code">&nbsp;{{item.code.substring(2)}}</span> &mdash; <span class="title">{{item.title}}</span>
+                </div>
+            </div>
+            <div class="panel-body budget-item-details" ng-if="item.code===main.selected_item.code">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <item-breadcrumbs bitem="main.selected_item"></item-breadcrumbs><b style="font-size:125%">{{main.selected_item.title}}</b>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span>הצג סעיפים
+                                    <a ng-click="main.fetchSiblings()">אחים</a>/<a ng-click="main.fetchKids()">בנים</a>
+                                     של <b>{{main.selected_item.title}}</b>
+                                </span>
+                                <div ng-show="main.selected_item_relatives">
+                                    <ul>
+                                        <li ng-repeat="relative in main.selected_item_relatives | orderBy:'code'">
+                                            {{relative.code.substring(2)}} &mdash; {{relative.title}}
+                                            <div ng-show="(filteredEqivs = (relative.equiv_code | filter:(main.selected_item.year-1)+'/')).length > 0">
+                                                משוייך כרגע לסעיפים ב-{{main.selected_item.year-1}}:
+                                                <span ng-repeat="code in filteredEqivs">{{code.substring(7)}}&nbsp;</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <b>תקציב ב-{{main.selected_year}} &mdash;
+                                    <ul>
+                                        <li>מקורי: {{main.selected_item.net_allocated*1000 | currency:" ₪ ":0}}</li>
+                                        <li>מאושר: {{main.selected_item.net_revised*1000 | currency:" ₪ ":0}}</li>
+                                        <li>ביצוע: {{main.selected_item.net_used*1000 | currency:" ₪ ":0}}</li>
+                                    </ul>
+                                </b>
+                                <div class="alert alert-danger" role="alert" ng-show="main.selected_item.match_status.pending.length>0">
+                                    שימו לב: יש שינויים ממתינים בסעיף זה מאת {{main.selected_item.match_status.pending}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b style="font-size:125%">התאמה נוכחית</b>
+                    </div>
+                    <div class="panel-body">
+                        <div class="alert alert-danger" role="alert" ng-show="main.selected_item.match_status.invalid.length>0">
+                            ברמה זו קיימות התאמות מרובות לסעיפים הבאים המהווים כפילות:
+                            <ul>
+                                <li ng-repeat="code in main.selected_item.match_status.invalid track by $index">
+                                    {{code.substring(2)}}
+                                    <ul>
+                                        <li ng-repeat='src in main.getCuratedRev(code)'>
+                                            {{src.code.substring(2)}} &mdash; {{src.title}}
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-show="(curatedItems = item.curated | orderBy:'code').length > 0">
+                            <b>סך הסעיפים המותאמים מ-{{main.selected_year-1}} &mdash;><br>/
+                                מקורי: {{main.curated_net_allocated*1000 | currency:" ₪ ":0}} /
+                                מאושר: {{main.curated_net_revised*1000 | currency:" ₪ ":0}} /
+                                ביצוע: {{main.curated_net_used*1000 | currency:" ₪ ":0}}</b><br/>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="curatedItem in curatedItems">
+                                    <span>
+                                        <button type="button" class="btn btn-danger btn-sm"  ng-click="main.removeCuratedItem(curatedItem)">
+                                            <span class="glyphicon glyphicon-trash button"></span>
+                                        </button>
+                                        {{curatedItem.code.substring(2)}} &mdash; <item-breadcrumbs bitem="curatedItem"></item-breadcrumbs>
+                                        <b>{{curatedItem.title}}</b>
+                                        <div><small>
+                                            (מקורי: {{curatedItem.net_allocated*1000 | currency:" ₪ ":0}},
+                                                מאושר: {{curatedItem.net_revised*1000 | currency:" ₪ ":0}},
+                                                ביצוע: {{curatedItem.net_used*1000 | currency:" ₪ ":0}})
+                                        </small></div>
+                                    </span>
+                                </li>
+                            </ul>
+                            <button class="btn btn-primary" ng-click="main.save(main.selected_item)"><span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;שמירת ההתאמה</button>
+                        </div>
+                        <div ng-show="curatedItems.length==0">
+                            <div><b><span class="glyphicon glyphicon-alert"></span>&nbsp;אין סעיפים להתאמה...</b></div>
+                            <br/>
+                            <button class="btn btn-primary" ng-click="main.save(main.selected_item)"><span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;סימון כסעיף חדש</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b style="font-size:125%">הוספת התאמה</b>
+                    </div>
+                    <div class="panel-body">
+                        <div ng-show="main.inspected_item===null">
+                            <div class="input-group" style="direction:ltr">
+                                  <input type="text" class="form-control" style="direction:rtl" placeholder="חיפוש שם סעיף בתקציב" aria-describedby="basic-addon1" ng-model="main.query" ng-change="main.fetchResults()">
+                                  <span class="input-group-addon glyphicon glyphicon-search" id="basic-addon1"></span>
+                            </div>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="result in main.results | orderBy:'real_code'" ng-click="main.inspectItem(result.real_code,result.year)">
+                                    <span class="glyphicon glyphicon-circle-arrow-left"></span>&nbsp;
+                                        {{result.real_code}} &mdash; {{result.title}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-hide="main.inspected_item===null">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b>סעיפים בנים</b>
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-repeat="kid in main.inspected_item_kids" ng-click="main.inspectItem(kid.code.substring(2),kid.year)">
+                                            <span class="glyphicon glyphicon-circle-arrow-left"></span>&nbsp;
+                                                {{kid.code.substring(2)}} &mdash; {{kid.title}}
+                                                <div ng-show="(filteredEqivs = (kid.equiv_code | filter:main.selected_item.year+'/')).length > 0">
+                                                    משוייך כרגע לסעיפים ב-{{main.selected_item.year}}:
+                                                    <span ng-repeat="code in filteredEqivs">{{code.substring(7)}}&nbsp;</span>
+                                                </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-5">
+                                    סעיף תקציבי: <br>
+                                    <item-breadcrumbs bitem="main.inspected_item"></item-breadcrumbs><b>{{ main.inspected_item.title }} (<small>{{main.inspected_item.code.substring(2)}}</small>)</b>
+                                    <div>
+                                        <p>מקורי: {{main.inspected_item.net_allocated*1000 | currency:" ₪ ":0}}</p>
+                                        <p>מאושר: {{main.inspected_item.net_revised*1000 | currency:" ₪ ":0}}</p>
+                                        <p>ביצוע: {{main.inspected_item.net_used*1000 | currency:" ₪ ":0}}</p>
+                                    </div>
+                                    <a class="btn btn-default" ng-click="main.clearInspectedItem()" role="button">חזרה לחיפוש</a>
+                                    <a class="btn btn-success" ng-click="main.addCuratedItem(main.inspected_item)" role="button">הוספה להתאמה</a>
+                                </div>
+                                <div class="col-md-1">
+                                    <div ng-show="main.inspected_item.code.length>4">
+                                        <b ng-click="main.inspectItem(main.inspected_item.code.substring(2,main.inspected_item.code.length-2),main.inspected_item.year)"><span class="glyphicon glyphicon-circle-arrow-up"></span>סעיף אב</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="jumbotron">
+  <h1>'Allo, 'Allo!</h1>
+  <p class="lead">
+    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
+    Always a pleasure scaffolding your apps.
+  </p>
+  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+</div>
+
+<div class="row marketing">
+  <h4>HTML5 Boilerplate</h4>
+  <p>
+    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
+  </p>
+
+  <h4>Angular</h4>
+  <p>
+    AngularJS is a toolset for building the framework most suited to your application development.
+  </p>
+
+  <h4>Karma</h4>
+  <p>Spectacular Test Runner for JavaScript.</p>
+</div> -->
