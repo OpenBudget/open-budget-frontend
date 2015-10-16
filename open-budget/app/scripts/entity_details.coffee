@@ -114,10 +114,13 @@ class ExemptionFullDetailsView extends Backbone.View
     className: 'fullDetailsRow'
     render: ->
         @$el.html window.JST.exemption_full_details(@model)
+        @$el.show("0", () =>
+          @$el.find("div.exemption-full-details-div").slideToggle("slow"))
         @
     remove: ->
-        @$el.detach()
-        @undelegateEvents()
+        @$el.find("div.exemption-full-details-div").slideToggle(() =>
+          @$el.detach()
+          @undelegateEvents())
 
 $(->
     console.log "entity-details"
