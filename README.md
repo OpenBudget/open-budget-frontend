@@ -7,10 +7,10 @@ Contribute
 Check our issues [here](https://github.com/OpenBudget/open-budget-frontend/issues) or on [Huboard](https://huboard.com/OpenBudget/open-budget-frontend/#/)
 
 
-Install on OS X
+Install on Linux / OS X
 ---------------
 
-###Install Brew
+###OSX only - Install Brew
 
 First make sure you have npm installed, if not install it according to the instructions here: http://brew.sh/
     
@@ -24,6 +24,7 @@ Checkout the project from ```https://github.com/OpenBudget/open-budget-frontend/
     $ bower update
     $ sudo npm install -g grunt-cli
     $ patch -p0 < bootstrap-rtl.less.patch
+    $ git submodule update --init
     $ grunt
     $ grunt serve
  
