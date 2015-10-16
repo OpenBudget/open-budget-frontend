@@ -88,7 +88,7 @@ process_templates = (code,year) ->
                         api_path = api_path.replace('{code^^}',"00"+code.substring(0,code.length-4))
                         api_path = api_path.replace('{code^^^}',"00"+code.substring(0,code.length-6))
                         api_path = api_path.replace('{year}',year)
-                        url = 'http://the.open-budget.org.il/api/' + api_path
+                        url = 'http://obudget.org/api/' + api_path
                         render_template = (data) ->
                                 data = {'data':data}
                                 data.extra = extra
@@ -113,7 +113,7 @@ process_templates = (code,year) ->
 get_program = ->
         program_num = $("#search-item").val()
         console.log "loading new program "+program_num
-        window.location.hash = "#"+program_num+"/"+2013
+        window.location.hash = "#"+program_num+"/"+2015
 
 $ ->
         $(".template, .tab-content").css("display","none")
@@ -134,14 +134,18 @@ $ ->
                 name: 'budgets'
                 limit: 20
                 engine: Hogan
-                template: [ '<p class="item-code">{{code}}</p>'
+                template: [ '<p class="item-code">{{_code}}</p>'
                             '<p class="item-title">{{title}}</p>' ].join('')
                 remote:
-                        url: 'http://the.open-budget.org.il/api/search/budget/2013?q=%QUERY&limit=20'
-                        dataType: 'jsonp'
+                        url: 'http://www.obudget.org/api/search/full_text?q=%QUERY&limit=20&types=BudgetLine&year=2015'
+                        dataType: 'json'
                         filter: (l) ->
                                 for x in l
-                                        x._code = x.code.substring(2)
+                                        if x.real_code?
+                                            code = x.real_code
+                                        else
+                                            code = x.code.substring(2)
+                                        x._code = code
                                         x.value = x._code
                                 l
         )

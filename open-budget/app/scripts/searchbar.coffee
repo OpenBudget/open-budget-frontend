@@ -313,11 +313,12 @@ class SearchBar extends Backbone.View
         sr.html('')
         i = 0
         for suggestion in @suggestions
-            suggestion.index = i
-            i+=1
-            item = $(JST.search_dropdown_item(suggestion))
-            sr.append(item)
-            item.data(suggestion)
+            if suggestion?
+                suggestion.index = i
+                i+=1
+                item = $(JST.search_dropdown_item(suggestion))
+                sr.append(item)
+                item.data(suggestion)
 
     treeBtnClick: (event) =>
         console.log('treeBtnClick')

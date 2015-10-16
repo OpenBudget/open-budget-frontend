@@ -508,9 +508,16 @@ class IndepthWidget extends Backbone.View
                             # to use the current timestam
                             endTimestamp = new Date().getTime()
 
-                        if startTimestamp? and endTimestamp?
-                            @termSegmentTree.pushInterval(startTimestamp, endTimestamp, participant)
-                    @termSegmentTree.buildTree();
+                        try
+                            if startTimestamp? and endTimestamp?
+                                @termSegmentTree.pushInterval(startTimestamp, endTimestamp, participant)
+                        catch e
+                            console.log "segment tree pushInterval error: ",e,participant,@participants
+                    try
+                        @termSegmentTree.buildTree()
+                    catch e
+                        console.log "segment tree build error: ",e,@participants
+
 
                 divs = newTumbnails.append("div")
                                 .attr('class','participantThumbnail')
