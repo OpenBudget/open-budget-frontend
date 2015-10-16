@@ -238,6 +238,8 @@ angular.module('matchesApp')
       };
       this.setInspectedItem = function(item) {
           thiz.inspected_item = item;
+          item.breadcrumbs = [];
+          thiz.fetchBreadcrumbs(item);
       };
       this.setInspectedItemKids = function(kids) {
           thiz.inspected_item_kids = kids;
