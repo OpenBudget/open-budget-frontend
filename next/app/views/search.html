@@ -1,0 +1,24 @@
+<div class="jumbotron">
+  <h1>חיפוש</h1>
+</div>
+
+<div class="row marketing">
+
+  <form class="input-group input-group-lg search-form" ng-submit="search.search(search.query)">
+    <input type="text" class="form-control" ng-model="search.query" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+      </span>
+  </form>
+
+  <hr>
+
+  <h2 ng-show="!!search.results">תוצאות:</h2>
+
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="result in search.results" >{{ result.name }}</li>
+  </ul>
+
+</div>
