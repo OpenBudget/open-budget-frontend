@@ -293,6 +293,12 @@ angular.module('matchesApp')
           $http.get("http://www.obudget.org/api/sysprop/match-stats").then(success);
       };
 
+      this.getItemURL = function(item) {
+          return "http://www.obudget.org/g2/bl/<code>/#budget/<code>/<year>/main"
+                 .replace(/<code>/g, item.code)
+                 .replace(/<year>/g, item.year);
+      };
+
       this.greeting();
       this.fetchMatches();
       this.fetchStats();
