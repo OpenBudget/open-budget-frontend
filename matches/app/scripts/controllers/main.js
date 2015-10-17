@@ -238,6 +238,8 @@ angular.module('matchesApp')
       };
       this.setInspectedItem = function(item) {
           thiz.inspected_item = item;
+          item.breadcrumbs = [];
+          thiz.fetchBreadcrumbs(item);
       };
       this.setInspectedItemKids = function(kids) {
           thiz.inspected_item_kids = kids;
@@ -289,6 +291,12 @@ angular.module('matchesApp')
               thiz.stats = response.data.value;
           };
           $http.get("http://www.obudget.org/api/sysprop/match-stats").then(success);
+      };
+
+      this.getItemURL = function(item) {
+          return "http://www.obudget.org/g2/bl/<code>/#budget/<code>/<year>/main"
+                 .replace(/<code>/g, item.code)
+                 .replace(/<year>/g, item.year);
       };
 
       this.greeting();
