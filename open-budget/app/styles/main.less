@@ -2372,6 +2372,35 @@ svg rect{
   // overflow: auto;
 }
 
+.nav-tabs.nav-justified {
+  > li > a {
+    font-weight: 700;
+    background: @ultralightgray;
+    outline: 1px solid @lightgray;
+    outline: 0 1px;
+    border-top: 1px solid @lightgray;
+    border-bottom: 3px solid @lightgray;
+    padding: 12px 15px 8px;
+    border-radius: 0;
+    color: @darkgray;
+    margin-bottom: 0;
+    &:hover,&:focus {
+      color: @link;
+    }
+  }
+
+  > li.active > a{
+    color: @text;
+    outline: 1px;
+    border-top: 3px solid @text;
+    background: white;
+    padding: 10px 15px;
+    &:hover,&:focus {
+      border-top: 3px solid @text;
+    }
+  }
+}
+
   .node {
     border: solid 1px white;
     font: 10px sans-serif;
@@ -2400,10 +2429,21 @@ svg rect{
     }
 
     .main-vis-action-buttons {
-        font-weight: bold;
-        fill: grey;
-        font-size: 5em;
-        opacity: 0;
+      font-weight: bold;
+      fill: grey;
+      font-size: 5em;
+      opacity: 0;
+    }
+    .main-vis-back-button,
+    .main-vis-zoom-button{
+      background: url(assets/bubble-back.svg) no-repeat;
+      text-indent: -99999999px;
+      display: block;
+      height: 60px;
+      width: 60px;
+    }
+    .main-vis-zoom-button{
+      background: url(assets/bubble-drill.svg);
     }
 // Team Card
 #teamModal {
