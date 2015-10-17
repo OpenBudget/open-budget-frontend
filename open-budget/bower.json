@@ -16,5 +16,8 @@
     "bootstrap-tour": "~0.10.1",
     "pivottable": "~1.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "d3": "~3.4.1"
+  }
 }

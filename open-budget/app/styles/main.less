@@ -2449,12 +2449,12 @@ div.exemptions-alerts {
 
   div.exemptions-alerts-content {
     background-color: #f7f7f7;
-    max-height: 60vh;
+    max-height: 76vh;
     overflow-y: auto;
     direction: ltr;
 
     div.exemption-alert {
-      padding: 1em 0.5em 1em 0.5em;
+      padding: 1em 0.5em 1em 0em;
       direction: rtl;
       border-bottom: 3px solid #f3f3f4;
       border-left: 5px solid #cfd1d2;
@@ -2529,6 +2529,8 @@ table.table-expandable {
       cursor: pointer;
       display: block;
       margin: auto;
+      margin-top: 2px;
+      color: gray;
     }
   }
 
@@ -2538,14 +2540,95 @@ table.table-expandable {
       display: block;
       margin: auto;
       font-weight: bold;
+      text-align: center;
     }
   }
 }
+
 .exemption-full-details {
-  h4 {
-    font-weight: bold;
+  background-color: #ececec;
+-webkit-box-shadow: inset 0px 12px 5px -6px rgba(0,0,0,0.06);
+-moz-box-shadow: inset 0px 12px 5px -6px rgba(0,0,0,0.06);
+box-shadow: inset 0px 12px 5px -6px rgba(0,0,0,0.06);
+}
+
+.arrow-box {
+  margin: 13px;
+  background-color: white;
+  padding: 20px;
+  position: relative;
+  border: 2px solid lightgrey;
+}
+
+
+  .arrow-box:after, .arrow-box:before {
+	bottom: 100%;
+	left: 97%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+  .arrow-box:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: white;
+	border-width: 11px;
+	margin-left: -11px;
+}
+.arrow-box:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: lightgrey;
+	border-width: 14px;
+	margin-left: -14px;
+}
+
+.arrow-box{
+
+  ul{
+    padding: 0px;
+  }
+
+  li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 35px;
+    padding-right:10px ;
+    border-right: solid 2px lightgrey;
+  }
+
+    .table{
+    margin: 0px;
+  }
+    h4{
+    color: #000000;
   }
 }
+
+.table-forms{
+  margin-top: 20px;
+  padding-right: 10px;
+  border-right: solid 2px lightgrey;
+
+  .table > thead:first-child > tr:first-child > th{
+    padding: 0;
+  }
+
+  h4{
+    color: #000000;
+  }
+
+
+
+    .table-forms .glyphicon-paperclip:before{
+    vertical-align: middle;
+  }
+}
+
+
+
 
 table.exemption-details {
  td.exemption-volume {
@@ -2558,3 +2641,102 @@ table.exemption-details {
    width: 100px;
  }
 }
+
+.col-sm-3{
+  background-color: silver;
+  margin: 0px;
+  padding: 0px;
+}
+
+.col-sm-9{
+  background-color: #ececec;
+    margin: 0px;
+  padding: 0px;
+
+}
+
+.left-con {
+  margin: 0px;
+  height: 76vh;
+  overflow-y: scroll;
+}
+
+  // Scrollbar
+
+.left-con::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.left-con::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+.left-con::-webkit-scrollbar-thumb {
+  background: #ce0a05;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.left-con::-webkit-scrollbar-thumb:hover {
+  background: #ce0a05;
+}
+.left-con::-webkit-scrollbar-thumb:active {
+  background: #9f0d09;
+}
+.left-con::-webkit-scrollbar-track {
+  background: #ffffff;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.left-con::-webkit-scrollbar-track:hover {
+  background: #ffffff;
+}
+.left-con::-webkit-scrollbar-track:active {
+  background: #ffffff;
+}
+.left-con::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.left-info{
+    background-color: white;
+  margin: 0 30px;
+  padding-bottom: 3px;
+  -webkit-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.3);
+-moz-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.3);
+box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.3);
+}
+
+.entity-name{
+    font-size: 27px;
+  padding: 0px;
+    border-bottom: 0px;
+  margin: 30px;
+    color: black;
+    display: inline-block;
+    text-align: right;
+}
+
+.manof-name{
+    font-size: 14px;
+margin: 35px 0 0 30px;
+    display: inline-block;
+    float: left;
+  color: black;
+  text-decoration: underline;
+
+}
+
+.info{
+  margin: 0 25px 25px 25px;
+  padding-top: 25px;
+}
+
+.entity-title{
+  font-size: 18px;
+    font-weight: bold;
+  margin: 0px;
+  padding-bottom: 10px;
+}
+
+
+
