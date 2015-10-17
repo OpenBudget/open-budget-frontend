@@ -96,6 +96,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <a target="_blank" ng-href="{{main.getItemURL(main.selected_item)}}">קישור לסעיף במפתח התקציב</a><br>
                                 <b>תקציב ב-{{main.selected_year}} &mdash;
                                     <ul>
                                         <li>מקורי: {{main.selected_item.net_allocated*1000 | currency:" ₪ ":0}}</li>
@@ -198,7 +199,8 @@
                                 </div>
                                 <div class="col-md-5">
                                     סעיף תקציבי: <br>
-                                    <item-breadcrumbs bitem="main.inspected_item"></item-breadcrumbs><b>{{ main.inspected_item.title }} (<small>{{main.inspected_item.code.substring(2)}}</small>)</b>
+                                    <item-breadcrumbs bitem="main.inspected_item"></item-breadcrumbs><b>{{ main.inspected_item.title }} (<small>{{main.inspected_item.code.substring(2)}}</small>)</b><br>
+                                    <a target="_blank" ng-href="{{main.getItemURL(main.inspected_item)}}">קישור לסעיף במפתח התקציב</a><br>
                                     <div>
                                         <p>מקורי: {{main.inspected_item.net_allocated*1000 | currency:" ₪ ":0}}</p>
                                         <p>מאושר: {{main.inspected_item.net_revised*1000 | currency:" ₪ ":0}}</p>
