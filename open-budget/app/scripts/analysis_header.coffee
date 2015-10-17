@@ -1,92 +1,95 @@
-window.up_or_down = (allocated,revised ) ->
-            if allocated > revised
-                return ["קטן","מ"]
-            else if allocated < revised
-                return ["הוגדל","מ"]
-            else
-                return ["עמד","על"]
+define(['backbone', 'models'], (Backbone, models) ->
 
-window.increase_or_cut = (allocated,revised ) ->
-            if allocated > revised
-                return "קיצוץ זה הביא"
-            else
-                return "תוספת זו הביאה"
+    window.up_or_down = (allocated,revised ) ->
+                if allocated > revised
+                    return ["קטן","מ"]
+                else if allocated < revised
+                    return ["הוגדל","מ"]
+                else
+                    return ["עמד","על"]
 
-window.transfers_by_year = (year) ->
-            return arr = $.grep(pageModel.changeGroups.models, (el,i) ->
-                el.attributes.year is year)
+    window.increase_or_cut = (allocated,revised ) ->
+                if allocated > revised
+                    return "קיצוץ זה הביא"
+                else
+                    return "תוספת זו הביאה"
 
-window.num_of_transfers_in_year_text = (year) ->
-            arr = transfers_by_year(year)
-            if arr.length > 1
-                return String(arr.length) + " העברות"
-            else
-                return "העברה אחת"
+    window.transfers_by_year = (year) ->
+                return arr = $.grep(pageModel.changeGroups.models, (el,i) ->
+                    el.attributes.year is year)
 
-
-
-class HeaderAnalyzer
-
-    shouldParticipate: () ->
-        false
-
-    analyze: () ->
-        ""
-
-class BudgetAnalyzer extends HeaderAnalyzer
-
-    shouldParticipate: () ->
-        window.pageModel.get('budgetCode')?
-
-class CurrentBudgetAnalyzer extends BudgetAnalyzer
-
-    shouldParticipate: () ->
-        # make sure currentItem exists - /equivs api can return an empty result
-        window.pageModel.get('currentItem')?.attributes.net_allocated?
-
-    analyze: () ->
-        window.JST.header__current_budget( pageModel.get('currentItem').toJSON() )
-
-class ChangedThisYearAnalyzer extends BudgetAnalyzer
-
-    shouldParticipate: () ->
-        res = false
-        # make sure currentItem exists - /equivs api can return an empty result
-        if window.pageModel.get('currentItem')
-            year = window.pageModel.get('currentItem').attributes.year
-            res = transfers_by_year(year).length > 0
-
-        return res
-
-
-    analyze: () ->
-        window.JST.header__changed_this_year( pageModel.get('currentItem').toJSON())
+    window.num_of_transfers_in_year_text = (year) ->
+                arr = transfers_by_year(year)
+                if arr.length > 1
+                    return String(arr.length) + " העברות"
+                else
+                    return "העברה אחת"
 
 
 
-class HeaderView extends Backbone.View
+    class HeaderAnalyzer
 
-    initialize: ->
-        analyzers = [
-            new CurrentBudgetAnalyzer()
-            new ChangedThisYearAnalyzer()
-        ]
+        shouldParticipate: () ->
+            false
 
-        @analyzers = []
-        for analyzer in analyzers
-            if analyzer.shouldParticipate()
-                @analyzers.push( analyzer )
+        analyze: () ->
+            ""
 
-        @render()
+    class BudgetAnalyzer extends HeaderAnalyzer
 
-    render: ->
-        @$el.html('')
-        for analyzer in @analyzers
-            @$el.append( analyzer.analyze() )
+        shouldParticipate: () ->
+            window.pageModel.get('budgetCode')?
 
-$( ->
-    if window.pageModel.get('budgetCode')?
-        callback = _.after(2, -> window.headerView = new HeaderView(el: window.pageModel.article.find(".brief")))
-        window.pageModel.on('ready-budget-history', callback)
-        window.pageModel.on('ready-breadcrumbs', callback)
+    class CurrentBudgetAnalyzer extends BudgetAnalyzer
+
+        shouldParticipate: () ->
+            # make sure currentItem exists - /equivs api can return an empty result
+            window.pageModel.get('currentItem')?.attributes.net_allocated?
+
+        analyze: () ->
+            window.JST.header__current_budget( pageModel.get('currentItem').toJSON() )
+
+    class ChangedThisYearAnalyzer extends BudgetAnalyzer
+
+        shouldParticipate: () ->
+            res = false
+            # make sure currentItem exists - /equivs api can return an empty result
+            if window.pageModel.get('currentItem')
+                year = window.pageModel.get('currentItem').attributes.year
+                res = transfers_by_year(year).length > 0
+
+            return res
+
+
+        analyze: () ->
+            window.JST.header__changed_this_year( pageModel.get('currentItem').toJSON())
+
+
+
+    class HeaderView extends Backbone.View
+
+        initialize: ->
+            analyzers = [
+                new CurrentBudgetAnalyzer()
+                new ChangedThisYearAnalyzer()
+            ]
+
+            @analyzers = []
+            for analyzer in analyzers
+                if analyzer.shouldParticipate()
+                    @analyzers.push( analyzer )
+
+            @render()
+
+        render: ->
+            @$el.html('')
+            for analyzer in @analyzers
+                @$el.append( analyzer.analyze() )
+
+    if models.pageModel.get('budgetCode')?
+        callback = _.after(2, -> window.headerView = new HeaderView(el: models.pageModel.article.find(".brief")))
+        models.pageModel.on('ready-budget-history', callback)
+        models.pageModel.on('ready-breadcrumbs', callback)
+
+    HeaderView
 )

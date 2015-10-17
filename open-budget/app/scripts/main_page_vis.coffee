@@ -30,7 +30,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                 index: 0
                 category: -> "focused"
                 x: $el.width()/2
-                y: @item_height/2
+                y: 300
 
             @focusedCenter
 
@@ -130,19 +130,26 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
             console.log("MainPageVis: initialize")
             @rendered = false
             @model.on 'ready-budget-bubbles', =>
-                console.log("MainPageVis: Received event ready-budget-bubbles")
+                stateChange = (state, node) =>
+                    if (state == "initial")
+                        @$bubbleContainer.find(".bubble-group-label").remove()
+                        @$el.find("#grouping-kind").css("pointer-events", "").fadeTo(500, 1)
+                        models.pageModel.URLSchemeHandlerInstance.removeAttribute(
+                            "focusOn", false
+                        )
+                        @chart.toggleColorLegend(@toggle == 0)
+                        @chart.toggleCircleLegend(@toggle == 0)
+                        @addBubbleLabels()
+                    else if (state == "centered")
+                        @$bubbleContainer.find(".bubble-group-label").remove()
+                        @$el.find("#grouping-kind").css("pointer-events", "none").fadeTo(500, 0)
+                        @chart.toggleColorLegend(true)
+                        @chart.toggleCircleLegend(true)
+                        @addBubbleLabels(node)
                 @chart = new BubbleChart(
                     el: @$el.find("#bubble-chart"),
                     addSubNodes: @addKids,
-                    stateChange: (state) =>
-                        if (state == "initial")
-                            @$bubbleContainer.find(".bubble-group-label").remove()
-                            @$el.find("#grouping-kind").css("pointer-events", "").fadeTo(500, 1)
-                            models.pageModel.URLSchemeHandlerInstance.removeAttribute(
-                                "focusOn", false
-                            )
-                        else if (state == "centered")
-                            @$el.find("#grouping-kind").css("pointer-events", "none").fadeTo(500, 0)
+                    stateChange: stateChange
                 )
                 @chart_el = d3.select(@chart.el)
                 @$bubbleContainer = @$el.find("#bubble-chart-container")
@@ -151,7 +158,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                 @toggle = 0
                 if @model.URLSchemeHandlerInstance && @model.URLSchemeHandlerInstance.getAttribute('toggle')
                     @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
-                    $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
+                $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
                 @recalc_centers()
                 @render()
 
@@ -206,6 +213,9 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
             @recalc_centers()
             @chart.start()
 
+            @chart.toggleColorLegend(@toggle == 0)
+            @chart.toggleCircleLegend(@toggle == 0)
+
         addBubbleLabels: (centeredNode) ->
           # Check if labels already exist
           @$bubbleContainer.find(".bubble-group-label").remove()
@@ -221,12 +231,13 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                     left: @$bubbleContainer.width()/2 + "px"
                 }).appendTo(@$bubbleContainer)
 
-          for group, i in title_data
-            if group.title?
-              $(JST.bubble_group_label(group)).css({
-                top: (group.y - center.item_height/2) + "px",
-                left: group.x + "px"
-              }).appendTo(@$bubbleContainer)
+          else
+              for group, i in title_data
+                if group.title?
+                  $(JST.bubble_group_label(group)).css({
+                    top: (group.y - center.item_height/2) + "px",
+                    left: group.x + "px"
+                  }).appendTo(@$bubbleContainer)
 
         addKids: (node, readyCallback) =>
             code = node.src.get('code')
@@ -248,9 +259,12 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                         fill_color: null
                         stroke_color: null
                         tooltip_contents: -> JST.bubble_tooltip(@)
-                        center: null,
-                        part: 0,
+                        center: null
+                        part: 0
                         subNode: true
+                        click: (d) =>
+                            console.log "click", d, model
+                            window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(d.id, model.get('year'))
 
                     kidNodes.push(node)
 

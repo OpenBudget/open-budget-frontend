@@ -36,6 +36,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
     MAX_RADIUS = 85
     DURATION = 1000
 
+    MIDDLE = 300
+
     # When loading the scripts as AMD modules d3-tip does not assigns itself
     # to d3.tip
     d3.tip = d3tip
@@ -52,7 +54,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
         @width = @$el.width()
         @height = @$el.height()
-        @range = [0, MAX_RADIUS]
+        @range = [2, MAX_RADIUS]
 
         @circles = d3.select()
         @childCircles = d3.select()
@@ -63,6 +65,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                        .direction("n")
                        .offset((d) => [35,0])
                        .html((d) -> d.tooltip_contents())
+
+        @circleLegendOpacity = 1
 
         # used when setting up force and
         # moving around nodes
@@ -139,8 +143,6 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
               @feFuncB
                 .attr("tableValues", parseInt(color[3])/255)
 
-
-
       buildLayoutForceObject: (d) ->
           @force = d3.layout.force()
                       .size([@width, @height])
@@ -180,7 +182,6 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                                 d.y - offset
                             )
 
-
       setHeight: (height) ->
           @height = height
           d3.select(@el)
@@ -204,15 +205,15 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           @mainFocusCenter = $.extend({}, focusCenter)
           @mainFocusCenter.category = -> "mainFocus"
           @focusCenter = $.extend({}, focusCenter)
-          @focusCenter.x = @width / 2 - 42.5
-          @focusCenter.y = @height / 2 - 42.5
+        #   @focusCenter.x = @width / 2 - 42.5
+        #   @focusCenter.y = 300
           @focusCenter.category = -> "focused"
 
       replaceCenteredNode: (node, doNotQueue) ->
           if node?
               node.forceCenter = true
               node.origCenter = node.center
-              node.center = @mainFocusCenter
+              node.center = @focusCenter
               #if @centeredNode? and @centeredNode != node and !doNotQueue
               #     @centerNodeQueue.push(@centeredNode)
 
@@ -228,12 +229,9 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           # 8 digit codes (2 leading zeros) have no kids
           # subNodes should not be centered
           if d?
-              if d.id.length >= 10 or d.subNode then return
+            #   if d.id.length >= 10 or d.subNode then return
               if typeof d.click == "function" then d.click.call(d, d)
-              @options.stateChange.call(null, "centered")
-              @vis.selectAll(".color-legend").transition().duration(DURATION/2)
-                .attrTween("transform", (d, index, attribute) ->
-                    d3.interpolateString("translate(0, 0)", "translate(-100, 0)"))
+              @options.stateChange.call(null, "centered", d)
 
           @replaceCenteredNode(d)
 
@@ -332,7 +330,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 .duration(DURATION)
                 .attr("r", (d) -> maxEndRadius*d.factor)
                 .attr("cx", (d) => @width - MAX_RADIUS - 4)
-                .attr("cy", (d) => @height / 2 - maxEndRadius*d.factor)
+                .attr("cy", (d) => MIDDLE - maxEndRadius*d.factor)
                 .attr("opacity", 0)
                 .each("end", () -> d3.select(@).remove())
 
@@ -340,8 +338,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 .attr("opacity", 1)
                 .transition()
                 .duration(DURATION)
-                .attr("y1", (d) => @height / 2 - 2*maxEndRadius*d.factor)
-                .attr("y2", (d) => @height / 2 - 2*maxEndRadius*d.factor)
+                .attr("y1", (d) => MIDDLE - 2*maxEndRadius*d.factor)
+                .attr("y2", (d) => MIDDLE - 2*maxEndRadius*d.factor)
                 .attr("x2", (d) => @width - scalingFunction(maxValue) - 4 - scalingFunction(maxValue))
                 .attr("opacity", 0)
                 .each("end", () -> d3.select(@).remove())
@@ -350,7 +348,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 .attr("opacity", 1)
                 .transition()
                 .duration(DURATION)
-                .attr("y", (d) => @height / 2 - 2*maxEndRadius*d.factor)
+                .attr("y", (d) => MIDDLE - 2*maxEndRadius*d.factor)
                 .attr("x", (d) => @width - scalingFunction(maxValue) - 4 - scalingFunction(maxValue))
                 .attr("opacity", 0)
                 .each("end", () -> d3.select(@).remove())
@@ -363,60 +361,65 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
               .attr("class", "legend-circle legend")
           legendCircles
               .attr("r", (d) -> maxStartRadius*d.factor)
-              .attr("cy", (d) => @height / 2 - maxStartRadius*d.factor)
+              .attr("cy", (d) => MIDDLE - maxStartRadius*d.factor)
               .attr("opacity", 0)
               .transition().duration(DURATION)
               .attr("r", (d) => scalingFunction(d.value*d.factor))
               .attr("cx", (d) => @width - scalingFunction(maxValue) - 4)
-              .attr("cy", (d) => @height / 2 - scalingFunction(d.value*d.factor))
-              .attr("opacity", 1)
+              .attr("cy", (d) => MIDDLE - scalingFunction(d.value*d.factor))
+              .attr("opacity", @circleLegendOpacity)
               .each("end", (d) ->
                   d3.select(@)
                     .classed("mature-circle", true)
+                    .classed("mature-legend", true)
                     .classed("legend-circle", false))
           legendLines = @vis.selectAll(".legend-line").data(legendData)
           legendLines.enter().append("line")
               .attr("stroke-width", 1)
               .attr("stroke", "#9b9b9b")
               .attr("class", "legend-line legend")
+              .attr("transform", @circleLegendTransform)
           legendLines
               .attr("x1", (d) => @width - scalingFunction(maxValue) - 4)
               .attr("x2", (d) => @width - 2*scalingFunction(maxValue) - 4)
-              .attr("y1", (d) => @height / 2 - 2*maxStartRadius*d.factor)
-              .attr("y2", (d) => @height / 2 - 2*maxStartRadius*d.factor)
+              .attr("y1", (d) => MIDDLE - 2*maxStartRadius*d.factor)
+              .attr("y2", (d) => MIDDLE - 2*maxStartRadius*d.factor)
               .attr("opacity", 0)
               .transition().duration(DURATION)
-              .attr("y1", (d) => @height / 2 - 2*scalingFunction(d.value*d.factor))
-              .attr("y2", (d) => @height / 2 - 2*scalingFunction(d.value*d.factor))
+              .attr("y1", (d) => MIDDLE - 2*scalingFunction(d.value*d.factor))
+              .attr("y2", (d) => MIDDLE - 2*scalingFunction(d.value*d.factor))
               .attr("x2", (d) => @width - 2*scalingFunction(maxValue) - 4)
-              .attr("opacity", 1)
+              .attr("opacity", @circleLegendOpacity)
               .each("end", (d) ->
                   d3.select(@)
                     .classed("mature-line", true)
+                    .classed("mature-legend", true)
                     .classed("legend-line", false))
           legendText = @vis.selectAll(".legend-text").data(legendData)
           legendText.enter().append("text")
               .style("fill", "#9b9b9b")
               .attr("class", "legend-text legend")
               .attr("font-size", "12px")
+              .attr("transform", @circleLegendTransform)
           legendText
               .attr("opacity", 0)
               .attr("x", (d) => @width - 2*scalingFunction(maxValue) - 4)
-              .attr("y", (d) => @height / 2 - 2*maxStartRadius*d.factor)
+              .attr("y", (d) => MIDDLE - 2*maxStartRadius*d.factor)
               .text((d) -> window.format_number(d.value*d.factor, false, false, false))
               .transition().duration(DURATION)
-              .attr("opacity", 1)
-              .attr("y", (d) => @height / 2 - 2*scalingFunction(d.value*d.factor))
+              .attr("opacity", @circleLegendOpacity)
+              .attr("y", (d) => MIDDLE - 2*scalingFunction(d.value*d.factor))
               .attr("x", (d) => @width - 2*scalingFunction(maxValue) - 4)
               .each("end", (d) ->
                   d3.select(@)
                     .classed("mature-text", true)
+                    .classed("mature-legend", true)
                     .classed("legend-text", false))
 
           colorLegend = @vis.selectAll(".color-legend-box").data(window.changeClassThreshold)
           colorLegend.enter().append("rect")
                 .attr("x", 20)
-                .attr("y", (d) => @height/2 + 20*(window.changeClassThreshold.indexOf(d) - window.changeClassThreshold.length/2))
+                .attr("y", (d) => MIDDLE + 20*(window.changeClassThreshold.indexOf(d) - window.changeClassThreshold.length/2))
                 .attr("class", (d) -> "color-legend-box color-legend "+d.class+"_svg")
 
           colorLegendText = @vis.selectAll(".color-legend-text").data(window.changeClassThreshold)
@@ -442,7 +445,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 .style("dominant-baseline", "mathematical")
                 .attr("x", 35)
                 .attr("y", (d) =>
-                    y = @height/2 + 20*(window.changeClassThreshold.indexOf(d) - window.changeClassThreshold.length/2)
+                    y = MIDDLE + 20*(window.changeClassThreshold.indexOf(d) - window.changeClassThreshold.length/2)
 
                     if (d.legend == "min")
                         y += 20
@@ -467,8 +470,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
         @renderLegend(maxValue, scaleFunction)
 
         actionButtons = [
-            {content: ">", class: "main-vis-back-button", location: {x: @width/4, y: @height/2}},
-            {content: "+", class: "main-vis-zoom-button", location: {x: @width/2, y: @height*3/4}}
+            {content: ">", class: "main-vis-back-button", location: {x: @width/4, y: MIDDLE}},
+            {content: "+", class: "main-vis-zoom-button", location: {x: @width/2, y: MIDDLE*1.5}}
         ]
         @actionButtons = @vis.selectAll(".main-vis-action-buttons").data(actionButtons)
         @actionButtons.enter()
@@ -476,16 +479,12 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
             .attr("text-anchor", "middle")
             .attr("class", (d) -> "main-vis-action-buttons #{d.class}")
             .attr("x", (d) -> d.location.x)
-            .attr("y", (d) -> d.location.x)
+            .attr("y", (d) -> d.location.y)
             .text((d) -> d.content)
             .on("click", (d) =>
                 if d.class == "main-vis-back-button"
                     if typeof @options.stateChange == "function"
                         @options.stateChange.call(null, "initial")
-                        @vis.selectAll(".color-legend").transition().duration(DURATION).attrTween("transform",
-                            (d, index, attribute) ->
-                                return d3.interpolateString("translate(-100, 0)", "translate(0, 0)")
-                        )
 
                     if @centerNodeQueue.length > 0
                         newCenterNode = @centerNodeQueue.splice(0, 1)[0]
@@ -525,9 +524,28 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
         @reapply_values()
 
         if @centeredNode?
-            @vis.select("#bubble_#{@centeredNode.id}").moveToFront()
+            @vis.select("#bubble_#{@centeredNode.id}").sendToBack()
 
         #@childCircles = @vis.selectAll(".child-bubble")
+
+      toggleColorLegend: (show) =>
+          if show
+              @vis.selectAll(".color-legend").transition().duration(DURATION).attr("transform","translate(0, 0)")
+          else
+              @vis.selectAll(".color-legend").transition().duration(DURATION).attr("transform","translate(-100, 0)")
+        #
+        #   @vis.selectAll(".color-legend").transition().duration(DURATION).attr("transform",
+        #       (d, index, attribute) =>
+        #           if show
+        #               d3.interpolateString("translate(-100, 0)", "translate(0, 0)")
+        #           else
+        #               d3.interpolateString("translate(0, 0)", "translate(-100, 0)")
+          #
+        #   )
+
+      toggleCircleLegend: (show) =>
+          @circleLegendOpacity = if show then 1 else 0
+          @vis.selectAll(".mature-legend,.legend").style("opacity", @circleLegendOpacity)
 
       subNodesReady: (subNodeData) =>
           @subNodeData = subNodeData
@@ -606,6 +624,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                         .duration(DURATION)
                         .attr("fill-opacity", "0")
                         .style("filter", "url(#shadow)")
+                    else
+                      @actionButtons.sendToBack()
 
           @boundingRadius = @radius_scale(@total_amount/@numParts)
           @force.start()
@@ -622,7 +642,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                     maxx: 0
                     maxy: 0
                     minx: @width
-                    miny: @height / 2
+                    miny: @height
             extents[cat].maxx = d3.max([extents[cat].maxx,d.x])
             extents[cat].maxy = d3.max([extents[cat].maxy,d.y])
             extents[cat].minx = d3.min([extents[cat].minx,d.x])
@@ -651,12 +671,14 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
                 dx: s*(avg.x - x),
                 dy: s*(avg.y - d.center.y)
               }
+          res
 
       # Moves all circles towards the @center
       # of the visualization
       move_towards_centers: (alpha) =>
           (d) =>
               boundingRadius = if d.subNode then @centerBoundingRadius else @boundingRadius
+              boundingRadius = @boundingRadius
               x = @centerX(d)
               d.x = d.x + (x - d.x) * (@damper + 0.02) * alpha
               targetY =  d.center.y - d3.min([1,d.part]) * boundingRadius

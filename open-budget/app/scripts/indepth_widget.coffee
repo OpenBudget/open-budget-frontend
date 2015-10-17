@@ -521,7 +521,7 @@ define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
                                 endTimestamp = participant.get("end_timestamp")
                             else
                                 # if there is no end_date we need
-                                # to use the current timestam
+                                # to use the current timestamp
                                 endTimestamp = new Date().getTime()
                                 participant.set("end_timestamp", endTimestamp)
 
