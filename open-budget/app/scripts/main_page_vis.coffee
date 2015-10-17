@@ -158,7 +158,9 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                 @toggle = 0
                 if @model.URLSchemeHandlerInstance && @model.URLSchemeHandlerInstance.getAttribute('toggle')
                     @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
-                $("#grouping-kind").find("label[data-toggle="+@toggle+"]").trigger("click")
+                @switchToggle(@toggle,false)
+                $("#grouping-kind").find("label").toggleClass("active",false)
+                $("#grouping-kind").find("label[data-toggle="+@toggle+"]").toggleClass("active",true)
                 @recalc_centers()
                 @render()
 
@@ -177,11 +179,11 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
 
 
         events:
-            'click #grouping-kind .btn': 'switchToggle'
+            'click #grouping-kind .btn': 'clickToggle'
             'click .compare-2014': 'compare_2014'
-            # 'click .compare-2015': 'compare_2015_start'
-            # 'click .compare-2015 .compare-year-start': 'compare_2015_start'
-            # 'click .compare-2015 .compare-year-end': 'compare_2015_end'
+            'click .compare-2015': 'compare_2015_end'
+            'click .compare-2015 .compare-year-start': 'compare_2015_start'
+            'click .compare-2015 .compare-year-end': 'compare_2015_end'
 
         compare_2014: =>
             @set_actives('.compare-2014')
@@ -201,14 +203,30 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
             @$el.find('.compare-2014,.compare-2015,.compare-year-start,.compare-year-end').toggleClass('active',false)
             @$el.find(selector).toggleClass('active',true)
 
-        switchToggle: (e) =>
-            d3.select(@el).selectAll(".bubbleTitle#{@toggle}")
+        clickToggle: (e) =>
+            toggle = parseInt($(e.currentTarget).attr('data-toggle'))
+            console.log $(e.currentTarget).attr('data-toggle')
+            console.log toggle
+            toggle = toggle || 0
+            if toggle != @toggle
+                @switchToggle(toggle,true)
+            false
+
+        switchToggle: (toggle,update) =>
+
+            d3.select(@vis).selectAll(".bubbleTitle#{@toggle}")
                         .transition()
                         .style('opacity', 0)
-            console.log $(e.currentTarget).attr('data-toggle')
-            @toggle = parseInt($(e.currentTarget).attr('data-toggle'))
+
+            @toggle = toggle
+
+            if update
+                @model.URLSchemeHandlerInstance.addAttribute("toggle", @toggle, false)
+
             # Add URL attribute
-            @model.URLSchemeHandlerInstance.addAttribute("toggle", @toggle, false)
+            d3.select(@vis).selectAll(".bubbleTitle#{@toggle}")
+                        .transition()
+                        .style('opacity', 1)
 
             @recalc_centers()
             @chart.start()

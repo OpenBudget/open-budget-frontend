@@ -288,7 +288,6 @@ module.exports = function (grunt) {
         requirejs: {
             files: [
                 { src:"target/scripts/main.js", dest:"dist/scripts/main.js" },
-                { src:"target/scripts/main.js", dest:"dist/scripts/main.js" },
                 { src:"target/scripts/main.js.map", dest:"dist/scripts/main.js.map" },
                 { src:"target/styles/main.css", dest:"dist/styles/main.css" },
                 { src:"target/styles/main.css.map", dest:"dist/styles/main.css.map" }
@@ -326,7 +325,7 @@ module.exports = function (grunt) {
               }
           ],
           logLevel: 0,
-          findNestedDependencies: true,
+          findNestedDependencies: false,
           // TODO there must be a better way to handle the ilegal charecters
           fileExclusionRegExp: /^run.js$|^release.+|^src$|^data$|^test$|^test.+/,
           inlineText: true,

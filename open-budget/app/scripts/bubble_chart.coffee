@@ -54,7 +54,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
         @width = @$el.width()
         @height = @$el.height()
-        @range = [2, MAX_RADIUS]
+        @range = [0, MAX_RADIUS]
 
         @circles = d3.select()
         @childCircles = d3.select()
