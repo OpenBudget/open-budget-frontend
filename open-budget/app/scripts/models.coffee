@@ -192,7 +192,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
 
         initialize: (models, options) ->
             @pageModel = options.pageModel
-            console.log 'AAA fetching BudgetApprovals'
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
@@ -261,7 +260,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
 
         initialize: (models, options) ->
                 @pageModel = options.pageModel
-                console.log 'AAA fetching changeGroups'
                 @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
@@ -410,7 +408,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
 
         initialize: (models, options) ->
                 @pageModel = options.pageModel
-                console.log 'AAA fetching BudgetHistory'
                 @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
@@ -449,7 +446,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
         initialize: (models, options) ->
             @pageModel = options.pageModel
             @code = options.code.substring(0,4)
-            console.log 'AAA fetching participants'
             @fetch(dataType: window.pageModel.get('dataType'), reset: true)
 
         url: ->
@@ -550,11 +546,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
             @models = []
             @event = event
             @ready = false
-            if typeof pageModel.events[event] == "function"
-                @callback = pageModel.events[event]
-                @callback()
-
-            pageModel.events[event] = @
 
         addModel: (model) ->
             @models.push model
@@ -638,13 +629,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                 BudgetItemKids: BudgetItemKids
             }
 
-            @events = {}
-            @waitFor = (event, callback) ->
-                if pageModel.events[event]?
-                    pageModel.events[event].checkIfReady(callback)
-                else
-                    pageModel.events[event] = callback
-
             @readyEvents = []
             @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
             @mainPageTabs           = new window.MainPageTabs(@)
@@ -716,7 +700,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                             last: i == maxlen
 
                 @on('ready-budget-history', ->
-                    console.log 'AAA ready-budget-history'
                     @participants = new Participants([], code: budgetCode, pageModel: @)
                     readyParticipants = new ReadyAggregator('ready-participants')
                                                     .addCollection(@participants)

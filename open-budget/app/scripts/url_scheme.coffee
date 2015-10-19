@@ -11,6 +11,8 @@ class URLSchemeHandler
 
             window.onhashchange = @handleSchemeChange
 
+            $("a#spending-link").attr('href',@linkToSpending())
+
 
         linkToBudget: (code,year) ->
             parameters = $.extend(true, {}, @linkParameters)
@@ -30,6 +32,11 @@ class URLSchemeHandler
             parameters = $.extend(true, {}, @linkParameters)
             parameters['kind'] = 'entity'
             parameters['entityId'] = entityId
+            @buildLink(parameters)
+
+        linkToSpending: () ->
+            parameters = $.extend(true, {}, @linkParameters)
+            parameters['kind'] = 'spending'
             @buildLink(parameters)
 
         updateHash: (reload) ->
