@@ -159,8 +159,6 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                 if @model.URLSchemeHandlerInstance && @model.URLSchemeHandlerInstance.getAttribute('toggle')
                     @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
                 @switchToggle(@toggle,false)
-                $("#grouping-kind").find("label").toggleClass("active",false)
-                $("#grouping-kind").find("label[data-toggle="+@toggle+"]").toggleClass("active",true)
                 @recalc_centers()
                 @render()
 
@@ -227,6 +225,9 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
             d3.select(@vis).selectAll(".bubbleTitle#{@toggle}")
                         .transition()
                         .style('opacity', 1)
+
+            $("#grouping-kind").find("label").toggleClass("active",false)
+            $("#grouping-kind").find("label[data-toggle="+@toggle+"]").toggleClass("active",true)
 
             @recalc_centers()
             @chart.start()
