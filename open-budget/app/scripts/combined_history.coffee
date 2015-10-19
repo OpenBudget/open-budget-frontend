@@ -29,7 +29,7 @@ define(['jquery', 'backbone', 'models'] , ($, Backbone, models) ->
                     @changeGroups = { models: [] }
                 @budgetHistory = @pageModel.budgetHistory
                 @budgetApprovals = @pageModel.budgetApprovals
-                @pageModel.waitFor "ready-budget-history-pre", =>
+                @pageModel.on "ready-budget-history-pre", =>
                     @processChangeLines(@changeGroups.models)
                     @processBudgetHistory(@budgetHistory.models,@budgetApprovals.models)
                     @postProcess()

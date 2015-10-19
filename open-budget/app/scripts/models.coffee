@@ -546,11 +546,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
             @models = []
             @event = event
             @ready = false
-            if typeof pageModel.events[event] == "function"
-                @callback = pageModel.events[event]
-                @callback()
-
-            pageModel.events[event] = @
 
         addModel: (model) ->
             @models.push model
@@ -633,13 +628,6 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
             @api = {
                 BudgetItemKids: BudgetItemKids
             }
-
-            @events = {}
-            @waitFor = (event, callback) ->
-                if pageModel.events[event]?
-                    pageModel.events[event].checkIfReady(callback)
-                else
-                    pageModel.events[event] = callback
 
             @readyEvents = []
             @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
