@@ -192,6 +192,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
 
         initialize: (models, options) ->
             @pageModel = options.pageModel
+            console.log 'AAA fetching BudgetApprovals'
             @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
@@ -260,6 +261,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
 
         initialize: (models, options) ->
                 @pageModel = options.pageModel
+                console.log 'AAA fetching changeGroups'
                 @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
@@ -408,6 +410,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
 
         initialize: (models, options) ->
                 @pageModel = options.pageModel
+                console.log 'AAA fetching BudgetHistory'
                 @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
         url: ->
@@ -446,6 +449,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
         initialize: (models, options) ->
             @pageModel = options.pageModel
             @code = options.code.substring(0,4)
+            console.log 'AAA fetching participants'
             @fetch(dataType: window.pageModel.get('dataType'), reset: true)
 
         url: ->
@@ -712,6 +716,7 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                             last: i == maxlen
 
                 @on('ready-budget-history', ->
+                    console.log 'AAA ready-budget-history'
                     @participants = new Participants([], code: budgetCode, pageModel: @)
                     readyParticipants = new ReadyAggregator('ready-participants')
                                                     .addCollection(@participants)
