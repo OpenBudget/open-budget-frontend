@@ -1,4 +1,4 @@
-define(['backbone', 'models'], (Backbone, models) ->
+define(['backbone', 'models','entity_details'], (Backbone, models, EntityDetailsView) ->
   class SpendingsPageView extends Backbone.View
 
         initialize: ->

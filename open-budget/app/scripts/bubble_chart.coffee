@@ -54,7 +54,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
 
         @width = @$el.width()
         @height = @$el.height()
-        @range = [2, MAX_RADIUS]
+        @range = [0, MAX_RADIUS]
 
         @circles = d3.select()
         @childCircles = d3.select()
@@ -420,6 +420,8 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
           colorLegend.enter().append("rect")
                 .attr("x", 20)
                 .attr("y", (d) => MIDDLE + 20*(window.changeClassThreshold.indexOf(d) - window.changeClassThreshold.length/2))
+                .attr("width", 8)
+                .attr("height", 20)
                 .attr("class", (d) -> "color-legend-box color-legend "+d.class+"_svg")
 
           colorLegendText = @vis.selectAll(".color-legend-text").data(window.changeClassThreshold)
