@@ -2,9 +2,9 @@ module.exports = {
   compile: {
     // !! You can drop your app.build.js config wholesale into 'options'
     options: {
-      appDir: "app/",
-      baseUrl: ".",
-      dir: "target/",
+      baseUrl: "app",
+      name: "scripts/main",
+      out: "target/main.js",
       optimize: 'uglify2',
       // Uncomment to debug
       //optimize: 'none',
@@ -13,11 +13,6 @@ module.exports = {
           main: "scripts/main",
           "hasadna-notifications": 'empty:'
       },
-      modules:[
-          {
-              name: "main"
-          }
-      ],
       logLevel: 0,
       findNestedDependencies: false,
       // TODO there must be a better way to handle the ilegal charecters
