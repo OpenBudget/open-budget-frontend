@@ -1,0 +1,32 @@
+{
+    "folders":
+    [
+        {
+            "follow_symlinks": true,
+            "path": ".",
+            /* should the node modules and bower components be excluded ? */
+            "folder_exclude_patterns": []
+        }
+    ],
+    /* See http://docs.sublimetext.info/en/latest/reference/settings.html#whitespace-and-indentation */
+    "settings": {
+        "ensure_newline_at_eof_on_save": true,
+        "tab_size": 2,
+        "translate_tabs_to_spaces": true,
+        "trim_trailing_white_space_on_save": true
+    },
+    "SublimeLinter":
+    {
+        "debug": false,
+        "delay": 0.25,
+        "lint_mode": "background",
+        "linters":
+        {
+            "jshint": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            }
+        }
+    }
+}
