@@ -37,26 +37,31 @@
   <% if(last) { %>
   <div class="pull-left">
     <span class="dropdown">
-      <a class="btn btn-default btn-download" href="#"
+      <a class="btn btn-default btn-sm btn-download" href="#"
       data-toggle="dropdown">
-        <i class="glyphicon glyphicon-download"></i>
+        <i class="glyphicon glyphicon-download-alt"></i>
       </a>
           <ul class="dropdown-menu" role="menu">
+              <li>
+                  <strong>
+                      הורדת נתונים לקובץ CSV
+                  </strong>
+              </li>
+              <li>
+        <a target="_blank"
+           href="http://www.obudget.org/api/budget/<%= main.get('code') %>?o=csv&amp;limit=10000">
+          הסטוריה תקציבית
+        </a>
+              </li>
             <li>
       <a target="_blank"
-         href="http://www.obudget.org/api/budget/<%= main.get('code') %>?o=csv">
-        הסטוריה תקציבית
-      </a>
-            </li>
-            <li>
-      <a target="_blank"
-         href="http://www.obudget.org/api/exemption/budget/<%= main.get('code') %>?o=csv">
+         href="http://www.obudget.org/api/exemption/budget/<%= main.get('code') %>?o=csv&amp;limit=10000">
         פטורים ממכרז
       </a>
             </li>
             <li>
       <a target="_blank"
-         href="http://www.obudget.org/api/supports/<%= main.get('code') %>?o=csv">
+         href="http://www.obudget.org/api/supports/<%= main.get('code') %>?o=csv&amp;limit=10000">
         תמיכות
       </a>
             </li>

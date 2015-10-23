@@ -25,7 +25,8 @@ define ['backbone'], (Backbone) ->
               @set("uniqueId", "change-group-"+@get("group_id"))
 
       setTimestamp: ->
-              @set 'timestamp', dateToTimestamp(@get 'date')
+              timestamp = dateToTimestamp(@get 'date')
+              @set 'timestamp', timestamp
 
       getCodeChanges: (code) =>
               year = pageModel.get('year')

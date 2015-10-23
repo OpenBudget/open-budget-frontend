@@ -1,4 +1,4 @@
-define [], () ->
+define(['backbone'], (Backbone) ->
   class CompareRecord extends Backbone.Model
     defaults:
         code: null
@@ -12,3 +12,4 @@ define [], () ->
         year: 2014
 
   return CompareRecord
+)

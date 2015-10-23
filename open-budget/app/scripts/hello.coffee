@@ -71,6 +71,13 @@ define(['jquery'], ($) ->
             if  threshold >= changeClass.minRatio and threshold <= changeClass.maxRatio
                 return changeClass.class
 
+    window.dateToTimestamp = (date) ->
+        if !date? then return null
+        date = date.split('/')
+        date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
+        date.valueOf()
+
+
     $('#glossaryModal').on('show.bs.modal', (event) ->
           console.log "glossaryModal open"
           modal = $(this)

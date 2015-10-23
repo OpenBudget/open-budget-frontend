@@ -9,12 +9,6 @@ define [
     'scripts/modelsHelpers/NewSpendings',
     'scripts/modelsHelpers/PageModel'
   ], (Backbone, main_page_tabs, url_scheme, BudgetItem, ChangeLine, ChangeExplanation, Entity, NewSpendings, PageModel) ->
-    dateToTimestamp = (date) ->
-        if !date? then return null
-        date = date.split('/')
-        date = new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))
-        date.valueOf()
-
 
         # toLocaleJSON: (requestedLocale) ->
         #   locale = requestedLocale || "he"

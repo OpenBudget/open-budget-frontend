@@ -19,7 +19,7 @@ define(['backbone', 'models', 'pivot'], (Backbone, models, pivot) ->
                   aggregatorName: "Sum",
                   renderers: @renderes,
                   rendererName: "Heatmap",
-                  vals: [pageModel.supportFieldNormalizer.normalize("amount_supported", locale)]
+                  vals: [models.pageModel.supportFieldNormalizer.normalize("amount_supported", locale)]
                 });
 
     console.log "support_list"

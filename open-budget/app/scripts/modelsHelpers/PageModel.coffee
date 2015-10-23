@@ -4,13 +4,21 @@ define ['backbone',
         'scripts/modelsHelpers/ResizeNotifier',
         'scripts/modelsHelpers/SelectedEntity',
         'scripts/modelsHelpers/DaysLimit',
+        'scripts/modelsHelpers/ChangeGroup',
         'scripts/modelsHelpers/ChangeGroups',
+        'scripts/modelsHelpers/ChangeExplanation',
         'scripts/modelsHelpers/BudgetApprovals',
         'scripts/modelsHelpers/BudgetHistory',
         'scripts/modelsHelpers/ReadyAggregator',
         'scripts/modelsHelpers/CompareRecords',
         'scripts/modelsHelpers/BudgetItem',
-      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, SelectedEntity, DaysLimit, ChangeGroups, BudgetApprovals, BudgetHistory, ReadyAggregator, CompareRecords, BudgetItem) ->
+        'scripts/modelsHelpers/TakanaSupports',
+        'scripts/modelsHelpers/TakanaSpending',
+        'scripts/modelsHelpers/NewSpendings',
+        'scripts/modelsHelpers/Participants',
+      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, SelectedEntity, DaysLimit, ChangeGroup,
+      ChangeGroups, ChangeExplanation, BudgetApprovals, BudgetHistory, ReadyAggregator, CompareRecords, BudgetItem,
+      TakanaSupports, TakanaSpending, NewSpendings, Participants) ->
 
   class PageModel extends Backbone.Model
 

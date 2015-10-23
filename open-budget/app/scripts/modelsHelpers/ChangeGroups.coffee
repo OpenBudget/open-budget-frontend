@@ -1,10 +1,10 @@
-define ['scripts/modelsHelpers/ChangeGroup'], (ChangeGroup) ->
+define ['scripts/modelsHelpers/ChangeGroup','models'], (ChangeGroup, models) ->
   class ChangeGroups extends Backbone.Collection
 
       model: ChangeGroup
 
       initialize: (models, options) ->
-              @pageModel = options.pageModel
+              @pageModel = models.pageModel
               @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
       url: ->

@@ -22,4 +22,4 @@ define ['backbone', 'scripts/modelsHelpers/SupportLineDescription'], (Backbone, 
     url: ->
       "#{@pageModel.get('baseURL')}/api/describe/SupportLine"
 
-  return SupportLineDescription
+  return SupportFieldNormalizer
