@@ -29,11 +29,42 @@
 
 
   </div>
-  <div class="item-budget  pull-left">
+  <div class="item-budget pull-left">
     ₪
     <%= window.number_with_commas(main.get('net_revised')*1000) %>
     <%= window.up_or_down_arrow(main.get('net_revised'), main.get('net_allocated')) %>
   </div>
+  <% if(last) { %>
+  <div class="pull-left">
+    <span class="dropdown">
+      <a class="btn btn-default btn-download" href="#"
+      data-toggle="dropdown">
+        <i class="glyphicon glyphicon-download"></i>
+      </a>
+          <ul class="dropdown-menu" role="menu">
+            <li>
+      <a target="_blank"
+         href="http://www.obudget.org/api/budget/<%= main.get('code') %>?o=csv">
+        הסטוריה תקציבית
+      </a>
+            </li>
+            <li>
+      <a target="_blank"
+         href="http://www.obudget.org/api/exemption/budget/<%= main.get('code') %>?o=csv">
+        פטורים ממכרז
+      </a>
+            </li>
+            <li>
+      <a target="_blank"
+         href="http://www.obudget.org/api/supports/<%= main.get('code') %>?o=csv">
+        תמיכות
+      </a>
+            </li>
+          </ul>
+        </span>
+
+  </div>
+  <% } %>
   <% if(last) { %>
     </header>
     </div>
