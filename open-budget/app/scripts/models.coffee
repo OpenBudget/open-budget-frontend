@@ -662,22 +662,22 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
                                           title = @budgetHistory.getLast().get('title')
                                           ga('send', 'event', 'navigation', 'budget', title, 1);
 
-                @readyEvents.push new ReadyAggregator("ready-budget-history-pre")
-                                            .addCollection(@changeGroups)
-                                            .addCollection(@budgetHistory)
-                                            .addCollection(@budgetApprovals)
+                @readyEvents.push (new ReadyAggregator("ready-budget-history-pre")
+                                          .addCollection(@changeGroups)
+                                          .addCollection(@budgetHistory)
+                                          .addCollection(@budgetApprovals))
 
                 if digits >= 4
                     @on('ready-budget-history', ->
                         @supports = new TakanaSupports([], pageModel: @)
-                        @readyEvents.push new ReadyAggregator("ready-supports")
-                                                    .addCollection(@supports)
+                        @readyEvents.push (new ReadyAggregator("ready-supports")
+                                                    .addCollection(@supports))
                         @spending = new TakanaSpending([], pageModel: @)
-                        @readyEvents.push new ReadyAggregator("ready-spending")
-                                                    .addCollection(@spending)
+                        @readyEvents.push (new ReadyAggregator("ready-spending")
+                                                    .addCollection(@spending))
                     )
-                readyBreadcrumbs = new ReadyAggregator("ready-breadcrumbs")
-                                                .addCollection(@budgetHistory)
+                readyBreadcrumbs = (new ReadyAggregator("ready-breadcrumbs")
+                                                .addCollection(@budgetHistory))
                 @readyEvents.push readyBreadcrumbs
                 @breadcrumbs = []
                 maxlen=(budgetCode.length/2)-1
@@ -701,16 +701,16 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
 
                 @on('ready-budget-history', ->
                     @participants = new Participants([], code: budgetCode, pageModel: @)
-                    readyParticipants = new ReadyAggregator('ready-participants')
-                                                    .addCollection(@participants)
+                    readyParticipants = (new ReadyAggregator('ready-participants')
+                                                    .addCollection(@participants))
                     @readyEvents.push readyParticipants
                 )
 
             @on 'change:changeGroupId', ->
                 @changeGroup = new ChangeGroup(pageModel: @)
                 @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))
-                @readyEvents.push new ReadyAggregator("ready-changegroup")
-                                            .addModel(@changeGroup)
+                @readyEvents.push (new ReadyAggregator("ready-changegroup")
+                                            .addModel(@changeGroup))
                 @changeGroup.doFetch()
                 @changeGroupExplanation.doFetch()
                 @changeGroup.on 'change:title_template', =>
@@ -722,22 +722,22 @@ define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
             @on 'change:mainPage', ->
                 @budgetItems4 = new CompareRecords([], pageModel: @)
                 @budgetItems2 = new BudgetItemKids([], year: 2014, code: '00', pageModel: @)
-                @readyEvents.push new ReadyAggregator("ready-budget-bubbles")
+                @readyEvents.push (new ReadyAggregator("ready-budget-bubbles")
                                                     .addCollection(@budgetItems2)
-                                                    .addCollection(@budgetItems4)
+                                                    .addCollection(@budgetItems4))
 
                 @mainBudgetItem = new BudgetItem(year: 2014, code: '00', pageModel: @)
                 @newBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
-                @readyEvents.push new ReadyAggregator("ready-main-budget")
+                @readyEvents.push (new ReadyAggregator("ready-main-budget")
                                                     .addModel(@mainBudgetItem)
-                                                    .addModel(@newBudgetItem)
+                                                    .addModel(@newBudgetItem))
                 @mainBudgetItem.do_fetch()
                 @newBudgetItem.do_fetch()
 
             @on 'change:spendingsPage', ->
                 @newSpendings = new NewSpendings([], pageModel: @)
-                @readyEvents.push new ReadyAggregator("ready-spendings-page")
-                                                    .addCollection(@newSpendings)
+                @readyEvents.push (new ReadyAggregator("ready-spendings-page")
+                                                    .addCollection(@newSpendings))
 
             @on 'change:kinds', =>
                 for kind in @get('kinds')
