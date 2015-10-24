@@ -37,4 +37,4 @@ define [
     window.pageModel
         .switchView(pageModel.URLSchemeHandlerInstance.linkParameters)
 
-    return models
+    models

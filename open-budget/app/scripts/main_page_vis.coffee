@@ -261,7 +261,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
         addKids: (node, readyCallback) =>
             code = node.src.get('code')
             # TODO get the year from the model
-            year = 2014
+            year = 2015
             centeredNodeKids = new pageModel.api.BudgetItemKids([], year: year, code: code, pageModel: pageModel)
             centeredNodeKids.on('sync', =>
                 console.log("kids are ready")
@@ -325,7 +325,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
 
         moreInfo: (node) ->
             # TODO get the year from the model
-            year = 2014
+            year = 2015
             window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(@id, year)
             ###
             TODO: build a new view controller architecture
