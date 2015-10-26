@@ -36,9 +36,12 @@
         </tr>
         </thead>
         <tbody>
-        <% for ( var j = 0 ; j < documents.length ; j++ ) { %>
+        <% for ( var j = 0 ; j < documents.length ; j++ ) {
+          var date = new Date(documents[j].update_time),
+              formattedDate = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
+          %>
         <tr>
-            <td class="field-label col-md-2"><a href="http://www.obudget.org/api/exemption/document?url=<%= documents[j].link %>"><div class="glyphicon glyphicon-paperclip" aria-hidden="true"></div>&nbsp;&nbsp;<%= documents[j].update_time %></a></td>
+            <td class="field-label col-md-2"><a href="http://www.obudget.org/api/exemption/document?url=<%= documents[j].link %>"><div class="glyphicon glyphicon-paperclip" aria-hidden="true"></div>&nbsp;&nbsp;<%= formattedDate %></a></td>
             <td class="field-label col-md-10"><%= documents[j].description %></td>
 
         </tr>
