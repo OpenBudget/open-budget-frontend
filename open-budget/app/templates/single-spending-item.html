@@ -7,7 +7,7 @@
             <%= supplier %>
         <% } %>
     </td>
-    <td class='exemption-volume'><%= number_with_commas(volume==null? 0 : volume) %></td>
+    <td class='exemption-volume'><%= volume == null ? 'לא ידוע' : (number_with_commas(volume==null? 0 : volume) + ' ש"ח') %></td>
     <td class='exemption-budget-code'><a href="<%= URLSchemeHandlerInstance.linkToBudget(budget_code,pageModel.get('year')) %>"><%= budget_code.slice(2) %></a></td>
     <td class='exemption-description'><%= description %></td>
     <td class='exemption-subjects'><% for ( var j = 0 ; j < subjects.length ; j++ ) { %>

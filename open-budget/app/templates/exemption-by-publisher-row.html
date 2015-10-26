@@ -1,6 +1,6 @@
 <td class='exemption-publisher'><%= publisher %></td>
 <td class='exemption-start'><%= exemptions.length %></td>
-<td class='exemption-volume'><%= number_with_commas(total_volume==null? 0 : total_volume)%> ש"ח</td>
+<td class='exemption-volume'><%= total_volume == null ? 'לא ידוע' : (number_with_commas(total_volume==null? 0 : total_volume) + ' ש"ח') %></td>
 <td class='exemption-description'><%= start_date %></td>
 <td class='exemption-subjects'><%= end_date %></td>
 <td class='exemption-expander'>
