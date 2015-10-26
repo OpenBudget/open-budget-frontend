@@ -1,6 +1,5 @@
 <div class="left-con">
 
-
 <h2 class='entity-name'><%= name %></h2>
 <a href=""><h4 class='manof-name'>
 <% if ( kind === "association" ) { %>
@@ -16,7 +15,10 @@
         <div class="info">
 
 <% if ( exemptions.length > 0 ) { %>
-<h3 class="entity-title">&larr;&nbsp<%= exemptions.length %> התקשרויות עם <span class="total"></span> משרדים בסך <%= number_with_commas(exemptions_sum==null? 0 : exemptions_sum) %> ש"ח</h3>
+<h3 class="entity-title">
+&larr;&nbsp<%= exemptions.length %> התקשרויות עם <span class="total"></span>
+משרדים בסך <%= exemptions_sum == null ? 'לא ידוע' : number_with_commas(exemptions_sum==null? 0 : exemptions_sum) + ' ש"ח'%>
+</h3>
 <table class="exemption-table table table-expandable">
     <thead>
         <th>שם המשרד</th>
