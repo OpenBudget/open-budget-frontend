@@ -254,7 +254,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
               for group, i in title_data
                 if group.title?
                   $(JST.bubble_group_label(group)).css({
-                    top: (group.y - center.item_height/2) + "px",
+                    top: (group.y + @chart.radius_scale(group.total)) + "px",
                     left: group.x + "px"
                   }).appendTo(@$bubbleContainer)
 
