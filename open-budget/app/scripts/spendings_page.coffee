@@ -1,4 +1,4 @@
-define(['backbone', 'models','entity_details'], (Backbone, models, EntityDetailsView) ->
+define(['backbone', 'models','entity_details', 'orphan_exemption_page'], (Backbone, models, EntityDetailsView, OrphanExemptionView) ->
   class SpendingsPageView extends Backbone.View
 
         initialize: ->
@@ -20,7 +20,8 @@ define(['backbone', 'models','entity_details'], (Backbone, models, EntityDetails
             $("div.exemption-alert").on("click", (d) =>
                 $("div.exemption-alert.selected").removeClass("selected");
                 $(d.target).closest("div.exemption-alert").addClass("selected");
-                @model.selectedEntity.set("selected", $(d.target).closest("div.exemption-alert").attr("supplier"))
+                @model.selectedExemption.set("entity_id", $(d.target).closest("div.exemption-alert").attr("entity_id"))
+                @model.selectedExemption.set("publication_id", $(d.target).closest("div.exemption-alert").attr("publication_id"))
             );
 
             $("div.exemption-alert:first").trigger("click")
@@ -34,6 +35,7 @@ define(['backbone', 'models','entity_details'], (Backbone, models, EntityDetails
   if models.pageModel.get("spendingsPage")?
         window.spendingsPageView = new SpendingsPageView({el: $("#spendings-page-article .latest-updates"), model: models.pageModel});
         window.entityDetails = new EntityDetailsView({el: $("#spendings-page-article .entity-details"), model: models.pageModel});
+        window.orphanExemptionPage = new OrphanExemptionView({el: $("#spendings-page-article .orphan-exemption-page"), model:models.pageModel});
 
   SpendingsPageView
 )

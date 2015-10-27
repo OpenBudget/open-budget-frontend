@@ -2,7 +2,7 @@ define ['backbone',
         'scripts/modelsHelpers/BudgetItemKids',
         'scripts/modelsHelpers/SupportFieldNormalizer',
         'scripts/modelsHelpers/ResizeNotifier',
-        'scripts/modelsHelpers/SelectedEntity',
+        'scripts/modelsHelpers/SelectedExemption',
         'scripts/modelsHelpers/DaysLimit',
         'scripts/modelsHelpers/ChangeGroup',
         'scripts/modelsHelpers/ChangeGroups',
@@ -16,9 +16,10 @@ define ['backbone',
         'scripts/modelsHelpers/TakanaSpending',
         'scripts/modelsHelpers/NewSpendings',
         'scripts/modelsHelpers/Participants',
-      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, SelectedEntity, DaysLimit, ChangeGroup,
+        'scripts/modelsHelpers/Exemption'
+      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, SelectedExemption, DaysLimit, ChangeGroup,
       ChangeGroups, ChangeExplanation, BudgetApprovals, BudgetHistory, ReadyAggregator, CompareRecords, BudgetItem,
-      TakanaSupports, TakanaSpending, NewSpendings, Participants) ->
+      TakanaSupports, TakanaSpending, NewSpendings, Participants, Exemption) ->
 
   class PageModel extends Backbone.Model
 
@@ -54,7 +55,7 @@ define ['backbone',
           @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
           @mainPageTabs           = new window.MainPageTabs(@)
           @resizeNotifier         = new ResizeNotifier()
-          @selectedEntity         = new SelectedEntity()
+          @selectedExemption         = new SelectedExemption()
           @daysLimit              = new DaysLimit()
 
           @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)

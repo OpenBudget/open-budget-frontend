@@ -43,7 +43,8 @@ require.config({
         "subscribe":            "scripts/subscribe",
         "hello":                "scripts/hello",
         "training":             "scripts/training",
-        "budget_view":          "scripts/budget_view"
+        "budget_view":          "scripts/budget_view",
+        "orphan_exemption_page": "scripts/orphan_exemption_page",
     },
     shim: {
         pivot: {

@@ -4,11 +4,14 @@ define(["jquery", "backbone", "models", "templates"], ($, Backbone, models, JST)
               'click .exemption-expander': 'toggleExemptionDetails'
 
             initialize: ->
-                @model.selectedEntity.on 'change:selected', =>
-                    eid = @model.selectedEntity.get('selected')
+              @model.selectedExemption.on 'change:entity_id', =>
+                  eid = @model.selectedExemption.get('entity_id')
+                  if eid != ""
                     @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
                     @entity.doFetch()
                     @entity.on 'ready', => @render()
+                  else
+                    @$el.css('display','none')
 
             render: ->
                 @$el.css('display','inherit')
@@ -115,7 +118,7 @@ define(["jquery", "backbone", "models", "templates"], ($, Backbone, models, JST)
     console.log "entity-details"
     if models.pageModel.get("entityId")?
         window.entityDetails = new EntityDetailsView({el: $("#standalone-entity-details"), model: models.pageModel})
-        models.pageModel.selectedEntity.set('selected',models.pageModel.get("entityId"))
+        models.pageModel.selectedExemption.set('selected',window.pageModel.get("entity_id"))
 
     EntityDetailsView
 )
