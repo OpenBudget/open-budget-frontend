@@ -1,4 +1,4 @@
-define(["jquery", "backbone", "models", "templates"], ($, Backbone, models, JST) ->
+define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backbone, models, JST) ->
     class EntityDetailsView extends Backbone.View
             events:
               'click .exemption-expander': 'toggleExemptionDetails'
@@ -7,7 +7,7 @@ define(["jquery", "backbone", "models", "templates"], ($, Backbone, models, JST)
                 @model.selectedExemption.on 'change:entity_id', =>
                     eid = @model.selectedExemption.get('entity_id')
                     if eid != ""
-                      @entity = new models.Entity(pageModel: window.pageModel, entityId: eid)
+                      @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
                       @entity.doFetch()
                       @entity.on 'ready', => @render()
                     else
@@ -25,6 +25,10 @@ define(["jquery", "backbone", "models", "templates"], ($, Backbone, models, JST)
                 for exemptionByPublisher in _.values(exemptionsByPublisher)
                     rowView = new ExemptionByPublisherRowView(model: exemptionByPublisher)
                     exemptionByPublisherBody.append(rowView.render().el)
+
+                    if _.where(exemptionByPublisher.exemptions, {publication_id: @model.selectedExemption.get('publication_id') * 1}).length > 0
+                      rowView.toggleDetails(@model.selectedExemption.get('publication_id') * 1)
+
                 @$el.find('h3.entity-title span.total').text(Object.keys(exemptionsByPublisher).length);
                 @
 
@@ -36,12 +40,16 @@ define(["jquery", "backbone", "models", "templates"], ($, Backbone, models, JST)
             @detailViews = []
             @initialized = false
 
-        toggleDetails: ->
+        toggleDetails: (preselectePublicationId) ->
             if (!@initialized)
               _.each @model.exemptions, (exemption) =>
                     detailView = new ExemptionDetailsRowView(model: exemption)
                     @$el.after(detailView.render().$el)
-    #                detailView.showFullDetailsView()
+                    if exemption.publication_id == preselectePublicationId
+                      detailView.toggleDetails()
+                      # scroll into view the seleced row. disabled for now
+                      # @el.scrollIntoView(true)
+
                     @detailViews.push(detailView)
               @initialized = true
 
@@ -130,9 +138,9 @@ define(["jquery", "backbone", "models", "templates"], ($, Backbone, models, JST)
 
     $(->
         console.log "entity-details"
-        if window.pageModel.get("entityId")?
-            window.entityDetails = new EntityDetailsView({el: $("#standalone-entity-details"), model: window.pageModel})
-            window.pageModel.selectedExemption.set('selected',window.pageModel.get("entity_id"))
+        if models.pageModel.get("entityId")?
+            window.entityDetails = new EntityDetailsView({el: $("#standalone-entity-details"), model: models.pageModel})
+            models.pageModel.selectedExemption.set('selected',models.pageModel.get("entity_id"))
     )
 
     EntityDetailsView
