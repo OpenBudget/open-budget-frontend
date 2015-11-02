@@ -13,6 +13,5 @@ define ['backbone'], (Backbone) ->
             "#{@pageModel.get('baseURL')}/api/exemption/publication/#{@publication_id}"
 
     handleFetchResult: (collection, response) =>
-            console.log response
             @trigger('ready')
 
