@@ -12,6 +12,11 @@ define ['backbone', 'models'], (Backbone, models)->
 
           render: ->
               data = @exemption.toJSON()
+
+              data['exemptions_sum'] = data['volume']
+              data['name'] = data['supplier']
+              data['kind'] = data['entity_kind']
+
               @$el.html window.JST.exemption_details( data )
               if @model.selectedExemption.get('entity_id') != ""
                   @$el.css('display','none')
