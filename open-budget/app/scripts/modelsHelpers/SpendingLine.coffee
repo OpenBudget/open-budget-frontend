@@ -25,4 +25,15 @@ define ['backbone'], (Backbone) ->
           contact: null
           history: [ ]
 
+      calcWeight: () ->
+        weight = 0
+        flags = @get 'flags'
+
+        if flags
+          for own flag, flagValue of flags
+            if flagValue then weight++
+
+        weight
+
+
   return SpendingLine

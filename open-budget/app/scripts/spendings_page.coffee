@@ -1,4 +1,4 @@
-define(['backbone', 'models','entity_details', 'orphan_exemption_page'], (Backbone, models, EntityDetailsView, OrphanExemptionView) ->
+define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_page'], (Backbone, _, models, EntityDetailsView, OrphanExemptionView) ->
   class SpendingsPageView extends Backbone.View
 
         initialize: ->
