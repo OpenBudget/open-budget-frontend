@@ -1,4 +1,4 @@
 module.exports = {
-  app: require('../bower.json').appPath || 'app',
+  app: 'app',
   dist: 'dist'
 };

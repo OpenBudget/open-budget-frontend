@@ -5,6 +5,6 @@ module.exports = {
     'imagemin',
     'svgmin',
     'htmlmin',
-  'jst'
+    'jst'
   ]
 };
