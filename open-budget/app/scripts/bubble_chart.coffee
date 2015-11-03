@@ -472,17 +472,34 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
         @renderLegend(maxValue, scaleFunction)
 
         actionButtons = [
-            {content: ">", class: "main-vis-back-button", location: {x: @width/4, y: MIDDLE}},
-            {content: "+", class: "main-vis-zoom-button", location: {x: @width/2, y: MIDDLE*1.5}}
+            { 
+              class: "main-vis-back-button",
+              location: {x: @width/4, y: MIDDLE},
+              href: "styles/assets/bubble-back.svg",
+              width : "41px",
+              height: "21px",
+              viewBox: "0 0 41 21"
+            },
+
+            { 
+              class: "main-vis-zoom-button",
+              location: {x: @width/2, y: MIDDLE*1.5},
+              href: 'styles/assets/bubble-drill.svg',
+              width : "21px",
+              height: "41px",
+              viewBox: "0 0 21 41"
+            }
         ]
         @actionButtons = @vis.selectAll(".main-vis-action-buttons").data(actionButtons)
         @actionButtons.enter()
-            .append("text")
-            .attr("text-anchor", "middle")
+            .append("svg:image")
+            .attr("viewBox", (d) -> d.viewBox)
+            .attr("width", (d) -> d.width)
+            .attr("height", (d) -> d.height)
             .attr("class", (d) -> "main-vis-action-buttons #{d.class}")
             .attr("x", (d) -> d.location.x)
             .attr("y", (d) -> d.location.y)
-            .text((d) -> d.content)
+            .attr("xlink:href", (d) -> d.href)
             .on("click", (d) =>
                 if d.class == "main-vis-back-button"
                     if typeof @options.stateChange == "function"
