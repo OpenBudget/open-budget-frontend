@@ -1,4 +1,4 @@
-define(['backbone', 'models'], (Backbone, models) ->
+define(['backbone', 'models', 'tpl!templates/breadcrumb-item'], (Backbone, models, template_breadcrumb_item) ->
 
     window.issue_depth = (code) ->
         return code.length - 2
@@ -14,7 +14,7 @@ define(['backbone', 'models'], (Backbone, models) ->
             @$el.html('')
             breadcrumbs = window.pageModel.breadcrumbs
             for rec in breadcrumbs
-                @$el.append( window.JST.breadcrumb_item(rec))
+                @$el.append( template_breadcrumb_item(rec))
 
         headerHeight: ->
           $("#affix-header").height()

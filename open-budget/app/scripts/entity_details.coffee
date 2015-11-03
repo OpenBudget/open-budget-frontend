@@ -1,4 +1,10 @@
-define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backbone, models, JST) ->
+define(
+  [
+    "jquery", "underscore", "backbone", "models",
+    "tpl!templates/entity-details", "tpl!templates/exemption-by-publisher-row", "tpl!templates/exemption-details-row",
+    "tpl!templates/exemption-full-details"
+  ],
+  ($, _, Backbone, models, template_entity_details, tpl_exemption_by_publisher_row, tpl_exemption_details_row, tpl_exemption_full_details) ->
     class EntityDetailsView extends Backbone.View
             events:
               'click .exemption-expander': 'toggleExemptionDetails'
@@ -25,7 +31,7 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
             render: ->
                 @$el.css('display','inherit')
                 data = @entity.toJSON()
-                @$el.html JST.entity_details( data )
+                @$el.html template_entity_details( data )
 
                 # for each exemption by publisher, build a view and render it, and append it
                 # to the table body
@@ -81,7 +87,7 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
                 detailView.hideFullDetailsView()
 
         render: ->
-            @$el.html JST.exemption_by_publisher_row(@model)
+            @$el.html tpl_exemption_by_publisher_row(@model)
             @$el.find('.collapse').hide()
             @
 
@@ -96,7 +102,7 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
             @initialized = false
 
         render: ->
-            @$el.html JST.exemption_details_row(@model)
+            @$el.html tpl_exemption_details_row(@model)
             @$el.find('.open').show()
             @$el.find('.collapse').hide()
             @
@@ -134,7 +140,7 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
         className: 'fullDetailsRow'
 
         render: ->
-            @$el.html JST.exemption_full_details(@model)
+            @$el.html tpl_exemption_full_details(@model)
             @
 
         toggleShow: ->

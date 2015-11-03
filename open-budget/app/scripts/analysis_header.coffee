@@ -1,4 +1,9 @@
-define(['backbone', 'models'], (Backbone, models) ->
+define([
+  'backbone',
+  'models',
+  'tpl!templates/header__current_budget',
+  'tpl!templates/header__changed_this_year'
+  ], (Backbone, models, header__current_budget, header__changed_this_year) ->
 
     window.up_or_down = (allocated,revised ) ->
                 if allocated > revised
@@ -47,7 +52,7 @@ define(['backbone', 'models'], (Backbone, models) ->
             window.pageModel.get('currentItem')?.attributes.net_allocated?
 
         analyze: () ->
-            window.JST.header__current_budget( pageModel.get('currentItem').toJSON() )
+            header__current_budget( pageModel.get('currentItem').toJSON() )
 
     class ChangedThisYearAnalyzer extends BudgetAnalyzer
 
@@ -62,7 +67,7 @@ define(['backbone', 'models'], (Backbone, models) ->
 
 
         analyze: () ->
-            window.JST.header__changed_this_year( pageModel.get('currentItem').toJSON())
+            header__changed_this_year( pageModel.get('currentItem').toJSON())
 
 
 

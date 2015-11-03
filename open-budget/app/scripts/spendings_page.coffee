@@ -1,4 +1,4 @@
-define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_page', 'scripts/modelsHelpers/ReadyAggregator'], (Backbone, _, models, EntityDetailsView, OrphanExemptionView, ReadyAggregator) ->
+define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_page', 'scripts/modelsHelpers/ReadyAggregator', 'tpl!templates/latest-spending-updates'], (Backbone, _, models, EntityDetailsView, OrphanExemptionView, ReadyAggregator, template_latest_spending_updates) ->
   class SpendingsPageView extends Backbone.View
 
         initialize: ->
@@ -29,7 +29,7 @@ define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_p
               exemptions: _.map(@model.newSpendings.models, (x) ->
                   x.toJSON())
               daysLimit: @model.daysLimit.get("value")
-          @$el.html window.JST.latest_spending_updates(data)
+          @$el.html template_latest_spending_updates(data)
           @$el.find("div.exemption-alert:first").not('.empty').trigger("click")
 
 

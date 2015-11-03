@@ -1,4 +1,6 @@
-define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbone, models, JST, BubbleChart) ->
+define(
+  ['jquery','backbone', 'models', 'bubble_chart', 'tpl!templates/main-budget-header', 'tpl!templates/bubble-group-label', 'tpl!templates/bubble-tooltip'],
+  ($, Backbone, models, BubbleChart, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
 
     globalWidth = 0
 
@@ -167,7 +169,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                     @chart.focusOnCode(focusCode)
 
             @model.on 'ready-main-budget', =>
-                @$el.find("#main-budget-header").html(JST.main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
+                @$el.find("#main-budget-header").html(tpl_main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
                 if @rendered
                     @compare_2014()
             @model.on 'resized', =>
@@ -242,7 +244,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
           title_data = center.getCenters()
 
           if centeredNode?
-              $(JST.bubble_group_label({
+              $(tpl_bubble_group_label({
                     total: centeredNode.rev,
                     title: centeredNode.src.get("title")
                 })).css({
@@ -253,7 +255,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
           else
               for group, i in title_data
                 if group.title?
-                  $(JST.bubble_group_label(group)).css({
+                  $(tpl_bubble_group_label(group)).css({
                     top: (group.y + @chart.radius_scale(group.total)) + "px",
                     left: group.x + "px"
                   }).appendTo(@$bubbleContainer)
@@ -281,7 +283,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                         className: -> "child-bubble "+changeClass(this.orig,this.rev)+"_svg"
                         fill_color: null
                         stroke_color: null
-                        tooltip_contents: -> JST.bubble_tooltip(@)
+                        tooltip_contents: -> tpl_bubble_tooltip(@)
                         center: null
                         part: 0
                         subNode: true
@@ -315,7 +317,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                     className: -> "bubblesCircle "+changeClass(this.orig,this.rev)+"_svg"
                     fill_color: null
                     stroke_color: null
-                    tooltip_contents: -> JST.bubble_tooltip(this)
+                    tooltip_contents: -> tpl_bubble_tooltip(this)
                     center: null,
                     onMoreInfo: @moreInfo,
                     click: (d) =>

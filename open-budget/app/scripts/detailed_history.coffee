@@ -1,4 +1,4 @@
-define(['backbone', 'models', 'combined_history'], (Backbone, models, combinedHistory) ->
+define(['backbone', 'models', 'combined_history', 'tpl!templates/single-transfer'], (Backbone, models, combinedHistory, template_single_transfer) ->
     #### Models
     class HistoryItem extends Backbone.View
 
@@ -16,7 +16,7 @@ define(['backbone', 'models', 'combined_history'], (Backbone, models, combinedHi
 
             render: ->
                 if @model.get('original_baseline')?
-                    @$el.html( window.JST.single_transfer( @model.toJSON() ) )
+                    @$el.html( template_single_transfer( @model.toJSON() ) )
 
     class HistoryTable extends Backbone.View
 

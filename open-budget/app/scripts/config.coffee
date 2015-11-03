@@ -15,10 +15,11 @@ require.config({
         "bootstrap-tour":       "bower_components/bootstrap-tour/build/js/bootstrap-tour",
         "pivot":                "bower_components/pivottable/dist/pivot",
         "d3_renderers":         "bower_components/pivottable/dist/d3_renderers",
+        "text":                 "bower_components/requirejs-text/text",
+        "tpl":                  "bower_components/requirejs-tpl/tpl",
         "ecma_5":               "scripts/interval-query/lib/browser/ecma_5",
         "segment-tree-browser": "scripts/interval-query/lib/browser/segment-tree-browser",
         "team":                 "scripts/team",
-        "templates":            "scripts/templates",
         "url_scheme":           "scripts/url_scheme",
         "main_page_tabs":       "scripts/main_page_tabs",
         "models":               "scripts/models",
@@ -62,10 +63,6 @@ require.config({
         },
         ecma_5: {
             exports: "Array.prototype.forEach"
-        },
-        templates: {
-            deps: ['underscore'],
-            exports: 'JST'
         },
         "twitter": {
             exports: "twttr"

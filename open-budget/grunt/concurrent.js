@@ -4,7 +4,6 @@ module.exports = {
     'less',
     'imagemin',
 //    'svgmin',
-    'htmlmin',
-    'jst'
+    'htmlmin'
   ]
 };

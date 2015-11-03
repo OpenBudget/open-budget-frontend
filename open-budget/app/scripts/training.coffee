@@ -1,4 +1,4 @@
-define(['backbone', 'models'], (Backbone, models) ->
+define(['backbone', 'models', 'tpl!templates/tour-dialog'], (Backbone, models, tpl_tour_dialog) ->
 
     class TrainingStep extends Backbone.Model
         defaults:
@@ -64,7 +64,7 @@ define(['backbone', 'models'], (Backbone, models) ->
                 keyboard: false # Disabled since the buttons are hard-coded to ltr.
                 backdrop: true
                 backdropPadding: 5
-                template: JST.tour_dialog()
+                template: tpl_tour_dialog()
                 debug: true
                 redirect: (x) ->
                     console.log "want to redirect to <<#{x}>>"
