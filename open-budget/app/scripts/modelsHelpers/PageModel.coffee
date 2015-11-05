@@ -2,6 +2,7 @@ define ['backbone',
         'scripts/modelsHelpers/BudgetItemKids',
         'scripts/modelsHelpers/SupportFieldNormalizer',
         'scripts/modelsHelpers/ResizeNotifier',
+        'scripts/modelsHelpers/SelectedEntity',
         'scripts/modelsHelpers/SelectedExemption',
         'scripts/modelsHelpers/DaysLimit',
         'scripts/modelsHelpers/ChangeGroup',
@@ -17,7 +18,7 @@ define ['backbone',
         'scripts/modelsHelpers/NewSpendings',
         'scripts/modelsHelpers/Participants',
         'scripts/modelsHelpers/Exemption'
-      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, SelectedExemption, DaysLimit, ChangeGroup,
+      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, SelectedEntity, SelectedExemption, DaysLimit, ChangeGroup,
       ChangeGroups, ChangeExplanation, BudgetApprovals, BudgetHistory, ReadyAggregator, CompareRecords, BudgetItem,
       TakanaSupports, TakanaSpending, NewSpendings, Participants, Exemption) ->
 
@@ -56,6 +57,7 @@ define ['backbone',
           @mainPageTabs           = new window.MainPageTabs(@)
           @resizeNotifier         = new ResizeNotifier()
           @selectedExemption         = new SelectedExemption()
+          @selectedEntity         = new SelectedEntity()
           @daysLimit              = new DaysLimit()
 
           @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)

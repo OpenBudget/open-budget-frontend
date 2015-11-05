@@ -13,6 +13,15 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
                     else
                       @$el.css('display','none')
 
+                @model.selectedEntity.on 'change:selected', =>
+                    eid = @model.selectedEntity.get('selected')
+                    if eid != ""
+                      @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
+                      @entity.doFetch()
+                      @entity.on 'ready', => @render()
+                    else
+                      @$el.css('display','none')
+
             render: ->
                 @$el.css('display','inherit')
                 data = @entity.toJSON()
@@ -139,8 +148,8 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
     $(->
         console.log "entity-details"
         if models.pageModel.get("entityId")?
-            window.entityDetails = new EntityDetailsView({el: $("#standalone-entity-details"), model: models.pageModel})
-            models.pageModel.selectedExemption.set('selected',models.pageModel.get("entity_id"))
+            window.entityDetails = new EntityDetailsView({el: "#standalone-entity-details", model: models.pageModel})
+            models.pageModel.selectedEntity.set('selected',models.pageModel.get("entityId"))
     )
 
     EntityDetailsView
