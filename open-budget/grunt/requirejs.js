@@ -18,7 +18,7 @@ module.exports = {
       inlineText: true,
       preserveLicenseComments: false,
       generateSourceMaps: true,
-      useSourceUrl: true
+      useSourceUrl: false
     }
   }
 };
