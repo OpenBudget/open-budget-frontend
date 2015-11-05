@@ -4,7 +4,7 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
               'click .exemption-expander': 'toggleExemptionDetails'
 
             initialize: ->
-                @model.selectedExemption.on 'change:entity_id', =>
+                @model.selectedExemption.on 'change:publication_id', =>
                     eid = @model.selectedExemption.get('entity_id')
                     if eid != ""
                       @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
