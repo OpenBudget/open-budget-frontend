@@ -2,9 +2,9 @@ module.exports = {
     dist: {
       files: [{
         expand: true,
-        cwd: '<%= yeoman.app %>/images',
+        cwd: '<%= yeoman.app %>/styles/assets',
         src: '{,*/}*.svg',
-        dest: '<%= yeoman.dist %>/images'
+        dest: '<%= yeoman.dist %>/styles/assets'
       }]
     }
 };

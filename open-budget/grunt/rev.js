@@ -4,8 +4,8 @@ module.exports = {
           src: [
             '<%= yeoman.dist %>/scripts/{,*/}*.js',
             '<%= yeoman.dist %>/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
-            '<%= yeoman.dist %>/fonts/{,*/}*.*'
+            '<%= yeoman.dist %>/styles/assets/**/*.*',
+            '!<%= yeoman.dist %>/styles/assets/**/*.svg'
           ]
         }
       }
