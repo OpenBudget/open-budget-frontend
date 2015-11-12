@@ -9,7 +9,7 @@ define ['backbone', 'scripts/modelsHelpers/SpendingLine'], (backbone, SpendingLi
               @fetch(dataType: @pageModel.get('dataType'), reset: true)
 
       comparator: (model1, model2) ->
-        if model1.calcWeight() > model2.calcWeight()
+        if model1.get('flags').total_flags > model2.get('flags').total_flags
          -1
         else
           1
