@@ -15,6 +15,9 @@ define ['backbone', 'scripts/modelsHelpers/SpendingLine'], (backbone, SpendingLi
           1
 
       url: ->
-              "#{pageModel.get('baseURL')}/api/exemption/new?limit=100"
+              "#{pageModel.get('baseURL')}/api/exemption/new/1?limit=300"
+
+      setDaysToFetch: (days) ->
+        @url = "#{pageModel.get('baseURL')}/api/exemption/new/" + days + "?limit=300"
 
   return NewSpendings
