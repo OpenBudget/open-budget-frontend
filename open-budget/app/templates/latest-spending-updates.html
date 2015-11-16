@@ -34,5 +34,11 @@
                 <h3 class="exemption-title"><%= (e.description.length < 137) ? e.description : (e.description.substring(0,137) + "...") %></h3>
         </div>
         <% } %>
+
+        <% if (exemptions.length === 0) {%>
+        <div class="exemption-alert empty">
+          <h5 class="exemption-publisher">לא נמצאו עדכונים בטווח הזמן הנבחר</h5>
+        </div>
+        <% }%>
     </div>
 </div>
