@@ -24,6 +24,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'clean:generated_js',
       'coffee',
       'less',
       'jst',
@@ -49,6 +50,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'clean:generated_js',
     'concurrent',
     'requirejs',
     'cssmin',

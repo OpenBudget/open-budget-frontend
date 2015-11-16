@@ -1,1 +1,0 @@
-interval-query/lib/browser/segment-tree-browser.js
