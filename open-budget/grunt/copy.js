@@ -9,6 +9,7 @@ module.exports = {
           '*.{ico,png,txt}',
           '.htaccess',
           'styles/assets/*.png',
+          'styles/assets/*.svg',
           'styles/assets/fonts/*.woff',
           'styles/assets/fonts/*.ttf',
           'bower_components/bootstrap-rtl/assets/fonts/*ttf',
