@@ -4,7 +4,11 @@ define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_p
         initialize: ->
           @model.newSpendings.setDaysToFetch(@model.daysLimit.get('value'))
 
-          @model.on 'ready-spendings-page', => @render()
+          if @model.eventAlreadyTriggered('ready-spendings-page')
+            @render()
+          else
+            @model.on 'ready-spendings-page', => @render()
+
           @model.daysLimit.on 'change:value', =>
             @model.newSpendings.setDaysToFetch(@model.daysLimit.get('value'))
             @model.newSpendings.fetch(dataType: @model.get('dataType'), reset: true)

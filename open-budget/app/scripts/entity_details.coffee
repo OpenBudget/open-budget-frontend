@@ -1,8 +1,8 @@
 define(
   [
     "jquery", "underscore", "backbone", "models",
-    "tpl!templates/entity-details", "tpl!templates/exemption-by-publisher-row", "tpl!templates/exemption-details-row",
-    "tpl!templates/exemption-full-details"
+    "hbs!templates/entity-details", "hbs!templates/exemption-by-publisher-row", "hbs!templates/exemption-details-row",
+    "hbs!templates/exemption-full-details"
   ],
   ($, _, Backbone, models, template_entity_details, tpl_exemption_by_publisher_row, tpl_exemption_details_row, tpl_exemption_full_details) ->
     class EntityDetailsView extends Backbone.View
@@ -10,23 +10,34 @@ define(
               'click .exemption-expander': 'toggleExemptionDetails'
 
             initialize: ->
-                @model.selectedExemption.on 'change:publication_id', =>
-                    eid = @model.selectedExemption.get('entity_id')
-                    if eid != ""
-                      @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
-                      @entity.doFetch()
-                      @entity.on 'ready', => @render()
-                    else
-                      @$el.css('display','none')
+              @model.selectedExemption.on 'change:publication_id', =>
+                @publicationSelected()
 
-                @model.selectedEntity.on 'change:selected', =>
-                    eid = @model.selectedEntity.get('selected')
-                    if eid != ""
-                      @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
-                      @entity.doFetch()
-                      @entity.on 'ready', => @render()
-                    else
-                      @$el.css('display','none')
+              @model.selectedEntity.on 'change:selected', =>
+                @entitySelected()
+
+              if @model.selectedExemption.get 'publication_id'
+                @publicationSelected()
+              else if @model.selectedEntity.get 'selected'
+                @entitySelected()
+
+            publicationSelected: ->
+              eid = @model.selectedExemption.get('entity_id')
+              if eid != ""
+                @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
+                @entity.doFetch()
+                @entity.on 'ready', => @render()
+              else
+                @$el.css('display','none')
+
+            entitySelected: ->
+              eid = @model.selectedEntity.get('selected')
+              if eid != ""
+                @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
+                @entity.doFetch()
+                @entity.on 'ready', => @render()
+              else
+                @$el.css('display','none')
 
             render: ->
                 @$el.css('display','inherit')

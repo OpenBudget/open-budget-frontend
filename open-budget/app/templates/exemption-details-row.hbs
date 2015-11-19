@@ -1,0 +1,14 @@
+<td class='exemption-description' colspan=2><a href="<%= url %>" target="_blank">{{ description }}</a></td>
+<td>
+{{#if volume}}
+  {{numbro volume isCurrency=true format="0, $"}}
+{{else}}
+  לא ידוע
+{{/if}}
+</td>
+<td>{{ start_date }}</td>
+<td>{{ end_date }}</td>
+<td class='exemption-full-details-expander'>
+  <div class="open" aria-hidden="true">הצג</div>
+  <div class="collapse" aria-hidden="true">הסתר</div>
+</td>
