@@ -168,6 +168,9 @@ define ['backbone',
               for kind in @get('kinds')
                   $('body').toggleClass("kind-#{kind}",true)
 
+      eventAlreadyTriggered: (eventName) =>
+        @get 'event-triggered-' + eventName || false
+
       addKind: (kind) ->
           kinds = _.clone(@get('kinds'))
           kinds.push(kind)

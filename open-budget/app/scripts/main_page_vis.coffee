@@ -1,5 +1,5 @@
 define(
-  ['jquery','backbone', 'models', 'bubble_chart', 'tpl!templates/main-budget-header', 'tpl!templates/bubble-group-label', 'tpl!templates/bubble-tooltip'],
+  ['jquery','backbone', 'models', 'bubble_chart', 'hbs!templates/main-budget-header', 'hbs!templates/bubble-group-label', 'tpl!templates/bubble-tooltip'],
   ($, Backbone, models, BubbleChart, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
 
     globalWidth = 0
@@ -131,51 +131,21 @@ define(
         initialize: ->
             console.log("MainPageVis: initialize")
             @rendered = false
-            @model.on 'ready-budget-bubbles', =>
-                stateChange = (state, node) =>
-                    if (state == "initial")
-                        @$bubbleContainer.find(".bubble-group-label").remove()
-                        @$el.find("#grouping-kind").css("pointer-events", "").fadeTo(500, 1)
-                        models.pageModel.URLSchemeHandlerInstance.removeAttribute(
-                            "focusOn", false
-                        )
-                        @chart.toggleColorLegend(@toggle == 0)
-                        @chart.toggleCircleLegend(@toggle == 0)
-                        @addBubbleLabels()
-                    else if (state == "centered")
-                        @$bubbleContainer.find(".bubble-group-label").remove()
-                        @$el.find("#grouping-kind").css("pointer-events", "none").fadeTo(500, 0)
-                        @chart.toggleColorLegend(true)
-                        @chart.toggleCircleLegend(true)
-                        @addBubbleLabels(node)
-                @chart = new BubbleChart(
-                    el: @$el.find("#bubble-chart"),
-                    addSubNodes: @addKids,
-                    stateChange: stateChange
-                )
-                @chart_el = d3.select(@chart.el)
-                @$bubbleContainer = @$el.find("#bubble-chart-container")
-                @centers = [ new SimpleCentering(), new TopGroupCentering(), new FullGroupCentering(), new ParentCentering() ]
-                @prepareData()
-                @toggle = 0
-                if @model.URLSchemeHandlerInstance && @model.URLSchemeHandlerInstance.getAttribute('toggle')
-                    @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
-                @switchToggle(@toggle,false)
-                @recalc_centers()
-                @render()
 
-                focusCode = models.pageModel.URLSchemeHandlerInstance.getAttribute('focusOn')
-                if focusCode
-                    @chart.focusOnCode(focusCode)
+            if @model.eventAlreadyTriggered 'ready-budget-bubbles'
+              @readyBudgetBubblesHandler()
+            else
+              @model.on 'ready-budget-bubbles', =>
+                @readyBudgetBubblesHandler()
 
-            @model.on 'ready-main-budget', =>
-                @$el.find("#main-budget-header").html(tpl_main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
-                if @rendered
-                    @compare_2014()
+            if @model.eventAlreadyTriggered 'ready-main-budget'
+              @readyMainBudgetHandler()
+            else
+              @model.on 'ready-main-budget', =>
+                @readyMainBudgetHandler()
+
             @model.on 'resized', =>
-                if @rendered
-                    @recalc_centers()
-                    @chart.start()
+              @resizedHandler()
 
 
         events:
@@ -184,6 +154,53 @@ define(
             'click .compare-2015': 'compare_2015_end'
             'click .compare-2015 .compare-year-start': 'compare_2015_start'
             'click .compare-2015 .compare-year-end': 'compare_2015_end'
+
+        readyBudgetBubblesHandler: =>
+          stateChange = (state, node) =>
+              if (state == "initial")
+                  @$bubbleContainer.find(".bubble-group-label").remove()
+                  @$el.find("#grouping-kind").css("pointer-events", "").fadeTo(500, 1)
+                  models.pageModel.URLSchemeHandlerInstance.removeAttribute(
+                      "focusOn", false
+                  )
+                  @chart.toggleColorLegend(@toggle == 0)
+                  @chart.toggleCircleLegend(@toggle == 0)
+                  @addBubbleLabels()
+              else if (state == "centered")
+                  @$bubbleContainer.find(".bubble-group-label").remove()
+                  @$el.find("#grouping-kind").css("pointer-events", "none").fadeTo(500, 0)
+                  @chart.toggleColorLegend(true)
+                  @chart.toggleCircleLegend(true)
+                  @addBubbleLabels(node)
+          @chart = new BubbleChart(
+              el: @$el.find("#bubble-chart"),
+              addSubNodes: @addKids,
+              stateChange: stateChange
+          )
+          @chart_el = d3.select(@chart.el)
+          @$bubbleContainer = @$el.find("#bubble-chart-container")
+          @centers = [ new SimpleCentering(), new TopGroupCentering(), new FullGroupCentering(), new ParentCentering() ]
+          @prepareData()
+          @toggle = 0
+          if @model.URLSchemeHandlerInstance && @model.URLSchemeHandlerInstance.getAttribute('toggle')
+              @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
+          @switchToggle(@toggle,false)
+          @recalc_centers()
+          @render()
+
+          focusCode = models.pageModel.URLSchemeHandlerInstance.getAttribute('focusOn')
+          if focusCode
+              @chart.focusOnCode(focusCode)
+
+        resizedHandler: =>
+          if @rendered
+              @recalc_centers()
+              @chart.start()
+
+        readyMainBudgetHandler: =>
+          @$el.find("#main-budget-header").html(tpl_main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
+          if @rendered
+              @compare_2014()
 
         compare_2014: =>
             @set_actives('.compare-2014')

@@ -33,6 +33,7 @@ define [], () ->
           if @readyCounter == 0
               @ready = true
               pageModel.trigger(@event)
+              pageModel.set 'event-triggered-' + @event, true
               if @callback then @callback()
 
   return ReadyAggregator
