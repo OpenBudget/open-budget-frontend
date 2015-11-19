@@ -1,6 +1,6 @@
 module.exports = {
       coffee: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
+        files: ['<%= yeoman.app %>/scripts/**/*.coffee'],
         tasks: ['clean:generated_js', 'coffee']
       },
       less: {
