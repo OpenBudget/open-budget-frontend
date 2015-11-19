@@ -259,9 +259,13 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                   }).appendTo(@$bubbleContainer)
 
         addKids: (node, readyCallback) =>
-            code = node.src.get('code')
-            # TODO get the year from the model
-            year = 2015
+            year = node.src.get('year')
+            code = null
+            if @selectedComparison=='orig_2014/rev_2014'
+                code = node.src.get('prev_code')
+            if not code?
+                code = node.src.get('code')
+                year += 1
             centeredNodeKids = new pageModel.api.BudgetItemKids([], year: year, code: code, pageModel: pageModel)
             centeredNodeKids.on('sync', =>
                 console.log("kids are ready")
@@ -270,7 +274,7 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
                     node =
                         id: model.get('code')
                         src: model
-                        orig: model.get('net_allocated')
+                        orig: null
                         rev:  model.get('net_revised')
                         onMoreInfo: @moreInfo
                         value: model.get('net_revised')
@@ -324,9 +328,12 @@ define(['jquery','backbone', 'models', 'templates', 'bubble_chart'], ($, Backbon
             @compare_2014()
 
         moreInfo: (node) ->
-            # TODO get the year from the model
-            year = 2015
-            window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(@id, year)
+            code = @src.get('prev_code')
+            year = @src.get('year')
+            if not code?
+                code = @src.get('code')
+                year += 1
+            window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(code, year)
             ###
             TODO: build a new view controller architecture
 

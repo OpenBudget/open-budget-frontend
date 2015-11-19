@@ -13,6 +13,11 @@ define ['backbone', 'scripts/modelsHelpers/BudgetItem'], (backbone, BudgetItem) 
 
       comparator: (m) -> m.get('year')
 
-      getLast: -> @models[@models.length-1]
+      getForYear: (year) ->
+          model = _.sortBy( @models, (x) -> Math.abs(x.get('year') - year) )
+          if model.length > 0
+              model[0]
+          else
+              @models[@models.length-1]
 
   return BudgetHistory

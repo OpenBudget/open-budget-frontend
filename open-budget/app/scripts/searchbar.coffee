@@ -345,14 +345,22 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
                     # Nothing to do for entities
                     suggestionList.push(s)
                 else if s.type == "BudgetLine"
+                    code = s.code
+                    if not code? && s.real_code
+                        s.code = '00' + s.real_code
                     if not budgetCodes[s.code]
                         # place a marker
                         suggestionList.push(s.code)
                         # start a new aggregate for this code
                         budgetCodes[s.code] = s
 
-                    if s.year > budgetCodes[s.code].year
+                    # favour 2014 over all other years
+                    cmpyear = if budgetCodes[s.code].year==2014 then 3000 else budgetCodes[s.code].year
+                    if s.year > cmpyear
                         budgetCodes[s.code] = s
+
+                if s.length == 20
+                    break
 
             for index, s of suggestionList
                 if typeof s == "string"
@@ -443,7 +451,7 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
             @state = STATE_IDLE
             @suggestionNum = 0
             @suggestions = []
-            url = @url("%QUERY",20)
+            url = @url("%QUERY",100)
             dataType = models.pageModel.get('dataType')
             @engine = new Bloodhound
                             name: 'budgets'
@@ -460,7 +468,7 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
                                     when x.type == 'BudgetLine' then x.type==y.type && x.code==y.code && x.year==y.year
                                     when x.type == 'Entity' then x.type==y.type && x.name==y.name && x.id==y.id
                                     else false
-                            limit: 20
+                            limit: 100
                             datumTokenizer: (d) ->
                                 return switch
                                     when d.type == 'BudgetLine' then Bloodhound.tokenizers.whitespace(d.title)

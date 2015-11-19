@@ -145,6 +145,7 @@ define(['jquery', 'backbone', 'models'] , ($, Backbone, models) ->
                             point.set('participants', approvedRec.get('participants'))
                             point.set('src','budgetline')
                             point.set('continued',false)
+                            point.set('proposed', new Date()<startYear)
                             @add point
 
                             if endEffect > endYear

@@ -81,9 +81,10 @@ define ['backbone',
               @budgetHistory = new BudgetHistory([], pageModel: @)
               @budgetHistory.on 'reset',
                                 () =>
-                                    @set('currentItem', @budgetHistory.getLast())
+                                    year = @get('year')
+                                    @set('currentItem', @budgetHistory.getForYear(year))
                                     if @budgetHistory.length > 0
-                                        title = @budgetHistory.getLast().get('title')
+                                        title = @budgetHistory.getForYear(year).get('title')
                                         ga('send', 'event', 'navigation', 'budget', title, 1);
 
               @readyEvents.push (new ReadyAggregator("ready-budget-history-pre")

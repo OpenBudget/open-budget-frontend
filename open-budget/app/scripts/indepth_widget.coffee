@@ -96,6 +96,7 @@ define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
                         date = that.baseTimeScale.invert(mouse[0])
                         date = new Date(date)
                         ofs = $(that.svg[0]).offset()
+                        that.participantThumbnailsOffset = that.participantThumbnails.offset()
 
                         if that.termSegmentTree
                             termList = that.termSegmentTree.queryPoint(that.baseInverseTimeScale(d3.event.pageX + 4))

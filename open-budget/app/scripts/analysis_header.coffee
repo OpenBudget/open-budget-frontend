@@ -55,7 +55,7 @@ define(['backbone', 'models'], (Backbone, models) ->
             res = false
             # make sure currentItem exists - /equivs api can return an empty result
             if window.pageModel.get('currentItem')
-                year = window.pageModel.get('currentItem').attributes.year
+                year = window.pageModel.get('currentItem').get('year')
                 res = transfers_by_year(year).length > 0
 
             return res
