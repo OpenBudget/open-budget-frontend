@@ -18,7 +18,8 @@
     "pivottable": "~1.3.0",
     "requirejs-tpl": "https://github.com/Rhinofly/requirejs-tpl.git#0.0.3",
     "require-handlebars-plugin": "https://github.com/SlexAxton/require-handlebars-plugin.git#1837ba90ced022472169d0011da4197b9e9ac4cc",
-    "numbro": "~1.6.2"
+    "numbro": "~1.6.2",
+    "moment": "~2.10.6"
   },
   "devDependencies": {},
   "resolutions": {

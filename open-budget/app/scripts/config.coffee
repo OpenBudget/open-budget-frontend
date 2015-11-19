@@ -20,6 +20,7 @@ require.config({
         "text":                 "bower_components/requirejs-text/text",
         "tpl":                  "bower_components/requirejs-tpl/tpl",
         "vendor/numbro":        "bower_components/numbro/numbro",
+        "vendor/moment":        "bower_components/moment/moment",
         "ecma_5":               "scripts/interval-query/lib/browser/ecma_5",
         "segment-tree-browser": "scripts/interval-query/lib/browser/segment-tree-browser",
         "team":                 "scripts/team",
