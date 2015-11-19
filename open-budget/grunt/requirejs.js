@@ -16,7 +16,8 @@ module.exports = {
       logLevel: 0,
       preserveLicenseComments: false,
       generateSourceMaps: true,
-      useSourceUrl: false
+      useSourceUrl: false,
+      stubModules: ['hbs', 'hbs/underscore', 'hbs/json2', 'hbs/handlebars']
     }
   }
 };

@@ -1,6 +1,8 @@
 require.config({
     baseUrl: ".",
     paths: {
+        "hbs": "bower_components/require-handlebars-plugin/hbs",
+        "handlebarsRuntime":    "bower_components/require-handlebars-plugin/hbs/handlebars.runtime",
         "twitter":              "//platform.twitter.com/widgets",
         "hasadna-notifications":"//hasadna-notifications.appspot.com/static/hn",
         "jquery":               "bower_components/jquery/jquery",
@@ -17,6 +19,7 @@ require.config({
         "d3_renderers":         "bower_components/pivottable/dist/d3_renderers",
         "text":                 "bower_components/requirejs-text/text",
         "tpl":                  "bower_components/requirejs-tpl/tpl",
+        "vendor/numbro":        "bower_components/numbro/numbro",
         "ecma_5":               "scripts/interval-query/lib/browser/ecma_5",
         "segment-tree-browser": "scripts/interval-query/lib/browser/segment-tree-browser",
         "team":                 "scripts/team",
@@ -84,5 +87,10 @@ require.config({
         "modernizr": {
             exports: "Modernizr"
         }
+    },
+
+    hbs: {
+      handlebarsPath: 'handlebarsRuntime',
+      helperDirectory: 'scripts/Misc/handlebarsHelpers/'
     }
 })
