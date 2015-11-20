@@ -7,18 +7,17 @@ module.exports = {
       out: "dist/scripts/main.js",
       optimize: 'uglify2',
       // Uncomment to debug
-      //optimize: 'none',
+      // optimize: 'none',
       mainConfigFile:'app/scripts/config.js',
       paths: {
           main: "scripts/main",
           "hasadna-notifications": 'empty:'
       },
       logLevel: 0,
-      findNestedDependencies: false,
-      inlineText: true,
       preserveLicenseComments: false,
       generateSourceMaps: true,
-      useSourceUrl: false
+      useSourceUrl: false,
+      stubModules: ['hbs', 'hbs/underscore', 'hbs/json2', 'hbs/handlebars']
     }
   }
 };

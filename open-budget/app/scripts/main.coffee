@@ -1,7 +1,6 @@
 require([
     "modernizr",
     "hello",
-    "templates",
     "searchbar",
     "training",
     "subscribe",

@@ -1,0 +1,23 @@
+{{!-- This file not is use yet. need to refactor more code on main_page_vis to make it work properly--}}
+<div id="orig_2014/orig_2015" class="main-budget-title">
+  <h1><strong>{{l10n "BUDG_FOR_YEAR"}} 2015</strong> {{l10n "HE"}} <span class="approved">{{numbro newb.net_allocated format="0 a $" isCurrency=true}}</span></h1>
+  <p>כיצד ניתן להבין אותו <strong>ביחס לתקציב 2014?</strong></p>
+</div>
+<div id="rev_2014/orig_2015" class="main-budget-title hide">
+  <h1><strong>תקציב המדינה המיועד לשנת 2015</strong> הוא <span class="approved">{{numbro newb.net_allocated format="0 a $" isCurrency=true}}</span></h1>
+  <p>כיצד ניתן להבין אותו <strong>ביחס לשינויים שחלו בתקציב הקודם לאורך 2014?</strong></p>
+</div>
+<div id="orig_2014/rev_2014" class="main-budget-title hide">
+  <h1><strong>תקציב המדינה לשנת 2014</strong> הוא <span class="approved">{{numbro main.net_allocated format="0 a $" operation="multiply" operationFactor=1000 isCurrency=true}}</span></h1>
+  <p>מה הם <strong>השינויים שחלו בו מתחילת השנה?</strong></p>
+</div>
+
+<p><span id='num-items-increased'></span> התחומים שגדלו
+<span class="increased_a_text">מופיעים</span>
+<span class="increased_b_text">בצבעים </span>
+<span class="increased_c_text">חמים</span>,
+<span id='num-items-decreased'></span> אלה שקטנו
+<span class="decreased_a_text">מופיעים</span>
+<span class="decreased_b_text">בצבעים </span>
+<span class="decreased_c_text">קרים</span>
+</p>

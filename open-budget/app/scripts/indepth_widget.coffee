@@ -1,5 +1,11 @@
-define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
-    (models, $, Backbone, ecma_t, segmentTree) ->
+define [
+  'models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser",
+  "tpl!templates/widget-change-tooltip",
+  "tpl!templates/participant-photo",
+  "tpl!templates/widget-participant-tooltip"
+  "tpl!templates/participant-term"
+  ],
+    (models, $, Backbone, ecma_t, segmentTree, tpl_widget_change_tooltip, tpl_participant_photo, tpl_widget_participant_tooltip, tpl_participant_term) ->
         console.log "indepth_widget"
         indepthWidget = null
         getInstance = () ->
@@ -56,7 +62,7 @@ define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
                                .attr('class', 'd3-tip timeline-tip')
                                .direction((d) => "n") #if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
                                .offset((d) => [@tooltipYOffset(d) ,0])
-                               .html((d) -> if d.get('source') != 'dummy' then JST.widget_change_tooltip(d) else "")
+                               .html((d) -> if d.get('source') != 'dummy' then tpl_widget_change_tooltip(d) else "")
                 @chart.call( @change_tip )
                 that = this
                 @showTip = (d,i) ->
@@ -106,7 +112,7 @@ define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
                             for term in termList
                                 participant = term.data
                                 that.participantThumbnails.find("#participant-"+participant.get("unique_id")).addClass("participant-hide-photo")
-                                $(JST.participant_photo(participant.attributes))
+                                $(tpl_participant_photo(participant.attributes))
                                     .css({
                                         left: d3.event.pageX+"px",
                                         top: (that.titleIndexScale(participant.get('title')) +
@@ -306,7 +312,7 @@ define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
                     newTips = d3.select('#approvedTooltips').selectAll('.approvedTip').data(approvedModels)
                                 .enter().append("div")
                                 .attr("class","approvedTip participantTooltip")
-                                .html((d) -> JST.widget_participant_tooltip({participants: d.get('participants')}))
+                                .html((d) -> tpl_widget_participant_tooltip({participants: d.get('participants')}))
 
                     d3.select('#approvedTooltips').selectAll('.approvedTip').data(approvedModels)
                                 .style("left", (d) => (@timeScale(d.get('timestamp')))+"px" )
@@ -535,7 +541,7 @@ define ['models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser"],
                                         .attr('class','participantThumbnail')
                         renderParticipant = (d) ->
                             if d.get("end_timestamp") > d.get("start_timestamp")
-                                participant = JST.participant_term(d.attributes)
+                                participant = tpl_participant_term(d.attributes)
 
                         divs.html(renderParticipant)
                         #divs.append("img")

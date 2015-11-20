@@ -1,4 +1,4 @@
-define(['backbone', 'models'], (Backbone, models) ->
+define(['backbone', 'models', 'tpl!templates/single-spending-item'], (Backbone, models, tpl_single_spending_item) ->
     class SpendingList extends Backbone.View
 
         initialize: ->
@@ -8,7 +8,7 @@ define(['backbone', 'models'], (Backbone, models) ->
         render: ->
             if @pageModel.spending?
                 jsons = _.map(@pageModel.spending.models, (x) -> x.toJSON())
-                htmls = _.map(jsons, JST.single_spending_item )
+                htmls = _.map(jsons, tpl_single_spending_item )
                 for html in htmls
                     @$el.append( html )
 

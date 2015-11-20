@@ -1,6 +1,8 @@
 require.config({
     baseUrl: ".",
     paths: {
+        "hbs": "bower_components/require-handlebars-plugin/hbs",
+        "handlebarsRuntime":    "bower_components/require-handlebars-plugin/hbs/handlebars.runtime",
         "twitter":              "//platform.twitter.com/widgets",
         "hasadna-notifications":"//hasadna-notifications.appspot.com/static/hn",
         "jquery":               "bower_components/jquery/jquery",
@@ -15,10 +17,13 @@ require.config({
         "bootstrap-tour":       "bower_components/bootstrap-tour/build/js/bootstrap-tour",
         "pivot":                "bower_components/pivottable/dist/pivot",
         "d3_renderers":         "bower_components/pivottable/dist/d3_renderers",
+        "text":                 "bower_components/requirejs-text/text",
+        "tpl":                  "bower_components/requirejs-tpl/tpl",
+        "vendor/numbro":        "bower_components/numbro/numbro",
+        "vendor/moment":        "bower_components/moment/moment",
         "ecma_5":               "scripts/interval-query/lib/browser/ecma_5",
         "segment-tree-browser": "scripts/interval-query/lib/browser/segment-tree-browser",
         "team":                 "scripts/team",
-        "templates":            "scripts/templates",
         "url_scheme":           "scripts/url_scheme",
         "main_page_tabs":       "scripts/main_page_tabs",
         "models":               "scripts/models",
@@ -63,10 +68,6 @@ require.config({
         ecma_5: {
             exports: "Array.prototype.forEach"
         },
-        templates: {
-            deps: ['underscore'],
-            exports: 'JST'
-        },
         "twitter": {
             exports: "twttr"
         },
@@ -87,5 +88,10 @@ require.config({
         "modernizr": {
             exports: "Modernizr"
         }
+    },
+
+    hbs: {
+      handlebarsPath: 'handlebarsRuntime',
+      helperDirectory: 'scripts/Misc/handlebarsHelpers/'
     }
 })

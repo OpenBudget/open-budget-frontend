@@ -1,31 +1,48 @@
-define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backbone, models, JST) ->
+define(
+  [
+    "jquery", "underscore", "backbone", "models",
+    "hbs!templates/entity-details", "hbs!templates/exemption-by-publisher-row", "hbs!templates/exemption-details-row",
+    "hbs!templates/exemption-full-details"
+  ],
+  ($, _, Backbone, models, template_entity_details, tpl_exemption_by_publisher_row, tpl_exemption_details_row, tpl_exemption_full_details) ->
     class EntityDetailsView extends Backbone.View
             events:
               'click .exemption-expander': 'toggleExemptionDetails'
 
             initialize: ->
-                @model.selectedExemption.on 'change:publication_id', =>
-                    eid = @model.selectedExemption.get('entity_id')
-                    if eid != ""
-                      @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
-                      @entity.doFetch()
-                      @entity.on 'ready', => @render()
-                    else
-                      @$el.css('display','none')
+              @model.selectedExemption.on 'change:publication_id', =>
+                @publicationSelected()
 
-                @model.selectedEntity.on 'change:selected', =>
-                    eid = @model.selectedEntity.get('selected')
-                    if eid != ""
-                      @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
-                      @entity.doFetch()
-                      @entity.on 'ready', => @render()
-                    else
-                      @$el.css('display','none')
+              @model.selectedEntity.on 'change:selected', =>
+                @entitySelected()
+
+              if @model.selectedExemption.get 'publication_id'
+                @publicationSelected()
+              else if @model.selectedEntity.get 'selected'
+                @entitySelected()
+
+            publicationSelected: ->
+              eid = @model.selectedExemption.get('entity_id')
+              if eid != ""
+                @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
+                @entity.doFetch()
+                @entity.on 'ready', => @render()
+              else
+                @$el.css('display','none')
+
+            entitySelected: ->
+              eid = @model.selectedEntity.get('selected')
+              if eid != ""
+                @entity = new models.Entity(pageModel: models.pageModel, entityId: eid)
+                @entity.doFetch()
+                @entity.on 'ready', => @render()
+              else
+                @$el.css('display','none')
 
             render: ->
                 @$el.css('display','inherit')
                 data = @entity.toJSON()
-                @$el.html JST.entity_details( data )
+                @$el.html template_entity_details( data )
 
                 # for each exemption by publisher, build a view and render it, and append it
                 # to the table body
@@ -81,7 +98,7 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
                 detailView.hideFullDetailsView()
 
         render: ->
-            @$el.html JST.exemption_by_publisher_row(@model)
+            @$el.html tpl_exemption_by_publisher_row(@model)
             @$el.find('.collapse').hide()
             @
 
@@ -96,7 +113,7 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
             @initialized = false
 
         render: ->
-            @$el.html JST.exemption_details_row(@model)
+            @$el.html tpl_exemption_details_row(@model)
             @$el.find('.open').show()
             @$el.find('.collapse').hide()
             @
@@ -134,7 +151,7 @@ define(["jquery", "underscore", "backbone", "models", "templates"], ($, _, Backb
         className: 'fullDetailsRow'
 
         render: ->
-            @$el.html JST.exemption_full_details(@model)
+            @$el.html tpl_exemption_full_details(@model)
             @
 
         toggleShow: ->

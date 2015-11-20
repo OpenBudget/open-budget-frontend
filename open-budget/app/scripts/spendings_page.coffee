@@ -1,10 +1,14 @@
-define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_page', 'scripts/modelsHelpers/ReadyAggregator'], (Backbone, _, models, EntityDetailsView, OrphanExemptionView, ReadyAggregator) ->
+define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_page', 'scripts/modelsHelpers/ReadyAggregator', 'tpl!templates/latest-spending-updates'], (Backbone, _, models, EntityDetailsView, OrphanExemptionView, ReadyAggregator, template_latest_spending_updates) ->
   class SpendingsPageView extends Backbone.View
 
         initialize: ->
           @model.newSpendings.setDaysToFetch(@model.daysLimit.get('value'))
 
-          @model.on 'ready-spendings-page', => @render()
+          if @model.eventAlreadyTriggered('ready-spendings-page')
+            @render()
+          else
+            @model.on 'ready-spendings-page', => @render()
+
           @model.daysLimit.on 'change:value', =>
             @model.newSpendings.setDaysToFetch(@model.daysLimit.get('value'))
             @model.newSpendings.fetch(dataType: @model.get('dataType'), reset: true)
@@ -29,7 +33,7 @@ define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_p
               exemptions: _.map(@model.newSpendings.models, (x) ->
                   x.toJSON())
               daysLimit: @model.daysLimit.get("value")
-          @$el.html window.JST.latest_spending_updates(data)
+          @$el.html template_latest_spending_updates(data)
           @$el.find("div.exemption-alert:first").not('.empty').trigger("click")
 
 

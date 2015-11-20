@@ -1,4 +1,4 @@
-define(['jquery', 'templates'], ($, templates) ->
+define(['jquery', 'tpl!templates/team-card'], ($, template_team_card) ->
     team = [
         {
             name:'אדם קריב',
@@ -39,5 +39,5 @@ define(['jquery', 'templates'], ($, templates) ->
     for member, _i in team
         if (_i % 4 ==  0)
             row = teamModalBody.append("<div class='row'></div>")
-        row.append(JST.team_card(member));
+        row.append(template_team_card(member));
 )

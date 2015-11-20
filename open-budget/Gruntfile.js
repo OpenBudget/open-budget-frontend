@@ -27,7 +27,6 @@ module.exports = function (grunt) {
       'clean:generated_js',
       'coffee',
       'less',
-      'jst',
       'copy:server',
       'connect:livereload',
       'watch'

@@ -1,4 +1,11 @@
-define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Bloodhound, templates) ->
+define([
+  'backbone', 'models', 'bloodhound',
+  'tpl!templates/searchbar-tooltip',
+  'tpl!templates/expandor_icon',
+  'tpl!templates/upbacker',
+  'tpl!templates/searchbar-tooltip-full',
+  'tpl!templates/search-dropdown-item'
+  ], (Backbone, models, Bloodhound, template_searchbar_tooltip, template_expandor_icon, template_upbacker, template_searchbar_tooltip_full, template_search_dropdown_item) ->
 
     class BudgetPartitionLayoutView extends Backbone.View
 
@@ -19,7 +26,7 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
                            .attr('class', 'd3-tip search-bar-tip')
                            .direction("e")
                            .offset((d) => [50,1])
-                           .html((d) -> JST.searchbar_tooltip(d))
+                           .html((d) -> template_searchbar_tooltip(d))
             @vis.call(@change_tip)
             @treemap = @vis.append('g')
                             .attr("class","treemap")
@@ -36,7 +43,7 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
                             .style('fill','rgba(0,0,0,0.2)')
             @expandor.append('g')
                             .attr("class","icon")
-                            .html(JST.expandor_icon())
+                            .html(template_expandor_icon())
                             .on("click", () =>
                                     console.log "click", @selected_tooltip
                                     if @selected_tooltip?
@@ -54,7 +61,7 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
                      .attr('fill','rgba(0,0,0,0.2)')
             @upbacker.append('g')
                      .attr('class','upbacker-icon')
-                     .html(JST.upbacker())
+                     .html(template_upbacker())
             @upbacker.on("click", () =>
                                     console.log "click", @selected_tooltip
                                     if @selected_tooltip? and @selected_tooltip.length > 2
@@ -97,7 +104,7 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
                             bl.set('year',models.pageModel.get('year'))
                             bl.set('code',d.c)
                             bl.on('change', ->
-                                $("#search-tip[data-code=#{d.c}]").html(JST.searchbar_tooltip_full(bl.toJSON()))
+                                $("#search-tip[data-code=#{d.c}]").html(template_searchbar_tooltip_full(bl.toJSON()))
                             )
                             bl.do_fetch()
                    ,
@@ -318,7 +325,7 @@ define(['backbone', 'models', 'bloodhound', 'templates'], (Backbone, models, Blo
               if suggestion?
                 suggestion.index = i
                 i+=1
-                item = $(JST.search_dropdown_item(suggestion))
+                item = $(template_search_dropdown_item(suggestion))
                 sr.append(item)
                 item.data(suggestion)
 

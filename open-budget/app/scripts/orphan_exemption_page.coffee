@@ -1,4 +1,4 @@
-define ['backbone', 'models'], (Backbone, models)->
+define ['backbone', 'models', 'tpl!templates/exemption-details'], (Backbone, models, template_exemption_details)->
   class OrphanExemptionView extends Backbone.View
           events:
             'click .exemption-expander': 'toggleExemptionDetails'
@@ -17,7 +17,7 @@ define ['backbone', 'models'], (Backbone, models)->
               data['name'] = data['supplier']
               data['kind'] = data['entity_kind']
 
-              @$el.html window.JST.exemption_details( data )
+              @$el.html template_exemption_details( data )
               if @model.selectedExemption.get('entity_id') != ""
                   @$el.css('display','none')
               else

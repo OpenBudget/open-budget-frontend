@@ -1,4 +1,4 @@
-define(['backbone', 'models'], (Backbone, models) ->
+define(['backbone', 'models', 'tpl!templates/single-changegroup'], (Backbone, models, tempalte_single_changegroup) ->
     class SingleChangeGroupView extends Backbone.View
 
             initialize: ->
@@ -8,13 +8,13 @@ define(['backbone', 'models'], (Backbone, models) ->
                 @$el.css('display','inherit')
                 data = @model.changeGroup.toJSON()
                 data.explanation = ""
-                @$el.html window.JST.single_changegroup( data )
+                @$el.html tempalte_single_changegroup( data )
                 if @model.changeGroupExplanation.get('explanation')?
                     data.explanation = @model.changeGroupExplanation.get('explanation')
-                    @$el.html window.JST.single_changegroup( data )
+                    @$el.html tempalte_single_changegroup( data )
                 @model.changeGroupExplanation.on('change:explanation', =>
                     data.explanation = @model.changeGroupExplanation.get('explanation')
-                    @$el.html window.JST.single_changegroup( data )
+                    @$el.html tempalte_single_changegroup( data )
                 )
 
     if models.pageModel.get("changeGroupId")?
