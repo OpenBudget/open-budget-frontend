@@ -9,5 +9,12 @@ module.exports = {
       ]
     }]
   },
-  server: '.tmp'
+  server: '.tmp',
+
+  generated_js: [
+    '<%= yeoman.app %>/scripts/**/*.js',
+    '<%= yeoman.app %>/scripts/**/*.js.map',
+    '!<%= yeoman.app %>/scripts/templates.js',
+    '!<%= yeoman.app %>/scripts/interval-query/**/*'
+  ]
 };
