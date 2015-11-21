@@ -1,0 +1,30 @@
+<h2>
+    מסגרת זמן
+</h2>
+<select id="spendings-day-limit"  name="spendings-day-limit">
+    <option value="1"{{#ifCond ui.controls.timeFrame "==" 1}} selected{{/ifCond}}>יום אחרון</option>
+    <option value="7"{{#ifCond ui.controls.timeFrame "==" 7}} selected{{/ifCond}}>שבוע אחרון</option>
+    <option value="30"{{#ifCond ui.controls.timeFrame "==" 30}} selected{{/ifCond}}>חודש אחרון</option>
+</select>
+
+<select class="ministry" multiple style="height: 60px;">
+  <option disabled>סינון לפי משרד</option>
+  <option value="" selected>כל המשרדים</option>
+  {{#each ui.ministriesList}}
+    <option value="{{this}}">{{this}}</option>
+  {{/each}}
+</select>
+
+<select class="order-by">
+  <option disabled="">מיין לפי</option>
+  <option value="total_flags">עניין</option>
+  <option value="date">תאריך עדכון</option>
+  <option value="volume">סכום</option>
+</select>
+
+סדר יורד
+<input type="radio" name="asc_desc" value="1" checked>
+עולה
+<input type="radio" name="asc_desc" value="-1">
+{{!-- <input type="text" name="free-text" placeholder="חיפוש טקסט חופשי">
+ --}}

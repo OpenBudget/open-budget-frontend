@@ -1,6 +1,8 @@
 define ['handlebarsRuntime', 'vendor/moment'], (handlebarsRuntime, momentLib) ->
   handlebarsRuntime.registerHelper "moment", (inputDateValue, format) ->
-    moment = momentLib(inputDateValue)
+    if inputDateValue
+      moment = momentLib(inputDateValue)
 
-    moment.format format
-
+      moment.format format
+    else
+      ''

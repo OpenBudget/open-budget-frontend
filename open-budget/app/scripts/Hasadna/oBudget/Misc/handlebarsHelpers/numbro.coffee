@@ -1,4 +1,4 @@
-define ['handlebarsRuntime', 'vendor/numbro', 'scripts/Misc/numbro-he-IL'], (handlebarsRuntime, numbroLib) ->
+define ['handlebarsRuntime', 'vendor/numbro', 'Hasadna/oBudget/Misc/numbro-he-IL'], (handlebarsRuntime, numbroLib) ->
   handlebarsRuntime.registerHelper "numbro", (numberToFormat, params) ->
 
     numbro.culture "he-IL"
