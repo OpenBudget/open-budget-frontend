@@ -1,0 +1,770 @@
+.disclaimer {
+  padding: 10px;
+  color: @darkgray;
+  display: none;
+}
+
+div.exemptions-alerts {
+  padding: 0;
+  height: 80vh;
+  overflow-y: scroll;
+
+  div.exemptions-alerts-header {
+    padding: 25px 0;
+    // border-bottom: 3px solid #f3f3f4;
+    // border-left: 5px solid #cfd1d2;
+    text-align: center;
+    background-color: #0098E2;
+    border-bottom: 2px solid #0A73A7;
+    direction: rtl;
+
+    h2 {
+      color: #000000;
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    select {
+      background-color: white;
+      height: 40px;
+      width: 120px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      // box-shadow: 0px 4px 0px 0px rgba(178,179,180,1);
+    }
+
+    select:hover, select:focus, select:active {
+       background-color: #0098E2;
+       border: solid 2px white;
+      -webkit-box-shadow: 0px 4px 0px 0px rgba(20,131,182,1);
+      -moz-box-shadow: 0px 4px 0px 0px rgba(20,131,182,1);
+      box-shadow: 0px 4px 0px 0px rgba(20,131,182,1);
+      color: white;
+    }
+  }
+
+  div.exemptions-alerts-content {
+    background-color: #DFDFDF;
+    // max-height: 76vh;
+    overflow-y: auto;
+    direction: ltr;
+
+    div.exemption-alert {
+      padding: 0 9px 13px;
+      direction: rtl;
+      border-bottom: 1px solid #86888E;
+      border-left: 5px solid #86888A;
+      position: relative;
+      cursor: pointer;
+
+      h5.exemption-publisher {
+        color: #3F414B;
+      }
+
+      div.exemption-flags {
+        display: inline;
+      }
+
+      div.exemption-update-date {
+        font-size: 0.8em;
+      }
+
+
+      h3.exemption-title {
+        color: #3F414B;
+        margin: 0.5em 0 0 0;
+        font-size: 0.8em;
+        line-height: 13px;
+      }
+
+      h4.exemption-data {
+        color: #2A2C31;
+        font-size: 1.25em;
+        margin: 0.1em 0 0 0;
+        font-weight: normal;
+      }
+
+      h4.exemption-supplier {
+        color: #000000;
+        font-size: 0.8em;
+        font-weight: bold;
+        margin: 0;
+      }
+
+      div.exemption-flags {
+        display: inline-flex; // Delete when the flags are needed
+        color: #999a9d;
+        padding-top: 1em;
+      }
+    }
+
+    div.exemption-alert.selected {
+      background-color: #ffffff;
+      border-left: 5px solid #5cb85c;
+    }
+  }
+}
+
+table.table-expandable {
+  table-layout: fixed;
+  thead {
+    color: @darkgray;
+  }
+  tbody {
+    background-color: @ultralightgray;
+    .detailsRow {
+      background-color: white;
+    }
+    td:not(:last-child){
+      border-left: 1px solid @lightgray;
+    }
+    tr:last-child {
+      td{
+        border-bottom: 1px solid @lightgray;
+      }
+    }
+  }
+
+  .exemption-expander {
+    .glyphicon {
+      cursor: pointer;
+      display: block;
+      margin: auto;
+      margin-top: 2px;
+      color: gray;
+    }
+  }
+
+  .exemption-full-details-expander {
+    .open, .collapse {
+      cursor: pointer;
+      display: block;
+      margin: auto;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+}
+
+.exemption-full-details {
+  background-color: #DFDFDF;
+  box-shadow: inset 0px 12px 5px -6px rgba(0,0,0,0.06);
+}
+
+.arrow-box {
+  margin: 13px;
+  background-color: white;
+  padding: 20px;
+  position: relative;
+  border: 2px solid lightgrey;
+}
+
+
+  .arrow-box:after, .arrow-box:before {
+  bottom: 100%;
+  left: 97%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+  .arrow-box:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-bottom-color: white;
+  border-width: 11px;
+  margin-left: -11px;
+}
+.arrow-box:before {
+  border-color: rgba(194, 225, 245, 0);
+  border-bottom-color: lightgrey;
+  border-width: 14px;
+  margin-left: -14px;
+}
+
+.arrow-box{
+
+  ul{
+    padding: 0px;
+  }
+
+  li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 35px;
+    margin-top: 20px;
+    padding-right:10px ;
+    border-right: solid 2px lightgrey;
+  }
+
+    .table{
+    margin: 0px;
+  }
+    h4{
+    color: #000000;
+  }
+}
+
+.table-forms{
+  margin-top: 20px;
+  padding-right: 10px;
+  border-right: solid 2px lightgrey;
+
+  .table > thead:first-child > tr:first-child > th{
+    padding: 0;
+  }
+
+  h4{
+    color: #000000;
+  }
+
+
+
+    .table-forms .glyphicon-paperclip:before{
+    vertical-align: middle;
+  }
+}
+
+
+
+
+table.exemption-details {
+ td.exemption-volume {
+  width: 200px;
+ }
+ td.exemption-publisher {
+   width: 500px;
+ }
+ td.exemption-start {
+   width: 100px;
+ }
+}
+
+.col-sm-3{
+  background-color: white;
+  margin: 0px;
+  padding: 0px;
+}
+
+.center-block.col-xs-12.col-sm-9 {
+  background-color: #3F414B;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  height: 80vh;
+}
+
+.left-con {
+  margin: 0px;
+  height: 80vh;
+  overflow-y: scroll;
+}
+
+  // Scrollbar
+
+.left-con::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.left-con::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+.left-con::-webkit-scrollbar-thumb {
+  background: #EAEAEA;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.left-con::-webkit-scrollbar-thumb:hover {
+  background: #EAEAEA;
+}
+.left-con::-webkit-scrollbar-thumb:active {
+  background: #616161;
+}
+.left-con::-webkit-scrollbar-track {
+  background: #3F414B;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.left-con::-webkit-scrollbar-track:hover {
+  background: #3F414B;
+}
+.left-con::-webkit-scrollbar-track:active {
+  background: #3F414B;
+}
+.left-con::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.left-info {
+  background-color: white;
+  margin: 0 30px;
+  padding-bottom: 3px;
+  box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+}
+
+.entity-name {
+  font-size: 27px;
+  padding: 0px;
+  border-bottom: 0px;
+  margin: 30px;
+  margin-left:0
+  color: #EAEAEA;
+  display: inline-block;
+  text-align: right;
+}
+
+.manof-name {
+  font-size: 14px;
+  margin: 35px 0 0 30px;
+  display: inline-block;
+  float: left;
+  color: #0098E2;
+  text-decoration: underline;
+
+}
+
+.info {
+  margin: 0 25px 25px 25px;
+  // padding-top: 25px;
+}
+
+.entity-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0px;
+  padding-bottom: 10px;
+  margin-top: 28px;
+}
+
+table.exemption-table {
+ tr.fullDetailsRow {
+   display: none;
+ }
+}
+
+/* new design raw changes */
+
+.exemptions-alerts{
+      direction: ltr;
+}
+
+.exemptions-alerts::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.exemptions-alerts::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+.exemptions-alerts::-webkit-scrollbar-thumb {
+  background: #3F414B;
+  border: 41px none #ffffff;
+  border-radius: 50px;
+}
+.exemptions-alerts::-webkit-scrollbar-thumb:hover {
+  background: #3F414B;
+}
+.exemptions-alerts::-webkit-scrollbar-thumb:active {
+  background: #3F414B;
+}
+.exemptions-alerts::-webkit-scrollbar-track {
+  background: white;
+  border: 49px none #ffffff;
+  border-radius: 50px;
+}
+.exemptions-alerts::-webkit-scrollbar-track:hover {
+  background: white;
+}
+.exemptions-alerts::-webkit-scrollbar-track:active {
+  background: white;
+}
+.exemptions-alerts::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.exemptions-alerts h2 {
+  margin: 0;
+   font-size: 18px;
+  padding: 5px 0;
+  color: white;
+  background-color:#0883BF;
+  display: block;
+   text-align: center;
+  position: relative;
+
+ }
+ /* Custom page footer */
+ .footer {
+  padding-top: 25px;
+   color: #777;
+   border-top: 1px solid #e5e5e5;
+    float: right;
+    width: 100%;
+-webkit-box-shadow: inset 0px 13px 15px -15px rgba(0,0,0,0.74);
+-moz-box-shadow: inset 0px 13px 15px -15px rgba(0,0,0,0.74);
+box-shadow: inset 0px 13px 15px -15px rgba(0,0,0,0.74);
+ }
+ .footer > ul {
+   padding: 0;
+    padding-bottom: 90px;
+    width: 100%;
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+ }
+
+ .footer li a {
+   min-height: 50px;
+  padding-top: 8px;
+  color: #3F414B;
+        border-top: solid 1px #CACACA;
+ }
+ .footer li a.hasadna {
+  /*padding-right: 55px;*/
+  background: url(assets/hasadna.png) no-repeat top/ 50px;
+    text-align: center;
+    display: inline-block;
+    padding-top: 50px;
+    border: none;
+    color: #0098E2;
+    padding-bottom: 28px;
+ }
+
+
+
+.footer li:first-child {
+  display:block;
+}
+
+ .footer li {
+   display: inline-block;
+ }
+ .footer li a {
+   display: inline-block;
+
+
+  margin-right: 13px;
+  margin-left: 13px;
+ }
+
+
+ .footer li:before {
+   content: "\00B7";
+    display: none;
+ }
+
+.footer li:nth-child(1):before,
+.footer li:nth-child(2):before {
+  display: none;
+ }
+
+
+#exemptionsMenu.collapse{
+  display: block;
+}
+
+div.exemptions-alerts div.exemptions-alerts-content div.exemption-alert h5.exemption-publisher{
+  margin: 0;
+  padding: 4px;
+}
+
+div.exemptions-alerts div.exemptions-alerts-content div.exemption-alert div.exemption-update-date{
+    margin: 0;
+  padding: 4px;
+  padding-top: 0;
+  color: #3F414B;
+}
+
+div.exemptions-alerts div.exemptions-alerts-content div.exemption-alert h4.exemption-supplier{
+      margin: 0;
+  padding: 4px;
+  padding-bottom: 0;
+  padding-top: 15px;
+}
+
+div.exemptions-alerts div.exemptions-alerts-content div.exemption-alert h4.exemption-data{
+        margin: 0;
+  padding: 4px;
+  padding-bottom: 1px;
+  padding-top: 5px;
+  padding-top: 11px;
+}
+
+div.exemptions-alerts div.exemptions-alerts-content div.exemption-alert h3.exemption-title{
+          margin: 0;
+  padding: 4px;
+}
+
+.manof-name{
+  float: none;
+  margin: 0;
+padding: 0;
+    padding-top: 7px;
+    display: block;
+}
+
+.entity-name{
+  margin: 0;
+    padding: 20px 30px;
+  display: block;
+    height: 92px;
+}
+
+/*.shareIcon{*/
+    /*border: none;*/
+    /*width: 43px;*/
+  /*height: 43px;*/
+  /*background: red;*/
+  /*-moz-border-radius: 50px;*/
+  /*-webkit-border-radius: 50px;*/
+  /*border-radius: 50px;*/
+    /*left: -13px;*/
+    /*top: -12px;*/
+    /*position: absolute;*/
+/*}*/
+
+/*.shareIcon:hover{*/
+    /*background-color: #C50909;*/
+/*}*/
+
+
+
+/* Radial Out */
+.shareIcon {
+
+
+        border: none;
+    width: 43px;
+  height: 43px;
+  background: red;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+    left: -13px;
+    top: -12px;
+    position: absolute;
+
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  -webkit-transition-property: color;
+  transition-property: color;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+.shareIcon:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0098E2;
+  border-radius: 100%;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.shareIcon:hover, .shareIcon:focus, .shareIcon:active {
+  color: white;
+}
+.shareIcon:hover:before, .shareIcon:focus:before, .shareIcon:active:before {
+  -webkit-transform: scale(2);
+  transform: scale(2);
+}
+
+/* =============================================================================================================
+  MEDIA QURIES FOR RESPONSIVE DESIGN 1024/768
+   ============================================================================================================= */
+
+/*@media all and (max-width:768px) {*/
+/*.manof-name{*/
+  /*float: none;*/
+  /*margin: 0;*/
+  /*margin-right:13px ;*/
+  /*margin-bottom: 20px;*/
+/*}*/
+
+/*.entity-name{*/
+  /*margin: 24px 13px 6px;*/
+  /*display: block;*/
+/*}*/
+/*}*/
+
+
+/* =============================================================================================================
+  MEDIA QURIES FOR RESPONSIVE DESIGN 1024/768
+   ============================================================================================================= */
+
+@media all and (max-width:768px) {
+
+  .left-con{
+    padding-bottom: 13px;
+    height: 100%;
+    border-bottom: solid 1px #D8D8D8;
+-webkit-box-shadow: 0px 13px 24px -12px rgba(0,0,0,0.32);
+-moz-box-shadow: 0px 13px 24px -12px rgba(0,0,0,0.32);
+box-shadow: 0px 13px 24px -12px rgba(0,0,0,0.32);
+  }
+
+  .left-info{
+    margin: 0 13px;
+    height: auto;
+  }
+
+  div.exemptions-alerts div.exemptions-alerts-content{
+    max-height: none;
+    border-bottom: solid 3px #2C2D35;
+  }
+
+.exemptions-alerts h2{
+  padding: 15px 0;
+}
+
+.navbar-toggle.dropdownEx:focus {
+outline: 0;
+}
+
+.navbar-toggle.dropdownEx.collapsed {
+/*top: -24px;
+right: 10px;*/
+background: none;
+box-shadow: none;
+border-style: solid;
+border-width: 12px 12px 0 12px;
+border-color: white transparent transparent transparent;
+z-index: 3;
+position: absolute;
+top: 50%;
+transform: translateY(-50%) !important;
+display: block;
+  float: left;
+  padding: 0;
+  margin: 0;
+  left: 30%;
+}
+
+
+
+.navbar-toggle.dropdownEx{
+/*top: -24px;
+right: 10px;*/
+background: none;
+box-shadow: none;
+border-style: solid;
+border-width: 0 12px 12px 12px;
+border-color: transparent transparent white transparent;
+z-index: 3;
+position: absolute;
+top: 50%;
+transform: translateY(-50%) !important;
+display: block;
+  float: left;
+  padding: 0;
+  margin: 0;
+  left: 30%;
+}
+
+.footer > ul{
+  display: inline-block;
+  position: relative;
+  width: 100%;
+}
+
+table.table-expandable{
+  table-layout: auto;
+}
+
+.manof-name{
+  float: none;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.entity-name{
+  margin: 0;
+    padding: 20px 13px 0;
+  display: block;
+    height: inherit;
+}
+
+.info {
+  min-width: 660px;
+  padding: 17px;
+  padding-bottom: 0;
+    padding-top: 0;
+  margin: 0;
+}
+
+.footer li{
+  display: block;
+  text-align: center;
+    border-bottom: solid 1px #CACACA;
+}
+
+.footer li a.hasadna{
+  background: url(assets/hasadna.png) no-repeat top / 50px;
+  padding: 52px 0 22px;
+  margin-top: 23px;
+}
+
+.footer li a{
+    border-top: none;
+    padding-top: 16px;
+}
+
+div.exemptions-alerts div.exemptions-alerts-content{
+  height: auto;
+}
+
+#exemptionsMenu.collapse{
+  display: none;
+}
+
+.footer li:before{
+    display: none;
+}
+
+.footer > ul{
+    padding-bottom: 0;
+}
+
+div.exemptions-alerts{
+    height: inherit;
+}
+
+.center-block.col-xs-12.col-sm-9{
+height: inherit;
+}
+
+.exemptions-alerts::-webkit-scrollbar {
+display: none;
+}
+
+.left-con::-webkit-scrollbar {
+display: none;
+}
+  }
+
+// disable colapse animation
+#exemptionsMenu.collapsing {
+  transition: none;
+}

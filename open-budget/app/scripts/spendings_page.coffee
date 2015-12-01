@@ -6,14 +6,12 @@ define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_p
 
           if @model.eventAlreadyTriggered('ready-spendings-page')
             @render()
-          else
-            @model.on 'ready-spendings-page', => @render()
+
+          @model.on 'ready-spendings-page', => @render()
 
           @model.daysLimit.on 'change:value', =>
             @model.newSpendings.setDaysToFetch(@model.daysLimit.get('value'))
             @model.newSpendings.fetch(dataType: @model.get('dataType'), reset: true)
-            @model.readyEvents.push (new ReadyAggregator("ready-spendings-page")
-                                                    .addCollection(@model.newSpendings));
 
         events:
           'click .exemption-alert': 'exemptionAlertClick'
@@ -25,6 +23,10 @@ define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_p
           @model.selectedExemption.set("entity_id", $(e.currentTarget).attr("entity_id"))
           @model.selectedExemption.set("publication_id", $(e.currentTarget).attr("publication_id"))
 
+          # close list on mobile
+          if window.matchMedia('all and (max-width:768px)').matches
+            @$el.find('button.navbar-toggle.dropdownEx').click()
+
         spendingsDayLimitChange: (e) ->
           @model.daysLimit.set("value", $(e.target).val())
 
@@ -34,7 +36,11 @@ define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_p
                   x.toJSON())
               daysLimit: @model.daysLimit.get("value")
           @$el.html template_latest_spending_updates(data)
-          @$el.find("div.exemption-alert:first").not('.empty').trigger("click")
+
+          # disable auto select on mobile view
+          if !window.matchMedia('all and (max-width:768px)').matches
+            @$el.find("div.exemption-alert:first").not('.empty').trigger("click")
+
 
 
   if models.pageModel.get("spendingsPage")?
