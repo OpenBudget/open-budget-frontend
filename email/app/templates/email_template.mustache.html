@@ -15,19 +15,20 @@
     }
 
     /* Web Fonts */
-    @import url(http://fonts.googleapis.com/earlyaccess/alefhebrew.css);
+    @import url(http://fonts.googleapis.com/earlyaccess/opensanshebrew.css);
 
-    body {
+    body{
         width:100% !important;
         min-width: 100%;
         -webkit-text-size-adjust:100%;
         -ms-text-size-adjust:100%;
         margin:0;
         padding:0;
-        font-family: 'Alef Hebrew','Open Sans Hebrew','Helvetica Neue',Helvetica,Arial,sans-serif;
+        font-family: 'Open Sans Hebrew','Helvetica Neue',Helvetica,Arial,sans-serif;
     }
 
     .body {
+        background-color: #6E7AED;
         font-size: 15px;
         direction: rtl;
         color: #333333;
@@ -53,19 +54,14 @@
         line-height: 100% !important;
     }
 
-    table.columns .main-title {
-        background: url(http://www.vanleer.org.il/sites/files/%D7%9E%D7%90%D7%9E%D7%A8%20%D7%93%D7%A4%D7%A0%D7%94%20%D7%99%D7%A6%D7%97%D7%A7%D7%99.jpg) center no-repeat;
-        color: #ffffff;
-    }
-
     img {
         outline:none;
         text-decoration:none;
         -ms-interpolation-mode: bicubic;
         width: auto;
         max-width: 100%;
-        /*float: left;*/
-        /*clear: both;*/
+        float: left;
+        clear: both;
         display: block;
     }
 
@@ -106,7 +102,7 @@
         background-color: #F8F7F0;
         height: 0px;
         border: 0;
-        border-bottom: 1px solid #C7C7CC;
+        border-bottom: 1px dashed #C7C7CC;
     }
 
     ul{
@@ -355,7 +351,7 @@
         word-break: normal;
     }
 
-    h1 {font-size: 17px; text-align: center;}
+    h1 {font-size: 17px; text-align: center; color: #ffffff}
     h2 {font-size: 24px; font-weight: 700; margin-bottom: 1em;}
     h3 {font-size: 32px;}
     h4 {font-size: 28px;}
@@ -364,14 +360,17 @@
     body, table.body, p, td {font-size: 14px;line-height:19px;}
 
     h1 {
-        font-family: 'Alef Hebrew','Open Sans Hebrew', sans-serif;
-        font-weight: bold;
-        font-size: 22px;
+      font-family: 'Open Sans Hebrew', 'Alef Hebrew', sans-serif;
+      font-weight: 200;
     }
 
     h1 span {
         display: block;
         font-size: 50px;
+    }
+
+    h2 a {
+        text-decoration: underline;
     }
 
     h5 {
@@ -399,12 +398,12 @@
         font-size: 17px;
         color: #1A1D39;
         margin-bottom: 0.5em;
-        font-family: 'Alef Hebrew','Open Sans Hebrew',sans-serif;
+        font-family: 'Open Sans Hebrew', 'Alef Hebrew', sans-serif;
     }
 
     ol.toc a {
         color: #1A1D39;
-        /*text-decoration: underline;*/
+        text-decoration: underline;
     }
 
     small {
@@ -412,11 +411,25 @@
     }
 
     a {
-        /*color: #2ba6cb;*/
+        color: #2ba6cb;
         text-decoration: none;
     }
 
+
+    table.columns td.item-sec a:hover {
+        color: #6E7AED !important;
+    }
+
+    table.columns td.item-sec a:active {
+        color: #6E7AED !important;
+    }
+
+    table.columns td.item-sec a:visited {
+        color: #6E7AED !important;
+    }
+
     h1 a,
+    h2 a,
     h3 a,
     h4 a,
     h5 a,
@@ -430,7 +443,7 @@
     h4 a:active,
     h5 a:active,
     h6 a:active {
-        color: #000000 !important;
+        color: #6E7AED !important;
     }
 
     h1 a:visited,
@@ -439,7 +452,7 @@
     h4 a:visited,
     h5 a:visited,
     h6 a:visited {
-        color: #000000 !important;
+        color: #6E7AED !important;
     }
 
     /* Items */
@@ -449,48 +462,20 @@
       margin-bottom: 20px;
     }
 
-    table.columns tr.request-summary table{
-        width: 100%;
-        box-shadow: 2px 2px 3px 1px #888888;
+    table.columns td.item-sec {
+        background: #ffffff;
+        padding: 1.5em !important;
+        border-width: 0px 5px;
+        border-style: solid;
+        border-color: #6E7AED;
     }
 
-    table.columns tr.request-summary tr {
-        height:70px;
-    }
-
-    table.columns tr.request-summary td td {
-        width: auto !important;
-        vertical-align: middle;
-        text-align: center;
-        border: 1px solid #888888;
-        border-right: 0px;
-    }
-
-    table.columns tr.request-summary .request-summary-from {
-        border-right:10px solid blue;
-    }
-
-    table.columns tr.request-summary .request-summary-from td:first-child {
-        background-color: #eeeeee;
-    }
-
-    table.columns tr.request-summary .request-summary-from td:last-child {
-        background-color: #cccccc;
-    }
-
-    table.columns tr.request-summary .request-summary-amount {
-    }
-
-    table.columns tr.request-summary .request-summary-to {
-        border-right:10px solid red;
-    }
-
-    table.columns tr.request-summary .request-summary-to td:first-child {
-        background-color: #eeeeee;
-    }
-
-    table.columns tr.request-summary .request-summary-to td:last-child {
-        background-color: #cccccc;
+    table.columns td.request {
+        background: #F8F7F0;
+        border: 1px solid #C7C7CC;
+        border-bottom:0;
+        color: #131973;
+        padding: 1.5em !important;
     }
 
     table.columns td.request h4 {
@@ -523,21 +508,21 @@
 
     /* Buttons */
 
-    tr.button,
-    tr.tiny-button,
-    tr.small-button,
-    tr.medium-button,
-    tr.large-button {
+    table.button,
+    table.tiny-button,
+    table.small-button,
+    table.medium-button,
+    table.large-button {
         width: 90%;
         overflow: hidden;
         margin: 30px auto 20px;
     }
 
-    tr.button td,
-    tr.tiny-button td,
-    tr.small-button td,
-    tr.medium-button td,
-    tr.large-button td {
+    table.button td,
+    table.tiny-button td,
+    table.small-button td,
+    table.medium-button td,
+    table.large-button td {
         display: block;
         width: auto !important;
         max-width: 99% !important;
@@ -549,85 +534,85 @@
         padding: 8px 0;
     }
 
-    tr.tiny-button td {
+    table.tiny-button td {
         padding: 5px 0 4px;
     }
 
-    tr.small-button td {
+    table.small-button td {
         padding: 8px 0 7px;
     }
 
-    tr.medium-button td {
+    table.medium-button td {
         padding: 12px 0 10px;
     }
 
-    tr.large-button td {
+    table.large-button td {
         padding: 21px 0 18px;
     }
 
-    tr.button td a,
-    tr.tiny-button td a,
-    tr.small-button td a,
-    tr.medium-button td a,
-    tr.large-button td a {
+    table.button td a,
+    table.tiny-button td a,
+    table.small-button td a,
+    table.medium-button td a,
+    table.large-button td a {
         font-weight: normal;
         text-decoration: none;
         color: #6E7AED;
         font-size: 16px;
     }
 
-    tr.tiny-button td a {
+    table.tiny-button td a {
         font-size: 12px;
         font-weight: normal;
     }
 
-    tr.small-button td a {
+    table.small-button td a {
         font-size: 16px;
     }
 
-    tr.medium-button td a {
+    table.medium-button td a {
         font-size: 20px;
     }
 
-    tr.large-button td a {
+    table.large-button td a {
         font-size: 24px;
     }
 
-    tr.button:hover td,
-    tr.button:visited td,
-    tr.button:active td {
+    table.button:hover td,
+    table.button:visited td,
+    table.button:active td {
         background: #6E7AED !important;
     }
 
-    tr.button:hover td a,
-    tr.button:visited td a,
-    tr.button:active td a {
+    table.button:hover td a,
+    table.button:visited td a,
+    table.button:active td a {
         color: #ffffff !important;
     }
 
-    tr.button:hover td,
-    tr.tiny-button:hover td,
-    tr.small-button:hover td,
-    tr.medium-button:hover td,
-    tr.large-button:hover td {
+    table.button:hover td,
+    table.tiny-button:hover td,
+    table.small-button:hover td,
+    table.medium-button:hover td,
+    table.large-button:hover td {
         background: #6E7AED !important;
     }
 
-    tr.button:hover td a,
-    tr.button:active td a,
-    tr.button td a:visited,
-    tr.tiny-button:hover td a,
-    tr.tiny-button:active td a,
-    tr.tiny-button td a:visited,
-    tr.small-button:hover td a,
-    tr.small-button:active td a,
-    tr.small-button td a:visited,
-    tr.medium-button:hover td a,
-    tr.medium-button:active td a,
-    tr.medium-button td a:visited,
-    tr.large-button:hover td a,
-    tr.large-button:active td a,
-    tr.large-button td a:visited {
+    table.button:hover td a,
+    table.button:active td a,
+    table.button td a:visited,
+    table.tiny-button:hover td a,
+    table.tiny-button:active td a,
+    table.tiny-button td a:visited,
+    table.small-button:hover td a,
+    table.small-button:active td a,
+    table.small-button td a:visited,
+    table.medium-button:hover td a,
+    table.medium-button:active td a,
+    table.medium-button td a:visited,
+    table.large-button:hover td a,
+    table.large-button:active td a,
+    table.large-button td a:visited {
         color: #ffffff !important;
     }
 
@@ -691,6 +676,12 @@
     /*  Media Queries */
 
   /*  @media only screen and (max-width: 600px) { */
+
+        table[class="body"] img {
+            width: auto !important;
+            height: auto !important;
+        }
+
         table[class="body"] center {
             min-width: 0 !important;
         }
@@ -726,7 +717,7 @@
 
         table[class="body"] table.columns td,
         table[class="body"] table.column td {
-            width: 100%;
+            width: 100% !important;
         }
 
         table[class="body"] .columns td.one,
@@ -916,54 +907,43 @@
                                 <table class="row">
                                     <tr>
                                         <td class="wrapper last">
+
                                             <table class="columns">
                                                 <tr>
                                                     <td>
-                                                        <h1 class="main-title">{{#feed}}{{title}}{{/feed}}
+                                                        <h1>{{#feed}}{{title}}{{/feed}}
                                                             <span>{{#feed}}{{subtitle}}{{/feed}}</span>
                                                             - 2014 -
                                                         </h1>
                                                         <br/>
                                                         <br/>
-
-                                                        <img src="{{baseurl}}img/proposal-papers.png" style="width:70px;height:70px"/>
-                                                        <h1>הצעות חדשות</h1>
                                                         <ol class="toc">
                                                             {{#entries}}
-                                                            <li>
-                                                                <hr/>
-                                                                <a href="#item{{index}}">{{title}} V</a>
-                                                                <hr/>
-                                                            </li>
-                                                            {{/entries}}
-                                                        </ol>
-                                                        <br/>
-                                                        <br/>
-                                                    </td>
-                                                    <td class="expander"></td>
-                                                </tr>
-                                                <tr>
+                                                            <li><a href="#item{{index}}">{{title}}<a></li>
+                                                                {{/entries}}
+                                                            </ol>
+                                                            <br/>
+                                                            <br/>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                </table>
 
-                                                </tr>
-                                            </table>
+                                                {{#entries}}
+                                                <table id="item{{index}}" class="columns item">
+                                                    <tr>
+                                                        <td class="item-sec">
+                                                            <h5>{{index}}</h5>
+                                                            <h2><a href="{{link}}">{{title}}</a></h2>
+                                                            <p>{{subtitle}}</p>
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                    {{{description}}}
+                                                </table>
+                                                {{/entries}}
 
-                                            {{#entries}}
-                                            <table id="item{{index}}" class="columns item">
-                                                <tr>
-                                                    <td class="item-sec">
-                                                        <!-- <h5>{{index}}</h5> -->
-                                                        <h1>{{title}}</h1>
-
-                                                        <p>{{subtitle}}</p>
-                                                    </td>
-                                                    <td class="expander"></td>
-                                                </tr>
-                                                {{{description}}}
-                                            </table>
-                                            <hr/>
-                                            {{/entries}}
-
-                                        </td>
+                                            </td>
                                         </tr>
                                     </table>
 

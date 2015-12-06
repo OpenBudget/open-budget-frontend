@@ -1,32 +1,77 @@
-<tr class="request-summary">
-    <td>
-        <table>
-            <tr class="request-summary-from">
-                <td>מ - הוצאות חירום אזרחיות</td>
-                <td>-200%</td>
-            </tr>
-            <tr class="request-summary-amount">
-                <td colspan="2">העברה בסך 9,000,000 ש״ח</td>
-            </tr>
-            <tr class="request-summary-to">
-                <td>אל - כבאות והצלה</td>
-                <td>+1000%</td>
-            </tr>
-        </table>
-    </td>
-</tr>
-<tr>
-    <td class="request">
-        <!--<table style="width:35px;height:43px"><img src="{{baseurl}}img/gov-watermark.png" alt=""/></table>-->
-        <p>{{explanation|safe}}</p>
-        <!--p><a href="#">[ המשך… ]</a></p-->
-    </td>
-</tr>
-<tr class="button">
-    <td>
-        <a href="http://the.open-budget.org.il/stg/#transfer/{{group_id}}/{{group[0][0]}}" target="_blank">פרטים נוספים
-            אודות הצעה זו ></a>
 
-        <!--<input type="button" src="" value="פרטים נוספים אודות הצעה זו  >"></button>-->
-    </td>
-</tr>
+    <tr>
+        <td class="request">
+            <table style="width:35px;height:43px"><img src="{{baseurl}}img/gov-watermark.png" alt=""/></table>
+            <h4>- [ דברי הסבר ] -</h4>
+            <h3>הנדון: {{req_title}}</h3>
+            <p>{{explanation|safe}}</p>
+            <!--p><a href="#">[ המשך… ]</a></p-->
+        </td>
+    </tr>
+    <tr>
+      <td class="paper-edge" style="background-image: url('{{baseurl}}img/paper-edge.png')" background="{{baseurl}}img/paper-edge.png" height="52" width="100%" valign="top">
+      <!--[if gte mso 9]>
+       <v:rect style="height:52px;width:100%;" strokecolor="none">
+          <v:fill type="tile" src="{{baseurl}}img/paper-edge.png" /></v:fill>
+       </v:rect>
+       <v:shape id="theText" style="position:absolute;height:52px;width:100%;">
+      <![endif]-->
+     </td>
+  </tr>
+
+    <tr>
+        <td class="item-sec">
+            <!--
+            <h3>ניתוח הסטורי</h3>
+            <p>בשנים האחרונות זוכה משרד הרווחה להעברות תקציביות משמעותיות, רובן סביב חודש דצמבר. עם זאת, באופן עקבי לא מנצל המשרד את מלוא התיקצוב שניתן לו (הוצאה של 82-91% מהתקציב בלבד בשנים 2011-2013).</p>
+        -->
+            {% if supports %}
+            <h3>תמיכות</h3>
+            <p>בין הגופים המרכזיים הנתמכים ע״י התכניות בהעברה זו: </p>
+            <ul>
+                {% for sup in supports%}
+                <li><a href="#">{{sup[0]}} ({{sup[1]}})</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if plus_items %}
+            <h3>סעיפים שגדלו בהעברה זו:</h3>
+            <ul>
+            {%for gi in plus_items %}
+                <li>{{gi.group }} (+{{gi.value_str}})<br/>
+                <ul>
+                    {%for item in gi.changes %}
+                    <li><a href="http://the.open-budget.org.il/stg/#budget/{{item.budget_code}}/{{item.year}}" target="_blank">{{item.budget_code}}: {{item.budget_title}}</a>
+                    </li>
+                    {%endfor%}
+                </ul>
+                </li>
+            {%endfor%}
+            </ul>
+            {% endif %}
+            {% if minusitems %}
+            <h3>סעיפים שקוצצו בהעברה זו:</h3>
+            <ul>
+            {%for gi in minus_items %}
+                <li>{{gi.group }} ({{gi.value_str}})<br/>
+                <ul>
+                    {%for item in gi.changes %}
+                    <li><a href="http://the.open-budget.org.il/stg/#budget/{{item.budget_code}}/{{item.year}}" target="_blank">{{item.budget_code}}: {{item.budget_title}}</a>
+                    </li>
+                    {%endfor%}
+                </ul>
+                </li>
+            {%endfor%}
+            </ul>
+            {% endif %}
+            <table class="button">
+                <tr>
+                    <td>
+                        <a href="http://the.open-budget.org.il/stg/#transfer/{{group_id}}/{{group[0][0]}}" target="_blank">עוד אודות העברה זו</a>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
