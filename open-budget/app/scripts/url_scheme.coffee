@@ -1,4 +1,4 @@
-window.DEFAULT_HOME = "#main//2014/main"
+window.DEFAULT_HOME = "#main//2015/main"
 class URLSchemeHandler
 
         constructor: (pageModel) ->

@@ -76,7 +76,6 @@ define ['backbone',
 
               @mainPageTabs.trigger("change:budgetCode")
               #@changeLines = new ChangeLines([], pageModel: @)
-              @changeGroups = new ChangeGroups([], pageModel: @)
               @budgetApprovals = new BudgetApprovals([], pageModel: @)
               @budgetHistory = new BudgetHistory([], pageModel: @)
               @budgetHistory.on 'reset',
@@ -86,11 +85,13 @@ define ['backbone',
                                     if @budgetHistory.length > 0
                                         title = @budgetHistory.getForYear(year).get('title')
                                         ga('send', 'event', 'navigation', 'budget', title, 1);
-
-              @readyEvents.push (new ReadyAggregator("ready-budget-history-pre")
-                                        .addCollection(@changeGroups)
+              aggregator = new ReadyAggregator("ready-budget-history-pre")
                                         .addCollection(@budgetHistory)
-                                        .addCollection(@budgetApprovals))
+                                        .addCollection(@budgetApprovals)
+              if digits > 2
+                  @changeGroups = new ChangeGroups([], pageModel: @)
+                  aggregator.addCollection(@changeGroups)
+              @readyEvents.push (aggregator)
 
               if digits >= 4
                   @on('ready-budget-history', ->

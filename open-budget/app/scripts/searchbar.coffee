@@ -361,8 +361,8 @@ define([
                         # start a new aggregate for this code
                         budgetCodes[s.code] = s
 
-                    # favour 2014 over all other years
-                    cmpyear = if budgetCodes[s.code].year==2014 then 3000 else budgetCodes[s.code].year
+                    # favour 2015 over all other years
+                    cmpyear = if budgetCodes[s.code].year==2015 then 3000 else budgetCodes[s.code].year
                     if s.year > cmpyear
                         budgetCodes[s.code] = s
 

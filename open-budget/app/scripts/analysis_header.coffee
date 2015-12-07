@@ -20,15 +20,18 @@ define([
                     return "תוספת זו הביאה"
 
     window.transfers_by_year = (year) ->
-                return arr = $.grep(pageModel.changeGroups.models, (el,i) ->
-                    el.attributes.year is year)
+                if pageModel.changeGroups?
+                    return arr = $.grep(pageModel.changeGroups.models, (el,i) ->
+                        el.attributes.year is year)
+                else
+                    return []
 
     window.num_of_transfers_in_year_text = (year) ->
                 arr = transfers_by_year(year)
                 if arr.length > 1
                     return String(arr.length) + " העברות"
                 else
-                    return "העברה אחת"
+                    return "שינויים"
 
 
 

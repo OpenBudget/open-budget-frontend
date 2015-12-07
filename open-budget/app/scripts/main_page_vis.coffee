@@ -293,7 +293,7 @@ define(
                     node =
                         id: model.get('code')
                         src: model
-                        orig: null
+                        orig: model.get('net_allocated')
                         rev:  model.get('net_revised')
                         onMoreInfo: @moreInfo
                         value: model.get('net_revised')
