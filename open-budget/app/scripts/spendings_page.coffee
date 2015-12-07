@@ -5,7 +5,10 @@ define(['backbone', 'underscore', 'models','entity_details', 'orphan_exemption_p
           @model.newSpendings.setDaysToFetch(@model.daysLimit.get('value'))
 
           if @model.eventAlreadyTriggered('ready-spendings-page')
-            @render()
+            # queue operation after initialize complete so we will have deleagetEvents
+            window.requestAnimationFrame(=>
+              @render()
+            )
 
           @model.on 'ready-spendings-page', => @render()
 
