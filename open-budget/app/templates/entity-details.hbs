@@ -1,7 +1,7 @@
 <div class="left-con">
 
   <h2 class='entity-name'>{{ name }}</h2>
-<h4 class='manof-name'>
+  <a href=""><h4 class='manof-name'>
   {{#ifCond kind "==" "association"}}
       עמותה/חברה לתועלת הציבור מ.ר. {{ id }} (<a target="_blank" href="http://www.guidestar.org.il/organization/{{ id }}">מידע נוסף בגיידסטאר</a>)
   {{/ifCond}}
@@ -12,7 +12,7 @@
       רשות מקומית
   {{/ifCond}}
 
-  </h4>
+  </h4></a>
 
       <div class="left-info">
           <div class="info">
@@ -27,8 +27,6 @@
     לא ידוע
   {{/if}}
   </h3>
-  <a href="" class="export-exemptions" download="exemptions-{{ name }}.csv">יצא התקשרויות</a>
-  <a href="" class="export-supports" download="supports-{{ name }}.csv">יצא תמיכות</a>
   <table class="exemption-table table table-expandable">
       <thead>
           <th>שם המשרד</th>

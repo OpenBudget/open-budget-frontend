@@ -2,6 +2,9 @@ define ['backbone',
         'scripts/modelsHelpers/BudgetItemKids',
         'scripts/modelsHelpers/SupportFieldNormalizer',
         'scripts/modelsHelpers/ResizeNotifier',
+        'scripts/modelsHelpers/SelectedEntity',
+        'scripts/modelsHelpers/SelectedExemption',
+        'scripts/modelsHelpers/DaysLimit',
         'scripts/modelsHelpers/ChangeGroup',
         'scripts/modelsHelpers/ChangeGroups',
         'scripts/modelsHelpers/ChangeExplanation',
@@ -12,10 +15,12 @@ define ['backbone',
         'scripts/modelsHelpers/BudgetItem',
         'scripts/modelsHelpers/TakanaSupports',
         'scripts/modelsHelpers/TakanaSpending',
-        'scripts/modelsHelpers/Participants'
-      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, ChangeGroup,
+        'scripts/modelsHelpers/NewSpendings',
+        'scripts/modelsHelpers/Participants',
+        'scripts/modelsHelpers/Exemption'
+      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, SelectedEntity, SelectedExemption, DaysLimit, ChangeGroup,
       ChangeGroups, ChangeExplanation, BudgetApprovals, BudgetHistory, ReadyAggregator, CompareRecords, BudgetItem,
-      TakanaSupports, TakanaSpending, Participants) ->
+      TakanaSupports, TakanaSpending, NewSpendings, Participants, Exemption) ->
 
   class PageModel extends Backbone.Model
 
@@ -51,6 +56,9 @@ define ['backbone',
           @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
           @mainPageTabs           = new window.MainPageTabs(@)
           @resizeNotifier         = new ResizeNotifier()
+          @selectedExemption         = new SelectedExemption()
+          @selectedEntity         = new SelectedEntity()
+          @daysLimit              = new DaysLimit()
 
           @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
           window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
@@ -151,6 +159,11 @@ define ['backbone',
                                                   .addModel(@newBudgetItem))
               @mainBudgetItem.do_fetch()
               @newBudgetItem.do_fetch()
+
+          @on 'change:spendingsPage', ->
+              @newSpendings = new NewSpendings([], pageModel: @)
+              @readyEvents.push (new ReadyAggregator("ready-spendings-page")
+                                                  .addCollection(@newSpendings))
 
           @on 'change:kinds', =>
               for kind in @get('kinds')

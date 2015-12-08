@@ -1,5 +1,4 @@
-require [
-    "backbone",
+require([
     "modernizr",
     "hello",
     "searchbar",
@@ -8,18 +7,12 @@ require [
     "team",
     "main_page_vis",
     "budget_view",
+    "entity_details",
     "breadcrumb_header",
     "analysis_header",
     "single_changegroup",
-    "Hasadna/oBudget/Pages/Exemptions/Main",
-    "Hasadna/oBudget/Router",
+    "spendings_page",
     "models",
-    "bootstrap-tour"
-    ], (Backbone, a, b, c, d, e, f, g, h, i, j, k, ExemptionsPage, Router, models) ->
-      router = new Router()
-      baseURL = models.pageModel.get 'baseURL'
+    "bootstrap-tour"], () ->
 
-      router.on "route:exemptions", (entityId, publicationId) ->
-        new ExemptionsPage().start(baseURL: baseURL, entityId: entityId, publicationId: publicationId)
-
-      Backbone.history.start pushState: false
+)
