@@ -11,7 +11,7 @@
     <ul>
     <li>
         <h4>תקופת התקשרות</h4>
-        {{ start_date }}-{{ end_date }}
+        {{moment start_date "D/M/YYYY"}}-{{moment end_date "D/M/YYYY"}}
     </li>
     <li>
         <h4>סכום התקשרות</h4>
@@ -45,7 +45,6 @@
         <tr>
             <td class="field-label col-md-2"><a href="http://www.obudget.org/api/exemption/document?url={{ link }}"><div class="glyphicon glyphicon-paperclip" aria-hidden="true"></div>&nbsp;&nbsp;{{moment update_time "d/M/YYYY"}}</a></td>
             <td class="field-label col-md-10">{{ description }}</td>
-
         </tr>
         {{/each}}
         </tbody>
