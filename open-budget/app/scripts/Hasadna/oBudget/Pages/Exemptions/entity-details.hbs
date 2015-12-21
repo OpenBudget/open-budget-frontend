@@ -1,87 +1,132 @@
 <div class="loading-indicator">{{> Hasadna/oBudget/Pages/Exemptions/sk-fading-circle}}</i></div>
 <div class="scroll-viewport">
 
-  <h2 class='entity-name'>{{ name }}</h2>
-  <h4 class='manof-name'>
-    {{#ifCond kind "==" "association"}}
-        עמותה/חברה לתועלת הציבור מ.ר. {{ id }} (<a target="_blank" href="http://www.guidestar.org.il/organization/{{ id }}">מידע נוסף בגיידסטאר</a>)
-    {{/ifCond}}
-    {{#ifCond kind "==" "company"}}
-        חברה פרטית מ.ר. {{ id }}
-    {{/ifCond}}
-    {{#ifCond kind "==" "municipality"}}
-        רשות מקומית
-    {{/ifCond}}
+    <h2 class='entity-name'>
+      {{ name }}
+        <span class='manof-name'>
 
-    </h4>
+                  {{#ifCond kind "==" "association"}}
+                      עמותה/חברה לתועלת הציבור מ.ר. {{ id }} (<a target="_blank"
+                                                                 href="http://www.guidestar.org.il/organization/{{ id }}">מידע
+                      נוסף
+                      בגיידסטאר</a>)
+                  {{/ifCond}}
+          {{#ifCond kind "==" "company"}}
+              חברה פרטית מ.ר. {{ id }}
+          {{/ifCond}}
+          {{#ifCond kind "==" "municipality"}}
+              רשות מקומית
+          {{/ifCond}}
 
-        <div class="left-info">
-            <div class="info">
+        </span>
+    </h2>
 
-    {{#if exemptions.length }}
-    <h3 class="entity-title">
-    &larr;&nbsp{{ exemptions.length }} התקשרויות עם <span class="total"></span>
-    משרדים בסך
-    {{#if exemptions_sum}}
-      {{numbro exemptions_sum isCurrency=true format="0, $"}}
-    {{else}}
-      לא ידוע
-    {{/if}}
-    </h3>
-    <a href="" class="export-exemptions" download="exemptions-{{ name }}.csv">יצא התקשרויות</a>
-    <a href="" class="export-supports" download="supports-{{ name }}.csv">יצא תמיכות</a>
-    <table class="exemption-table table table-expandable">
-        <thead>
-            <th>שם המשרד</th>
-            <th style="width: 4%;">מס'</th>
-            <th style="width: 10%;">בסך</th>
-            <th style="width: 9%;">התחלה</th>
-            <th style="width: 9%;">סיום</th>
-            <th style="width: 5%;"></th>
-        </thead>
-        <tbody>
 
-        </tbody>
-    </table>
-    {{/if}}
+    <!--<h4 class='manof-name'>-->
 
-    {{#if supports.length }}
-      <h3 class="entity-title">&larr;&nbspתמיכות</h3>
-      <table class="support-table table table-expandable">
+
+    <!--</h4>-->
+
+
+{{#if exemptions.length }}
+<h3 class="entity-title">
+{{ exemptions.length }} התקשרויות עם <span class="total"></span>
+משרדים בסך
+{{#if exemptions_sum}}
+          {{numbro exemptions_sum isCurrency=true format="0, $"}}
+        {{else}}
+            לא ידוע
+        {{/if}}
+      </h3>
+
+
+
+  <div class="left-info">
+  <div class="table-responsive info">
+
+
+      <h3 class="entity-title-top">&larr;&nbspהתקשרויות</h3>
+
+      <div class="export">
+          <a href="" class="export-exemptions" download="exemptions-{{ name }}.csv">יצא התקשרויות</a>
+          <a href="" class="export-supports" download="supports-{{ name }}.csv">יצא תמיכות</a>
+      </div>
+
+
+      <table class="table exemption-table table-expandable">
           <thead>
-              <th>שנה</th>
-              <th>נושא</th>
-              <th>תקנה</th>
-              <th>אושר</th>
-              <th>הועבר</th>
-              <th>סוג</th>
-              <th>עוד</th>
+          <th>שם המשרד</th>
+          <th style="width: 4%;">מס'</th>
+          <th style="width: 10%;">בסך</th>
+          <th style="width: 9%;">התחלה</th>
+          <th style="width: 9%;">סיום</th>
+          <th style="width: 5%;"></th>
           </thead>
           <tbody>
-            {{#each supports}}
-            <tr>
-                <td class='support-year'>{{ year }}</td>
-                <td class='support-subject'>{{ subject }}</td>
-                <td class='support-code'><a href="{{URLSchemeHandler 'linkToBudget' code year }}">{{strSlice code 2}} - {{ title }}</a></td>
-                <td class='support-amount-allocated'>{{numbro amount_allocated}}</td>
-                <td class='support-amount_supported'>{{numbro amount_supported}}</td>
-                <td class='support-kind'>{{ kind }}</td>
-                <td class='support-more'>
-                    <span class='support-num_used'>
-                    {{#ifCond kind "==" "תמיכה בפרט"}}
-                      {{num_used}} נתמכים
-                    {{else}}
-                      {{#ifCond num_used ">" 1}}
-                        {{num_used}} נתמכים
-                      {{/ifCond}}
-                    {{/ifCond}}
-                    </span>
-                </td>
-            </tr>
-            {{/each}}
+
           </tbody>
       </table>
-    {{/if}}
-        <div>
+  {{/if}}
+
+  {{#if supports.length }}
+      <h3 class="entity-title-top">&larr;&nbspתמיכות</h3>
+      <table class="support-table table table-expandable">
+          <thead>
+          <th>שנה</th>
+          <th>נושא</th>
+          <th>תקנה</th>
+          <th>אושר</th>
+          <th>הועבר</th>
+          <th>סוג</th>
+          <th>עוד</th>
+          </thead>
+          <tbody>
+          {{#each supports}}
+              <tr>
+                  <td class='support-year'>{{ year }}</td>
+                  <td class='support-subject'>{{ subject }}</td>
+                  <td class='support-code'><a
+                          href="{{URLSchemeHandler 'linkToBudget' code year }}">{{strSlice code 2}}
+                      - {{ title }}</a></td>
+                  <td class='support-amount-allocated'>{{numbro amount_allocated}}</td>
+                  <td class='support-amount_supported'>{{numbro amount_supported}}</td>
+                  <td class='support-kind'>{{ kind }}</td>
+                  <td class='support-more'>
+                    <span class='support-num_used'>
+                      {{#ifCond kind "==" "תמיכה בפרט"}}
+                        {{num_used}} נתמכים
+                      {{else}}
+                        {{#ifCond num_used ">" 1}}
+                          {{num_used}} נתמכים
+                        {{/ifCond}}
+                      {{/ifCond}}
+                    </span>
+                  </td>
+              </tr>
+          {{/each}}
+          </tbody>
+      </table>
+  {{/if}}
+
+
+    <div class="footer">
+        <ul class="pull-right">
+            <li><a class="hasadna" title="הסדנא לידע ציבורי" href="http://hasadna.org.il" target="_blank">הסדנא לידע
+                ציבורי</a></li>
+            <li><a href="#teamModal" data-toggle="modal">♥ הצוות</a></li>
+            <li><a target="_blank" href="https://github.com/OpenBudget/">קוד האתר</a></li>
+            <li><a target="_blank" href="https://github.com/OpenBudget/open-budget-frontend/issues">דווחו על תקלה</a>
+            </li>
+            <li><a target="_blank" href="http://forum.hasadna.org.il/c/5-category/13-category">קבוצת הדיון שלנו</a></li>
+            <li><a target="_blank" href="mailto:adam@obudget.org">צרו קשר</a></li>
+            <li><a target="_blank" href="/api">API</a></li>
+            <li><a target="_blank" href="/gov/">האתר הישן</a></li>
+            <li><a target="_blank"
+                   href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7DFYUXKNSKN62">תרום
+                לנו</a></li>
+        </ul>
     </div>
+
+</div>
+</div>
 </div>

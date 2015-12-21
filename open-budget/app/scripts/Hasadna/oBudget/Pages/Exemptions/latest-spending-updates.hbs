@@ -4,25 +4,43 @@
 </div-->
 <div class="loading-indicator">{{> Hasadna/oBudget/Pages/Exemptions/sk-fading-circle}}</i></div>
 <div class="exemptions-alerts in">
-    <div class="exemptions-alerts-content container-fluid">
-      {{#each ui.exemptionsToDisplay}}
-        <div class="exemption-alert" data-entity-id="{{entity_id}}" data-publication-id="{{publication_id}}">
 
-                <h5 class="exemption-publisher">
-                    <div class="exemption-flags">
-                        <span class="label label-success">{{#ifCond decision "==" "טרום החלטת ועדה"}}כוונת התקשרות{{/ifCond}}</span>
+
+    <div class="exemptions-alerts-content container-fluid">
+
+        <div class="order">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-6 Descending">
+                        <label><input type="radio" name="asc_desc" value="1" checked><span>סדר יורד</span><span class="glyphicon glyphicon-circle-arrow-down"></span></label>
                     </div>
-                    {{publisher}}
-                    <div class="exemption-update-date"> תאריך עדכון: {{moment last_update_date "D/M/YYYY"}}</div>
-                </h5>
-                <h4 class="exemption-supplier">{{ supplier }}</h4>
-                <h4 class="exemption-data">{{#if volume}}{{ numbro volume isCurrency=true format="0, $" }}{{else}}סכום לא ידוע{{/if}}</h4>
-                <h3 class="exemption-title">{{strOverflow description 140}}</h3>
+                    <div class="col-xs-6 ascending">
+                        <label><input type="radio" name="asc_desc" value="-1"><span>סדר עולה</span><span class="glyphicon glyphicon-circle-arrow-up"></span></label>
+                    </div>
+                </div>
+            </div>
         </div>
+
+      {{#each ui.exemptionsToDisplay}}
+          <div class="exemption-alert" data-entity-id="{{entity_id}}" data-publication-id="{{publication_id}}">
+              <div class="exemption-flags">
+                  <span class="label label-success">{{#ifCond decision "==" "טרום החלטת ועדה"}}
+                      כוונת התקשרות{{/ifCond}}</span>
+              </div>
+              <h5 class="exemption-publisher">
+                {{publisher}}
+              </h5>
+              <h4 class="exemption-data">{{#if volume}}{{ numbro volume isCurrency=true format="0, $" }}{{else}}סכום לא
+                  ידוע{{/if}}</h4>
+              <div class="exemption-update-date"> תאריך עדכון: {{moment last_update_date "D/M/YYYY"}}</div>
+              <h4 class="exemption-supplier">{{ supplier }}</h4>
+              <h3 class="exemption-title">{{strOverflow description 140}}</h3>
+          </div>
       {{else}}
-        <div class="exemption-alert empty">
-          <h5 class="exemption-publisher">לא נמצאו עדכונים בטווח הזמן הנבחר</h5>
-        </div>
+          <div class="exemption-alert empty">
+              <h5 class="exemption-publisher">לא נמצאו עדכונים בטווח הזמן הנבחר</h5>
+          </div>
       {{/each}}
     </div>
 </div>
