@@ -21,6 +21,9 @@ require.config({
         "tpl":                  "bower_components/requirejs-tpl/tpl",
         "vendor/numbro":        "bower_components/numbro/numbro",
         "vendor/moment":        "bower_components/moment/moment",
+        "vendor/papaparse":     "bower_components/papaparse/papaparse",
+        "vendor/StringView":    "bower_components/stringview/stringview",
+        "vendor/bootstrap-select":    "bower_components/bootstrap-select/dist/js/bootstrap-select",
         "ecma_5":               "scripts/interval-query/lib/browser/ecma_5",
         "segment-tree-browser": "scripts/interval-query/lib/browser/segment-tree-browser",
         "team":                 "scripts/team",
@@ -34,8 +37,6 @@ require.config({
         "views":                "scripts/views",
         "detailed_history":     "scripts/detailed_history",
         "single_changegroup":   "scripts/single_changegroup",
-        "entity_details":       "scripts/entity_details",
-        "spendings_page":       "scripts/spendings_page",
         "breadcrumb_header":    "scripts/breadcrumb_header",
         "analysis_header":      "scripts/analysis_header",
         "bubble_chart":         "scripts/bubble_chart",
@@ -48,8 +49,8 @@ require.config({
         "subscribe":            "scripts/subscribe",
         "hello":                "scripts/hello",
         "training":             "scripts/training",
-        "budget_view":          "scripts/budget_view",
-        "orphan_exemption_page": "scripts/orphan_exemption_page",
+        "budget_view":           "scripts/budget_view",
+        "Hasadna/oBudget":       "scripts/Hasadna/oBudget"
     },
     shim: {
         pivot: {
@@ -87,11 +88,14 @@ require.config({
         },
         "modernizr": {
             exports: "Modernizr"
+        },
+        "vendor/StringView": {
+          exports: "StringView"
         }
     },
 
     hbs: {
       handlebarsPath: 'handlebarsRuntime',
-      helperDirectory: 'scripts/Misc/handlebarsHelpers/'
+      helperDirectory: 'Hasadna/oBudget/Misc/handlebarsHelpers/'
     }
 })

@@ -1,0 +1,48 @@
+<div class="loading-indicator">{{> Hasadna/oBudget/Pages/Exemptions/sk-fading-circle}}</i></div>
+<div class="scroll-viewport">
+  <h2 class='entity-name'>{{ name }}</h2>
+
+  <div class="left-info">
+    <div class="info">
+        <table class="exemption-table table table-expandable">
+            <thead>
+                <th>שם המשרד</th>
+                <th>מס'</th>
+                <th>בסך</th>
+                <th>התחלה</th>
+                <th>סיום</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class='exemption-publisher'>{{ publisher }}</td>
+                    <td class='exemption-start'>1</td>
+                    <td class='exemption-volume'>
+                    {{#if exemptions_sum}}
+                      {{numbro exemptions_sum isCurrency=true format="0, $"}}
+                    {{else}}
+                      לא ידוע
+                    {{/if}}
+                    </td>
+                    <td class='exemption-description'>{{moment start_date "D/M/YYYY"}}</td>
+                    <td class='exemption-subjects'>{{moment end_date "D/M/YYYY"}}</td>
+                </tr>
+                <tr>
+                  <td class='exemption-description' colspan="2"><a href="{{ url }}" target="_blank">{{ description }}</a></td>
+                  <td>
+                  {{#if exemptions_sum}}
+                    {{numbro exemptions_sum isCurrency=true format="0, $"}}
+                  {{else}}
+                    לא ידוע
+                  {{/if}}
+                  </td>
+                  <td>{{moment start_date "D/M/YYYY"}}</td>
+                  <td>{{moment end_date "D/M/YYYY"}}</td>
+                </tr>
+                <tr>
+                 {{> Hasadna/oBudget/Pages/Exemptions/exemption-full-details}}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>

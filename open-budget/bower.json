@@ -10,7 +10,7 @@
     "bootstrap-rtl": "~0.9.8",
     "d3": "~3.4.1",
     "backbone": "~1.1.0",
-    "underscore": "~1.5.2",
+    "underscore": "~1.8.0",
     "typeahead.js": "~0.10.5",
     "hogan": "~3.0.0",
     "d3-tip": "~0.6.4",
@@ -19,7 +19,10 @@
     "requirejs-tpl": "https://github.com/Rhinofly/requirejs-tpl.git#0.0.3",
     "require-handlebars-plugin": "https://github.com/SlexAxton/require-handlebars-plugin.git#1837ba90ced022472169d0011da4197b9e9ac4cc",
     "numbro": "~1.6.2",
-    "moment": "~2.10.6"
+    "moment": "~2.10.6",
+    "papaparse": "~4.1.2",
+    "stringview": "*",
+    "bootstrap-select": "~1.7.7"
   },
   "devDependencies": {},
   "resolutions": {

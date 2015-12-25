@@ -1,0 +1,37 @@
+<div class="controls-header" data-toggle="collapse" data-target=".exemptions-alerts,.inputs-area">
+  עדכונים
+  <button type="button"></button>
+  </div>
+
+<div class="inputs-area in">
+  <h2>
+      סינון ומיון
+  </h2>
+  <select id="spendings-day-limit"  name="spendings-day-limit">
+      <option disabled>מסגרת זמן</option>
+      <option value="1"{{#ifCond ui.controls.timeFrame "==" 1}} selected{{/ifCond}}>יום אחרון</option>
+      <option value="7"{{#ifCond ui.controls.timeFrame "==" 7}} selected{{/ifCond}}>שבוע אחרון</option>
+      <option value="30"{{#ifCond ui.controls.timeFrame "==" 30}} selected{{/ifCond}}>חודש אחרון</option>
+  </select>
+
+  <select class="ministry" multiple title='כל המשרדים'>
+    <option disabled>סינון לפי משרד</option>
+    {{#each ui.ministriesList}}
+      <option value="{{this}}">{{this}}</option>
+    {{/each}}
+  </select>
+
+  <select class="order-by">
+    <option disabled="">מיין לפי</option>
+    <option value="total_flags">עניין</option>
+    <option value="date">תאריך עדכון</option>
+    <option value="volume">סכום</option>
+  </select>
+
+  סדר יורד
+  <input type="radio" name="asc_desc" value="1" checked>
+  עולה
+  <input type="radio" name="asc_desc" value="-1">
+  {{!-- <input type="text" name="free-text" placeholder="חיפוש טקסט חופשי">
+   --}}
+</div>

@@ -5,11 +5,8 @@ define [
     'scripts/modelsHelpers/BudgetItem',
     'scripts/modelsHelpers/ChangeLine',
     'scripts/modelsHelpers/ChangeExplanation',
-    'scripts/modelsHelpers/Entity',
-    'scripts/modelsHelpers/NewSpendings',
-    'scripts/modelsHelpers/Exemption',
     'scripts/modelsHelpers/PageModel'
-  ], (Backbone, main_page_tabs, url_scheme, BudgetItem, ChangeLine, ChangeExplanation, Entity, NewSpendings, Exemption, PageModel) ->
+  ], (Backbone, main_page_tabs, url_scheme, BudgetItem, ChangeLine, ChangeExplanation, PageModel) ->
 
         # toLocaleJSON: (requestedLocale) ->
         #   locale = requestedLocale || "he"
@@ -27,9 +24,6 @@ define [
         BudgetItem: BudgetItem
         ChangeLine: ChangeLine
         ChangeExplanation: ChangeExplanation
-        Entity: Entity
-        NewSpendings: NewSpendings,
-        Exemption: Exemption
         pageModel: new PageModel()
     }
 
