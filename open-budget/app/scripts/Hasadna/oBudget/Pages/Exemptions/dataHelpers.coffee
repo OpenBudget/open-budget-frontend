@@ -1,10 +1,8 @@
 define [
   "underscore",
   "Hasadna/oBudget/Pages/Exemptions/parentMinistriesVariants",
-  "vendor/papaparse",
-  "vendor/StringView",
   "vendor/moment"
-], (_, parentMinistriesVariants, papaparse, StringView, moment) ->
+], (_, parentMinistriesVariants, moment) ->
   dataHelpers =
 
     composeExemptionsSortFunc: (controlsValues) ->

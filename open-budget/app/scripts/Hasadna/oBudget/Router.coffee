@@ -3,5 +3,5 @@ define ['backbone'], (Backbone) ->
     routes:
       "spending(*yeaorwhatever)": "exemptions"
       "entity/:entityId": "entity"
-      "entity/:entityId/publication/:publication(/yeaorwhatever)": "entity"
-      "entity/:entityId(/yeaorwhatever)": "entity"
+      "entity/:entityId/publication/:publication(*yeaorwhatever)": "entity"
+      "entity/:entityId(*yeaorwhatever)": "entity"

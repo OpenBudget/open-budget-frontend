@@ -12,10 +12,6 @@ define [
 
     className: 'entity-details center-block col-sm-9'
 
-    events:
-      'mousedown .export-supports': 'prepareExportSupports'
-      'mousedown .export-exemptions': 'prepareExportExemptions'
-
     initialize: (options) ->
       @baseURL = options.baseURL
 
@@ -28,18 +24,6 @@ define [
         @entitySelected()
 
       @currentReqeust = null
-
-    prepareExportExemptions: () ->
-      if @$el.find('.export-exemptions').attr('href')
-        return
-
-      @$el.find('.export-exemptions').attr('href', dataHelpers.getExemptionsExportUrl(@entity.exemptions))
-
-    prepareExportSupports: () ->
-      if @$el.find('.export-supports').attr('href')
-        return
-
-      @$el.find('.export-supports').attr('href', dataHelpers.getSupportsExportUrl(@entity.supports))
 
     publicationSelected: ->
       eid = @model.get 'entityId'

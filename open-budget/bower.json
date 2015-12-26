@@ -20,8 +20,6 @@
     "require-handlebars-plugin": "https://github.com/SlexAxton/require-handlebars-plugin.git#1837ba90ced022472169d0011da4197b9e9ac4cc",
     "numbro": "~1.6.2",
     "moment": "~2.10.6",
-    "papaparse": "~4.1.2",
-    "stringview": "*",
     "bootstrap-select": "~1.7.7"
   },
   "devDependencies": {},
