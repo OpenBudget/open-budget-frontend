@@ -8,8 +8,8 @@
 
         <div class="row">
 
-            <div class="col-xs-4 col-sm-2">
-                <select id="spendings-day-limit" name="spendings-day-limit">
+            <div class="col-xs-12 col-sm-2 col-md-2 dayCol">
+                <select class="dayLimit" id="spendings-day-limit" name="spendings-day-limit">
                     <option disabled>מסגרת זמן</option>
                     <option value="1"{{#ifCond ui.controls.timeFrame "==" 1}} selected{{/ifCond}}>יום אחרון</option>
                     <option value="7"{{#ifCond ui.controls.timeFrame "==" 7}} selected{{/ifCond}}>שבוע אחרון</option>
@@ -17,7 +17,17 @@
                 </select>
             </div>
 
-            <div class="col-xs-4 col-sm-2">
+
+            <div class="col-xs-12 col-sm-4 col-md-7 ministryCol">
+                <select class="ministry" multiple title='כל המשרדים'>
+                    <option disabled>סינון לפי משרד</option>
+                  {{#each ui.ministriesList}}
+                      <option value="{{this}}">{{this}}</option>
+                  {{/each}}
+                </select>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-1 orderCol">
                 <select class="order-by">
                     <option disabled="">מיין לפי</option>
                     <option value="total_flags">עניין</option>
@@ -26,14 +36,34 @@
                 </select>
             </div>
 
-            <div class="col-xs-4 col-sm-8">
-                <select class="ministry" multiple title='כל המשרדים'>
-                    <option disabled>סינון לפי משרד</option>
-                  {{#each ui.ministriesList}}
-                      <option value="{{this}}">{{this}}</option>
-                  {{/each}}
-                </select>
+            <div class="col-xs-6 col-sm-2 col-md-1 descending">
+                <label class="radioCon">
+                    <input type="radio" name="asc_desc" value="1" checked="checked"/><span>סדר יורד</span>
+                </label>
             </div>
+
+            <div class="col-xs-6 col-sm-2 col-md-1 ascending">
+                <label class="radioCon">
+                    <input type="radio" name="asc_desc" value="-1"/><span>סדר עולה</span>
+                </label>
+            </div>
+
+
+
+
+          <!---->
+             <!--<div class="col-xs-4 col-sm-2 col-md-1 descending">-->
+                <!--<label class="myradio">-->
+                    <!--<input type="radio" name="asc_desc" value="1" checked="checked"/><span>סדר יורד</span><span class="glyphicon glyphicon-circle-arrow-down"></span>-->
+                <!--</label>-->
+            <!--</div>-->
+
+            <!--<div class="col-xs-4 col-sm-2 col-md-1 ascending">-->
+                <!--<label class="myradio">-->
+                    <!--<input type="radio" name="asc_desc" value="-1"/><span>סדר עולה</span><span class="glyphicon glyphicon-circle-arrow-up"></span>-->
+                <!--</label>-->
+            <!--</div>-->
+
 
 
             <!--<div class="order">-->
