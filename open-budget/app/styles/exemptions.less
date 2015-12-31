@@ -271,6 +271,37 @@ div.exemptions-alerts {
   }
 }
 
+.table-expandable {
+  tbody {
+    tr {
+      background-color: #F1F1F1;
+    }
+
+    .exemption-expander {
+      background-color: #1782B5;
+      height: 100%;
+      position: relative;
+
+      span {
+        position: relative;
+        margin: auto;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%) !important;
+        display: block;
+        left: 50%;
+      }
+    }
+  }
+
+  .table-striped {
+    tr {
+      background-color: white;
+    }
+  }
+
+}
+
 .entity-details {
   table.table-expandable {
     thead {
@@ -296,8 +327,24 @@ div.exemptions-alerts {
         cursor: pointer;
         display: block;
         margin: auto;
-        margin-top: 2px;
-        color: gray;
+        //margin-top: 2px;
+        color: white;
+      }
+    }
+
+    td {
+      height: 100%;
+      position: relative;
+
+      .open, .collapse {
+
+        position: relative;
+        margin: auto;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%) !important;
+        display: block;
+        left: 50%;
       }
     }
 
@@ -308,8 +355,11 @@ div.exemptions-alerts {
         margin: auto;
         font-weight: bold;
         text-align: center;
+        color: #1782B5;
+
       }
     }
+
   }
 
   .exemption-full-details {
@@ -353,6 +403,28 @@ div.exemptions-alerts {
 
   .arrow-box {
 
+    .shareLink {
+      display: inline-block;
+      padding: 7px 12px;
+    border: solid 1px #1782B5;
+      //border-left: solid 1px #AEB2B9;
+
+      span {
+        margin-left: 4px;
+      }
+    }
+
+    .mrgovLink {
+      display: inline-block;
+      padding: 7px 12px;
+    border: solid 1px #1782B5;
+      margin-right: 10px;
+
+      span {
+        margin-left: 4px;
+      }
+    }
+
     ul {
       padding: 0;
     }
@@ -371,6 +443,7 @@ div.exemptions-alerts {
     }
     h4 {
       color: #000000;
+      font-size: 16px;
     }
   }
 
@@ -495,19 +568,41 @@ div.exemptions-alerts {
 
   .export-exemptions {
     background-color: #D8D8D8;
-    padding: 4px 12px;
+    padding: 4px 15px;
     color: #262935;
     font-size: 14px;
-    margin-left: 8px;
     border-radius: 60px;
+    float: right;
+    margin-left: 11px;
+
+    p {
+      margin: 0;
+
+      span {
+        font-size: 12px;
+        margin-right: 6px;
+        color: #727684;
+      }
+    }
   }
 
   .export-supports {
     background-color: #D8D8D8;
-    padding: 4px 12px;
+    padding: 4px 15px;
     color: #262935;
     font-size: 14px;
     border-radius: 60px;
+    float: left;
+
+    p {
+      margin: 0;
+
+      span {
+        font-size: 12px;
+        margin-right: 6px;
+        color: #727684;
+      }
+    }
   }
 
   table.exemption-table {
@@ -534,7 +629,7 @@ div.exemptions-alerts {
     font-size: 18px;
     padding: 9px 0;
     color: #fff;
-    background-color: #0883BF;
+    background-color: #0A415D;
     text-align: center;
     position: relative;
 
@@ -820,7 +915,7 @@ div.exemptions-alerts {
 }
 
 .controls {
-  background-color: #0883BF;
+  background-color: #0A415D;
   display: table;
   //border-bottom: solid #0E618A 6px;
   padding: 0;
@@ -890,7 +985,7 @@ div.exemptions-alerts {
 
         .order-by {
           .btn {
-            background-color: #1EB5FF;
+            background-color: #1782B5;
           }
         }
         .ministry {
@@ -978,6 +1073,20 @@ div.exemptions-alerts {
       margin: 0;
       .footer {
         display: none;
+      }
+    }
+
+    .arrow-box {
+
+      .shareLink {
+        display: block;
+        padding-left: 0;
+        border-left: none;
+      }
+
+      .mrgovLink {
+        display: block;
+        padding-right: 0;
       }
     }
 

@@ -1,4 +1,4 @@
-<td class='exemption-description' colspan=2><a href="#entity/{{ entity_id }}/publication/{{ publication_id }}" target="_blank">{{ description }}</a></td>
+<td class='exemption-description' colspan=2>{{ description }}</td>
 <td>
 {{#if volume}}
   {{numbro volume isCurrency=true format="0, $"}}
@@ -9,6 +9,6 @@
 <td>{{moment start_date "D/M/YYYY"}}</td>
 <td>{{moment end_date "D/M/YYYY"}}</td>
 <td class='exemption-full-details-expander'>
-  <div class="open" aria-hidden="true">הצג</div>
-  <div class="collapse" aria-hidden="true">הסתר</div>
+  <div class="open" aria-hidden="true"><span class="glyphicon glyphicon-plus"></span></div>
+  <div class="collapse" aria-hidden="true"><span class="glyphicon glyphicon-minus"></span></div>
 </td>
