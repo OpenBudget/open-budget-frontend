@@ -142,7 +142,7 @@ body.kind-entity {
   .initial-loader {
     position: absolute;
     width: 100%;
-    height: ~"calc(100vh - 65px)";
+    height: ~"calc(100vh - 135px)";
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 3;
 
@@ -161,6 +161,7 @@ body.kind-entity {
 
 div.exemptions-alerts {
   padding: 0;
+  transition: none;
 
   div.exemptions-alerts-header {
     padding: 25px 0;
@@ -609,6 +610,10 @@ div.exemptions-alerts {
     tr.fullDetailsRow {
       display: none;
     }
+
+    /* Fix ios safari issue */
+    width: auto;
+    max-width: none
   }
 }
 
@@ -1060,6 +1065,11 @@ div.exemptions-alerts {
 }
 
 @media (max-width: 768px) {
+
+  .entity-details .left-info {
+    overflow-y: visible;
+  }
+
   .inputs-area.collapse {
     display: none ! important;
   }
@@ -1079,14 +1089,9 @@ div.exemptions-alerts {
     .arrow-box {
 
       .shareLink {
-        display: block;
-        padding-left: 0;
-        border-left: none;
       }
 
       .mrgovLink {
-        display: block;
-        padding-right: 0;
       }
     }
 

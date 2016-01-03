@@ -37,7 +37,7 @@ define [
             timeFrame: 7
             ministry: ''
             orderBy: 'total_flags'
-            orderByDirection: -1
+            orderByDirection: 1
             freeText: ''
 
           exemptionsToDisplay: []

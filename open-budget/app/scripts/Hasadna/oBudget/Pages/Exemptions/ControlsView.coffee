@@ -20,7 +20,7 @@ define [
       'change [name=asc_desc]': 'triggerControlsValues'
 
     isMobile: ->
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) && !chrome.webstore
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) && !(window.chrome && window.chrome.webstore)
 
     exemptionSelected: ->
       if window.matchMedia('all and (max-width:768px)').matches
