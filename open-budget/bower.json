@@ -7,7 +7,7 @@
     "modernizr": "~2.6.2",
     "jquery": "~1.9.1",
     "jquery-ui": "~1.11",
-    "bootstrap-rtl": "~0.9.8",
+    "bootstrap-rtl": "https://github.com/OpenBudget/bootstrap-rtl.git#obudget-patch-tag",
     "d3": "~3.4.1",
     "backbone": "~1.1.0",
     "underscore": "~1.5.2",
