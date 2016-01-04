@@ -1,4 +1,4 @@
-define ['backbone'], (backbone) ->
+define ['backbone'], (Backbone) ->
   class BudgetApproval extends Backbone.Model
       defaults:
           year: null

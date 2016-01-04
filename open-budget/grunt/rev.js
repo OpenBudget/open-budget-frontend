@@ -2,8 +2,8 @@ module.exports = {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/styles/{,*/}*.css',
+            '<%= yeoman.dist %>/bundle.js',
+            '<%= yeoman.dist %>/styles/main.css',
             '<%= yeoman.dist %>/styles/assets/**/*.*',
             '!<%= yeoman.dist %>/styles/assets/**/*.svg'
           ]

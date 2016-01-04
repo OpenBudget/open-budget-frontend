@@ -19,18 +19,12 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
+      grunt.task.run(['build', 'connect:dist:keepalive']);
+    } else {
+      grunt.task.run([
+        'dev-workflow'
+      ]);
     }
-
-    grunt.task.run([
-      'clean:server',
-      'clean:generated_js',
-      'coffee',
-      'less',
-      'copy:server',
-      'connect:livereload',
-      'watch'
-    ]);
   });
 
   grunt.registerTask('server', function () {
@@ -38,27 +32,25 @@ module.exports = function (grunt) {
     grunt.task.run(['serve']);
   });
 
-  grunt.registerTask('test', [
-    'clean:server',
-    'coffee',
-    'less',
-    'copy:server',
-    'connect:test',
-    'mocha'
-  ]);
-
   grunt.registerTask('build', [
     'clean:dist',
-    'clean:generated_js',
-    'concurrent',
-    'requirejs',
-    'cssmin',
+    'webpack:main',
     'copy',
     'rev',
     'usemin'
   ]);
 
+  grunt.registerTask('dev-workflow', [
+    'open:dev',
+    'webpack-dev-server:main'
+  ]);
+
+  grunt.registerTask('dev-workflow-noreload', [
+    'open:dev',
+    'webpack-dev-server:mainNoReload'
+  ]);
+
   grunt.registerTask('default', [
-    'build'
+    'dev-workflow'
   ]);
 };

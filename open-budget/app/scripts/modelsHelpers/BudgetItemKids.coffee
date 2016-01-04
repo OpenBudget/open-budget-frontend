@@ -1,4 +1,4 @@
-define ['scripts/modelsHelpers/BudgetItem'], (BudgetItem) ->
+define ['backbone', 'scripts/modelsHelpers/BudgetItem'], (Backbone, BudgetItem) ->
   class BudgetItemKids extends Backbone.Collection
 
       model: BudgetItem

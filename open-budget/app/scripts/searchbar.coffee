@@ -4,8 +4,9 @@ define([
   'tpl!templates/expandor_icon',
   'tpl!templates/upbacker',
   'tpl!templates/searchbar-tooltip-full',
-  'tpl!templates/search-dropdown-item'
-  ], (Backbone, models, Bloodhound, template_searchbar_tooltip, template_expandor_icon, template_upbacker, template_searchbar_tooltip_full, template_search_dropdown_item) ->
+  'tpl!templates/search-dropdown-item',
+  'underscore'
+  ], (Backbone, models, Bloodhound, template_searchbar_tooltip, template_expandor_icon, template_upbacker, template_searchbar_tooltip_full, template_search_dropdown_item, _) ->
 
     class BudgetPartitionLayoutView extends Backbone.View
 

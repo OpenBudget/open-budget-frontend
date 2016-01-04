@@ -1,3 +1,5 @@
-define ['handlebarsRuntime'], (handlebarsRuntime) ->
-  handlebarsRuntime.registerHelper "format_full_numbers", (num) ->
+define [], () ->
+  helper = (num) ->
     num ? window.format_full_number num : ''
+
+  helper

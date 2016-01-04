@@ -1,5 +1,6 @@
-define ['handlebarsRuntime'], (Handlebars) ->
-  Handlebars.registerHelper 'ifCond', (v1, operator, v2, options) ->
+define [], (Handlebars) ->
+
+  helper = (v1, operator, v2, options) ->
     switch operator
       when '=='
         return if v1 == v2 then options.fn(this) else options.inverse(this)
@@ -20,3 +21,5 @@ define ['handlebarsRuntime'], (Handlebars) ->
       else
         return options.inverse(this)
     return
+
+  helper

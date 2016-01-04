@@ -1,4 +1,4 @@
-define ['scripts/modelsHelpers/BudgetApproval'], (BudgetApproval) ->
+define ['backbone', 'scripts/modelsHelpers/BudgetApproval'], (Backbone, BudgetApproval) ->
   class BudgetApprovals extends Backbone.Collection
       model: BudgetApproval
 

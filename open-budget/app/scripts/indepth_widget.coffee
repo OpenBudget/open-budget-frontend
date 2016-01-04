@@ -1,11 +1,11 @@
 define [
-  'models', 'jquery', 'backbone', "ecma_5", "segment-tree-browser",
+  'models', 'jquery', 'underscore', 'backbone', "ecma_5", "segment-tree-browser",
   "tpl!templates/widget-change-tooltip",
   "tpl!templates/participant-photo",
   "tpl!templates/widget-participant-tooltip"
   "tpl!templates/participant-term"
   ],
-    (models, $, Backbone, ecma_t, segmentTree, tpl_widget_change_tooltip, tpl_participant_photo, tpl_widget_participant_tooltip, tpl_participant_term) ->
+    (models, $, _, Backbone, ecma_t, segmentTree, tpl_widget_change_tooltip, tpl_participant_photo, tpl_widget_participant_tooltip, tpl_participant_term) ->
         console.log "indepth_widget"
         indepthWidget = null
         getInstance = () ->

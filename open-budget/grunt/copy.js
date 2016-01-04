@@ -6,6 +6,11 @@ module.exports = {
         cwd: '<%= yeoman.app %>',
         dest: '<%= yeoman.dist %>',
         src: [
+          'index.html',
+          'bundle.js',
+          'bundle.js.map',
+          'styles/main.css',
+          'styles/main.css.map',
           '*.{ico,png,txt}',
           '.htaccess',
           'styles/assets/*.png',
@@ -14,7 +19,6 @@ module.exports = {
           'styles/assets/fonts/*.ttf',
           'bower_components/bootstrap-rtl/assets/fonts/*ttf',
           'bower_components/bootstrap-rtl/assets/fonts/*woff',
-          'bower_components/requirejs/require.js',
           'images/{,*/}*.{webp,gif}',
           'site-map*.txt'
         ]

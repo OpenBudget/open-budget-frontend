@@ -1,4 +1,4 @@
-define ['scripts/modelsHelpers/ChangeGroup'], (ChangeGroup) ->
+define ['backbone', 'scripts/modelsHelpers/ChangeGroup'], (Backbone, ChangeGroup) ->
   class ChangeGroups extends Backbone.Collection
 
       model: ChangeGroup

@@ -1,9 +1,10 @@
 define([
   'backbone',
   'models',
+  'underscore',
   'tpl!templates/header__current_budget',
   'tpl!templates/header__changed_this_year'
-  ], (Backbone, models, header__current_budget, header__changed_this_year) ->
+  ], (Backbone, models, _, header__current_budget, header__changed_this_year) ->
 
     window.up_or_down = (allocated,revised ) ->
                 if allocated > revised
