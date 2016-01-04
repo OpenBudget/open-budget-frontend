@@ -42,6 +42,14 @@ define ['backbone', 'vendor/moment'], (Backbone, moment) ->
       # "31/12/2015"
       response.end_date = if response.end_date then moment(response.end_date, "D/M/YYYY").toDate() else null
 
+      # rules for display of sum and flag
+      response.exemption_not_yet_approved = response.decision ==  "טרום החלטת ועדה"
+
+      response.exemption_null_volume = response.volume == ''
+
+      response.exemption_regulation_rule = response.regulation.indexOf("התקשרות המשך") != -1
+
+
       response
 
   return SpendingLine

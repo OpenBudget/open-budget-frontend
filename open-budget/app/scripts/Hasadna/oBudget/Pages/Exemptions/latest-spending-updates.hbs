@@ -1,0 +1,32 @@
+<!--div id="navbar">
+    <div id="logo" class="fill">התקשרויות בפטור ממרכז</div>
+    <div id="search" class="pull-left">חיפוש<i class="fa fa-search"></i></div>
+</div-->
+<div class="loading-indicator">{{> Hasadna/oBudget/Pages/Exemptions/sk-fading-circle}}</i></div>
+<div class="exemptions-alerts in">
+    <div class="exemptions-alerts-content container-fluid">
+      {{#each ui.exemptionsToDisplay}}
+      <div class="exemption-alert" data-entity-id="{{entity_id}}" data-publication-id="{{publication_id}}">
+          <div class="exemption-flags">
+              <span class="label label-success">{{#if exemption_not_yet_approved}}כוונת התקשרות{{/if}}</span>
+          </div>
+          <h5 class="exemption-publisher">{{publisher}}</h5>
+
+          <h4 class="exemption-data">
+          {{#if exemption_regulation_rule}}על חשבון התקשרות המשך
+            {{else if exemption_null_volume}}סכום לא ידוע
+            {{else if exemption_not_yet_approved}}
+            {{else}} {{numbro volume isCurrency=true format="0, $"}}
+          {{/if}}
+          </h4>
+          <div class="exemption-update-date"> תאריך עדכון: {{moment last_update_date "D/M/YYYY"}}</div>
+          <h4 class="exemption-supplier">{{ supplier }}</h4>
+          <h3 class="exemption-title">{{strOverflow description 140}}</h3>
+      </div>
+      {{else}}
+          <div class="exemption-alert empty">
+              <h5 class="exemption-publisher">לא נמצאו עדכונים בטווח הזמן הנבחר</h5>
+          </div>
+      {{/each}}
+    </div>
+</div>
