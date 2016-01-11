@@ -26,6 +26,7 @@
     "less-loader": "^2.2.2",
     "load-grunt-config": "^0.17.2",
     "noop-loader": "^1.0.0",
+    "semver": "^5.1.0",
     "time-grunt": "~0.2.0",
     "underscore": "^1.8.3",
     "underscore-template-loader": "^0.5.2",
