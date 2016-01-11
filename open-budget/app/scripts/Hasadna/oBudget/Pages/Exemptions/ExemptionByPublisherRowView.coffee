@@ -2,7 +2,7 @@ define [
     "backbone",
     "underscore",
     "Hasadna/oBudget/Pages/Exemptions/ExemptionDetailsRowView",
-    "hbs!Hasadna/oBudget/Pages/Exemptions/exemption-by-publisher-row"
+    "Hasadna/oBudget/Pages/Exemptions/exemption-by-publisher-row.hbs"
   ], (Backbone, _, ExemptionDetailsRowView, tpl_exemption_by_publisher_row) ->
   class ExemptionByPublisherRowView extends Backbone.View
       events:

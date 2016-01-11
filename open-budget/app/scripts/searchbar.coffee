@@ -1,10 +1,10 @@
 define([
   'backbone', 'models', 'bloodhound',
-  'tpl!templates/searchbar-tooltip',
-  'tpl!templates/expandor_icon',
-  'tpl!templates/upbacker',
-  'tpl!templates/searchbar-tooltip-full',
-  'tpl!templates/search-dropdown-item',
+  'templates/searchbar-tooltip.html',
+  'templates/expandor_icon.html',
+  'templates/upbacker.html',
+  'templates/searchbar-tooltip-full.html',
+  'templates/search-dropdown-item.html',
   'underscore'
   ], (Backbone, models, Bloodhound, template_searchbar_tooltip, template_expandor_icon, template_upbacker, template_searchbar_tooltip_full, template_search_dropdown_item, _) ->
 

@@ -1,9 +1,9 @@
 define [
   'models', 'jquery', 'underscore', 'backbone', "ecma_5", "segment-tree-browser",
-  "tpl!templates/widget-change-tooltip",
-  "tpl!templates/participant-photo",
-  "tpl!templates/widget-participant-tooltip"
-  "tpl!templates/participant-term"
+  "templates/widget-change-tooltip.html",
+  "templates/participant-photo.html",
+  "templates/widget-participant-tooltip.html"
+  "templates/participant-term.html"
   ],
     (models, $, _, Backbone, ecma_t, segmentTree, tpl_widget_change_tooltip, tpl_participant_photo, tpl_widget_participant_tooltip, tpl_participant_term) ->
         console.log "indepth_widget"

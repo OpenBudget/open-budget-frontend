@@ -8,7 +8,7 @@ define [
   "Hasadna/oBudget/Pages/Exemptions/EntityDetailsView",
   "Hasadna/oBudget/Pages/Exemptions/dataHelpers",
   'Hasadna/oBudget/Pages/Exemptions/DataStruct/NewSpendings',
-  'hbs!Hasadna/oBudget/Pages/Exemptions/initial-loader'
+  'Hasadna/oBudget/Pages/Exemptions/initial-loader.hbs'
   ], ($, Backbone, _, moment, ControlsView, ExemptionsView, EntityDetailsView, dataHelpers, NewSpendingsCollection, tplInitialLoader) ->
     class Main extends Backbone.View
 

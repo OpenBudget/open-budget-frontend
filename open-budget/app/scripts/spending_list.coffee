@@ -1,4 +1,8 @@
-define(['backbone', 'models', 'underscore', 'tpl!templates/single-spending-item'], (Backbone, models, _, tpl_single_spending_item) ->
+define(['backbone',
+  'models',
+  'underscore',
+  'templates/single-spending-item.html'
+], (Backbone, models, _, tpl_single_spending_item) ->
     class SpendingList extends Backbone.View
 
         initialize: ->

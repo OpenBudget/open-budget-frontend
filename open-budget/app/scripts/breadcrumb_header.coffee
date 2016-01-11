@@ -1,4 +1,6 @@
-define(['backbone', 'models', 'tpl!templates/breadcrumb-item'], (Backbone, models, template_breadcrumb_item) ->
+define(['backbone', 'models',
+  'templates/breadcrumb-item.html'
+], (Backbone, models, template_breadcrumb_item) ->
 
     window.issue_depth = (code) ->
         return code.length - 2

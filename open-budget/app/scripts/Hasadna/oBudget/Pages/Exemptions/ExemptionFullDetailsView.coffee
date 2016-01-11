@@ -1,6 +1,6 @@
 define [
     "backbone",
-    "hbs!Hasadna/oBudget/Pages/Exemptions/exemption-full-details"
+    "Hasadna/oBudget/Pages/Exemptions/exemption-full-details.hbs"
   ], (Backbone, tpl_exemption_full_details) ->
 
   class ExemptionFullDetailsView extends Backbone.View
