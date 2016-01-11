@@ -18,7 +18,7 @@ const config = {
         ],
 
         //When requiring, you don't need to add these extensions
-        extensions: ['', '.coffee', '.js', '.hbs', '.html'],
+        extensions: ['', '.coffee', '.js'],
         alias: getAlias(),
 
         //Modules will be searched for in these directories
@@ -27,11 +27,7 @@ const config = {
     },
 
     resolveLoader: {
-      extensions: ['', '.js'],
-      alias: {
-        "tpl": "underscore-template-loader",
-        "hbs": "noop-loader"
-      }
+      extensions: ['', '.js']
     },
 
     module: {
@@ -43,6 +39,10 @@ const config = {
             query: {
                 helperDirs: [ path.resolve(__dirname, 'scripts/Hasadna/oBudget/Misc/handlebarsHelpers/')]
               }
+          },
+          {
+            test: /\.html/,
+            loader: "underscore-template-loader"
           },
           {
             test: /segment-tree-browser\.js$/,

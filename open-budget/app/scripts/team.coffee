@@ -1,4 +1,6 @@
-define(['jquery', 'tpl!templates/team-card'], ($, template_team_card) ->
+define(['jquery',
+  'templates/team-card.html'
+], ($, template_team_card) ->
     team = [
         {
             name:'אדם קריב',

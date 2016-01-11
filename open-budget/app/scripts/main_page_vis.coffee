@@ -1,6 +1,13 @@
 define(
-  ['jquery','backbone', 'underscore', 'models', 'bubble_chart', 'hbs!templates/main-budget-header', 'tpl!templates/bubble-group-label', 'tpl!templates/bubble-tooltip'],
-  ($, Backbone, _, models, BubbleChart, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
+  ['jquery',
+    'backbone',
+    'underscore',
+    'models',
+    'bubble_chart',
+    'templates/main-budget-header.hbs',
+    'templates/bubble-group-label.html',
+    'templates/bubble-tooltip.html'
+  ], ($, Backbone, _, models, BubbleChart, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
 
     globalWidth = 0
 

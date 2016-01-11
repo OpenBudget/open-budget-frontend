@@ -5,8 +5,8 @@ define [
   "Hasadna/oBudget/Pages/Exemptions/DataStruct/Exemption",
   "Hasadna/oBudget/Pages/Exemptions/ExemptionByPublisherRowView",
   'Hasadna/oBudget/Pages/Exemptions/dataHelpers',
-  "hbs!Hasadna/oBudget/Pages/Exemptions/entity-details",
-  "hbs!Hasadna/oBudget/Pages/Exemptions/orphan-exemption-details"
+  "Hasadna/oBudget/Pages/Exemptions/entity-details.hbs",
+  "Hasadna/oBudget/Pages/Exemptions/orphan-exemption-details.hbs"
 ], (Backbone, _, EntityModel, ExemptionModel, ExemptionByPublisherRowView, dataHelpers, tpl_entity_details, tpl_orphan_exemption_details) ->
 
   class EntityDetailsView extends Backbone.View

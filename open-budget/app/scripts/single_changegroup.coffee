@@ -1,4 +1,7 @@
-define(['backbone', 'models', 'tpl!templates/single-changegroup'], (Backbone, models, tempalte_single_changegroup) ->
+define(['backbone',
+  'models',
+  'templates/single-changegroup.html'
+], (Backbone, models, tempalte_single_changegroup) ->
     class SingleChangeGroupView extends Backbone.View
 
             initialize: ->

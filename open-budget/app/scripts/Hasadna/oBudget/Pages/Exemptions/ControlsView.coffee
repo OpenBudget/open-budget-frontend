@@ -1,7 +1,7 @@
 define [
   'underscore',
   'backbone',
-  'hbs!Hasadna/oBudget/Pages/Exemptions/controls',
+  'Hasadna/oBudget/Pages/Exemptions/controls.hbs',
   'vendor/bootstrap-select'
 ], (_, Backbone, tpl_controls) ->
   class ControlsView extends Backbone.View

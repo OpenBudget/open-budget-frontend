@@ -1,4 +1,8 @@
-define(['backbone', 'models', 'combined_history', 'tpl!templates/single-transfer'], (Backbone, models, combinedHistory, template_single_transfer) ->
+define(['backbone',
+  'models',
+  'combined_history',
+  'templates/single-transfer.html'
+], (Backbone, models, combinedHistory, template_single_transfer) ->
     #### Models
     class HistoryItem extends Backbone.View
 

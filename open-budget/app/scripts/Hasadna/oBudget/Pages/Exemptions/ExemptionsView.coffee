@@ -1,6 +1,6 @@
 define [
   'backbone',
-  'hbs!Hasadna/oBudget/Pages/Exemptions/latest-spending-updates'
+  'Hasadna/oBudget/Pages/Exemptions/latest-spending-updates.hbs'
 ], (Backbone, tpl_latest_spending_updates) ->
   class ExemptionsView extends Backbone.View
 
