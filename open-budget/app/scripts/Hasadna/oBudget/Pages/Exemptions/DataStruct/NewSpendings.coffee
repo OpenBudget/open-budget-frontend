@@ -1,8 +1,9 @@
 define [
   'jquery',
   'backbone',
+  'underscore',
   'Hasadna/oBudget/Pages/Exemptions/DataStruct/SpendingLine'
-], ($, backbone, SpendingLine) ->
+], ($, Backbone, _, SpendingLine) ->
 
   class NewSpendings extends Backbone.Collection
 

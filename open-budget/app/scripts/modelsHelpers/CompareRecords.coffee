@@ -1,4 +1,4 @@
-define ['scripts/modelsHelpers/CompareRecord'], (CompareRecord) ->
+define ['backbone', 'scripts/modelsHelpers/CompareRecord'], (Backbone, CompareRecord) ->
   class CompareRecords extends Backbone.Collection
 
       model: CompareRecord

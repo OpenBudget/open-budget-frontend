@@ -25,10 +25,7 @@ Checkout the project from ```https://github.com/OpenBudget/open-budget-frontend/
     $ sudo npm install -g bower
     $ bower update
     $ sudo npm install -g grunt-cli
-    $ git submodule update --init
     $ grunt
-    $ grunt serve
-
 
 Install on Windows
 ------------------
@@ -62,4 +59,24 @@ Then run this command:
 
 Same instructions as under OS X above (only without 'sudo').
 
-Enjoy!
+Build for production
+------------------
+
+```
+grunt build
+```
+Will build the app for production use in `open-budget/dist`.
+
+
+```
+grunt serve:dist
+``` 
+Will build the app for production and serve it via local web server at http://localhost:9000  
+(build = minify the js bundle, minify the compiled css, revving all of the assets and update the references accordingly)
+ 
+### About the build system
+The build system we're using is [webpack](http://webpack.github.io/).
+The less is also compiled via webpack, with single entry point at the `main.coffee`. (coffee/js modules dose not have thier own style dependencies declarations), and extracted using ExtractTextPlugin
+ 
+
+###Enjoy!

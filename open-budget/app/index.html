@@ -32,10 +32,7 @@
         <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." name="twitter:description">
         <meta content="http://www.obudget.org/styles/assets/obudget.org.png" name="twitter:image:src">
 
-        <!-- build:css /styles/main.css -->
         <link rel="stylesheet" href="/styles/main.css">
-        <!-- endbuild -->
-
     </head>
     <body>
         <!--[if lt IE 10]>
@@ -372,14 +369,7 @@
         <script src="//platform.twitter.com/widgets.js"></script>
         <script>twttr.ready(function(){twttr.widgets.load()})</script>
         <script src="//hasadna-notifications.appspot.com/static/hn.js"></script>
-        <script src="bower_components/requirejs/require.js"></script>
-        <!-- build:js /scripts/main.js -->
-        <script>
-            require(['scripts/config'], function(){
-                require(['scripts/main'])
-            });
-        </script>
-        <!-- endbuild -->
+        <script src="bundle.js"></script>
 
         <!-- Google Analytics -->
         <script>

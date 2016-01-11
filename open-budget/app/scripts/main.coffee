@@ -1,4 +1,4 @@
-require [
+define [
     "backbone",
     "modernizr",
     "hello",
@@ -16,6 +16,8 @@ require [
     "models",
     "bootstrap-tour"
     ], (Backbone, a, b, c, d, e, f, g, h, i, j, k, ExemptionsPage, Router, models) ->
+      require('styles/main.less');
+
       router = new Router()
       baseURL = models.pageModel.get 'baseURL'
 

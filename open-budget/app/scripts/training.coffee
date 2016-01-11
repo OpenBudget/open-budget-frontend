@@ -1,4 +1,4 @@
-define(['backbone', 'models', 'tpl!templates/tour-dialog'], (Backbone, models, tpl_tour_dialog) ->
+define(['backbone', 'underscore', 'models', 'tpl!templates/tour-dialog'], (Backbone, _, models, tpl_tour_dialog) ->
 
     shouldNotTour =  ->
       if (location.hash.indexOf('#main') == -1) && !sessionStorage.getItem('touring')

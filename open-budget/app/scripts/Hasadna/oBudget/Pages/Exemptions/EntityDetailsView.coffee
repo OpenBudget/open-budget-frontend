@@ -1,12 +1,13 @@
 define [
   "backbone",
+  "underscore",
   "Hasadna/oBudget/Pages/Exemptions/DataStruct/Entity",
   "Hasadna/oBudget/Pages/Exemptions/DataStruct/Exemption",
   "Hasadna/oBudget/Pages/Exemptions/ExemptionByPublisherRowView",
   'Hasadna/oBudget/Pages/Exemptions/dataHelpers',
   "hbs!Hasadna/oBudget/Pages/Exemptions/entity-details",
   "hbs!Hasadna/oBudget/Pages/Exemptions/orphan-exemption-details"
-], (Backbone, EntityModel, ExemptionModel, ExemptionByPublisherRowView, dataHelpers, tpl_entity_details, tpl_orphan_exemption_details) ->
+], (Backbone, _, EntityModel, ExemptionModel, ExemptionByPublisherRowView, dataHelpers, tpl_entity_details, tpl_orphan_exemption_details) ->
 
   class EntityDetailsView extends Backbone.View
 

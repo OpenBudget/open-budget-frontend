@@ -1,4 +1,4 @@
-define(['backbone', 'models', 'tpl!templates/single-support-item'], (Backbone, models, tpl_single_support_item) ->
+define(['backbone', 'underscore', 'models', 'tpl!templates/single-support-item'], (Backbone, _, models, tpl_single_support_item) ->
     class SupportList extends Backbone.View
 
         initialize: ->

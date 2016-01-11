@@ -1,5 +1,5 @@
-define ['handlebarsRuntime', 'vendor/numbro', 'Hasadna/oBudget/Misc/numbro-he-IL'], (handlebarsRuntime, numbroLib) ->
-  handlebarsRuntime.registerHelper "numbro", (numberToFormat, params) ->
+define ['vendor/numbro', 'Hasadna/oBudget/Misc/numbro-he-IL'], (numbroLib) ->
+  helper = (numberToFormat, params) ->
 
     numbro.culture "he-IL"
 
@@ -11,3 +11,5 @@ define ['handlebarsRuntime', 'vendor/numbro', 'Hasadna/oBudget/Misc/numbro-he-IL
       number.formatCurrency params.hash.format
     else
       number.format params.hash.format
+
+  helper

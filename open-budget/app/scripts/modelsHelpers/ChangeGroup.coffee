@@ -1,4 +1,4 @@
-define ['backbone'], (Backbone) ->
+define ['backbone', 'underscore'], (Backbone, _) ->
   class ChangeGroup extends Backbone.Model
 
       defaults:

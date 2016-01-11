@@ -1,3 +1,0 @@
-[submodule "open-budget/app/scripts/interval-query"]
-	path = open-budget/app/scripts/interval-query
-	url = https://github.com/yonatann/interval-query.git

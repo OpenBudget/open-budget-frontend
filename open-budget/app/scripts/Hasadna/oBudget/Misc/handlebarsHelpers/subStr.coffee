@@ -1,3 +1,5 @@
-define ['handlebarsRuntime'], (handlebarsRuntime) ->
-  handlebarsRuntime.registerHelper "subStr", (str, start, length) ->
+define [], () ->
+  helper = (str, start, length) ->
     str.substr start, length
+
+  helper

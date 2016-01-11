@@ -1,4 +1,5 @@
 define ['backbone',
+        'underscore',
         'scripts/modelsHelpers/BudgetItemKids',
         'scripts/modelsHelpers/SupportFieldNormalizer',
         'scripts/modelsHelpers/ResizeNotifier',
@@ -13,7 +14,7 @@ define ['backbone',
         'scripts/modelsHelpers/TakanaSupports',
         'scripts/modelsHelpers/TakanaSpending',
         'scripts/modelsHelpers/Participants'
-      ], (Backbone, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, ChangeGroup,
+      ], (Backbone, _, BudgetItemKids, SupportFieldNormalizer, ResizeNotifier, ChangeGroup,
       ChangeGroups, ChangeExplanation, BudgetApprovals, BudgetHistory, ReadyAggregator, CompareRecords, BudgetItem,
       TakanaSupports, TakanaSpending, Participants) ->
 

@@ -32,7 +32,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
+define(['backbone', 'd3', 'd3-tip', 'underscore'], (Backbone, d3, d3tip, _) ->
     MAX_RADIUS = 85
     DURATION = 1000
 
@@ -472,7 +472,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
         @renderLegend(maxValue, scaleFunction)
 
         actionButtons = [
-            { 
+            {
               class: "main-vis-back-button",
               location: {x: @width/4, y: MIDDLE},
               href: "styles/assets/bubble-back.svg",
@@ -481,7 +481,7 @@ define(['backbone', 'd3', 'd3-tip'], (Backbone, d3, d3tip) ->
               viewBox: "0 0 41 21"
             },
 
-            { 
+            {
               class: "main-vis-zoom-button",
               location: {x: @width/2, y: MIDDLE*1.5},
               href: 'styles/assets/bubble-drill.svg',

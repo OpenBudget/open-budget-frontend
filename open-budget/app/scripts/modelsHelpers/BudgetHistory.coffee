@@ -1,4 +1,4 @@
-define ['backbone', 'scripts/modelsHelpers/BudgetItem'], (backbone, BudgetItem) ->
+define ['backbone', 'underscore', 'scripts/modelsHelpers/BudgetItem'], (Backbone, _, BudgetItem) ->
 
   class BudgetHistory extends Backbone.Collection
 

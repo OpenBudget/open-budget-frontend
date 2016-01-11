@@ -1,4 +1,4 @@
-define ['backbone', 'scripts/modelsHelpers/SpendingLine'], (backbone, SpendingLine) ->
+define ['backbone', 'scripts/modelsHelpers/SpendingLine'], (Backbone, SpendingLine) ->
   class TakanaSpending extends Backbone.Collection
 
       model: SpendingLine

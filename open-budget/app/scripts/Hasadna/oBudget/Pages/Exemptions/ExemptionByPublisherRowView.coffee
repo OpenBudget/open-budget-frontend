@@ -1,8 +1,9 @@
 define [
     "backbone",
+    "underscore",
     "Hasadna/oBudget/Pages/Exemptions/ExemptionDetailsRowView",
     "hbs!Hasadna/oBudget/Pages/Exemptions/exemption-by-publisher-row"
-  ], (Backbone, ExemptionDetailsRowView, tpl_exemption_by_publisher_row) ->
+  ], (Backbone, _, ExemptionDetailsRowView, tpl_exemption_by_publisher_row) ->
   class ExemptionByPublisherRowView extends Backbone.View
       events:
           'click .exemption-expander .glyphicon': 'toggleDetails'

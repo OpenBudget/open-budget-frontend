@@ -1,3 +1,5 @@
-define ['handlebarsRuntime'], (handlebarsRuntime) ->
-  handlebarsRuntime.registerHelper "strSlice", (str, index) ->
+define [], () ->
+  helper = (str, index) ->
     str.slice index
+
+  helper
