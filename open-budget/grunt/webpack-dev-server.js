@@ -1,4 +1,14 @@
 var config = require('../app/webpack.config.js');
+var semver = require('semver');
+
+/*
+  inline: true enables live reload
+  The livereload breaks if the npm install was made with npm < 3
+  npm 3 packed with node => 5 so we will disable it for node < 5
+  Hopefully its temporary
+ */
+var inline = semver.satisfies(process.version, '>=5.0.0');
+
 module.exports = {
   main: {
     webpack: config,
@@ -8,7 +18,7 @@ module.exports = {
     port: 9000,
     host: 'localhost',
     'contentBase': 'app/',
-    inline: true
+    inline: inline
   },
 
   mainNoReload: {
@@ -19,6 +29,6 @@ module.exports = {
     port: 9000,
     host: 'localhost',
     'contentBase': 'app/',
-    inline: true
+    inline: inline
   }
 };
