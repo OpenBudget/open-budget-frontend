@@ -1,6 +1,6 @@
 define(['backbone',
-  'models',
-  'combined_history',
+  'scripts/models',
+  'scripts/combined_history',
   'templates/single-transfer.html'
 ], (Backbone, models, combinedHistory, template_single_transfer) ->
     #### Models

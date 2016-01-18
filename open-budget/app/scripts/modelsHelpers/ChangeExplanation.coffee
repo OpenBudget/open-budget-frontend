@@ -1,4 +1,4 @@
-define ['backbone', 'main_page_tabs', 'url_scheme'], (Backbone) ->
+define ['backbone', 'scripts/main_page_tabs', 'scripts/url_scheme'], (Backbone) ->
   class ChangeExplanation extends Backbone.Model
 
       defaults:

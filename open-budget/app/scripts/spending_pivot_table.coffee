@@ -1,4 +1,4 @@
-define(['backbone', 'models', 'pivot'], (Backbone, models, pivot) ->
+define(['backbone', 'scripts/models', 'pivot'], (Backbone, models, pivot) ->
     class SpendingPivotTable extends Backbone.View
 
         initialize: ->

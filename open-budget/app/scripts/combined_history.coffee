@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'models'] , ($, _, Backbone, models) ->
+define(['jquery', 'underscore', 'backbone', 'scripts/models'] , ($, _, Backbone, models) ->
     class CombinedHistoryPoint extends Backbone.Model
 
             defaults:

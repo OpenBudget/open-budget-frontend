@@ -1,4 +1,4 @@
-define(['backbone', 'jquery', 'bubble_chart', 'bootstrap'], (Backbone, $, BubbleChart) ->
+define(['backbone', 'jquery', 'scripts/bubble_chart', 'bootstrap'], (Backbone, $, BubbleChart) ->
 
     class MainPageTabs extends Backbone.View
       initialize: (pageModel) ->

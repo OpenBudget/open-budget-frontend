@@ -1,7 +1,7 @@
 define [
     'backbone',
-    'main_page_tabs',
-    'url_scheme',
+    'scripts/main_page_tabs',
+    'scripts/url_scheme',
     'scripts/modelsHelpers/BudgetItem',
     'scripts/modelsHelpers/ChangeLine',
     'scripts/modelsHelpers/ChangeExplanation',

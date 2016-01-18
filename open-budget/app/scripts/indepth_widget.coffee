@@ -1,5 +1,5 @@
 define [
-  'models', 'jquery', 'underscore', 'backbone', "ecma_5", "segment-tree-browser",
+  'scripts/models', 'jquery', 'underscore', 'backbone', "ecma_5", "segment-tree-browser",
   "templates/widget-change-tooltip.html",
   "templates/participant-photo.html",
   "templates/widget-participant-tooltip.html"

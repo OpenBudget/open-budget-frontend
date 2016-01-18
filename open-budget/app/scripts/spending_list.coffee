@@ -1,5 +1,5 @@
 define(['backbone',
-  'models',
+  'scripts/models',
   'underscore',
   'templates/single-spending-item.html'
 ], (Backbone, models, _, tpl_single_spending_item) ->

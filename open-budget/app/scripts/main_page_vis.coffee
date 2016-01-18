@@ -2,8 +2,8 @@ define(
   ['jquery',
     'backbone',
     'underscore',
-    'models',
-    'bubble_chart',
+    'scripts/models',
+    'scripts/bubble_chart',
     'templates/main-budget-header.hbs',
     'templates/bubble-group-label.html',
     'templates/bubble-tooltip.html'

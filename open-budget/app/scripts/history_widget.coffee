@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'models', 'combined_history'], ($, _, Backbone, models, combined_history) ->
+define(['jquery', 'underscore', 'backbone', 'scripts/models', 'scripts/combined_history'], ($, _, Backbone, models, combined_history) ->
     class OverviewWidget extends Backbone.View
 
             VALUE_MARGIN = 0.1
