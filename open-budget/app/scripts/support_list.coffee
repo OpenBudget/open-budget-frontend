@@ -1,6 +1,6 @@
 define(['backbone',
   'underscore',
-  'models',
+  'scripts/models',
   'templates/single-support-item.html'
 ], (Backbone, _, models, tpl_single_support_item) ->
     class SupportList extends Backbone.View

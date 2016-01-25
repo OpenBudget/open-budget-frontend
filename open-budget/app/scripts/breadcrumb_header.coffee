@@ -1,4 +1,4 @@
-define(['backbone', 'models',
+define(['backbone', 'scripts/models',
   'templates/breadcrumb-item.html'
 ], (Backbone, models, template_breadcrumb_item) ->
 

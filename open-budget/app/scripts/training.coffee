@@ -1,6 +1,6 @@
 define(['backbone',
   'underscore',
-  'models',
+  'scripts/models',
   'templates/tour-dialog.html'
 ], (Backbone, _, models, tpl_tour_dialog) ->
 

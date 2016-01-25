@@ -1,6 +1,6 @@
 define([
   'backbone',
-  'models',
+  'scripts/models',
   'underscore',
   'templates/header__current_budget.html',
   'templates/header__changed_this_year.html'

@@ -1,5 +1,5 @@
 define([
-  'backbone', 'models', 'bloodhound',
+  'backbone', 'scripts/models', 'bloodhound',
   'templates/searchbar-tooltip.html',
   'templates/expandor_icon.html',
   'templates/upbacker.html',

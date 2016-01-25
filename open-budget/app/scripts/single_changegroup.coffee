@@ -1,5 +1,5 @@
 define(['backbone',
-  'models',
+  'scripts/models',
   'templates/single-changegroup.html'
 ], (Backbone, models, tempalte_single_changegroup) ->
     class SingleChangeGroupView extends Backbone.View

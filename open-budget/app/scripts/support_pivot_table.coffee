@@ -1,4 +1,4 @@
-define(['backbone', 'underscore', 'models', 'pivot'], (Backbone, _, models, pivot) ->
+define(['backbone', 'underscore', 'scripts/models', 'pivot'], (Backbone, _, models, pivot) ->
     class SupporPivotTable extends Backbone.View
 
         initialize: ->
