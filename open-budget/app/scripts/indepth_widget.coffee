@@ -312,7 +312,7 @@ define [
                     newTips = d3.select('#approvedTooltips').selectAll('.approvedTip').data(approvedModels)
                                 .enter().append("div")
                                 .attr("class","approvedTip participantTooltip")
-                                .html((d) -> tpl_widget_participant_tooltip({participants: d.get('participants')}))
+                                .html((d) -> tpl_widget_participant_tooltip({participants: d.get('participants'), _: _}))
 
                     d3.select('#approvedTooltips').selectAll('.approvedTip').data(approvedModels)
                                 .style("left", (d) => (@timeScale(d.get('timestamp')))+"px" )
