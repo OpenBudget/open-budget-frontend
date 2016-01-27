@@ -27,4 +27,9 @@ define [
       router.on "route:entity", (entityId, publicationId) ->
         new ExemptionsPage().start(baseURL: baseURL, entityId: entityId, publicationId: publicationId)
 
+      document.body.style.display = 'none'
+      document.body.getBoundingClientRect()
+      document.body.style.display = 'block'
+      document.body.getBoundingClientRect()
+      
       Backbone.history.start pushState: false

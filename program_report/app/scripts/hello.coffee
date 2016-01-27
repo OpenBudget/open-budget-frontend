@@ -88,7 +88,7 @@ process_templates = (code,year) ->
                         api_path = api_path.replace('{code^^}',"00"+code.substring(0,code.length-4))
                         api_path = api_path.replace('{code^^^}',"00"+code.substring(0,code.length-6))
                         api_path = api_path.replace('{year}',year)
-                        url = 'http://obudget.org/api/' + api_path
+                        url = 'http://obudget.org/api/' + api_path + '?limit=5000'
                         render_template = (data) ->
                                 data = {'data':data}
                                 data.extra = extra

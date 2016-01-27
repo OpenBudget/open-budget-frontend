@@ -15,7 +15,7 @@ define ['vendor/numbro'], (numbro) ->
 
       abbreviations:
           thousand: 'אלף'
-          million: 'מליון',
+          million: 'מיליון',
           billion: 'מיליארד'
           trillion: 'טריליון'
 

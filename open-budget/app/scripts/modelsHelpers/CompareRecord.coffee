@@ -4,13 +4,13 @@ define(['backbone'], (Backbone) ->
         code: null
         prev_code: null
         title: null
-        orig_2014: null
         orig_2015: null
-        rev_2014: null
+        orig_2016: null
         rev_2015: null
+        rev_2016: null
         group_top: null
         group_full: null
-        year: 2014
+        year: 2015
 
   return CompareRecord
 )

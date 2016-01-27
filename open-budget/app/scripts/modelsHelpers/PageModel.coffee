@@ -140,13 +140,13 @@ define ['backbone',
 
           @on 'change:mainPage', ->
               @budgetItems4 = new CompareRecords([], pageModel: @)
-              @budgetItems2 = new BudgetItemKids([], year: 2014, code: '00', pageModel: @)
+              @budgetItems2 = new BudgetItemKids([], year: 2015, code: '00', pageModel: @)
               @readyEvents.push (new ReadyAggregator("ready-budget-bubbles")
                                                   .addCollection(@budgetItems2)
                                                   .addCollection(@budgetItems4))
 
-              @mainBudgetItem = new BudgetItem(year: 2014, code: '00', pageModel: @)
-              @newBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
+              @mainBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
+              @newBudgetItem = new BudgetItem(year: 2016, code: '00', pageModel: @)
               @readyEvents.push (new ReadyAggregator("ready-main-budget")
                                                   .addModel(@mainBudgetItem)
                                                   .addModel(@newBudgetItem))
