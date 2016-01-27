@@ -1,7 +1,8 @@
 define(['backbone',
+  'underscore',
   'scripts/models',
   'templates/single-changegroup.html'
-], (Backbone, models, tempalte_single_changegroup) ->
+], (Backbone, _, models, tempalte_single_changegroup) ->
     class SingleChangeGroupView extends Backbone.View
 
             initialize: ->
@@ -11,6 +12,7 @@ define(['backbone',
                 @$el.css('display','inherit')
                 data = @model.changeGroup.toJSON()
                 data.explanation = ""
+                data._ = _;
                 @$el.html tempalte_single_changegroup( data )
                 if @model.changeGroupExplanation.get('explanation')?
                     data.explanation = @model.changeGroupExplanation.get('explanation')
