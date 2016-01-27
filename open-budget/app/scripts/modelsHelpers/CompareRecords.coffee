@@ -1,14 +1,13 @@
-define ['backbone', 'scripts/modelsHelpers/CompareRecord'], (Backbone, CompareRecord) ->
+define ['backbone', 'scripts/modelsHelpers/CompareRecord', 'scripts/appConfig'], (Backbone, CompareRecord, appConfig) ->
   class CompareRecords extends Backbone.Collection
 
       model: CompareRecord
 
-      initialize: (models, options) ->
-          @pageModel = options.pageModel
-          @fetch(dataType: @pageModel.get('dataType'), reset: true)
+      initialize: (models) ->
+          @fetch(dataType: appConfig.dataType, reset: true)
 
       url: ->
-          "#{pageModel.get('baseURL')}/api/sysprop/budget-comparisons"
+          "#{appConfig.baseURL}/api/sysprop/budget-comparisons"
 
       parse: (response) ->
           response.value

@@ -1,4 +1,5 @@
-define ['backbone',
+define [
+        'backbone',
         'underscore',
         'scripts/modelsHelpers/BudgetItemKids',
         'scripts/modelsHelpers/SupportFieldNormalizer',
@@ -26,35 +27,19 @@ define ['backbone',
           changeGroupId: null
           mainPage: null
           spendingPage: null
-          baseURL: "http://www.obudget.org"
-          # For debugging with local API
-          # Uses default port 8080, make sure this matches your GAE
-          # configuration
-          #baseURL: "http://127.0.0.1:8080"
           selection: [ 0, 0 ]
           currentItem: null
-          dataType: "json"#p"
           ready: false
           kinds: []
           flow: null
-          local: true
 
-      initialize: ->
-          if window.location.origin == @get('baseURL')
-              @set('local', false)
-              @set('dataType','json')
+      initialize: (attrs, options) ->
 
-          @api = {
-              BudgetItemKids: BudgetItemKids
-          }
+          @DEFAULT_HOME = options.DEFAULT_HOME
 
           @readyEvents = []
-          @supportFieldNormalizer = new SupportFieldNormalizer([], pageModel: @)
-          @mainPageTabs           = new window.MainPageTabs(@)
+          @supportFieldNormalizer = new SupportFieldNormalizer([])
           @resizeNotifier         = new ResizeNotifier()
-
-          @URLSchemeHandlerInstance = new window.URLSchemeHandler(@)
-          window.URLSchemeHandlerInstance = @URLSchemeHandlerInstance
 
           @resizeNotifier.registerResizeCallback( =>
             @.trigger('resized')
@@ -67,7 +52,6 @@ define ['backbone',
               @article.find(".2digits,.4digits,.6digits,.8digits").css('display','none')
               @article.find(".#{digits}digits").css('display','')
 
-              @mainPageTabs.trigger("change:budgetCode")
               #@changeLines = new ChangeLines([], pageModel: @)
               @budgetApprovals = new BudgetApprovals([], pageModel: @)
               @budgetHistory = new BudgetHistory([], pageModel: @)
@@ -78,7 +62,7 @@ define ['backbone',
                                     if @budgetHistory.length > 0
                                         title = @budgetHistory.getForYear(year).get('title')
                                         ga('send', 'event', 'navigation', 'budget', title, 1);
-              aggregator = new ReadyAggregator("ready-budget-history-pre")
+              aggregator = new ReadyAggregator(@, "ready-budget-history-pre")
                                         .addCollection(@budgetHistory)
                                         .addCollection(@budgetApprovals)
               if digits > 2
@@ -89,13 +73,13 @@ define ['backbone',
               if digits >= 4
                   @on('ready-budget-history', ->
                       @supports = new TakanaSupports([], pageModel: @)
-                      @readyEvents.push (new ReadyAggregator("ready-supports")
+                      @readyEvents.push (new ReadyAggregator(@, "ready-supports")
                                                   .addCollection(@supports))
                       @spending = new TakanaSpending([], pageModel: @)
-                      @readyEvents.push (new ReadyAggregator("ready-spending")
+                      @readyEvents.push (new ReadyAggregator(@, "ready-spending")
                                                   .addCollection(@spending))
                   )
-              readyBreadcrumbs = (new ReadyAggregator("ready-breadcrumbs")
+              readyBreadcrumbs = (new ReadyAggregator(@, "ready-breadcrumbs")
                                               .addCollection(@budgetHistory))
               @readyEvents.push readyBreadcrumbs
               @breadcrumbs = []
@@ -120,15 +104,15 @@ define ['backbone',
 
               @on('ready-budget-history', ->
                   @participants = new Participants([], code: budgetCode, pageModel: @)
-                  readyParticipants = (new ReadyAggregator('ready-participants')
+                  readyParticipants = (new ReadyAggregator(@, 'ready-participants')
                                                   .addCollection(@participants))
                   @readyEvents.push readyParticipants
               )
 
           @on 'change:changeGroupId', ->
-              @changeGroup = new ChangeGroup(pageModel: @)
-              @changeGroupExplanation = new ChangeExplanation(year: pageModel.get('year'), req_id: pageModel.get('changeGroupId'))
-              @readyEvents.push (new ReadyAggregator("ready-changegroup")
+              @changeGroup = new ChangeGroup(null, pageModel: @)
+              @changeGroupExplanation = new ChangeExplanation(year: @get('year'), req_id: @get('changeGroupId'))
+              @readyEvents.push (new ReadyAggregator(@, "ready-changegroup")
                                           .addModel(@changeGroup))
               @changeGroup.doFetch()
               @changeGroupExplanation.doFetch()
@@ -141,13 +125,13 @@ define ['backbone',
           @on 'change:mainPage', ->
               @budgetItems4 = new CompareRecords([], pageModel: @)
               @budgetItems2 = new BudgetItemKids([], year: 2015, code: '00', pageModel: @)
-              @readyEvents.push (new ReadyAggregator("ready-budget-bubbles")
+              @readyEvents.push (new ReadyAggregator(@, "ready-budget-bubbles")
                                                   .addCollection(@budgetItems2)
                                                   .addCollection(@budgetItems4))
 
               @mainBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
               @newBudgetItem = new BudgetItem(year: 2016, code: '00', pageModel: @)
-              @readyEvents.push (new ReadyAggregator("ready-main-budget")
+              @readyEvents.push (new ReadyAggregator(@, "ready-main-budget")
                                                   .addModel(@mainBudgetItem)
                                                   .addModel(@newBudgetItem))
               @mainBudgetItem.do_fetch()
@@ -169,7 +153,7 @@ define ['backbone',
           if !isNaN(linkParameters['year'])
               @set('year',linkParameters['year'])
           else
-              window.location.hash = window.DEFAULT_HOME
+              window.location.hash = @DEFAULT_HOME
               return
 
           kind = linkParameters['kind']
@@ -189,7 +173,7 @@ define ['backbone',
               @article = $("article#spendings-page-article")
               @set("spendingsPage",true)
           else
-              window.location.hash = window.DEFAULT_HOME
+              window.location.hash = @DEFAULT_HOME
               return
 
           @set("flow",linkParameters['flow'])

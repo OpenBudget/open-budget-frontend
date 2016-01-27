@@ -1,4 +1,4 @@
-define ['backbone', 'scripts/modelsHelpers/SpendingLine'], (Backbone, SpendingLine) ->
+define ['backbone', 'scripts/modelsHelpers/SpendingLine', 'scripts/appConfig'], (Backbone, SpendingLine, appConfig) ->
   class TakanaSpending extends Backbone.Collection
 
       model: SpendingLine
@@ -7,9 +7,9 @@ define ['backbone', 'scripts/modelsHelpers/SpendingLine'], (Backbone, SpendingLi
 
       initialize: (models, options) ->
               @pageModel = options.pageModel
-              @fetch(dataType: @pageModel.get('dataType'), reset: true)
+              @fetch(dataType: appConfig.dataType, reset: true)
 
       url: ->
-              "#{pageModel.get('baseURL')}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=100"
+              "#{appConfig.baseURL}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=100"
 
   return TakanaSpending

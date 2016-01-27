@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'scripts/models', 'scripts/combined_history'], ($, _, Backbone, models, combined_history) ->
+define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
     class OverviewWidget extends Backbone.View
 
             VALUE_MARGIN = 0.1
@@ -8,10 +8,10 @@ define(['jquery', 'underscore', 'backbone', 'scripts/models', 'scripts/combined_
             HANDLE_WIDTH = 7
             HANDLE_HEIGHT = 18
 
-            initialize: ->
+            initialize: (options) ->
+                    @pageModel = options.pageModel
                     @rendered = false
                     @selectionBarRendered = false
-                    @pageModel = window.pageModel
                     @pageModel.on "change:selection", => @renderSelectionBar()
                     @pageModel.on "resized", =>
                       @render()
@@ -145,7 +145,7 @@ define(['jquery', 'underscore', 'backbone', 'scripts/models', 'scripts/combined_
 
                     if (@rendered == false)
                         # Calculate initial selection
-                        if 4 < pageModel.get('budgetCode').length < 10
+                        if 4 < @pageModel.get('budgetCode').length < 10
                             selectionStart = @model.maxTime - 3500 * 365 * 86400
                         else
                             selectionStart = @model.minTime
@@ -239,13 +239,6 @@ define(['jquery', 'underscore', 'backbone', 'scripts/models', 'scripts/combined_
                         .text((d) => new Date(d.get('timestamp')).getFullYear() )
 
                     @rendered = true
-
-
-    if models.pageModel.get('budgetCode')?
-        console.log "history_widget"
-        models.pageModel.on 'ready-budget-history', ->
-            overviewWidget = new OverviewWidget({el: $("#overview-widget"),model: window.combinedHistory});
-            window.overviewWidget = overviewWidget
 
     return OverviewWidget
 )

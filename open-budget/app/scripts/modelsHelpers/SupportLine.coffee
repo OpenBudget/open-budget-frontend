@@ -1,6 +1,9 @@
 define ['backbone'], (Backbone) ->
   class SupportLine extends Backbone.Model
 
+      initialize: (attrs, options) ->
+        @pageModel = options.pageModel
+
       defaults:
           kind: null
           code: null
@@ -18,9 +21,8 @@ define ['backbone'], (Backbone) ->
         locale = requestedLocale || "he"
         baseJSON = @toJSON()
         resultJSON = {}
-        pageModel = window.pageModel
         for key, value of baseJSON
-          normalizedKey = pageModel.supportFieldNormalizer.normalize(key, locale)
+          normalizedKey = @pageModel.supportFieldNormalizer.normalize(key, locale)
           if normalizedKey?
             resultJSON[normalizedKey] = value
 

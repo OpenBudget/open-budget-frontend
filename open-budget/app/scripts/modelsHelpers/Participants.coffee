@@ -1,4 +1,4 @@
-define ['backbone', 'scripts/modelsHelpers/Participant'], (Backbone, Participant) ->
+define ['backbone', 'scripts/modelsHelpers/Participant', 'scripts/appConfig'], (Backbone, Participant, appConfig) ->
 
   class Participants extends Backbone.Collection
       model: Participant
@@ -6,9 +6,9 @@ define ['backbone', 'scripts/modelsHelpers/Participant'], (Backbone, Participant
       initialize: (models, options) ->
           @pageModel = options.pageModel
           @code = options.code.substring(0,4)
-          @fetch(dataType: window.pageModel.get('dataType'), reset: true)
+          @fetch(dataType: appConfig.dataType, reset: true)
 
       url: ->
-          "#{pageModel.get('baseURL')}/api/participants/#{@code}?limit=1000"
+          "#{appConfig.baseURL}/api/participants/#{@code}?limit=1000"
 
   return Participants

@@ -1,8 +1,9 @@
-define(['backbone',
+define([
+  'backbone',
   'underscore',
-  'scripts/models',
-  'templates/tour-dialog.html'
-], (Backbone, _, models, tpl_tour_dialog) ->
+  'templates/tour-dialog.html',
+  'scripts/appConfig'
+], (Backbone, _, tpl_tour_dialog, appConfig) ->
 
     shouldNotTour =  ->
       if (location.hash.indexOf('#main') == -1) && !sessionStorage.getItem('touring')
@@ -31,13 +32,14 @@ define(['backbone',
 
         buildTrainingUrl: ->
           # Choose the appropriate language
-          lang = "#{models.pageModel.get('flow')}"
+          lang = this.flow;
           if navigator.languages.indexOf("he") == -1
             lang = "en"
-          return "#{models.pageModel.get('baseURL')}/api/training/"+lang+"?rand=#{Math.random()}"
+          return "#{appConfig.baseURL}/api/training/"+lang+"?rand=#{Math.random()}"
 
-        initialize: () ->
-            @fetch(dataType: models.pageModel.get('dataType'), reset: true)
+        initialize: (models, options) ->
+          this.flow = options.flow;
+          @fetch(dataType: appConfig.dataType, reset: true)
 
         url: ->
             @buildTrainingUrl()
@@ -45,7 +47,9 @@ define(['backbone',
 
     class TrainingView extends Backbone.View
 
-        initialize: ->
+        initialize: (options) ->
+            this.options = options;
+
             if not @checkStorage('localStorage')
                 # Disable the tour if window.localStorage isn't available.
                 # Bootstrap Tour requires localStorage to function properly in
@@ -56,19 +60,21 @@ define(['backbone',
             if (shouldNotTour())
               return
 
-            models.pageModel.on 'ready-budget-bubbles', => @loadTour()
-            models.pageModel.on 'ready-budget-history', => @loadTour()
-            models.pageModel.on 'ready-changegroup', => @loadTour()
+            this.model.on 'ready-budget-bubbles', => @loadTour()
+            this.model.on 'ready-budget-history', => @loadTour()
+            this.model.on 'ready-changegroup', => @loadTour()
 
         events:
             "click": "onTrainingButtonClick"
 
         loadTour: ->
-            console.log "loadTour", models.pageModel.get('flow')
+            console.log "loadTour", this.options.flow
+
             if window.location.hash.length < 2
                 console.log "not starting tour for hash ",window.location.hash
                 return
-            @steps = new TrainingSteps([])
+
+            @steps = new TrainingSteps([], {flow: this.options.flow})
             @steps.on 'reset', => @onTourLoaded(_.map(@steps.models, (i)->i.toJSON()))
 
         createTourOptions: (name, steps) ->
@@ -124,7 +130,7 @@ define(['backbone',
         startMainTour: () =>
             console.log "initializing main tour"
 
-            options = @createTourOptions("tour-#{models.pageModel.get('flow')}",
+            options = @createTourOptions("tour-#{this.options.flow}",
                                          @mainTourSteps)
             options.onEnd = () =>
                 # Show popover under the הדרכה link on top
@@ -216,8 +222,5 @@ define(['backbone',
         filterArray: (array, value) ->
             return (item for item in array when item != value)
 
-
-    console.log "initializing the training view"
-    window.trainingView = new TrainingView({el: $("#intro-link"), model: models.pageModel})
-    return window.trainingView
+    TrainingView
 )

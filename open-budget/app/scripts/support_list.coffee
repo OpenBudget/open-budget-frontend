@@ -1,24 +1,19 @@
-define(['backbone',
+define([
+  'backbone',
   'underscore',
-  'scripts/models',
   'templates/single-support-item.html'
-], (Backbone, _, models, tpl_single_support_item) ->
+], (Backbone, _, tpl_single_support_item) ->
     class SupportList extends Backbone.View
 
         initialize: ->
-                @pageModel = window.pageModel
-                @pageModel.on 'ready-supports', => @render()
+                @model.on 'ready-supports', => @render()
 
         render: ->
-            if @pageModel.supports?
-                jsons = _.map(@pageModel.supports.models, (x) -> x.toJSON())
+            if @model.supports?
+                jsons = _.map(@model.supports.models, (x) -> x.toJSON())
                 htmls = _.map(jsons, tpl_single_support_item )
                 for html in htmls
                     @$el.append( html )
 
-    console.log "support_list"
-    supportList = new SupportList({el: $("#support-lines"),model: models.pageModel});
-    window.supportList = supportList
-
-    return supportList
+    return SupportList
 )

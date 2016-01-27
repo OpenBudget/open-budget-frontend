@@ -1,8 +1,8 @@
-define(['backbone', 'scripts/models', 'pivot'], (Backbone, models, pivot) ->
+define(['backbone', 'pivot'], (Backbone, pivot) ->
     class SpendingPivotTable extends Backbone.View
 
         initialize: ->
-                @pageModel = window.pageModel
+                @pageModel = @model
                 @pageModel.on 'ready-spending', => @render()
                 @renderers = $.extend($.pivotUtilities.renderers,
                         $.pivotUtilities.d3_renderers);
@@ -23,9 +23,7 @@ define(['backbone', 'scripts/models', 'pivot'], (Backbone, models, pivot) ->
                 #   vals: [pageModel.supportFieldNormalizer.normalize("amount_supported", locale)]
                 # });
 
-    console.log "support_list"
-    spendingPivotTable = new SpendingPivotTable({el: $("#spending-pivottable-content"),model: models.pageModel});
-    window.spendingPivotTable = spendingPivotTable
 
-    return spendingPivotTable
+
+    return SpendingPivotTable
 )

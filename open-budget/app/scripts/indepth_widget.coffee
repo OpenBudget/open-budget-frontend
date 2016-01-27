@@ -1,25 +1,14 @@
 define [
-  'scripts/models', 'jquery', 'underscore', 'backbone', "ecma_5", "segment-tree-browser",
+  'jquery',
+  'underscore',
+  'backbone',
+  "segment-tree-browser",
   "templates/widget-change-tooltip.html",
   "templates/participant-photo.html",
   "templates/widget-participant-tooltip.html"
   "templates/participant-term.html"
   ],
-    (models, $, _, Backbone, ecma_t, segmentTree, tpl_widget_change_tooltip, tpl_participant_photo, tpl_widget_participant_tooltip, tpl_participant_term) ->
-        console.log "indepth_widget"
-        indepthWidget = null
-        getInstance = () ->
-            if indepthWidget == null
-                indepthWidget = new IndepthWidget({el: $("#indepth-widget"),model: window.combinedHistory})
-                window.indepthWidget = indepthWidget
-            indepthWidget
-
-        models.pageModel.on 'ready-budget-history', ->
-            getInstance().render()
-        models.pageModel.on 'ready-participants', ->
-            getInstance().setParticipants( models.pageModel.participants.models )
-            getInstance().render()
-
+    ($, _, Backbone, segmentTree, tpl_widget_change_tooltip, tpl_participant_photo, tpl_widget_participant_tooltip, tpl_participant_term) ->
         class IndepthWidget extends Backbone.View
 
             TOP_PART_SIZE = 200 #p
@@ -29,8 +18,9 @@ define [
             YEAR_LINE_HANG_LENGTH = 46 # px
             CHANGE_LINE_HANG_LENGTH = 18 # px
 
-            initialize: ->
-                @pageModel = window.pageModel
+            initialize: (options) ->
+                @pageModel = options.pageModel
+
                 @pageModel.on 'change:selection', => @render()
                 @pageModel.on 'resized', => @render()
 
@@ -655,7 +645,7 @@ define [
                     @pixelPerfecter = (t) =>
                             Math.floor(t) + 0.5
 
-                    code = pageModel.get('budgetCode')
+                    code = @pageModel.get('budgetCode')
                     @show_changes = 4 < code.length < 10
 
                     if @show_changes
@@ -720,7 +710,7 @@ define [
                 dupDetector = {}
                 dupIndices = []
                 for participant, index in participants
-                    participant.setTimestamps()
+                    participant.setTimestamps(this.model.maxTime)
                     unique_id = participant.get('unique_id')
                     if (dupDetector[unique_id])
                         # Push to the begining of the array because we must

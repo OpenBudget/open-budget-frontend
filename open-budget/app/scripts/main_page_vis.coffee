@@ -1,13 +1,14 @@
 define(
-  ['jquery',
+  [
+    'jquery',
     'backbone',
     'underscore',
-    'scripts/models',
     'scripts/bubble_chart',
+    'scripts/modelsHelpers/BudgetItemKids'
     'templates/main-budget-header.hbs',
     'templates/bubble-group-label.html',
     'templates/bubble-tooltip.html'
-  ], ($, Backbone, _, models, BubbleChart, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
+  ], ($, Backbone, _, BubbleChart, BudgetItemKids, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
 
     globalWidth = 0
 
@@ -57,9 +58,9 @@ define(
 
     class ParentCentering extends BaseCentering
 
-        constructor: ->
+        constructor: (collection) ->
             # 2 digit prefix separation
-            parentItems = pageModel.budgetItems2.models
+            parentItems = collection.models
             parentItems = _.sortBy( parentItems, (x) -> -x.get('net_revised') )
             parentItems = _.filter( parentItems, (x) -> x.get('code').substring(2,4) != "00" )
             parentItems = _.filter( parentItems, (x) -> x.get('net_revised')>0 )
@@ -83,8 +84,8 @@ define(
 
     class TopGroupCentering extends BaseCentering
 
-        constructor: ->
-            items = pageModel.budgetItems4.models
+        constructor: (collection) ->
+            items = collection.models
             items = _.filter(items, (x) -> x.get('group_top').length > 0 and x.get('code').substring(2,4)!='00')
             items = _.groupBy(items, (x) -> x.get('group_top')[0])
             groups = _.keys(items)
@@ -109,8 +110,8 @@ define(
 
     class FullGroupCentering extends BaseCentering
 
-        constructor: ->
-            items = pageModel.budgetItems4.models
+        constructor: (collection) ->
+            items = collection.models
             items = _.filter(items, (x) -> x.get('group_full').length > 0 and x.get('code').substring(2,4)!='00')
             items = _.groupBy(items, (x) -> x.get('group_full')[0])
             groups = _.keys(items)
@@ -135,7 +136,8 @@ define(
 
     class MainPageVis extends Backbone.View
 
-        initialize: ->
+        initialize: (options) ->
+            @options = options
             console.log("MainPageVis: initialize")
             @rendered = false
 
@@ -167,7 +169,7 @@ define(
               if (state == "initial")
                   @$bubbleContainer.find(".bubble-group-label").remove()
                   @$el.find("#grouping-kind").css("pointer-events", "").fadeTo(500, 1)
-                  models.pageModel.URLSchemeHandlerInstance.removeAttribute(
+                  this.options.URLSchemeHandlerInstance.removeAttribute(
                       "focusOn", false
                   )
                   @chart.toggleColorLegend(@toggle == 0)
@@ -186,16 +188,16 @@ define(
           )
           @chart_el = d3.select(@chart.el)
           @$bubbleContainer = @$el.find("#bubble-chart-container")
-          @centers = [ new SimpleCentering(), new TopGroupCentering(), new FullGroupCentering(), new ParentCentering() ]
+          @centers = [ new SimpleCentering(), new TopGroupCentering(@model.budgetItems4), new FullGroupCentering(@model.budgetItems4), new ParentCentering(@model.budgetItems2) ]
           @prepareData()
           @toggle = 0
-          if @model.URLSchemeHandlerInstance && @model.URLSchemeHandlerInstance.getAttribute('toggle')
-              @toggle = parseInt(@model.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
+          if @options.URLSchemeHandlerInstance && @options.URLSchemeHandlerInstance.getAttribute('toggle')
+              @toggle = parseInt(@options.URLSchemeHandlerInstance.getAttribute('toggle')) || 0
           @switchToggle(@toggle,false)
           @recalc_centers()
           @render()
 
-          focusCode = models.pageModel.URLSchemeHandlerInstance.getAttribute('focusOn')
+          focusCode = this.options.URLSchemeHandlerInstance.getAttribute('focusOn')
           if focusCode
               @chart.focusOnCode(focusCode)
 
@@ -245,7 +247,7 @@ define(
             @toggle = toggle
 
             if update
-                @model.URLSchemeHandlerInstance.addAttribute("toggle", @toggle, false)
+                @options.URLSchemeHandlerInstance.addAttribute("toggle", @toggle, false)
 
             # Add URL attribute
             d3.select(@vis).selectAll(".bubbleTitle#{@toggle}")
@@ -292,7 +294,7 @@ define(
             if not code?
                 code = node.src.get('code')
                 year += 1
-            centeredNodeKids = new pageModel.api.BudgetItemKids([], year: year, code: code, pageModel: pageModel)
+            centeredNodeKids = new BudgetItemKids([], year: year, code: code)
             centeredNodeKids.on('sync', =>
                 console.log("kids are ready")
                 kidNodes = []
@@ -313,7 +315,7 @@ define(
                         subNode: true
                         click: (d) =>
                             console.log "click", d, model
-                            window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(d.id, model.get('year'))
+                            window.location.hash = @options.URLSchemeHandlerInstance.linkToBudget(d.id, model.get('year'))
 
                     kidNodes.push(node)
 
@@ -327,7 +329,7 @@ define(
             # Create data for bubble chart
             @data = []
             that = @
-            for model in pageModel.budgetItems4.models
+            for model in @model.budgetItems4.models
                 # orig = model.get('orig_2014')
                 # revised = model.get('orig_2015')
                 # if !(orig>0) || !(revised>0)
@@ -345,7 +347,7 @@ define(
                     center: null,
                     onMoreInfo: @moreInfo,
                     click: (d) =>
-                        models.pageModel.URLSchemeHandlerInstance.addAttribute(
+                        this.options.URLSchemeHandlerInstance.addAttribute(
                             "focusOn", d.src.get("code"), false
                         )
                         @addBubbleLabels(d)
@@ -359,7 +361,7 @@ define(
             if not code?
                 code = @src.get('code')
                 year += 1
-            window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(code, year)
+            window.location.hash = @options.URLSchemeHandlerInstance.linkToBudget(code, year)
             ###
             TODO: build a new view controller architecture
 
@@ -451,9 +453,5 @@ define(
             #@chart.start()
             @rendered = true
 
-    console.log "main_page"
-
-    mainPageVis = new MainPageVis({el: $("#main-page-article"), model: models.pageModel });
-    window.mainPageVis = mainPageVis
-    return mainPageVis
+    MainPageVis
 )

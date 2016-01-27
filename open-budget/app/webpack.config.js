@@ -4,7 +4,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const config = {
     entry: {
-      app: ["scripts/main.coffee"]
+      app: ["scripts/main.js"]
     },
     output: {
         path: __dirname,
