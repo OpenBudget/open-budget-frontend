@@ -1,6 +1,7 @@
-define(['backbone', 'scripts/models',
+define([
+  'backbone'
   'templates/breadcrumb-item.html'
-], (Backbone, models, template_breadcrumb_item) ->
+], (Backbone, template_breadcrumb_item) ->
 
     window.issue_depth = (code) ->
         return code.length - 2
@@ -14,19 +15,12 @@ define(['backbone', 'scripts/models',
     class BreadcrumbHeaderView extends Backbone.View
         render: ->
             @$el.html('')
-            breadcrumbs = window.pageModel.breadcrumbs
+            breadcrumbs = @model.breadcrumbs
             for rec in breadcrumbs
                 @$el.append( template_breadcrumb_item(rec))
 
         headerHeight: ->
           $("#affix-header").height()
-
-    if models.pageModel.get('budgetCode')?
-        models.pageModel.on('ready-breadcrumbs', ->
-            window.breadcrumbHeaderView = new BreadcrumbHeaderView(el: $("#header-tree"))
-            window.breadcrumbHeaderView.render()
-            $("#affix-wrapper").height($("#affix-header").height())
-        )
 
     BreadcrumbHeaderView
 )

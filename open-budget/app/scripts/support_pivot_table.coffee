@@ -1,30 +1,25 @@
-define(['backbone', 'underscore', 'scripts/models', 'pivot'], (Backbone, _, models, pivot) ->
+define(['backbone', 'underscore', 'pivot'], (Backbone, _, pivot) ->
     class SupporPivotTable extends Backbone.View
 
         initialize: ->
-                @pageModel = window.pageModel
-                @pageModel.on 'ready-supports', => @render()
+                @model.on 'ready-supports', => @render()
                 @renderers = $.extend($.pivotUtilities.renderers,
                         $.pivotUtilities.d3_renderers);
 
         render: ->
-            if @pageModel.supports?
+            if @model.supports?
                 locale = "he"
-                jsons = _.map(@pageModel.supports.models, (x) -> x.toLocaleJSON(locale))
+                jsons = _.map(@model.supports.models, (x) -> x.toLocaleJSON(locale))
                 @$el.pivotUI(jsons, {
-                  rows: [pageModel.supportFieldNormalizer.normalize("subject", locale),
-                         pageModel.supportFieldNormalizer.normalize("title", locale),
-                         pageModel.supportFieldNormalizer.normalize("recipient", locale)],
-                  cols: [pageModel.supportFieldNormalizer.normalize("year", locale)],
+                  rows: [@model.supportFieldNormalizer.normalize("subject", locale),
+                         @model.supportFieldNormalizer.normalize("title", locale),
+                         @model.supportFieldNormalizer.normalize("recipient", locale)],
+                  cols: [@model.supportFieldNormalizer.normalize("year", locale)],
                   aggregatorName: "Sum",
                   renderers: @renderes,
                   rendererName: "Heatmap",
-                  vals: [models.pageModel.supportFieldNormalizer.normalize("amount_supported", locale)]
+                  vals: [@model.supportFieldNormalizer.normalize("amount_supported", locale)]
                 });
 
-    console.log "support_list"
-    supporPivotTable = new SupporPivotTable({el: $("#support-pivottable-content"),model: models.pageModel});
-    window.supporPivotTable = supporPivotTable
-
-    return supporPivotTable
+    return SupporPivotTable
 )

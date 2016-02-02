@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'scripts/models'] , ($, _, Backbone, models) ->
+define(['jquery', 'underscore', 'backbone'] , ($, _, Backbone) ->
     class CombinedHistoryPoint extends Backbone.Model
 
             defaults:
@@ -207,7 +207,7 @@ define(['jquery', 'underscore', 'backbone', 'scripts/models'] , ($, _, Backbone,
                         yearly = _.sortBy( yearly, (m) => m.get('timestamp') )
                         yearStart = new Date(year,0).valueOf()
                         yearEnd = new Date(year,11,31).valueOf()
-                        actualLen = _.filter(yearly, (m) -> m.getCodeChanges(@pageModel.get("budgetCode")) != 0).length
+                        actualLen = _.filter(yearly, (m) => m.getCodeChanges(@pageModel.get("budgetCode")) != 0).length
 
                         timestamp = yearStart
                         lastPoint = null
@@ -239,9 +239,5 @@ define(['jquery', 'underscore', 'backbone', 'scripts/models'] , ($, _, Backbone,
                                 lastPoint.set('width', yearEnd - timestamp)
                                 lastPoint.set('last', true)
 
-    if models.pageModel.get('budgetCode')?
-        combinedHistory = new CombinedHistory([], pageModel: models.pageModel)
-        window.combinedHistory = combinedHistory
-
-    return combinedHistory || CombinedHistory
+    CombinedHistory
 )

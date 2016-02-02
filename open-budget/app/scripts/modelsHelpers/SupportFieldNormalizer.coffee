@@ -1,12 +1,11 @@
-define ['backbone', 'scripts/modelsHelpers/SupportLineDescription'], (Backbone, SupportLineDescription) ->
+define ['backbone', 'scripts/modelsHelpers/SupportLineDescription', 'scripts/appConfig'], (Backbone, SupportLineDescription, appConfig) ->
   class SupportFieldNormalizer extends Backbone.Collection
 
     model: SupportLineDescription
 
     initialize: (models, options) ->
         @normalizationStructure = {}
-        @pageModel = options.pageModel
-        @fetch(dataType: @pageModel.get('dataType'), reset: true)
+        @fetch(dataType: appConfig.appType, reset: true)
         @on("reset", ->
             _json = @toJSON()
             @normalizationStructure = {}
@@ -20,6 +19,6 @@ define ['backbone', 'scripts/modelsHelpers/SupportLineDescription'], (Backbone, 
       else undefined
 
     url: ->
-      "#{@pageModel.get('baseURL')}/api/describe/SupportLine"
+      "#{appConfig.baseURL}/api/describe/SupportLine"
 
   return SupportFieldNormalizer

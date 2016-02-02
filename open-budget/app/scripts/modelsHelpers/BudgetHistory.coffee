@@ -1,4 +1,4 @@
-define ['backbone', 'underscore', 'scripts/modelsHelpers/BudgetItem'], (Backbone, _, BudgetItem) ->
+define ['backbone', 'underscore', 'scripts/modelsHelpers/BudgetItem', 'scripts/appConfig'], (Backbone, _, BudgetItem, appConfig) ->
 
   class BudgetHistory extends Backbone.Collection
 
@@ -6,10 +6,10 @@ define ['backbone', 'underscore', 'scripts/modelsHelpers/BudgetItem'], (Backbone
 
       initialize: (models, options) ->
               @pageModel = options.pageModel
-              @fetch(dataType: @pageModel.get('dataType'), reset: true)
+              @fetch(dataType: appConfig.dataType, reset: true)
 
       url: ->
-              "#{pageModel.get('baseURL')}/api/budget/#{@pageModel.get('budgetCode')}/#{@pageModel.get('year')}/equivs"
+              "#{appConfig.baseURL}/api/budget/#{@pageModel.get('budgetCode')}/#{@pageModel.get('year')}/equivs"
 
       comparator: (m) -> m.get('year')
 

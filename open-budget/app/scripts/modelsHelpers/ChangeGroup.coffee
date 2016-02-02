@@ -1,4 +1,4 @@
-define ['backbone', 'underscore'], (Backbone, _) ->
+define ['backbone', 'underscore', 'scripts/appConfig'], (Backbone, _, appConfig) ->
   class ChangeGroup extends Backbone.Model
 
       defaults:
@@ -14,7 +14,7 @@ define ['backbone', 'underscore'], (Backbone, _) ->
               pending: false
               uniqueId: null
 
-      initialize: (options) ->
+      initialize: (attrs, options) ->
               @pageModel = options.pageModel
               dateStr = @get 'date'
               if dateStr?
@@ -29,7 +29,7 @@ define ['backbone', 'underscore'], (Backbone, _) ->
               @set 'timestamp', timestamp
 
       getCodeChanges: (code) =>
-              year = pageModel.get('year')
+              year = @pageModel.get('year')
               key = "#{year}/#{code}"
               changes = _.filter(@get('changes'),(c)->_.indexOf(c['equiv_code'],key)>-1)
               d3.sum(changes, (c)->c['expense_change'])
@@ -41,7 +41,7 @@ define ['backbone', 'underscore'], (Backbone, _) ->
               @fetch(dataType: @pageModel.get('dataType'))
 
       url: ->
-              "#{pageModel.get('baseURL')}/api/changegroup/#{pageModel.get('changeGroupId')}/#{pageModel.get('year')}"
+              "#{appConfig.baseURL}/api/changegroup/#{@pageModel.get('changeGroupId')}/#{@pageModel.get('year')}"
 
 
   return ChangeGroup

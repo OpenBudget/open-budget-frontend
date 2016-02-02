@@ -1,18 +1,28 @@
 define([
-  'backbone', 'scripts/models', 'bloodhound',
+  'backbone',
+  'bloodhound',
+  'scripts/modelsHelpers/BudgetItem',
   'templates/searchbar-tooltip.html',
   'templates/expandor_icon.html',
   'templates/upbacker.html',
   'templates/searchbar-tooltip-full.html',
   'templates/search-dropdown-item.html',
-  'underscore'
-  ], (Backbone, models, Bloodhound, template_searchbar_tooltip, template_expandor_icon, template_upbacker, template_searchbar_tooltip_full, template_search_dropdown_item, _) ->
+  'underscore',
+  'scripts/appConfig',
+  'd3',
+  'd3-tip'
+  ], (Backbone, Bloodhound, BudgetItem, template_searchbar_tooltip, template_expandor_icon, template_upbacker, template_searchbar_tooltip_full, template_search_dropdown_item, _, appConfig, d3, d3tip) ->
+
+    # When loading the scripts as AMD modules d3-tip does not assigns itself
+    # to d3.tip
+    d3.tip = d3tip
 
     class BudgetPartitionLayoutView extends Backbone.View
 
         BACK_WIDTH = 100
 
-        initialize: ->
+        initialize: (options) ->
+            @URLSchemeHandlerInstance = options.URLSchemeHandlerInstance
             @render()
             @codes = {}
 
@@ -101,8 +111,8 @@ define([
                 window.setTimeout(
                     =>
                         if d.c == @selected_tooltip
-                            bl = new models.BudgetItem(pageModel: models.pageModel)
-                            bl.set('year',models.pageModel.get('year'))
+                            bl = new BudgetItem(pageModel: @model)
+                            bl.set('year',@model.get('year'))
                             bl.set('code',d.c)
                             bl.on('change', ->
                                 $("#search-tip[data-code=#{d.c}]").html(template_searchbar_tooltip_full(bl.toJSON()))
@@ -130,13 +140,13 @@ define([
                     @updateChart()
 
             $.ajax(
-                dataType: models.pageModel.get('dataType')
-                url: "#{models.pageModel.get('baseURL')}/api/sysprop/static-budget"
+                dataType: appConfig.dataType
+                url: "#{appConfig.baseURL}/api/sysprop/static-budget"
                 success: onSuccess
             )
 
         gotoBudgetItem: (code) =>
-            window.location.hash = pageModel.URLSchemeHandlerInstance.linkToBudget(code,models.pageModel.get('year'))
+            window.location.hash = @URLSchemeHandlerInstance.linkToBudget(code,@model.get('year'))
 
 
         updateChart: (transition=false) =>
@@ -258,8 +268,8 @@ define([
                     switch event
                         when EV_OPEN_DROPDOWN, EV_TOGGLE_DROPDOWN
                             @openDropdown()
-                            if models.pageModel.get('budgetCode')?
-                                @partition.selectCode( models.pageModel.get('budgetCode') )
+                            if @model.get('budgetCode')?
+                                @partition.selectCode( @model.get('budgetCode') )
                             @state = STATE_OPEN
                 when STATE_CLOSED_RESULTS
                     switch event
@@ -430,8 +440,8 @@ define([
 
         goToData: (datum) =>
             newHash = switch datum.type
-                when 'BudgetLine' then pageModel.URLSchemeHandlerInstance.linkToBudget(datum.code, datum.year)
-                when 'Entity' then pageModel.URLSchemeHandlerInstance.linkToEntity(datum.id)
+                when 'BudgetLine' then @URLSchemeHandlerInstance.linkToBudget(datum.code, datum.year)
+                when 'Entity' then @URLSchemeHandlerInstance.linkToEntity(datum.id)
                 else null
 
             if newHash
@@ -453,14 +463,16 @@ define([
                 @partition.selectCode( @suggestions[selected].code )
 
         url: (query,limit) ->
-            "#{models.pageModel.get('baseURL')}/api/search/full_text?q=#{query}&limit=#{limit}"
+            "#{appConfig.baseURL}/api/search/full_text?q=#{query}&limit=#{limit}"
 
-        initialize: () ->
+        initialize: (options) ->
+            @URLSchemeHandlerInstance = options.URLSchemeHandlerInstance
+
             @state = STATE_IDLE
             @suggestionNum = 0
             @suggestions = []
             url = @url("%QUERY",100)
-            dataType = models.pageModel.get('dataType')
+            dataType = appConfig.dataType
             @engine = new Bloodhound
                             name: 'budgets'
                             prefetch:
@@ -484,10 +496,8 @@ define([
                                     else ""
                             queryTokenizer: Bloodhound.tokenizers.whitespace
             @engine.initialize()
-            @partition = new BudgetPartitionLayoutView(el: @$el.find('.search-partition-layout'))
+            @partition = new BudgetPartitionLayoutView(el: @$el.find('.search-partition-layout'), model: @model, URLSchemeHandlerInstance: @URLSchemeHandlerInstance)
             @dropdown = @$el.find("#search-dropdown")
 
-    console.log 'setting up searchbar'
-    window.search = new SearchBar(el: $("#search-widget"))
-    return window.search
+    return SearchBar
 )

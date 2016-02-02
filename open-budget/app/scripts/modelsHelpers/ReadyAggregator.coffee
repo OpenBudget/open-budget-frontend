@@ -2,7 +2,8 @@ define [], () ->
 
   class ReadyAggregator
 
-      constructor: (event) ->
+      constructor: (pageModel, event) ->
+          @pageModel = pageModel
           @readyCounter = 0
           @collections = []
           @models = []
@@ -32,8 +33,8 @@ define [], () ->
           console.log "checkIfReady: "+@event+"="+@readyCounter
           if @readyCounter == 0
               @ready = true
-              pageModel.trigger(@event)
-              pageModel.set 'event-triggered-' + @event, true
+              @pageModel.trigger(@event)
+              @pageModel.set 'event-triggered-' + @event, true
               if @callback then @callback()
 
   return ReadyAggregator

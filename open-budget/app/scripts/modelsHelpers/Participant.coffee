@@ -14,12 +14,12 @@ define ['backbone'], (Backbone) ->
               end_timestamp: null
               unique_id: null
 
-      setTimestamps: ->
+      setTimestamps: (maxTime) ->
           @set 'start_timestamp', dateToTimestamp(@get 'start_date')
           if (@get 'end_date')?
               @set 'end_timestamp', dateToTimestamp(@get 'end_date')
           else
-              @set 'end_timestamp', window.combinedHistory.maxTime
+              @set 'end_timestamp', maxTime
 
           @set('unique_id', @get('title')+"-"+"-"+@get('start_timestamp')+"-"+@get('end_timestamp'))
 

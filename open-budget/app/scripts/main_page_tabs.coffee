@@ -1,33 +1,38 @@
 define(['backbone', 'jquery', 'scripts/bubble_chart', 'bootstrap'], (Backbone, $, BubbleChart) ->
 
     class MainPageTabs extends Backbone.View
-      initialize: (pageModel) ->
-        self = this;
-        @pageModel    = pageModel
+      initialize: (options) ->
+        @URLSchemeHandlerInstance = URLSchemeHandlerInstance;
         @tabList      = $(".tab-label")
         @contentList  = $(".tab-content")
         @tabHeader    = $("#tabs-label-container")
 
+        self = @
+
         $(".tab-label a").click( (e) ->
             e.preventDefault()
             $(this).tab("show")
-            pageModel.URLSchemeHandlerInstance.addAttribute("tab", $(this).attr("data-name"), false)
+            self.URLSchemeHandlerInstance.addAttribute("tab", $(this).attr("data-name"), false)
           )
 
         activeTab = $("#list-title a")
-        if (pageModel.URLSchemeHandlerInstance)
-            switch pageModel.URLSchemeHandlerInstance.getAttribute('tab')
+        if (@URLSchemeHandlerInstance)
+            switch @URLSchemeHandlerInstance.getAttribute('tab')
                 # Changes are selected by default - no need for explicit selection
                 # when 'changes' then $("#list-title")
                 when 'supports' then activeTab = $("#support-list-title a")
 
         activeTab.tab("show")
 
-        @on 'change:budgetCode', ->
-          digits = @pageModel.get("digits")
+        showOrHide = =>
+          digits = @model.get("digits")
           if digits >=4 then @tabHeader.show() else @tabHeader.hide()
 
-    window.MainPageTabs = MainPageTabs
+        if @model.get('budgetCode')
+          showOrHide()
+
+
+        @listenTo(@model, 'change:budgetCode', showOrHide)
 
     return MainPageTabs
 )

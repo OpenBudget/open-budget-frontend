@@ -1,12 +1,12 @@
-define ['backbone', 'scripts/modelsHelpers/BudgetApproval'], (Backbone, BudgetApproval) ->
+define ['backbone', 'scripts/modelsHelpers/BudgetApproval', 'scripts/appConfig'], (Backbone, BudgetApproval, appConfig) ->
   class BudgetApprovals extends Backbone.Collection
       model: BudgetApproval
 
       initialize: (models, options) ->
           @pageModel = options.pageModel
-          @fetch(dataType: @pageModel.get('dataType'), reset: true)
+          @fetch(dataType: appConfig.dataType, reset: true)
 
       url: ->
-          "#{pageModel.get('baseURL')}/api/budget/#{pageModel.get('budgetCode')}/approvals"
+          "#{appConfig.baseURL}/api/budget/#{@pageModel.get('budgetCode')}/approvals"
 
   return BudgetApprovals

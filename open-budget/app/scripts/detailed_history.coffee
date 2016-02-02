@@ -1,8 +1,9 @@
-define(['backbone',
-  'scripts/models',
+define([
+  'backbone',
   'scripts/combined_history',
-  'templates/single-transfer.html'
-], (Backbone, models, combinedHistory, template_single_transfer) ->
+  'templates/single-transfer.html',
+  'scripts/modelsHelpers/ChangeExplanation'
+], (Backbone, combinedHistory, template_single_transfer, ChangeExplanation) ->
     #### Models
     class HistoryItem extends Backbone.View
 
@@ -11,7 +12,7 @@ define(['backbone',
                 @filled = false
                 if @model.get('src') == 'changeline' and @model.get('source') != 'dummy'
                     s = @model.get('source')
-                    @explanation = new window.models.ChangeExplanation(req_id: s.get('group_id'), year: s.get('year'))
+                    @explanation = new ChangeExplanation(req_id: s.get('group_id'), year: s.get('year'))
                     @explanation.on 'change:explanation', =>
                         @$el.find(".transfer-list-explanation-text").html(@explanation.get('explanation').replace(/\n/g,'<br/>'))
                         @filled = true
@@ -25,7 +26,6 @@ define(['backbone',
     class HistoryTable extends Backbone.View
 
             initialize: ->
-                    @pageModel = models.pageModel
                     @model.on 'reset', => @render()
 
             render: ->
@@ -35,9 +35,5 @@ define(['backbone',
                         @items.push( item )
                         @$el.prepend( item.el )
 
-    if models.pageModel.get('budgetCode')?
-         historyTable = new HistoryTable({el: $("#change-list"),model: combinedHistory})
-         window.historyTable = historyTable
-
-    return historyTable || HistoryTable
+    return HistoryTable;
 )

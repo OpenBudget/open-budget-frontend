@@ -1,15 +1,14 @@
-define ['backbone', 'scripts/modelsHelpers/BudgetItem'], (Backbone, BudgetItem) ->
+define ['backbone', 'scripts/modelsHelpers/BudgetItem', 'scripts/appConfig'], (Backbone, BudgetItem, appConfig) ->
   class BudgetItemKids extends Backbone.Collection
 
       model: BudgetItem
 
       initialize: (models, options) ->
-          @pageModel = options.pageModel
           @year = options.year
           @code = options.code
-          @fetch(dataType: @pageModel.get('dataType'), reset: true)
+          @fetch(dataType: appConfig.dataType, reset: true)
 
       url: ->
-          "#{pageModel.get('baseURL')}/api/budget/#{@code}/#{@year}/active-kids"
+          "#{appConfig.baseURL}/api/budget/#{@code}/#{@year}/active-kids"
 
   return BudgetItemKids

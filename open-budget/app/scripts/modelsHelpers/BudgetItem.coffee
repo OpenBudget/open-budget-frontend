@@ -1,4 +1,4 @@
-define ['backbone'], (Backbone) ->
+define ['backbone', 'scripts/appConfig'], (Backbone, appConfig) ->
   class BudgetItem extends Backbone.Model
 
       defaults:
@@ -18,16 +18,15 @@ define ['backbone'], (Backbone) ->
               uniqueId: null
 
       initialize: (options) ->
-          @pageModel = options.pageModel
           @set("uniqueId", "budget-item-" + @get("code") + "-" + @get("year"))
 
       do_fetch: ->
-          @fetch(dataType: @pageModel.get('dataType'), reset: true)
+          @fetch(dataType: appConfig.dataType, reset: true)
 
       get_class: ->
           window.changeClass( @get('net_allocated'), @get('net_revised') )
 
       url: ->
-          "#{pageModel.get('baseURL')}/api/budget/#{@get('code')}/#{@get('year')}"
+          "#{appConfig.baseURL}/api/budget/#{@get('code')}/#{@get('year')}"
 
   return BudgetItem;
