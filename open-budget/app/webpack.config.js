@@ -32,6 +32,10 @@ const config = {
 
     module: {
       loaders: [
+          {
+            test: /scripts.*\.js$/,
+            loader: "babel-loader"
+          },
           { test: /\.coffee$/, loader: "coffee-loader" },
           {
             test: /\.hbs$/,
@@ -124,7 +128,6 @@ function getAlias () {
             "vendor/numbro":        "bower_components/numbro/numbro",
             "vendor/moment":        "bower_components/moment/moment",
             "vendor/bootstrap-select":    "bower_components/bootstrap-select/dist/js/bootstrap-select",
-            "ecma_5":               "../node_modules/interval-query/lib/browser/ecma_5",
             "segment-tree-browser": "../node_modules/interval-query/lib/browser/segment-tree-browser",
             "Hasadna/oBudget":       "scripts/Hasadna/oBudget"
     };

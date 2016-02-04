@@ -76,7 +76,7 @@ Will build the app for production and serve it via local web server at http://lo
  
 ### About the build system
 The build system we're using is [webpack](http://webpack.github.io/).
-The less is also compiled via webpack, with single entry point at the `main.coffee`. (coffee/js modules dose not have thier own style dependencies declarations), and extracted using ExtractTextPlugin
+The less is also compiled via webpack, with single entry point at the `main.js`. (coffee/js modules dose not have thier own style dependencies declarations), and extracted using ExtractTextPlugin
  
 
 ###Enjoy!
