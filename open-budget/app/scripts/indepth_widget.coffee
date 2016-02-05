@@ -22,7 +22,10 @@ define [
                 @pageModel = options.pageModel
 
                 @pageModel.on 'change:selection', => @render()
-                @pageModel.on 'resized', => @render()
+                @pageModel.on 'resized', =>
+                  if @pageModel.get('budgetCode')
+                    @render()
+
 
                 @$el.html('')
                 @svg = d3.select(@el).append('svg')
