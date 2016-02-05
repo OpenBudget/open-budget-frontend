@@ -162,7 +162,7 @@ define [
                         # Scroll the window to the selected target
                         $('html, body').animate({
                             scrollTop: $target.offset().top -
-                              window.breadcrumbHeaderView.headerHeight()
+                              $("#affix-header").height()
                         }, 1000, ->
                             # once the scroll is complete,
                             # make the target visually stand out
