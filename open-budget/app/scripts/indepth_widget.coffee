@@ -22,7 +22,10 @@ define [
                 @pageModel = options.pageModel
 
                 @pageModel.on 'change:selection', => @render()
-                @pageModel.on 'resized', => @render()
+                @pageModel.on 'resized', =>
+                  if @pageModel.get('budgetCode')
+                    @render()
+
 
                 @$el.html('')
                 @svg = d3.select(@el).append('svg')
@@ -159,7 +162,7 @@ define [
                         # Scroll the window to the selected target
                         $('html, body').animate({
                             scrollTop: $target.offset().top -
-                              window.breadcrumbHeaderView.headerHeight()
+                              $("#affix-header").height()
                         }, 1000, ->
                             # once the scroll is complete,
                             # make the target visually stand out

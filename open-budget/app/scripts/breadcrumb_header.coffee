@@ -19,8 +19,5 @@ define([
             for rec in breadcrumbs
                 @$el.append( template_breadcrumb_item(rec))
 
-        headerHeight: ->
-          $("#affix-header").height()
-
     BreadcrumbHeaderView
 )
