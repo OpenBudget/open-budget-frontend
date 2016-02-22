@@ -1,58 +1,63 @@
-define([
-    'scripts/combined_history',
-    'scripts/history_widget',
-    'scripts/indepth_widget',
-    "scripts/support_list",
-    "scripts/support_pivot_table",
-    "scripts/spending_list",
-    "scripts/spending_pivot_table",
-    "scripts/detailed_history"
-    ],
-      function (
-        CombinedHistory,
-        OverviewWidget,
-        IndepthWidget,
-        SupportList,
-        SupporPivotTable,
-        SpendingList,
-        SpendingPivotTable,
-        HistoryTable
-      ) {
-      return {
-        start: function (pageModel) {
-          var combinedHistory = new CombinedHistory(null, {
-            pageModel: pageModel
-          });
+import CombinedHistory from 'scripts/combined_history';
+import OverviewWidget from 'scripts/history_widget';
+import IndepthWidget from 'scripts/indepth_widget';
+import SupportList from 'scripts/support_list';
+import SupporPivotTable from 'scripts/support_pivot_table';
+import SpendingList from 'scripts/spending_list';
+import SpendingPivotTable from 'scripts/spending_pivot_table';
+import HistoryTable from 'scripts/detailed_history';
 
-          if (pageModel.get('budgetCode')) {
-            pageModel.on('ready-budget-history', function () {
-              var overviewWidget = new OverviewWidget({el: "#overview-widget", model: combinedHistory, pageModel: pageModel});
-            });
-          }
+export function start(pageModel) {
+  const combinedHistory = new CombinedHistory(null, {
+    pageModel,
+  });
 
-          var indepthWidget = new IndepthWidget({el: "#indepth-widget", model: combinedHistory, pageModel: pageModel});
+  if (pageModel.get('budgetCode')) {
+    pageModel.on('ready-budget-history', () => {
+      const overviewWidget = new OverviewWidget({
+        el: '#overview-widget', model: combinedHistory, pageModel,
+      });
 
-          pageModel.on('ready-budget-history', function () {
-            indepthWidget.render();
-          });
+      return overviewWidget;
+    });
+  }
 
-          pageModel.on('ready-participants', function () {
-              indepthWidget.setParticipants(pageModel.participants.models)
-              indepthWidget.render()
-          });
+  const indepthWidget = new IndepthWidget({
+    el: '#indepth-widget', model: combinedHistory, pageModel,
+  });
 
-          var supportList = new SupportList({el: "#support-lines", model: pageModel});
+  pageModel.on('ready-budget-history', () => {
+    indepthWidget.render();
+  });
 
-          var supporPivotTable = new SupporPivotTable({el: "#support-pivottable-content", model: pageModel});
+  pageModel.on('ready-participants', () => {
+    indepthWidget.setParticipants(pageModel.participants.models);
+    indepthWidget.render();
+  });
 
-          var spendingList = new SpendingList({el: "#spending-lines", model: pageModel});
+  const supportList = new SupportList({ el: '#support-lines', model: pageModel });
 
-          var spendingPivotTable = new SpendingPivotTable({el: "#spending-pivottable-content", model: pageModel});
+  const supporPivotTable = new SupporPivotTable({
+    el: '#support-pivottable-content', model: pageModel,
+  });
 
-          if (pageModel.get('budgetCode')) {
-            var historyTable = new HistoryTable({el: "#change-list", model: combinedHistory})
-          }
-        }
-      };
-    }
-);
+  const spendingList = new SpendingList({ el: '#spending-lines', model: pageModel });
+
+  const spendingPivotTable = new SpendingPivotTable({
+    el: '#spending-pivottable-content', model: pageModel,
+  });
+
+  let historyTable;
+  if (pageModel.get('budgetCode')) {
+    historyTable = new HistoryTable({ el: '#change-list', model: combinedHistory });
+  }
+
+  return {
+    supportList,
+    supporPivotTable,
+    spendingList,
+    spendingPivotTable,
+    historyTable,
+  };
+}
+
