@@ -70,13 +70,17 @@ Will build the app for production use in `open-budget/dist`.
 
 ```
 grunt serve:dist
-``` 
-Will build the app for production and serve it via local web server at http://localhost:9000  
+```
+Will build the app for production and serve it via local web server at http://localhost:9000
 (build = minify the js bundle, minify the compiled css, revving all of the assets and update the references accordingly)
- 
+
 ### About the build system
 The build system we're using is [webpack](http://webpack.github.io/).
-The less is also compiled via webpack, with single entry point at the `main.coffee`. (coffee/js modules dose not have thier own style dependencies declarations), and extracted using ExtractTextPlugin
- 
+The less is also compiled via webpack, with single entry point at the `main.js`. (coffee/js modules dose not have thier own style dependencies declarations), and extracted using ExtractTextPlugin
+
+### JS codebase
+Our js code is ES6, transpiled using babel 6, es2015 preset.
+We are following [airbnb javascript style](https://github.com/airbnb/javascript), enforced by eslint. to lint the code use: `grunt eslint`
+We strive to convert all the coffeescript code into ES6
 
 ###Enjoy!
