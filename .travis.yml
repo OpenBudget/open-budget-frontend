@@ -1,0 +1,19 @@
+language: node_js
+
+cache:
+  directories:
+  - open-budget/node_modules
+  - open-budget/app/bower_components
+
+node_js:
+- stable
+
+before_install:
+- npm install -g grunt-cli
+- cd open-budget
+
+install:
+- npm install
+- bower update
+
+script: grunt eslint && grunt build
