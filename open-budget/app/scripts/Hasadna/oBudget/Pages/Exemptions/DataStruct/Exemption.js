@@ -9,7 +9,7 @@ export default class Exemption extends Backbone.Model {
   }
 
   doFetch() {
-    return this.fetch({ success: this.handleFetchResult });
+    return this.fetch({ success: this.handleFetchResult.bind(this) });
   }
 
   url() {
