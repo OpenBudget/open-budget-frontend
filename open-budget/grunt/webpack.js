@@ -1,4 +1,4 @@
-var webpackConfig = require('../app/webpack.config.js');
+var webpackConfig = require('../webpack.config.js');
 var webpack = require('webpack');
 
 // minify/uglify css/js
