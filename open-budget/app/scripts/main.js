@@ -5,7 +5,7 @@ import 'scripts/hello';
 import SearchBar from 'scripts/searchbar';
 import Training from 'scripts/training';
 import 'scripts/subscribe';
-import 'scripts/team';
+import populateTeamModal from 'scripts/team';
 import MainPageVis from 'scripts/main_page_vis';
 import { start as budgetViewStart } from 'scripts/budget_view';
 import BreadcrumbHeaderView from 'scripts/breadcrumb_header';
@@ -21,6 +21,10 @@ import MainPageTabs from 'scripts/main_page_tabs';
 
 
 require('styles/main.less');
+
+$(() => {
+  populateTeamModal();
+});
 
 const DEFAULT_HOME = '#main//2015/main';
 
