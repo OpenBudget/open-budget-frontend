@@ -1,4 +1,4 @@
-define(['backbone', 'bootstrap'], (Backbone, bootstrap) ->
+define(['backbone', 'bootstrap', 'jquery'], (Backbone, bootstrap, $) ->
     class SubscribeModel extends Backbone.Model
 
       URL = 'http://the.open-budget.org.il/rss/changes/pending'
@@ -113,10 +113,14 @@ define(['backbone', 'bootstrap'], (Backbone, bootstrap) ->
         @modal.modal({show:true})
         false
 
-    subscribeModel = new SubscribeModel()
-    modal = $("#subscribeModal")
-    window.subscribeModalButtonView = new SubscribeModalButtonView(model: subscribeModel,el: $("#subscribeModal .subscribe-button"), modal: modal)
-    window.subscribeMainButtonView = new SubscribeMainButtonView(model: subscribeModel,el: $("#subscribeWidget"), modal: modal)
-
-    return subscribeModel;
+    $.ajax({
+      dataType: "script",
+      cache: true,
+      url: '//hasadna-notifications.appspot.com/static/hn.js'
+    }).then(->
+      subscribeModel = new SubscribeModel()
+      modal = $("#subscribeModal")
+      subscribeModalButtonView = new SubscribeModalButtonView(model: subscribeModel,el: "#subscribeModal .subscribe-button", modal: modal)
+      subscribeMainButtonView = new SubscribeMainButtonView(model: subscribeModel,el: "#subscribeWidget", modal: modal)
+    )
 )
