@@ -19,10 +19,7 @@ const config = {
 
     //When requiring, you don't need to add these extensions
     extensions: ['', '.coffee', '.js'],
-    alias: getAlias(),
-
-    //Modules will be searched for in these directories
-    modulesDirectories: [],
+    alias: getAlias()
   },
 
   resolveLoader: {
