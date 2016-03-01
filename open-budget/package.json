@@ -37,7 +37,7 @@
     "underscore": "^1.8.3",
     "underscore-template-loader": "^0.5.2",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.14.0"
+    "webpack-dev-server": "https://github.com/Bnaya/webpack-dev-server/tarball/fix-wrong-wds-url"
   },
   "engines": {
     "node": ">=0.8.0"

@@ -7,8 +7,8 @@ const config = {
     app: ["app/scripts/main.js"]
   },
   output: {
-    path: __dirname,
-    filename: "app/bundle.js"
+    path: './app',
+    filename: "bundle.js"
   },
 
   resolve: {
@@ -87,7 +87,7 @@ const config = {
       jQuery: "jquery",
       "window.jQuery": "jquery"
     }),
-    new ExtractTextPlugin('app/styles/main.css')
+    new ExtractTextPlugin('styles/main.css')
     // new webpack.IgnorePlugin(/^\.\/lang$/)
   ],
 

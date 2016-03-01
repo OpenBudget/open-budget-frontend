@@ -1,4 +1,5 @@
-var config = require('../webpack.config.js');
+const config = require('../webpack.config.js');
+
 module.exports = {
   main: {
     webpack: config,
@@ -7,8 +8,8 @@ module.exports = {
     progress: true,
     port: 9000,
     host: 'localhost',
-    'contentBase': 'app/',
-    inline: true
+    contentBase: 'app/',
+    inline: true,
   },
 
   mainNoReload: {
@@ -18,7 +19,7 @@ module.exports = {
     progress: true,
     port: 9000,
     host: 'localhost',
-    'contentBase': 'app/',
-    inline: true
-  }
+    contentBase: 'app/',
+    inline: true,
+  },
 };
