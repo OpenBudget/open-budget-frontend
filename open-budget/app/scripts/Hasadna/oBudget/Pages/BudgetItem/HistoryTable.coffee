@@ -1,9 +1,9 @@
 define([
   'backbone',
-  'scripts/combined_history',
+  # 'scripts/combined_history',
   'templates/single-transfer.html',
   'scripts/modelsHelpers/ChangeExplanation'
-], (Backbone, combinedHistory, template_single_transfer, ChangeExplanation) ->
+], (Backbone, template_single_transfer, ChangeExplanation) ->
     #### Models
     class HistoryItem extends Backbone.View
 
@@ -17,7 +17,7 @@ define([
                         @$el.find(".transfer-list-explanation-text").html(@explanation.get('explanation').replace(/\n/g,'<br/>'))
                         @filled = true
 
-                    @$el.on('mouseenter',   => if ! @filled then @explanation.doFetch())
+                    @$el.on('mouseenter',   => if ! @filled then @explanation.fetch())
 
             render: ->
                 if @model.get('original_baseline')?
@@ -26,7 +26,7 @@ define([
     class HistoryTable extends Backbone.View
 
             initialize: ->
-                    @model.on 'reset', => @render()
+              @render()
 
             render: ->
                     @items = []

@@ -1,7 +1,9 @@
 define [], ->
   class URLSchemeHandler
 
-          constructor: () ->
+          constructor: (defaultYear, defaultHome) ->
+              @defaultYear = defaultYear
+              @defaultHome = defaultHome
               @oldHash = window.location.hash
               @callbackList = []
               @reload = true
@@ -75,7 +77,10 @@ define [], ->
               hash = window.location.hash.substring(1)
               [hashPath, attributeString] = hash.split("?")
               [kind, identifier, year, flow] = hashPath.split("/",4)
-              year = parseInt(year)
+              year = parseInt(year) || @defaultYear
+              kind = kind || @defaultHome
+              flow = flow || 'main'
+              identifier = identifier || ''
 
               console.log "hash:", kind, identifier, year, flow
 

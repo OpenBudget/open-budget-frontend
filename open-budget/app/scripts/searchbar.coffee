@@ -23,6 +23,7 @@ define([
 
         initialize: (options) ->
             @URLSchemeHandlerInstance = options.URLSchemeHandlerInstance
+            @options = options
             @render()
             @codes = {}
 
@@ -111,13 +112,14 @@ define([
                 window.setTimeout(
                     =>
                         if d.c == @selected_tooltip
-                            bl = new BudgetItem(pageModel: @model)
-                            bl.set('year',@model.get('year'))
-                            bl.set('code',d.c)
-                            bl.on('change', ->
+                            bl = new BudgetItem({
+                                year: @options.searchData.year,
+                                code: d.c
+                              })
+
+                            bl.fetch().then(->
                                 $("#search-tip[data-code=#{d.c}]").html(template_searchbar_tooltip_full(bl.toJSON()))
                             )
-                            bl.do_fetch()
                    ,
                     250
                 )
@@ -146,7 +148,7 @@ define([
             )
 
         gotoBudgetItem: (code) =>
-            window.location.hash = @URLSchemeHandlerInstance.linkToBudget(code,@model.get('year'))
+            window.location.hash = @URLSchemeHandlerInstance.linkToBudget(code, @options.searchData.year)
 
 
         updateChart: (transition=false) =>
@@ -268,8 +270,8 @@ define([
                     switch event
                         when EV_OPEN_DROPDOWN, EV_TOGGLE_DROPDOWN
                             @openDropdown()
-                            if @model.get('budgetCode')?
-                                @partition.selectCode( @model.get('budgetCode') )
+                            if @options.searchData.budgetCode?
+                                @partition.selectCode( @options.searchData.budgetCode )
                             @state = STATE_OPEN
                 when STATE_CLOSED_RESULTS
                     switch event
@@ -467,7 +469,7 @@ define([
 
         initialize: (options) ->
             @URLSchemeHandlerInstance = options.URLSchemeHandlerInstance
-
+            @options = options
             @state = STATE_IDLE
             @suggestionNum = 0
             @suggestions = []
@@ -496,7 +498,7 @@ define([
                                     else ""
                             queryTokenizer: Bloodhound.tokenizers.whitespace
             @engine.initialize()
-            @partition = new BudgetPartitionLayoutView(el: @$el.find('.search-partition-layout'), model: @model, URLSchemeHandlerInstance: @URLSchemeHandlerInstance)
+            @partition = new BudgetPartitionLayoutView(el: @$el.find('.search-partition-layout'), searchData: this.options.searchData, URLSchemeHandlerInstance: @URLSchemeHandlerInstance)
             @dropdown = @$el.find("#search-dropdown")
 
     return SearchBar

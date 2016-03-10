@@ -4,39 +4,6 @@ define([
   'templates/header__current_budget.html',
   'templates/header__changed_this_year.html'
   ], (Backbone, _, header__current_budget, header__changed_this_year) ->
-
-
-    # used by templates files
-    window.up_or_down = (allocated,revised ) ->
-                if allocated > revised
-                    return ["קטן","מ"]
-                else if allocated < revised
-                    return ["הוגדל","מ"]
-                else
-                    return ["עמד","על"]
-
-    window.increase_or_cut = (allocated,revised ) ->
-                if allocated > revised
-                    return "קיצוץ זה הביא"
-                else
-                    return "תוספת זו הביאה"
-
-    window.transfers_by_year = (year) ->
-                if pageModel.changeGroups?
-                    return arr = $.grep(pageModel.changeGroups.models, (el,i) ->
-                        el.attributes.year is year)
-                else
-                    return []
-
-    window.num_of_transfers_in_year_text = (year) ->
-                arr = transfers_by_year(year)
-                if arr.length > 1
-                    return String(arr.length) + " העברות"
-                else
-                    return "שינויים"
-
-
-
     class HeaderAnalyzer
 
         shouldParticipate: () ->
@@ -46,12 +13,12 @@ define([
             ""
 
     class BudgetAnalyzer extends HeaderAnalyzer
-        constructor: (model) ->
-          @model = model;
+        constructor: (options) ->
+          @options = options
 
         transfers_by_year: (year) ->
-          if this.model.changeGroups?
-              return arr = $.grep(this.model.changeGroups.models, (el,i) ->
+          if this.options.changeGroups?
+              return arr = $.grep(this.options.changeGroups.models, (el,i) ->
                   el.attributes.year is year)
           else
               return []
@@ -64,16 +31,16 @@ define([
               return "שינויים"
 
         shouldParticipate: () ->
-          @model.get('budgetCode')?
+          @options.budgetCode?
 
     class CurrentBudgetAnalyzer extends BudgetAnalyzer
 
         shouldParticipate: () ->
             # make sure currentItem exists - /equivs api can return an empty result
-            @model.get('currentItem')?.attributes.net_allocated?
+            @options.currentItem?.attributes.net_allocated?
 
         analyze: () ->
-            data = @model.get('currentItem').toJSON()
+            data = @options.currentItem.toJSON()
             # data.transfers_by_year = transfers_by_year.bind(@)
             data.num_of_transfers_in_year_text = @num_of_transfers_in_year_text.bind(@)
 
@@ -84,15 +51,15 @@ define([
         shouldParticipate: () ->
             res = false
             # make sure currentItem exists - /equivs api can return an empty result
-            if @model.get('currentItem')
-                year = @model.get('currentItem').get('year')
+            if @options.currentItem
+                year = @options.currentItem.get('year')
                 res = @transfers_by_year(year).length > 0
 
             return res
 
 
         analyze: () ->
-            data = this.model.get('currentItem').toJSON()
+            data = this.options.currentItem.toJSON()
             data.num_of_transfers_in_year_text = @num_of_transfers_in_year_text.bind(@)
             header__changed_this_year(data)
 
@@ -100,10 +67,12 @@ define([
 
     class HeaderView extends Backbone.View
 
-        initialize: ->
+        initialize: (options) ->
+            @options = options
+
             analyzers = [
-                new CurrentBudgetAnalyzer(this.model)
-                new ChangedThisYearAnalyzer(this.model)
+                new CurrentBudgetAnalyzer({changeGroups: options.changeGroups, currentItem: options.currentItem, budgetCode: options.budgetCode})
+                new ChangedThisYearAnalyzer({changeGroups: options.changeGroups, currentItem: options.currentItem, budgetCode: options.budgetCode})
             ]
 
             @analyzers = []

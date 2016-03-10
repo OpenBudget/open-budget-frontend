@@ -5,12 +5,14 @@ define([
 ], (Backbone, _, tpl_single_support_item) ->
     class SupportList extends Backbone.View
 
-        initialize: ->
-                @model.on 'ready-supports', => @render()
+        initialize: (options) ->
+          @options = options
+          @supportsCollection = options.supportsCollection;
+          @render()
 
         render: ->
-            if @model.supports?
-                jsons = _.map(@model.supports.models, (x) -> x.toJSON())
+            if @supportsCollection?
+                jsons = _.map(@supportsCollection.models, (x) -> x.toJSON())
                 htmls = _.map(jsons, tpl_single_support_item )
                 for html in htmls
                     @$el.append( html )

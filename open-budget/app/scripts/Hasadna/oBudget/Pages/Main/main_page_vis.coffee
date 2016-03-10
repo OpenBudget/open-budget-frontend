@@ -4,11 +4,11 @@ define(
     'backbone',
     'underscore',
     'scripts/bubble_chart',
-    'scripts/modelsHelpers/BudgetItemKids'
+    'Hasadna/oBudget/Misc/dataFetchers',
     'templates/main-budget-header.hbs',
     'templates/bubble-group-label.html',
     'templates/bubble-tooltip.html'
-  ], ($, Backbone, _, BubbleChart, BudgetItemKids, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
+  ], ($, Backbone, _, BubbleChart, dataFetchers, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
 
     globalWidth = 0
 
@@ -141,20 +141,11 @@ define(
             console.log("MainPageVis: initialize")
             @rendered = false
 
-            if @model.eventAlreadyTriggered 'ready-budget-bubbles'
-              @readyBudgetBubblesHandler()
-            else
-              @model.on 'ready-budget-bubbles', =>
-                @readyBudgetBubblesHandler()
+            @readyBudgetBubblesHandler()
 
-            if @model.eventAlreadyTriggered 'ready-main-budget'
-              @readyMainBudgetHandler()
-            else
-              @model.on 'ready-main-budget', =>
-                @readyMainBudgetHandler()
+            @readyMainBudgetHandler()
 
-            @model.on 'resized', =>
-              @resizedHandler()
+            window.addEventListener('resize', @resizedHandler.bind(this))
 
 
         events:
@@ -188,7 +179,12 @@ define(
           )
           @chart_el = d3.select(@chart.el)
           @$bubbleContainer = @$el.find("#bubble-chart-container")
-          @centers = [ new SimpleCentering(), new TopGroupCentering(@model.budgetItems4), new FullGroupCentering(@model.budgetItems4), new ParentCentering(@model.budgetItems2) ]
+          @centers = [
+            new SimpleCentering(),
+            new TopGroupCentering(@options.compareRecords),
+            new FullGroupCentering(@options.compareRecords),
+            new ParentCentering(@options.budgetItemKids)
+          ]
           @prepareData()
           @toggle = 0
           if @options.URLSchemeHandlerInstance && @options.URLSchemeHandlerInstance.getAttribute('toggle')
@@ -207,7 +203,7 @@ define(
               @chart.start()
 
         readyMainBudgetHandler: =>
-          @$el.find("#main-budget-header").html(tpl_main_budget_header({main:@model.mainBudgetItem.toJSON(), newb:@model.newBudgetItem.toJSON()}))
+          @$el.find("#main-budget-header").html(tpl_main_budget_header({main:@options.mainBudgetItem.toJSON(), newb:@options.newBudgetItem.toJSON()}))
           if @rendered
               @compare_2015()
 
@@ -294,8 +290,9 @@ define(
             if not code?
                 code = node.src.get('code')
                 year += 1
-            centeredNodeKids = new BudgetItemKids([], year: year, code: code)
-            centeredNodeKids.on('sync', =>
+
+            dataFetchers.budgetItemKids(code, year)
+              .then( (centeredNodeKids) =>
                 console.log("kids are ready")
                 kidNodes = []
                 for model in centeredNodeKids.models
@@ -320,7 +317,7 @@ define(
                     kidNodes.push(node)
 
                 readyCallback(kidNodes)
-            )
+              );
 
         prepareData: ->
             fill_color = -> "#aabbcc"
@@ -329,7 +326,7 @@ define(
             # Create data for bubble chart
             @data = []
             that = @
-            for model in @model.budgetItems4.models
+            for model in @options.compareRecords.models
                 # orig = model.get('orig_2014')
                 # revised = model.get('orig_2015')
                 # if !(orig>0) || !(revised>0)

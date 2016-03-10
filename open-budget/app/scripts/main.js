@@ -1,125 +1,171 @@
 import Backbone from 'backbone';
 import $ from 'jquery';
 import 'modernizr';
-import 'scripts/hello';
+import 'scripts/shame';
+import 'scripts/shameCoffee';
 import SearchBar from 'scripts/searchbar';
-import Training from 'scripts/training';
+import TrainingView from 'scripts/training';
 import 'scripts/subscribe';
 import populateTeamModal from 'scripts/team';
-import MainPageVis from 'scripts/main_page_vis';
-import { start as budgetViewStart } from 'scripts/budget_view';
-import BreadcrumbHeaderView from 'scripts/breadcrumb_header';
-import AnalysisHeaderView from 'scripts/analysis_header';
-import SingleChangeGroupView from 'scripts/single_changegroup';
 import ExemptionsPage from 'Hasadna/oBudget/Pages/Exemptions/Main';
+import BudgetItemPage from 'Hasadna/oBudget/Pages/BudgetItem/Main';
+import TransferPage from 'Hasadna/oBudget/Pages/Transfer/Main';
+import MainPage from 'Hasadna/oBudget/Pages/Main/Main';
 import Router from 'Hasadna/oBudget/Router';
-import PageModel from 'scripts/modelsHelpers/PageModel';
 import URLSchemeHandler from 'scripts/URLSchemeHandler';
 import appConfig from 'scripts/appConfig';
-import 'bootstrap-tour';
-import MainPageTabs from 'scripts/main_page_tabs';
-
 
 require('styles/main.less');
+
+let currentPage;
 
 $(() => {
   populateTeamModal();
 });
 
-const DEFAULT_HOME = '#main//2015/main';
+const DEFAULT_HOME = 'main';
+const DEFAULT_YEAR = 2015;
 
-const URLSchemeHandlerInstance = new URLSchemeHandler();
+const URLSchemeHandlerInstance = new URLSchemeHandler(DEFAULT_YEAR, DEFAULT_HOME);
 
-window.onhashchange = URLSchemeHandlerInstance.handleSchemeChange;
+window.addEventListener(
+  'hashchange',
+  URLSchemeHandlerInstance.handleSchemeChange.bind(URLSchemeHandlerInstance)
+);
+
 document.querySelector('a#spending-link')
   .setAttribute('href', URLSchemeHandlerInstance.linkToSpending());
 
 // Expose as global to use in html templates ):
 window.URLSchemeHandlerInstance = URLSchemeHandlerInstance;
 
-const pageModel = new PageModel({}, { DEFAULT_HOME });
-pageModel.switchView(URLSchemeHandlerInstance.linkParameters);
+const searchData = {
+  year: DEFAULT_YEAR,
+  budgetCode: null,
+};
 
 const search = new SearchBar({
   el: '#search-widget',
-  model: pageModel,
+  searchData,
   URLSchemeHandlerInstance,
 });
-
-const mainPageTabs = new MainPageTabs({
-  model: pageModel,
-  URLSchemeHandlerInstance,
-});
+// This is here just to stop the eslint warnings
+search.toString();
 
 const router = new Router();
 
+// We pass this promise resolve function
+// to pages that needs tour to let then tell us that they are ready
+let pageWithTourReadyResolve;
+const pageWithTourReady = new Promise((resolve) => {
+  pageWithTourReadyResolve = resolve;
+});
+
+router.on('route', (routeName) => {
+  // The footer is hidden and then showed on most of the pages
+  // to avoid footer flash and hide
+  if (routeName !== 'exemptions') {
+    $('.footer.wait-for-it').removeClass('wait-for-it');
+  }
+});
+
+router.on('route:main-page', () => {
+  // ignore no page reload routes for now
+  if (currentPage) {
+    return;
+  }
+
+  currentPage = new MainPage(URLSchemeHandlerInstance, pageWithTourReadyResolve);
+
+  currentPage.getView().$el.addClass('active');
+  $('body > div > .footer').before(currentPage.getView().el);
+  currentPage.afterAppend();
+});
+
+router.on('route:transfer-page', (code, year) => {
+  // ignore no page reload routes for now
+  if (currentPage) {
+    return;
+  }
+
+  currentPage = new TransferPage(code, year, pageWithTourReadyResolve);
+
+  $('#change-group-article').addClass('active').append(currentPage.getView().el);
+  currentPage.afterAppend();
+});
+
 router.on('route:exemptions', () => {
-  new ExemptionsPage().start({ baseURL: appConfig.baseURL });
+  // ignore no page reload routes for now
+  if (currentPage) {
+    return;
+  }
+
+  document.body.classList.add('kind-spending');
+  currentPage = new ExemptionsPage();
+  currentPage.start({ baseURL: appConfig.baseURL });
+  $('#spendings-page-article').addClass('active');
 });
 
 router.on('route:entity', (entityId, publicationId) => {
-  new ExemptionsPage().start({ baseURL: appConfig.baseURL, entityId, publicationId });
+  // ignore no page reload routes for now
+  if (currentPage) {
+    return;
+  }
+
+  currentPage = new ExemptionsPage();
+  currentPage.start({ baseURL: appConfig.baseURL, entityId, publicationId });
+  $('#entity-article').addClass('active');
+});
+
+router.on('route:budget-page', (budgetCode, budgetYear) => {
+  // ignore no page reload routes for now
+  if (currentPage) {
+    return;
+  }
+
+  searchData.budgetCode = budgetCode;
+
+  currentPage = new BudgetItemPage(
+    `00${budgetCode || ''}`,
+    budgetYear || DEFAULT_YEAR,
+    URLSchemeHandlerInstance,
+    pageWithTourReadyResolve
+  );
+
+  $('#budget-item-article').addClass('active').append(currentPage.getView().el);
+
+  currentPage.afterAppend();
 });
 
 Backbone.history.start({ pushState: false });
 
-const training = new Training({
-  el: '#intro-link',
-  model: pageModel,
-  flow: URLSchemeHandlerInstance.linkParameters.flow,
-});
+function shouldNotTour() {
+  // tour should start only on the main page
+  if (!(currentPage instanceof MainPage) && !sessionStorage.getItem('touring')) {
+    return true;
+  }
 
-const mainPageVis = new MainPageVis({
-  el: '#main-page-article',
-  model: pageModel,
-  URLSchemeHandlerInstance,
-});
+  // when focused on a bubble when not while tour, don't start it
+  if (
+      currentPage instanceof MainPage &&
+      location.hash.indexOf('?') > -1 &&
+      !sessionStorage.getItem('touring')
+    ) {
+    return true;
+  }
 
-budgetViewStart(pageModel);
-
-if (pageModel.get('budgetCode')) {
-  pageModel.on('ready-breadcrumbs', () => {
-    const breadcrumbHeaderView = new BreadcrumbHeaderView({ el: '#header-tree', model: pageModel });
-    breadcrumbHeaderView.render();
-
-    $('#affix-wrapper').height($('#affix-header').height());
-  });
-
-  const readyBudgetHistory = new Promise((resolve) => {
-    pageModel.on('ready-budget-history', resolve);
-  });
-
-  const readyBreadcrumbs = new Promise((resolve) => {
-    pageModel.on('ready-breadcrumbs', resolve);
-  });
-
-  Promise.all([readyBudgetHistory, readyBreadcrumbs]).then(() => {
-    const analysisHeaderView = new AnalysisHeaderView({
-      el: pageModel.article.find('.brief'), model: pageModel,
-    });
-
-    return analysisHeaderView;
-  });
+  return false;
 }
 
-let singleChangegroup;
-if (pageModel.get('changeGroupId')) {
-  singleChangegroup = new SingleChangeGroupView({
-    el: '#single-changegroup',
-    model: pageModel,
+pageWithTourReady.then(() => {
+  if (shouldNotTour()) {
+    return;
+  }
+
+  const training = new TrainingView({
+    el: '#intro-link',
+    flow: URLSchemeHandlerInstance.linkParameters.flow,
   });
-}
 
-document.body.style.display = 'none';
-document.body.getBoundingClientRect();
-document.body.style.display = 'block';
-document.body.getBoundingClientRect();
-
-// This is here just to stop the eslint warnings
-export {
-  singleChangegroup,
-  training,
-  mainPageVis,
-  mainPageTabs,
-  search,
-};
+  training.toString();
+});

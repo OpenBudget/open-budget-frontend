@@ -1,20 +1,22 @@
 define ['backbone', 'scripts/modelsHelpers/ChangeGroup', 'scripts/appConfig'], (Backbone, ChangeGroup, appConfig) ->
   class ChangeGroups extends Backbone.Collection
 
-      model: ChangeGroup
+    model: ChangeGroup
 
-      initialize: (_models, options) ->
-              @pageModel = options.pageModel
-              @fetch(dataType: appConfig.dataType, reset: true)
+    _prepareModel: (attrs, options) ->
+      options.budgetYear = @options.budgetYear
 
-      # pass the pageModel also to models of the collection
-      _prepareModel: (attrs, options) ->
-        options.pageModel = @pageModel
-        # super._prepareModel(attrs, options)
-        this.constructor.__super__._prepareModel.call(@, attrs, options)
+      super(attrs, options)
 
+      # this.constructor.__super__._prepareModel.call(@, attrs, options)
 
-      url: ->
-              "#{appConfig.baseURL}/api/changegroup/#{@pageModel.get('budgetCode')}/#{@pageModel.get('year')}/equivs?limit=1000"
+    initialize: (_models, options) ->
+      @options = options
+
+    fetch: ->
+      super(dataType: appConfig.dataType, reset: true)
+
+    url: ->
+            "#{appConfig.baseURL}/api/changegroup/#{@options.budgetCode}/#{@options.budgetYear}/equivs?limit=1000"
 
   return ChangeGroups

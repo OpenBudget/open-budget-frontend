@@ -6,7 +6,9 @@ define ['backbone', 'scripts/modelsHelpers/BudgetItem', 'scripts/appConfig'], (B
       initialize: (models, options) ->
           @year = options.year
           @code = options.code
-          @fetch(dataType: appConfig.dataType, reset: true)
+
+      fetch: ->
+        super(dataType: appConfig.dataType, reset: true)
 
       url: ->
           "#{appConfig.baseURL}/api/budget/#{@code}/#{@year}/active-kids"

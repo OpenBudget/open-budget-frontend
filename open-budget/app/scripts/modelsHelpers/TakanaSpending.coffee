@@ -1,15 +1,17 @@
 define ['backbone', 'scripts/modelsHelpers/SpendingLine', 'scripts/appConfig'], (Backbone, SpendingLine, appConfig) ->
   class TakanaSpending extends Backbone.Collection
 
-      model: SpendingLine
+    model: SpendingLine
 
-      comparator: (m) -> m.get('publication_id')
+    comparator: (m) -> m.get('publication_id')
 
-      initialize: (models, options) ->
-              @pageModel = options.pageModel
-              @fetch(dataType: appConfig.dataType, reset: true)
+    initialize: (models, options) ->
+      @options = options
 
-      url: ->
-              "#{appConfig.baseURL}/api/exemption/budget/#{@pageModel.get('budgetCode')}?limit=100"
+    url: ->
+      "#{appConfig.baseURL}/api/exemption/budget/#{@options.budgetCode}?limit=#{@options.limit}"
+
+    fetch: ->
+      super(dataType: appConfig.dataType, reset: true)
 
   return TakanaSpending

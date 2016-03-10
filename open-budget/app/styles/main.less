@@ -410,6 +410,10 @@ header {
 
 .single-page-article {
   display: none;
+
+  &.active {
+    display: block;
+  }
 }
 
 .form-control {
@@ -831,6 +835,11 @@ strong.approved {
 }
 
 //////// MAIN PAGE //////////////
+
+#main-page-article {
+  display: block;
+}
+
 #comparison-kind {
   width: auto;
   margin-left: auto;
@@ -1763,6 +1772,10 @@ article {
 }
 
 /* Custom page footer */
+.footer.wait-for-it {
+  display: none;
+}
+
 .footer {
   //padding-top: 19px;
   color: #777;

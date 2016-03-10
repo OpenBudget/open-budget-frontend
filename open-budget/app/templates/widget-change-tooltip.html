@@ -5,7 +5,7 @@
 */ %>
 
 <% if ( get("src") == "changeline" ) { %>
-  <% var diff = get("source").getCodeChanges(window.pageModel.get('budgetCode'))*1000; %>
+  <% var diff = get("source").getCodeChanges(budgetCode)*1000; %>
   <% var yeardiff = (get("value") - get("original_baseline"))*1000; %>
   <% var revised = get("value")*1000; %>
 

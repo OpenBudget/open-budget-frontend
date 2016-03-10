@@ -2,7 +2,7 @@ define ['backbone'], (Backbone) ->
   class SupportLine extends Backbone.Model
 
       initialize: (attrs, options) ->
-        @pageModel = options.pageModel
+        @supportFieldNormalizer = options.supportFieldNormalizer;
 
       defaults:
           kind: null
@@ -22,7 +22,7 @@ define ['backbone'], (Backbone) ->
         baseJSON = @toJSON()
         resultJSON = {}
         for key, value of baseJSON
-          normalizedKey = @pageModel.supportFieldNormalizer.normalize(key, locale)
+          normalizedKey = @supportFieldNormalizer.normalize(key, locale)
           if normalizedKey?
             resultJSON[normalizedKey] = value
 

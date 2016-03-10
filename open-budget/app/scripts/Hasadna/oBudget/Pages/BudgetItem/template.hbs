@@ -1,0 +1,69 @@
+<header id="breadcrumb-header">
+  <ul id="header-tree">
+    <section class="brief container">
+    </section>
+  </ul>
+</header>
+
+<section id="vis">
+  <div id="vis-container">
+    <!-- <h2 id="vis-title">שינויים בתקציב</h2> -->
+    <div id="overview-widget" class="2digits 4digits 6digits 8digits"></div>
+    <div id="indepth-widget" class="2digits 4digits 6digits 8digits">
+      <div class="spinner-container"></div>
+    </div>
+    <div id="participantThumbnails" class="2digits 4digits 6digits 8digits"></div>
+  </div>
+  <ul id="tabs-label-container" class="nav nav-tabs nav-justified">
+    <li id="list-title" role="presentation" class="tab-label"><a href="#change-list-content" data-toggle="tabs" data-name="changes">רשימת השינויים</a></li>
+    <li id="support-list-title" role="presentation" class="tab-label"><a href="#support-list-content" data-toggle="tabs" data-name="supports">תמיכות בתקנה זו</a></li>
+    <li id="support-pivottable-title" role="presentation" class="tab-label">
+        <a href="#support-pivottable-content" data-toggle="tabs" data-name="supports">טבלת תמיכות</a></li>
+    <li id="spending-list-title" role="presentation" class="tab-label"><a href="#spending-list-content" data-toggle="tabs" data-name="spending">התקשרויות בתקנה זו</a></li>
+    <li id="spending-pivottable-title" role="presentation" class="tab-label">
+        <a href="#spending-pivottable-content" data-toggle="tabs" data-name="spending">טבלת התקשרויות</a></li>
+  </ul>
+  <div id="tabs-content-container" class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="change-list-content">
+      <div id="change-list" class="container 4digits 6digits"></div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="support-list-content">
+        <table id="support-table" class="table table-hover table-striped">
+            <thead>
+              <th>שנה</th>
+              <th>שם</th>
+              <th>אושר</th>
+              <th>הועבר</th>
+              <th>סוג</th>
+              <th>עוד</th>
+            </thead>
+            <tbody id="support-lines">
+
+            </tbody>
+        </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="support-pivottable-content">
+      <div class="spinner-container"></div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="spending-list-content">
+        <table id="spending-table" class="table table-hover table-striped">
+            <thead>
+                <th>התחלה</th>
+                <th>ספק</th>
+                <th>סכום</th>
+                <th>תקנה</th>
+                <th>הסבר</th>
+                <th>נושאים</th>
+                <th>קישור</th>
+            </thead>
+            <tbody id="spending-lines">
+
+            </tbody>
+        </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="spending-pivottable-content">
+      <div class="spinner-container"></div>
+    </div>
+
+  </div>
+</section>
