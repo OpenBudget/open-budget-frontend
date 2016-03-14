@@ -15,7 +15,8 @@ define ['backbone', 'underscore', 'scripts/appConfig'], (Backbone, _, appConfig)
               uniqueId: null
 
       initialize: (attrs, options) ->
-              @pageModel = options.pageModel
+              @options = options;
+
               dateStr = @get 'date'
               if dateStr?
                   @setTimestamp()
@@ -29,7 +30,7 @@ define ['backbone', 'underscore', 'scripts/appConfig'], (Backbone, _, appConfig)
               @set 'timestamp', timestamp
 
       getCodeChanges: (code) =>
-              year = @pageModel.get('year')
+              year = @options.budgetYear
               key = "#{year}/#{code}"
               changes = _.filter(@get('changes'),(c)->_.indexOf(c['equiv_code'],key)>-1)
               d3.sum(changes, (c)->c['expense_change'])
@@ -37,11 +38,11 @@ define ['backbone', 'underscore', 'scripts/appConfig'], (Backbone, _, appConfig)
       getDateType: () =>
               if @get('pending') then "pending" else "approved"
 
-      doFetch: ->
-              @fetch(dataType: @pageModel.get('dataType'))
+      fetch: ->
+              super(dataType: appConfig.dataType)
 
       url: ->
-              "#{appConfig.baseURL}/api/changegroup/#{@pageModel.get('changeGroupId')}/#{@pageModel.get('year')}"
+              "#{appConfig.baseURL}/api/changegroup/#{@options.changeGroupId}/#{@options.budgetYear}"
 
 
   return ChangeGroup

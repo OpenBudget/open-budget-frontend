@@ -3,8 +3,10 @@ define ['backbone', 'scripts/modelsHelpers/CompareRecord', 'scripts/appConfig'],
 
       model: CompareRecord
 
-      initialize: (models) ->
-          @fetch(dataType: appConfig.dataType, reset: true)
+      initialize: () ->
+
+      fetch: ->
+        super(dataType: appConfig.dataType, reset: true)
 
       url: ->
           "#{appConfig.baseURL}/api/sysprop/budget-comparisons"

@@ -2,16 +2,9 @@ define([
   'backbone',
   'underscore',
   'templates/tour-dialog.html',
-  'scripts/appConfig'
+  'scripts/appConfig',
+  'bootstrap-tour'
 ], (Backbone, _, tpl_tour_dialog, appConfig) ->
-
-    shouldNotTour =  ->
-      if (location.hash.indexOf('#main') == -1) && !sessionStorage.getItem('touring')
-        return true
-
-      if (location.hash.indexOf('#main') > -1 && location.hash.indexOf('?') > -1 && !sessionStorage.getItem('touring'))
-        return true
-
     class TrainingStep extends Backbone.Model
         defaults:
             title: null
@@ -57,12 +50,7 @@ define([
                 $(@el).hide()
                 return
 
-            if (shouldNotTour())
-              return
-
-            this.model.on 'ready-budget-bubbles', => @loadTour()
-            this.model.on 'ready-budget-history', => @loadTour()
-            this.model.on 'ready-changegroup', => @loadTour()
+            @loadTour()
 
         events:
             "click": "onTrainingButtonClick"
@@ -70,9 +58,9 @@ define([
         loadTour: ->
             console.log "loadTour", this.options.flow
 
-            if window.location.hash.length < 2
-                console.log "not starting tour for hash ",window.location.hash
-                return
+            # if window.location.hash.length < 2
+            #     console.log "not starting tour for hash ",window.location.hash
+            #     return
 
             @steps = new TrainingSteps([], {flow: this.options.flow})
             @steps.on 'reset', => @onTourLoaded(_.map(@steps.models, (i)->i.toJSON()))
@@ -188,7 +176,7 @@ define([
             # Don't start the tour if it wasn't initialized (due to loading failure)
             # or is already running.
             if (not @tour?) or @isTourRunning(@tour)
-                console.log "not initialized!", @tour, @isTourRunning(@tour)
+                console.log "not initialized!", @tour
                 return
             @tour.restart()
 

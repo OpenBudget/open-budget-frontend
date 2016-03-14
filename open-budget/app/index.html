@@ -153,9 +153,6 @@
                   ›
                   {% endfor %}
                 </ol>
-                <script>
-                    if ( window.location.hash == "" ) window.location.hash = "{{hash}}";
-                </script>
                 {% endif %}
 
                 <script type="application/ld+json">
@@ -166,131 +163,14 @@
                    "url" : "http://www.obudget.org"
                 }
                 </script>
-            </article>
+              </article>
 
-            <article id="budget-item-article" class="six-fig single-page-article">
+            <article id="budget-item-article" class="six-fig single-page-article"></article>
+            <article id="change-group-article" class="single-page-article"></article>
+            <article id="entity-article" class="single-page-article"></article>
+            <article id="spendings-page-article" class="single-page-article"></article>
 
-                <header id="breadcrumb-header">
-                  <ul id="header-tree">
-                    <section class="brief container">
-                    </section>
-                  </ul>
-                </header>
-
-                <section id="vis">
-                  <div id="vis-container">
-                    <!-- <h2 id="vis-title">שינויים בתקציב</h2> -->
-                    <div id="overview-widget" class="2digits 4digits 6digits 8digits"></div>
-                    <div id="indepth-widget" class="2digits 4digits 6digits 8digits">
-                      <div class="spinner-container"></div>
-                    </div>
-                    <div id="participantThumbnails" class="2digits 4digits 6digits 8digits"></div>
-                  </div>
-                  <ul id="tabs-label-container" class="nav nav-tabs nav-justified">
-                    <li id="list-title" role="presentation" class="tab-label"><a href="#change-list-content" data-toggle="tabs" data-name="changes">רשימת השינויים</a></li>
-                    <li id="support-list-title" role="presentation" class="tab-label"><a href="#support-list-content" data-toggle="tabs" data-name="supports">תמיכות בתקנה זו</a></li>
-                    <li id="support-pivottable-title" role="presentation" class="tab-label">
-                        <a href="#support-pivottable-content" data-toggle="tabs" data-name="supports">טבלת תמיכות</a></li>
-                    <li id="spending-list-title" role="presentation" class="tab-label"><a href="#spending-list-content" data-toggle="tabs" data-name="spending">התקשרויות בתקנה זו</a></li>
-                    <li id="spending-pivottable-title" role="presentation" class="tab-label">
-                        <a href="#spending-pivottable-content" data-toggle="tabs" data-name="spending">טבלת התקשרויות</a></li>
-                  </ul>
-                  <div id="tabs-content-container" class="tab-content">
-                    <div role="tabpanel" class="tab-pane" id="change-list-content">
-                      <div id="change-list" class="container 4digits 6digits"></div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="support-list-content">
-                        <table id="support-table" class="table table-hover table-striped">
-                            <thead>
-                              <th>שנה</th>
-                              <th>שם</th>
-                              <th>אושר</th>
-                              <th>הועבר</th>
-                              <th>סוג</th>
-                              <th>עוד</th>
-                            </thead>
-                            <tbody id="support-lines">
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="support-pivottable-content">
-                      <div class="spinner-container"></div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="spending-list-content">
-                        <table id="spending-table" class="table table-hover table-striped">
-                            <thead>
-                                <th>התחלה</th>
-                                <th>ספק</th>
-                                <th>סכום</th>
-                                <th>תקנה</th>
-                                <th>הסבר</th>
-                                <th>נושאים</th>
-                                <th>קישור</th>
-                            </thead>
-                            <tbody id="spending-lines">
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="spending-pivottable-content">
-                      <div class="spinner-container"></div>
-                    </div>
-
-                  </div>
-                </section>
-
-            </article>
-
-            <article id="change-group-article" class="single-page-article">
-
-                <!-- Transaction details -->
-                <div id="single-changegroup" class="center-block">
-                </div>
-
-            </article>
-
-            <article id="entity-article" class="single-page-article">
-            </article>
-
-            <article id="spendings-page-article" class="single-page-article">
-            </article>
-
-            <article id="main-page-article" class="single-page-article">
-
-                <div id="comparison-toggle">
-                  <div class="compare-2015">
-                    <strong>תקציב 2015</strong><br/>
-                    אחרי העברות תקציביות לעומת התקציב המקורי
-                  </div>
-                  <div class="compare-2016">
-                    <strong>תקציב 2016</strong><br/>
-                    ביחס לתקציב 2015<br/>
-                    <span class="compare-year-start">בתחילת השנה</span> / <span class="compare-year-end">אחרי העברות</span>
-                  </div>
-                </div>
-
-                <div id="main-budget-header" class="center-block">
-                </div>
-                <div id="grouping-kind" class="container center-block">
-                    <div  class="center-block" role="group" data-toggle="buttons" aria-label="...">
-                        <label data-toggle="0" class="btn active"><input type="radio" name="grouping-kind" autocomplete="off" checked><span>הכל ביחד</span></input></label>
-                        <label data-toggle="1" class="btn"><input type="radio" name="grouping-kind" autocomplete="off" class="btn btn-default"><span>לפי קבוצות נושא</span></input></label>
-                        <label data-toggle="2" class="btn"><input type="radio" name="grouping-kind" autocomplete="off" class="btn btn-default"><span>לפי נושאים מפורטים</span></input></label>
-                        <label data-toggle="3" class="btn"><input type="radio" name="grouping-kind" autocomplete="off" class="btn btn-default"><span>חלוקה לפי סעיפים</span></input></label>
-                    </div>
-                </div>
-                <!-- Bubble chart -->
-                <div id="bubble-chart-container" class="center-block">
-                    <svg id="bubble-chart"></svg>
-                    <svg id="subnode-bubble-chart"></svg>
-                </div>
-
-            </article>
-
-
-
-            <div class="footer">
+            <div class="footer wait-for-it">
                 <ul class="pull-right">
                     <li><a class="hasadna" title="הסדנא לידע ציבורי" href="http://hasadna.org.il" target="_blank">הסדנא לידע ציבורי</a></li>
                     <li><a href="#teamModal" data-toggle="modal">♥ הצוות</a></li>

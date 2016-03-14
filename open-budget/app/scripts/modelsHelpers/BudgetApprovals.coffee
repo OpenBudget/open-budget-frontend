@@ -3,10 +3,13 @@ define ['backbone', 'scripts/modelsHelpers/BudgetApproval', 'scripts/appConfig']
       model: BudgetApproval
 
       initialize: (models, options) ->
-          @pageModel = options.pageModel
-          @fetch(dataType: appConfig.dataType, reset: true)
+          @budgetCode = options.budgetCode
+          # @fetch(dataType: appConfig.dataType, reset: true)
 
       url: ->
-          "#{appConfig.baseURL}/api/budget/#{@pageModel.get('budgetCode')}/approvals"
+          "#{appConfig.baseURL}/api/budget/#{@budgetCode}/approvals"
+
+      fetch: ->
+        super(dataType: appConfig.dataType, reset: true)
 
   return BudgetApprovals

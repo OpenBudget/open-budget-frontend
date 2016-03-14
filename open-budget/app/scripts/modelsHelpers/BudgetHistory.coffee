@@ -5,11 +5,13 @@ define ['backbone', 'underscore', 'scripts/modelsHelpers/BudgetItem', 'scripts/a
       model: BudgetItem
 
       initialize: (models, options) ->
-              @pageModel = options.pageModel
-              @fetch(dataType: appConfig.dataType, reset: true)
+              @options = options
+
+      fetch: ->
+        super(dataType: appConfig.dataType, reset: true)
 
       url: ->
-              "#{appConfig.baseURL}/api/budget/#{@pageModel.get('budgetCode')}/#{@pageModel.get('year')}/equivs"
+              "#{appConfig.baseURL}/api/budget/#{@options.budgetCode}/#{@options.budgetYear}/equivs"
 
       comparator: (m) -> m.get('year')
 

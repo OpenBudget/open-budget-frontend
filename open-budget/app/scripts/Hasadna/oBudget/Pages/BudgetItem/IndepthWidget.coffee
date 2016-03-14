@@ -19,12 +19,13 @@ define [
             CHANGE_LINE_HANG_LENGTH = 18 # px
 
             initialize: (options) ->
-                @pageModel = options.pageModel
+                @options = options
 
-                @pageModel.on 'change:selection', => @render()
-                @pageModel.on 'resized', =>
-                  if @pageModel.get('budgetCode')
-                    @render()
+                @options.selectionModel.on 'change:selection', => @render()
+
+                window.addEventListener('resize', () =>
+                  @render()
+                )
 
 
                 @$el.html('')
@@ -38,7 +39,7 @@ define [
                 that = @
                 @drag = d3.behavior.drag()
                         .on("drag", (d) ->
-                                selection_orig = that.pageModel.get('selection')
+                                selection_orig = that.options.selectionModel.get('selection')
                                 selection = selection_orig[0..1]
                                 x = d3.event.x
                                 newX = that.baseTimeScale.invert(x)
@@ -48,14 +49,17 @@ define [
                                 if (selection[0]-dx) > that.model.minTime && (selection[1]-dx) < that.model.maxTime
                                     selection[0] -= dx
                                     selection[1] -= dx
-                                    that.pageModel.set('selection', selection)
+                                    that.options.selectionModel.set('selection', selection)
                 )
                 @tooltipYOffset = (d) -> -TOOLTIP_SIZE+45+@valueScale( d.get('value') )
                 @change_tip = d3.tip()
                                .attr('class', 'd3-tip timeline-tip')
                                .direction((d) => "n") #if d3.event.pageX < @maxWidth*0.15 then "ne" else (if d3.event.pageX> @maxWidth*0.85 then "nw" else "n"))
                                .offset((d) => [@tooltipYOffset(d) ,0])
-                               .html((d) -> if d.get('source') != 'dummy' then tpl_widget_change_tooltip(d) else "")
+                               .html((d) =>
+                                  d.budgetCode = @options.budgetCode
+                                  if d.get('source') != 'dummy' then tpl_widget_change_tooltip(d) else ""
+                                )
                 @chart.call( @change_tip )
                 that = this
                 @showTip = (d,i) ->
@@ -336,6 +340,7 @@ define [
             render__change_items: ->
                 changeModels = _.filter(@model.models, (x)->x.get('kind')=='change')
                 lastChanges = _.filter(changeModels,(x)->x.get("last"))
+
                 @chart.selectAll(".changeBar-last").data(lastChanges)
                        .enter()
                        .append("rect")
@@ -626,8 +631,8 @@ define [
 
                     @setValueRange()
 
-                    @minTime = @pageModel.get('selection')[0]
-                    @maxTime = @pageModel.get('selection')[1]
+                    @minTime = @options.selectionModel.get('selection')[0]
+                    @maxTime = @options.selectionModel.get('selection')[1]
 
                     @baseTimeScale = d3.scale.linear()
                             .domain([@minTime, @maxTime])
@@ -648,7 +653,7 @@ define [
                     @pixelPerfecter = (t) =>
                             Math.floor(t) + 0.5
 
-                    code = @pageModel.get('budgetCode')
+                    code = @options.budgetCode
                     @show_changes = 4 < code.length < 10
 
                     if @show_changes

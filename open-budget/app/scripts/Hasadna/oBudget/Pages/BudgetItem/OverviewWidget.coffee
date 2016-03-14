@@ -8,14 +8,25 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
             HANDLE_WIDTH = 7
             HANDLE_HEIGHT = 18
 
+            doSelection: (selection) ->
+              this.options.selectionModel.set('selection', selection);
+              @selection = selection
+              @renderSelectionBar()
+
             initialize: (options) ->
-                    @pageModel = options.pageModel
+                    @options = options
                     @rendered = false
                     @selectionBarRendered = false
-                    @pageModel.on "change:selection", => @renderSelectionBar()
-                    @pageModel.on "resized", =>
+
+                    this.options.selectionModel.on('change:selection', =>
+                      @selection = this.options.selectionModel.get('selection')
+                    );
+
+
+                    window.addEventListener('resize', () =>
                       @render()
                       @renderSelectionBar()
+                    )
 
                     @svg = d3.select(@el).append('svg')
                             .attr('width','100%')
@@ -32,7 +43,7 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
                     that = @
                     @drag = d3.behavior.drag()
                             .on("drag", (d) ->
-                                    selection_orig = that.pageModel.get('selection')
+                                    selection_orig = that.selection
                                     selection = selection_orig[0..1]
                                     selection_src = parseInt(d3.select(@).attr('data-selection'))
                                     x = d3.event.x
@@ -55,14 +66,14 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
                                     else
                                         return
                                     if selection[0] >= that.model.minTime && selection[1] <= that.model.maxTime
-                                        that.pageModel.set('selection', selection)
+                                        that.doSelection(selection)
                     )
 
                     @render()
 
             renderSelectionBar: ->
 
-                    selection = @pageModel.get('selection')
+                    selection = @selection
                     selectionLines = @selectionBar.selectAll('.selectionLine').data( selection )
                     if (@selectionBarRendered == false)
                         selectionLines.enter()
@@ -129,30 +140,33 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
                     @baseTimeScale = d3.scale.linear()
                             .domain([@model.minTime, @model.maxTime])
                             .range([10, @maxWidth-10])
+
                     @yearSeperatingScale = (t) =>
                             year = new Date(t).getFullYear()
                             base = new Date(year,0).valueOf()
                             #console.log t, year, base
                             base + (t - base) * 0.98
+
                     @timeScale = (t) =>
                             @pixelPerfecter(@baseTimeScale(@yearSeperatingScale(t)))
 
                     @baseValueScale = d3.scale.linear()
                             .domain([@minValue, @maxValue])
                             .range([@maxHeight+MARGIN, MARGIN])
+
                     @valueScale = (t) =>
                             @pixelPerfecter(@baseValueScale(t))
 
                     if (@rendered == false)
                         # Calculate initial selection
-                        if 4 < @pageModel.get('budgetCode').length < 10
+                        if 4 < @options.budgetCode.length < 10
                             selectionStart = @model.maxTime - 3500 * 365 * 86400
                         else
                             selectionStart = @model.minTime
                         if selectionStart < @model.minTime
                             selectionStart = @model.minTime
                         selectionEnd = @model.maxTime
-                        @pageModel.set('selection', [ selectionStart, selectionEnd ] )
+                        @doSelection([ selectionStart, selectionEnd ])
                     else
                         @renderSelectionBar()
 

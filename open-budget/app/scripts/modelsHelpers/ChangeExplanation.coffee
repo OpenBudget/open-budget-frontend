@@ -23,8 +23,8 @@ define [
                       ret = "0"+ret
               ret
 
-      doFetch: ->
-              @fetch(dataType: appConfig.dataType)
+      fetch: ->
+              super(dataType: appConfig.dataType)
 
       url: () => "#{appConfig.baseURL}/api/change_expl/#{@requestId()}/#{@get('year')}"
 

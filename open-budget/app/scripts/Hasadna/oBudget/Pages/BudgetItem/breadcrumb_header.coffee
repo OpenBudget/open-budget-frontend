@@ -13,10 +13,12 @@ define([
                     return "&#11015;"
 
     class BreadcrumbHeaderView extends Backbone.View
+        initialize: (options) ->
+          @options = options
+
         render: ->
             @$el.html('')
-            breadcrumbs = @model.breadcrumbs
-            for rec in breadcrumbs
+            for rec in @options.breadcrumbs
                 @$el.append( template_breadcrumb_item(rec))
 
     BreadcrumbHeaderView

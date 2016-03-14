@@ -22,18 +22,16 @@ define(['jquery', 'underscore', 'backbone'] , ($, _, Backbone) ->
         comparator: 'timestamp'
 
         initialize: (models, options) ->
-                @pageModel = options.pageModel
-                if @pageModel.get('digits') >= 4
-                    @changeGroups = @pageModel.changeGroups
-                else
-                    @changeGroups = { models: [] }
-                @budgetHistory = @pageModel.budgetHistory
-                @budgetApprovals = @pageModel.budgetApprovals
-                @pageModel.on "ready-budget-history-pre", =>
-                    @processChangeLines(@changeGroups.models)
-                    @processBudgetHistory(@budgetHistory.models,@budgetApprovals.models)
-                    @postProcess()
+                @options = options
+                @changeGroups = options.changeGroups
+                @budgetHistory = options.budgetHistory
+                @budgetApprovals = options.budgetApprovals
+
                 @minValue = @maxValue = @minTime = @maxTime = null
+
+                @processChangeLines(@changeGroups.models)
+                @processBudgetHistory(@budgetHistory.models, @budgetApprovals.models)
+                @postProcess()
 
         postProcess: () ->
                 last_baseline = null
@@ -108,10 +106,10 @@ define(['jquery', 'underscore', 'backbone'] , ($, _, Backbone) ->
                 for model in @models
                     model.set('max_value',@maxValue)
                     model.set('min_value',@minValue)
-                @reset(@models)
-                @pageModel.trigger 'ready-budget-history'
+                #@reset(@models)
+                # @pageModel.trigger 'ready-budget-history'
 
-        processBudgetHistory: (models,approvedModels) ->
+        processBudgetHistory: (models, approvedModels) ->
                 approved = _.groupBy(approvedModels, (x) -> x.get('year'))
                 for m in models
                     if approved[m.get('year')]?
@@ -207,12 +205,13 @@ define(['jquery', 'underscore', 'backbone'] , ($, _, Backbone) ->
                         yearly = _.sortBy( yearly, (m) => m.get('timestamp') )
                         yearStart = new Date(year,0).valueOf()
                         yearEnd = new Date(year,11,31).valueOf()
-                        actualLen = _.filter(yearly, (m) => m.getCodeChanges(@pageModel.get("budgetCode")) != 0).length
+                        actualLen = _.filter(yearly, (m) => m.getCodeChanges(@options.budgetCode) != 0).length
 
                         timestamp = yearStart
                         lastPoint = null
                         for m, i in yearly
-                                value = m.getCodeChanges(@pageModel.get("budgetCode"))
+
+                                value = m.getCodeChanges(@options.budgetCode)
                                 if value? and value != 0
                                         point = new CombinedHistoryPoint()
                                         point.set("source",m)
