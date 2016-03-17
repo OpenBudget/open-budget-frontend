@@ -33,6 +33,13 @@ define [], ->
               parameters['entityId'] = entityId
               @buildLink(parameters)
 
+          linkToPublication: (entityId, publication) ->
+              parameters = $.extend(true, {}, @linkParameters)
+              parameters['kind'] = 'entity'
+              parameters['entityId'] = entityId
+              parameters['publication'] = publication
+              @buildLink(parameters)
+
           linkToSpending: () ->
               parameters = $.extend(true, {}, @linkParameters)
               parameters['kind'] = 'spending'
@@ -60,7 +67,11 @@ define [], ->
               switch parameters['kind']
                   when 'budget' then link = "#budget/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
                   when 'transfer' then link = "#transfer/#{parameters['code']}/#{parameters['year']}/#{parameters['flow']}"
-                  when 'entity' then link = "#entity/#{parameters['entityId']}/#{parameters['year']}/#{parameters['flow']}"
+                  when 'entity'
+                    if parameters['publication']
+                      link = "#entity/#{parameters['entityId']}/publication/#{parameters['publication']}"
+                    else
+                      link = "#entity/#{parameters['entityId']}/#{parameters['year']}/#{parameters['flow']}"
                   when 'main' then link = "#main//#{parameters['year']}/#{parameters['flow']}"
                   when 'spending' then link = "#spending//#{parameters['year']}/#{parameters['flow']}"
 
