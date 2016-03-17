@@ -1,6 +1,5 @@
 import Backbone from 'backbone';
 import $ from 'jquery';
-import 'modernizr';
 import 'scripts/shame';
 import 'scripts/shameCoffee';
 import SearchBar from 'scripts/searchbar';
