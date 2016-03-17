@@ -7,52 +7,63 @@
   <span class="glyphicon glyphicon-chevron-up collapse" aria-hidden="true"></span>
 </td-->
 <td colspan="6" class="exemption-full-details">
-    <div class="arrow-box">
-      <p class='exemption-description shareLink'><a href="#entity/{{ entity_id }}/publication/{{ publication_id }}" target="_blank"><span class="glyphicon glyphicon-send"></span>שתף התקשרות</a></p>
-      <p class='exemption-description mrgovLink'><a href="{{ this.url }}" target="_blank"><span class="glyphicon glyphicon-link"></span>הצג התקשרות באתר מנהל הרכש</a></p>
+<div class="arrow-box">
+    <div class="buttons">
+        <div class='exemption-description shareLink'><a href="#entity/{{ entity_id }}/publication/{{ publication_id }}" target="_blank">לינק לשיתוף התקשרות</a></div>
+        <div class="shareIcon1">
+        <a target="blank" href="https://facebook.com/sharer.php?u={{#encodeURIComponent}}http://www.obudget.org/{{URLSchemeHandler 'linkToPublication' entity_id publication_id}}{{/encodeURIComponent}}">
+        <i class="facebook"></i></a></div>
+
+      <div class="shareIcon2"><a target="blank" href="https://twitter.com/intent/tweet?url={{#encodeURIComponent}}http://www.obudget.org/{{URLSchemeHandler 'linkToPublication' entity_id publication_id}}{{/encodeURIComponent}}&via=hasadna&related=hasadna"><i class="twitter"></i></a>
+      </div>
+        <div class='exemption-description mrgovLink'><a href="{{ this.url }}" target="_blank">הצגת התקשרות באתר מנהל הרכש</a></div>
+    </div>
 
     <ul>
-    <li>
-        <h4>תקופת התקשרות</h4>
-        {{moment start_date "D/M/YYYY"}}-{{moment end_date "D/M/YYYY"}}
-    </li>
-    <li>
-        <h4>סכום התקשרות</h4>
-        {{#if volume}}
-          {{numbro volume isCurrency=true format="0, $"}}
-        {{else}}
-          לא ידוע
-        {{/if}}
-    </li>
-    <li>
-        <h4>סטטוס</h4>
-        {{ decision }}
-    </li>
-    <li>
-        <h4>תקנה</h4>
-        {{ regulation }}
-    </li>
+        <li>
+            <h4>תקופת התקשרות</h4>
+          {{moment start_date "D/M/YYYY"}}-{{moment end_date "D/M/YYYY"}}
+        </li>
+        <li>
+            <h4>סכום התקשרות</h4>
+          {{#if volume}}
+            {{numbro volume isCurrency=true format="0, $"}}
+          {{else}}
+              לא ידוע
+          {{/if}}
+        </li>
+        <li>
+            <h4>סטטוס</h4>
+          {{ decision }}
+        </li>
+        <li>
+            <h4>תקנה</h4>
+          {{ regulation }}
+        </li>
 
     </ul>
-        <div class="table-forms">
-    {{#if documents.length}}
+<div class="table-forms">
+  {{#if documents.length}}
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th colspan="3"><h4>מסמכים</h4></th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each documents}}
-        <tr>
-            <td class="field-label col-md-2"><a href="http://www.obudget.org/api/exemption/document?url={{ link }}"><div class="glyphicon glyphicon-paperclip" aria-hidden="true"></div>&nbsp;&nbsp;{{moment update_time "d/M/YYYY"}}</a></td>
-            <td class="field-label col-md-10">{{ description }}</td>
-        </tr>
-        {{/each}}
-        </tbody>
-    </table>
-            </div>
-        </div>
-    {{/if}}
+      <table class="table table-striped">
+          <thead>
+          <tr>
+              <th colspan="3"><h4>מסמכים</h4></th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#each documents}}
+              <tr>
+                  <td class="field-label col-md-2"><a
+                          href="http://www.obudget.org/api/exemption/document?url={{ link }}">
+                      <div class="glyphicon glyphicon-paperclip" aria-hidden="true"></div>
+                      &nbsp;&nbsp;{{moment update_time "d/M/YYYY"}}</a></td>
+                  <td class="field-label col-md-10">{{ description }}</td>
+              </tr>
+          {{/each}}
+          </tbody>
+      </table>
+  </div>
+  </div>
+  {{/if}}
 </td>
