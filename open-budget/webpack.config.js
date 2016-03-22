@@ -46,24 +46,19 @@ const config = {
         test: /segment-tree-browser\.js$/,
         loader: 'exports?segmentTree'
       }, {
-        test: /bower_components\/pivottable\/dist\/pivot\.js$/,
+        test: new RegExp(escapeRegExp(path.join('bower_components', 'pivottable', 'dist', 'pivot.js'))),
         loader: 'imports?jqueryUi=jquery-ui'
       }, {
-        test: /bower_components\/typeahead\.js\/dist\/bloodhound\.js/,
+        test: new RegExp(escapeRegExp(path.join('bower_components', 'typeahead.js', 'dist', 'bloodhound.js'))),
         loader: 'exports?Bloodhound'
       }, {
-        test: /[\\\/]bower_components[\\\/]modernizr[\\\/]modernizr\.js$/,
-        loader: "imports?this=>window!exports?window.Modernizr"
-      }, {
-        test: /bower_components\/bootstrap\/dist\/js\/bootstrap\.js$/,
+        test: new RegExp(escapeRegExp(path.join('bower_components', 'bootstrap', 'dist', 'js', 'bootstrap.js'))),
         loader: "imports?jQuery=jquery"
       }, {
-        test: /numbro\/numbro/,
+        test: new RegExp(escapeRegExp(path.join('numbro', 'numbro'))),
         loader: "imports?require=>false"
-      },
-
-      {
-        test: /moment\/moment/,
+      }, {
+        test: new RegExp(escapeRegExp(path.join('moment', 'moment'))),
         loader: "imports?require=>false"
       }, {
         test: /\.less$/,
@@ -74,10 +69,11 @@ const config = {
       }
     ],
 
-    // prevent webpack to embed all numbero, moment js deps
-    //https://github.com/webpack/webpack/issues/198#issuecomment-37306725
-    exprContextRegExp: /$^/,
-    exprContextCritical: false
+    // prevent webpack to (try) embed all numbero, moment js deps
+    noParse: [
+      new RegExp(escapeRegExp(path.join('numbro', 'numbro'))),
+      new RegExp(escapeRegExp(path.join('moment', 'moment')))
+    ]
   },
 
   plugins: [
@@ -126,3 +122,8 @@ function getAlias() {
 }
 
 module.exports = config
+
+// from https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions
+function escapeRegExp(string){
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
