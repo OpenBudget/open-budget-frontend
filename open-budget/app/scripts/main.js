@@ -79,6 +79,13 @@ router.on('route:main-page', () => {
   currentPage.getView().$el.addClass('active');
   $('body > div > .footer').before(currentPage.getView().el);
   currentPage.afterAppend();
+
+  window.requestAnimationFrame(() => {
+    document.body.style.display = 'none';
+    document.body.getBoundingClientRect();
+    document.body.style.display = 'block';
+    document.body.getBoundingClientRect();
+  });
 });
 
 router.on('route:transfer-page', (code, year) => {
