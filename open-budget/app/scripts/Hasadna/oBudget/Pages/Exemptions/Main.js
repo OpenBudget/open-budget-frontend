@@ -92,12 +92,18 @@ export default class Main extends Backbone.View {
 
 
   populateExemptionsToDisplay() {
-    let exemptionsToDisplay = this.newSpendingsCollection
-      .filter(dataHelpers.composeExemptionsFilterFunc(
-        this.uiModel.get('controls'),
-        this.ministriesAliasesIndex
-      ))
-      .map((exemption) => exemption.toJSON());
+
+    var controlValues = this.uiModel.get("controls")
+    let exemptionsToDisplay = this.getExemptionsToDisplay(controlValues);
+
+    // if the user chooses 'יום אחרין' we try to get exemtions for today
+    // however, often exemptions are not yet published on the day itself
+    // so if no exeptions are found, we show exemptions also from yesterday
+    if (controlValues.timeFrame == 1 && exemptionsToDisplay.length == 0) {
+
+      controlValues.timeFrame = 2;
+      exemptionsToDisplay = this.getExemptionsToDisplay(controlValues);
+    }
 
     exemptionsToDisplay.sort(dataHelpers.composeExemptionsSortFunc(this.uiModel.get('controls')));
 
@@ -106,6 +112,17 @@ export default class Main extends Backbone.View {
     this.uiModel.set('publicationId', null, { silent: true });
     return this.uiModel.set({ exemptionsToDisplay, loadingExemptions: false });
   }
+
+  getExemptionsToDisplay(filterData) {
+
+    return this.newSpendingsCollection
+      .filter(dataHelpers.composeExemptionsFilterFunc(
+        filterData,
+        this.ministriesAliasesIndex
+      )).map((exemption) => exemption.toJSON());
+
+  }
+
 
   standaloneEntity(entityId, publicationId) {
     this.uiModel = new Backbone.Model({
