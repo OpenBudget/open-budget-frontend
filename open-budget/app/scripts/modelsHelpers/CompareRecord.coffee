@@ -10,7 +10,7 @@ define(['backbone'], (Backbone) ->
         rev_2016: null
         group_top: null
         group_full: null
-        year: 2015
+        year: 2016
 
   return CompareRecord
 )

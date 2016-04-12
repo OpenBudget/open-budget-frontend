@@ -89,7 +89,7 @@ define(
             items = _.filter(items, (x) -> x.get('group_top').length > 0 and x.get('code').substring(2,4)!='00')
             items = _.groupBy(items, (x) -> x.get('group_top')[0])
             groups = _.keys(items)
-            groups = _.sortBy(groups, (x)-> -d3.sum(_.map(items[x], (y)->y.get('orig_2015'))))
+            groups = _.sortBy(groups, (x)-> -d3.sum(_.map(items[x], (y)->y.get('orig_2016'))))
 
             @centers = {}
             _.each( groups
@@ -150,10 +150,10 @@ define(
 
         events:
             'click #grouping-kind .btn': 'clickToggle'
-            'click .compare-2015': 'compare_2015'
-            'click .compare-2016': 'compare_2016_end'
-            'click .compare-2016 .compare-year-start': 'compare_2016_start'
-            'click .compare-2016 .compare-year-end': 'compare_2016_end'
+            'click .compare-2016': 'compare_2016'
+            'click .compare-2015': 'compare_2016_end'
+            'click .compare-2015 .compare-year-start': 'compare_2016_start'
+            'click .compare-2015 .compare-year-end': 'compare_2016_end'
 
         readyBudgetBubblesHandler: =>
           stateChange = (state, node) =>
@@ -205,24 +205,24 @@ define(
         readyMainBudgetHandler: =>
           @$el.find("#main-budget-header").html(tpl_main_budget_header({main:@options.mainBudgetItem.toJSON(), newb:@options.newBudgetItem.toJSON()}))
           if @rendered
-              @compare_2015()
+              @compare_2016_start()
 
-        compare_2015: =>
-            @set_actives('.compare-2015')
-            @switchComparison('orig_2015/rev_2015')
+        compare_2016: =>
+            @set_actives('.compare-2016')
+            @switchComparison('orig_2016/rev_2016')
 
         compare_2016_start: =>
-            @set_actives('.compare-year-start,.compare-2016')
+            @set_actives('.compare-year-start,.compare-2015')
             @switchComparison('orig_2015/orig_2016')
             false
 
         compare_2016_end: =>
-            @set_actives('.compare-year-end,.compare-2016')
+            @set_actives('.compare-year-end,.compare-2015')
             @switchComparison('rev_2015/orig_2016')
             false
 
         set_actives: (selector) =>
-            @$el.find('.compare-2015,.compare-2016,.compare-year-start,.compare-year-end').toggleClass('active',false)
+            @$el.find('.compare-2016,.compare-2015,.compare-year-start,.compare-year-end').toggleClass('active',false)
             @$el.find(selector).toggleClass('active',true)
 
         clickToggle: (e) =>
@@ -284,13 +284,7 @@ define(
 
         addKids: (node, readyCallback) =>
             year = node.src.get('year')
-            code = null
-            if @selectedComparison=='orig_2015/rev_2015'
-                code = node.src.get('prev_code')
-            if not code?
-                code = node.src.get('code')
-                year += 1
-
+            code = node.src.get('code')
             dataFetchers.budgetItemKids(code, year)
               .then( (centeredNodeKids) =>
                 console.log("kids are ready")
@@ -327,10 +321,6 @@ define(
             @data = []
             that = @
             for model in @options.compareRecords.models
-                # orig = model.get('orig_2014')
-                # revised = model.get('orig_2015')
-                # if !(orig>0) || !(revised>0)
-                #     continue
                 if model.get('code').substring(2,4)=="00"
                     continue
                 node =
@@ -350,14 +340,11 @@ define(
                         @addBubbleLabels(d)
                 @data.push node
 
-            @compare_2015()
+            @compare_2016_start()
 
         moreInfo: (node) ->
-            code = @src.get('prev_code')
+            code = @src.get('code')
             year = @src.get('year')
-            if not code?
-                code = @src.get('code')
-                year += 1
             window.location.hash = @options.URLSchemeHandlerInstance.linkToBudget(code, year)
             ###
             TODO: build a new view controller architecture
@@ -385,7 +372,7 @@ define(
                 node.orig = model.get(orig_field)
                 node.rev = model.get(rev_field)
                 if node.orig > node.rev then decreased += 1
-                if node.rev > node.orig then increased += 1
+                if node.rev >= node.orig then increased += 1
                 node.value = node.rev
                 if node.orig <=0 and node.rev <= 0
                     node.part = 0

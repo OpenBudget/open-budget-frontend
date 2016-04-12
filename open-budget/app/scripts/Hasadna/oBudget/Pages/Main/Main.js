@@ -9,27 +9,11 @@ export default class Main {
     this.view = new View();
 
     this.dataPromises = {
-      // @budgetItems4 = new CompareRecords([], pageModel: @)
       compareRecords: dataFetchers.compareRecords(),
-      // @budgetItems2 = new BudgetItemKids([], year: 2015, code: '00', pageModel: @)
-      budgetItemKids: dataFetchers.budgetItemKids('00', 2015),
-      mainBudgetItem: dataFetchers.budgetItem('00', 2015),
+      budgetItemKids: dataFetchers.budgetItemKids('00', 2016),
+      mainBudgetItem: dataFetchers.budgetItem('00', 2016),
       newBudgetItem: dataFetchers.budgetItem('00', 2016),
     };
-
-    // @budgetItems4 = new CompareRecords([], pageModel: @)
-    // @budgetItems2 = new BudgetItemKids([], year: 2015, code: '00', pageModel: @)
-    // @readyEvents.push (new ReadyAggregator(@, "ready-budget-bubbles")
-    //                                     .addCollection(@budgetItems2)
-    //                                     .addCollection(@budgetItems4))
-
-    // @mainBudgetItem = new BudgetItem(year: 2015, code: '00', pageModel: @)
-    // @newBudgetItem = new BudgetItem(year: 2016, code: '00', pageModel: @)
-    // @readyEvents.push (new ReadyAggregator(@, "ready-main-budget")
-    //                                     .addModel(@mainBudgetItem)
-    //                                     .addModel(@newBudgetItem))
-    // @mainBudgetItem.do_fetch()
-    // @newBudgetItem.do_fetch()
   }
 
   getView() {
