@@ -4,7 +4,7 @@ define [
   'backbone',
   "segment-tree-browser",
   "templates/widget-change-tooltip.html",
-  "templates/participant-photo.html",
+  "templates/participant-photo.hbs",
   "templates/widget-participant-tooltip.html"
   "templates/participant-term.html"
   ],

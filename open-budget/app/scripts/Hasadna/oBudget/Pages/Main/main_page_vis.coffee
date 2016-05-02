@@ -6,7 +6,7 @@ define(
     'scripts/bubble_chart',
     'Hasadna/oBudget/Misc/dataFetchers',
     'templates/main-budget-header.hbs',
-    'templates/bubble-group-label.html',
+    'templates/bubble-group-label.hbs',
     'templates/bubble-tooltip.html'
   ], ($, Backbone, _, BubbleChart, dataFetchers, tpl_main_budget_header, tpl_bubble_group_label, tpl_bubble_tooltip) ->
 
@@ -265,9 +265,11 @@ define(
           center = @centers[@toggle]
           title_data = center.getCenters()
 
+          tpl_total_coefficient = 1000 # TODO: should this be a constant defined somewhere else?
+          
           if centeredNode?
               $(tpl_bubble_group_label({
-                    total: centeredNode.rev,
+                    total: centeredNode.rev * tpl_total_coefficient,
                     title: centeredNode.src.get("title")
                 })).css({
                     top: "50px",
@@ -277,6 +279,8 @@ define(
           else
               for group, i in title_data
                 if group.title?
+                  group.total = group.total * tpl_total_coefficient
+
                   $(tpl_bubble_group_label(group)).css({
                     top: (group.y + @chart.radius_scale(group.total)) + "px",
                     left: group.x + "px"

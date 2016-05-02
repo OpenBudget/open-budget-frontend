@@ -3,7 +3,7 @@ define([
   'bloodhound',
   'scripts/modelsHelpers/BudgetItem',
   'templates/searchbar-tooltip.html',
-  'templates/expandor_icon.html',
+  'templates/expandor_icon.hbs',
   'templates/upbacker.html',
   'templates/searchbar-tooltip-full.html',
   'templates/search-dropdown-item.html',
