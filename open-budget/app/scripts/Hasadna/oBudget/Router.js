@@ -10,8 +10,8 @@ export default class Router extends Backbone.Router {
       'entity/:entityId': 'entity',
       'entity/:entityId/publication/:publication(*yeaorwhatever)': 'entity',
       'entity/:entityId(*yeaorwhatever)': 'entity',
-      'budget/(:code)/:year(/main)': 'budget-page',
-      'transfer/:code/:year/(*whatever)': 'transfer-page',
+      'budget/(:code)/:year(/*whatever)': 'budget-page',
+      'transfer/:code/:year(/*whatever)': 'transfer-page',
     };
   }
 }
