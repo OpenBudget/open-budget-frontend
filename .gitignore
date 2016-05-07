@@ -1,0 +1,5 @@
+# OS folders
+.DS_Store
+._*
+Thumbs.db
+.idea
