@@ -1,8 +1,12 @@
 <div class="loading-indicator">{{> ./sk-fading-circle}}</i></div>
-<div class="scroll-viewport">
+<section class="scroll-viewport">
 
-    <h2 class='entity-name'>
-        <a href="#entity/{{ id }}" target="_blank">{{ name }}</a>
+
+<section class="entity-top-section">
+
+    <div class="entity-name-col">
+        <h2 class='entity-name'>
+            <a href="#entity/{{ id }}" target="_blank">{{ name }}</a>
         <span class='manof-name'>
 
                   {{#ifCond kind "==" "association"}}
@@ -19,7 +23,8 @@
           {{/ifCond}}
 
         </span>
-    </h2>
+        </h2>
+    </div>
 
 
     <!--<h4 class='manof-name'>-->
@@ -27,33 +32,163 @@
 
     <!--</h4>-->
 
-
+<div class="entity-title-col">
   {{#if exemptions.length }}
       <h3 class="entity-title">
-        {{ exemptions.length }} התקשרויות עם <span class="total"></span>
-          משרדים בסך
-        {{#if exemptions_sum}}
-          {{numbro exemptions_sum isCurrency=true format="0, $"}}
-        {{else}}
-            לא ידוע
-        {{/if}}
-      </h3>
+          <!--{{ exemptions.length }} התקשרויות עם <span class="total"></span>-->
+          <!--משרדים בסך-->
+              <!--{{#if exemptions_sum}}-->
+          <!--{{numbro exemptions_sum isCurrency=true format="0, $"}}-->
+              <!--{{else}}-->
+          <!--לא ידוע-->
+              <!--{{/if}}-->
+          תקצוב מ-x משרדים ב-x ש״ח
 
+      </h3>
+  </div>
+
+      <div class="export-container">
+          <div class="export">
+              <a href="javascript:void(0)" class="export-purchasing"><p>יצא רכש<span
+                      class="glyphicon glyphicon-save"></span></p></a>
+              <a href="http://www.obudget.org/api/exemption/entity/{{ id }}?o=csv&limit=10000"
+                 class="export-exemptions"><p>
+                  יצא התקשרויות<span class="glyphicon glyphicon-save"></span></p></a>
+              <a href="http://www.obudget.org/api/supports/entity/{{ id }}?o=csv&limit=10000"
+                 class="export-supports"><p>יצא
+                  תמיכות<span class="glyphicon glyphicon-save"></span></p></a>
+          </div>
+      </div>
+
+  </section>
+
+      <section id="entity-viz">
+          <div id="entity-viz-pie"></div>
+          <div id="entity-viz-histogram"></div>
+      </section>
+        {{#if hasProcurements}}
+
+        <section class="purchasing_section">
+          <div class="container-fluid">
+              <div class="table-responsive">
+
+
+                  <h3 class="entity-title-top">←&nbsp;רכש</h3>
+                  <span class="xs_titel">מידע מדוחות רכש רבעוניים מהאתר הממשלתי לחופש המידע<a href="https://foi.gov.il/"
+                                                                                              target="_blank">foi.gov.il</a>&nbsp;(החל מ2015)
+                                    <a href="#purchasing-modal" class="moreInfo" data-toggle="modal"><span
+                                            class="moreInfoText">מידע נוסף</span></a>
+                  </span>
+
+                  <!--table-purchasing-main-->
+                  <table class="table table-purchasing-main">
+                      <thead>
+                      <tr>
+                          <th class="col-xs-6">שם המשרד</th>
+                          <th class="col-xs-1">מס׳</th>
+                          <th class="col-xs-2">בסך</th>
+                          <th class="col-xs-2">שנים</th>
+                          <th class="col-xs-1"></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {{#each procurements}}
+                      <tr>
+                          <td class="purchasing-publisher">{{@key}}</td>
+                          <td class="purchasing-number">{{this.length}}</td>
+                          <td class="purchasing-volume">{{numbro this.executed isCurrency=true format="0, $"}}</td>
+                          <td class="purchasing-years">{{this.years}}</td>
+                          <td class="td-expander">
+                              <a href="#demo{{@index}}" class="btn btn-expander collapsed" data-toggle="collapse"></a>
+                          </td>
+                      </tr>
+
+                      <!--table-purchasing-details-->
+                      <tr style="display: table-row;">
+                          <td colspan="6" class="purchasing_details_container">
+                              <table id="demo{{@index}}" class="table table-purchasing-details collapse">
+
+                                  <thead>
+                                  <tr>
+                                      <th class="col-xs-2">נושא</th>
+                                      <th class="col-xs-1">אושר</th>
+                                      <th class="col-xs-1">הועבר</th>
+                                      <th class="col-xs-1">שנים</th>
+                                      <th class="col-xs-1">תאריך הזמנה</th>
+                                      <th class="col-xs-1">מס׳ הזמנה</th>
+                                      <th class="col-xs-1">מס׳ מנו״ף</th>
+                                      <th class="col-xs-3">סעיף תקציבי</th>
+                                      <th class="col-xs-1"></th>
+                                  </tr>
+                                  </thead>
+
+                                  <tbody>
+                                {{#each this.groupedSector}}
+                                  <tr>
+                                      <td class="purchasing-description">{{this.budget_title}}<strong class="purchasing-unit">&nbsp;
+                                        {{#if this.purchasing_unit}}({{this.purchasing_unit}}){{/if}}</strong></td>
+                                      <td class="purchasing-approve">{{numbro this.approved isCurrency=true format="0, $"}}</td>
+                                      <td class="purchasing-transported">{{numbro this.executed isCurrency=true format="0, $"}}</td>
+                                      <td class="purchasing-period">{{this.years}}</td>
+                                      <td class="purchasing-orderDate">{{this.order_date}}</td>
+                                      <td class="purchasing-orderNumber">{{this.order_id}}</td>
+                                      <td class="purchasing-manof-name">{{this.manof_ref}}</td>
+                                      <td class="purchasing-regulation"><a href="#">{{this.budget_code}}-{{this.budget_title}}</a></td>
+                                      <td class="td-expander">
+                                          <a href="#demo_inner_{{@../index}}{{@index}}" class="btn btn-expander collapsed"
+                                             data-toggle="collapse"></a>
+                                      </td>
+                                  </tr>
+                                  <!--table-purchasing-quarter-->
+
+                                  <tr style="display: table-row;">
+                                      <td colspan="9" class="purchasing_quarter_container">
+                                          <table id="demo_inner_{{@../index}}{{@index}}" class="table table-purchasing-quarter collapse">
+
+                                              <thead>
+                                              <tr>
+                                                  <th class="col-xs-1">תקופה</th>
+                                                  <th class="col-xs-2">אושר</th>
+                                                  <th class="col-xs-2">הועבר</th>
+                                                  <th class="col-xs-3">סוג</th>
+                                              </tr>
+                                              </thead>
+
+                                              <tbody>
+                                              {{#each this}}
+                                                {{this.report_year}}
+                                                {{numbro this.volume isCurrency=true format="0, $"}}
+                                                {{numbro this.executed isCurrency=true format="0, $"}}
+                                                {{this.purchase_method}}{{#if this.exemption_reason}}-{{this.exemption_reason}}{{/if}}
+
+                                              {{/each}}
+                                              <tbody>
+                                          </table>
+                                      </td>
+                                  </tr>
+                                {{/each}}
+                                  <tbody>
+                              </table>
+                          </td>
+                      </tr>
+                      {{/each}}
+                      </tbody>
+                  </table>
+
+              </div>
+          </div>
+      </section>
+        {{/if}}
 
       <div class="left-info">
           <div class="table-responsive info">
+              <h3 class="entity-title-top">&larr;&nbspהודעות פטור ממכרז</h3>
 
-
-              <h3 class="entity-title-top">&larr;&nbspהתקשרויות</h3>
-
-              <div class="export">
-                  <a href="http://www.obudget.org/api/exemption/entity/{{ id }}?o=csv&limit=10000"
-                     class="export-exemptions"><p>
-                      יצא התקשרויות<span class="glyphicon glyphicon-save"></span></p></a>
-                  <a href="http://www.obudget.org/api/supports/entity/{{ id }}?o=csv&limit=10000"
-                     class="export-supports"><p>יצא
-                      תמיכות<span class="glyphicon glyphicon-save"></span></p></a>
-              </div>
+<span class="xs_titel">מידע על הודעות על התקשרויות בפטור ממכרז מאתר מנהל הרכש הממשלתי<a
+        href="http://www.mr.gov.il/Pages/HomePage.aspx"
+        target="_blank">mr.gov.il</a>
+              <a href="#exemption-modal" class="moreInfo" data-toggle="modal"><span
+                      class="moreInfoText">מידע נוסף</span></a></span>
 
 
               <table class="table exemption-table table-expandable">
@@ -74,51 +209,141 @@
   {{/if}}
 
   {{#if supports.length }}
+      <section class="support_section">
+          <div class="container-fluid">
+              <div class="table-responsive">
 
-      <div class="left-info support">
 
-          <div class="info">
-              <h3 class="entity-title-top support">&larr;&nbspתמיכות</h3>
-              <table class="support-table table table-expandable table-responsive">
-                  <thead>
-                  <tr>
-                      <th>שנה</th>
-                      <th>נושא</th>
-                      <th>תקנה</th>
-                      <th>אושר</th>
-                      <th>הועבר</th>
-                      <th>סוג</th>
-                      <th>עוד</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {{#each supports}}
+                  <h3 class="entity-title-top">←&nbsp;תמיכות</h3>
+                              <span class="xs_titel">מידע על מענקי תמיכות מפורטל התמיכות הממשלתי<a
+                                      href="http://www.tmichot.gov.il/irj/portal/anonymous?guest_user=awf_user"
+                                      target="_blank">tmichot.gov.il</a>
+                                               <a href="#support-modal" class="moreInfo" data-toggle="modal"><span
+                                                       class="moreInfoText">מידע נוסף</span></a></span>
+
+                  <!--table-support-main-->
+
+                  <table class="table table-support-main">
+                      <thead>
                       <tr>
-                          <td class='support-year'>{{ year }}</td>
-                          <td class='support-subject'>{{ subject }}</td>
-                          <td class='support-code'><a
-                                  href="{{URLSchemeHandler 'linkToBudget' code year }}">{{strSlice code 2}}
-                              - {{ title }}</a></td>
-                          <td class='support-amount-allocated'>{{numbro amount_allocated}}</td>
-                          <td class='support-amount_supported'>{{numbro amount_supported}}</td>
-                          <td class='support-kind'>{{ kind }}</td>
-                          <td class='support-more'>
-                    <span class='support-num_used'>
-                      {{#ifCond kind "==" "תמיכה בפרט"}}
-                        {{num_used}} נתמכים
-                      {{else}}
-                        {{#ifCond num_used ">" 1}}
-                          {{num_used}} נתמכים
-                        {{/ifCond}}
-                      {{/ifCond}}
-                    </span>
-                          </td>
+                          <th class="col-xs-7">שם המשרד</th>
+                          <th class="col-xs-1">מס׳</th>
+                          <th class="col-xs-2">בסך</th>
+                          <th class="col-xs-1">שנים</th>
+                          <th class="col-xs-1"></th>
                       </tr>
-                  {{/each}}
-                  </tbody>
-              </table>
+                      </thead>
+                  <tbody>
+                    {{#each supportsBySubject}}
+                        <tbody>
+                        <tr>
+                            <td>{{@key}}</td>
+                            <td>{{numOfSupports}}</td>
+                            <td>
+                              {{#if total_supported}}
+                                {{numbro total_supported isCurrency=true format="0, $"}}
+                              {{else}}
+                                  לא ידוע
+                              {{/if}}
+                            </td>
+                            <td>
+                              {{#ifCond min_year '==' max_year}}
+                                {{max_year}}
+                              {{else}}
+                                {{ max_year }} - {{ min_year }}
+                              {{/ifCond}}
+                            </td>
+                            <td class="td-expander">
+                                <a href="#supportdemo1_{{@index}}" class="btn btn-expander collapsed"
+                                   data-toggle="collapse"></a>
+                            </td>
+                        </tr>
+
+                        <!--table-support-details-->
+
+                        <tr style="display: table-row;">
+                            <td colspan="6" class="support_details_container">
+                                <table id="supportdemo1_{{@index}}" class="table table-support-details collapse">
+
+                                    <thead>
+                                    <tr>
+                                        <th class="col-xs-3">שנה</th>
+                                        <th class="col-xs-3">מס׳</th>
+                                        <th class="col-xs-3">בסך</th>
+                                        <th class="col-xs-3"></th>
+                                    </tr>
+                                    </thead>
+
+                                  {{#each this.supportsByYear}}
+                                      <tbody>
+                                      <tr>
+                                          <td>{{@key}}</td>
+                                          <td>{{supports.length}}</td>
+                                          <td class='supports-total'>
+                                            {{#if total_supported_by_year}}
+                                              {{numbro total_supported_by_year isCurrency=true format="0, $"}}
+                                            {{else}}
+                                                לא ידוע
+                                            {{/if}}
+                                          </td>
+                                          <td class="td-expander">
+                                              <a href="#supportdemo_inner_1_{{@../index}}{{@index}}"
+                                                 class="btn btn-expander collapsed" data-toggle="collapse"></a>
+                                          </td>
+                                      </tr>
+                                      <!--table-support-moreDetails-->
+
+                                      <tr style="display: table-row;">
+                                          <td colspan="8" class="support_moreDetails_container">
+                                              <table id="supportdemo_inner_1_{{@../index}}{{@index}}"
+                                                     class="table table-support-moreDetails collapse">
+                                                  <thead>
+                                                  <tr>
+                                                      <th class="col-xs-5">תקנה</th>
+                                                      <th class="col-xs-2">אושר</th>
+                                                      <th class="col-xs-2">הועבר</th>
+                                                      <th class="col-xs-3">סוג</th>
+                                                      <!--<th class="col-xs-3">נתמכים נוספים</th>-->
+                                                  </tr>
+                                                  </thead>
+                                                {{#each this.supports}}
+                                                <tbody>
+                                                <tr>
+                                                    <td>{{ title }}</td>
+                                                    <td>
+                                                      {{#if amount_allocated}}
+                                                        {{numbro amount_allocated isCurrency=true format="0, $"}}
+                                                      {{else}}
+                                                          לא ידוע
+                                                      {{/if}}
+                                                    </td>
+                                                    <td>
+                                                      {{#if amount_supported}}
+                                                        {{numbro amount_supported isCurrency=true format="0, $"}}
+                                                      {{else}}
+                                                          לא ידוע
+                                                      {{/if}}
+                                                    </td>
+                                                    <td>{{ kind }}</td>
+                                                </tr>
+                                                {{/each}}
+                                              </tbody>
+                                              </table>
+                                          </td>
+                                      </tr>
+                                      </tbody>
+                                  {{/each}}
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    {{/each}}
+                  </table>
+              </div>
           </div>
-      </div>
+      </section>
+
+
   {{/if}}
 
     <div class="left-info">
@@ -145,4 +370,98 @@
 
     <!--</div>-->
     <!--</div>-->
-</div>
+    <!--</div>-->
+
+
+    <!-- Modal -->
+
+    <div class="entity-modal">
+
+        <div class="modal fade" id="purchasing-modal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <i class="infoIcon"></i>
+                        <h4 class="modal-title">רכש</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <b>
+                                דו"חות הרכש הרבעוניים מתפרסמים באתר הממשלתי לחופש המידע מתוקף נוהל "פרסום התקשרויות עם
+                                המדינה" של היחידה הממשלתית לחופש המידע ("נוהל 10"), שנכנס לתוקף ב2016.
+                            </b>
+                            <br><br>
+                            הנוהל קובע כי משרדי הממשלה ויחידות הסמך יפרסמו תחילה את ההתקשרויות הנוגעות לשנת 2015,
+                            ולאחר מכן הם מחוייבים לפרסם עד 45 יום לאחר סיום הרבעון את רשימת ההתקשרויות שלהם עם ספקים
+                            חיצוניים בתקופה זו.
+                            הנתונים בדו"ח מסווגים לפי נושא ההתקשרות, שם הספק, סכום ההתקשרות וסיווגים נוספים רבים.
+                            הדו"חות באתר זמינים להורדה בפורמט Excel. קישור למאגר התשובות בו ניתן לראות קבצים
+                            שהרשויות מסרו לציבור בעקבות חוק חופש המידע, ואת דו"חות התקשרויות. הנוהל המלא זמין
+                            בקישור: https://foi.gov.il/node/1994. המידע בדוחות מופק מתוך מערכת המרכב"ה הממשלתית.
+                            יצויין כי חלק מהשדות מוזנים באופן ידני, ולכן מנסיוננו, לעיתים קיימות שגיאות טכניות בהזנת
+                            המידע, כמו למשל רישום מדוייק של מספר הפרסום במנו"ף. כל נתוני הרכש מרוכזים על ידנו
+                            וזמינים בdata.obudget.org. (יש לבחור בשדה procurement)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="exemption-modal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <i class="infoIcon"></i>
+                        <h4 class="modal-title">הודעות פטור ממכרז</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <b>
+                                המידע באתר מינהל הרכש מכיל הודעות של משרדי ממשלה ויחידות סמך על התקשרויות עם ספקים
+                                פרטיים, שהן פטורות ממכרז. המשרדים רשאים להתקשר בפטור ממכרז בהתאם לעילות החריגות הקבועות
+                                בתקנות חובת המכרזים, תשנ"ג-1993 ובהוראת התכ"ם 7.8.1. סה"כ קיימות 33 עילות לפטור ממכרז.
+                            </b>
+                            <br><br>
+                            העילות המרכזיות הן: התקשרות עם ספק יחיד, מימוש זכות ברירה, התקשרות המשך, התקשרות לביצוע מיזם
+                            משותף ללא כוונת רווח, התקשרות עם תאגיד שהוקם בחוק והתקשרות עם ספק חוץ. החל משנת 2009 משרדי
+                            הממשלה מחוייבים לפרסם באתר הודעות על התקשרויות בפטור ממכרז. המידע באתר מינהל הרכש מוזן
+                            באמצעות מערכת המנו"ף הממשלתית. מנסיוננו, לעיתים קיימות שגיאות טכניות בהזנת המידע, כמו למשל
+                            רישום מדוייק של מספר הספק ושם הספק. כל נתוני הרכש מרוכזים על ידנו וזמינים בdata.obudget.org.
+                            (יש לבחור בשדה exemption)ש לבחור בשדה procurement)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="support-modal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <i class="infoIcon"></i>
+                        <h4 class="modal-title">תמיכות</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <b>
+                                אתר התמיכות הממשלתי כולל מידע על מענקי תמיכות, כולל הסכום שאושר והסכום שהועבר בפועל, בכל
+                                שנה.
+                            </b>
+                            <br><br>
+                            תמיכת המדינה במוסדות ציבור נעשית בהתאם להוראת סעיף 3א' לחוק יסודות התקציב, התשמ"ה-1985,
+                            "נוהל שר האוצר להגשת בקשות לתמיכה מתקציב המדינה ולדיון בהן" והוראות תכ"ם. החוק קובע כי תמיכת
+                            המדינה חייבת להינתן על פי מבחנים שוויוניים, הנקבעים על ידי השרים הממונים בתחומי משרדיהם,
+                            ולאחר התייעצות עם היועץ המשפטי לממשלה. מבחני התמיכות מפורסמים ברשומות ובאתר האינטרנט של משרד
+                            המשפטים (http://www.justice.gov.il/Units/Tmihot/). על פי ניסיוננו, אתר התמיכות מתעדכן כאחת
+                            לחודש. כל נתוני הרכש מרוכזים על ידנו וזמינים בdata.obudget.org. (יש לבחור בשדה supports)
+                            לבחור בשדה procurement)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>

@@ -7,6 +7,9 @@ import ExemptionByPublisherRowView
 import tplEntityDetails from 'Hasadna/oBudget/Pages/Exemptions/entity-details.hbs';
 import tplOrphanExemptionDetails
   from 'Hasadna/oBudget/Pages/Exemptions/orphan-exemption-details.hbs';
+import EntityVizView from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/View';
+import normalize from "./DataStruct/OfficeNormalizer";
+
 
 export default class EntityDetailsView extends Backbone.View {
   className() {
@@ -36,7 +39,7 @@ export default class EntityDetailsView extends Backbone.View {
       });
 
       if (this.currentReqeust) {
-        this.currentReqeust.abort();
+        //this.currentReqeust.abort();
       }
 
       this.currentReqeust = this.entity.doFetch();
@@ -51,7 +54,7 @@ export default class EntityDetailsView extends Backbone.View {
       });
 
       if (this.currentReqeust) {
-        this.currentReqeust.abort();
+        //this.currentReqeust.abort();
       }
       this.currentReqeust = this.exemption.doFetch();
 
@@ -64,9 +67,8 @@ export default class EntityDetailsView extends Backbone.View {
       baseURL: this.baseURL,
       entityId: this.model.get('entityId'),
     });
-
     if (this.currentReqeust) {
-      this.currentReqeust.abort();
+      //this.currentReqeust.abort();
     }
 
     this.currentReqeust = this.entity.doFetch();
@@ -76,7 +78,38 @@ export default class EntityDetailsView extends Backbone.View {
 
   render() {
     this.$el.toggleClass('loading', false);
+
     const data = this.entity.toJSON();
+    data.hasProcurements = data.procurements.length > 0;
+    data.procurements = _.groupBy(data.procurements, item => normalize(item.report_publisher));
+    for (const sectorName in data.procurements) {
+      if (data.procurements.hasOwnProperty(sectorName)) {
+        const sector = data.procurements[sectorName];
+        sector.executed = Math.round(sector.reduce((x, y) => x + y.executed, 0));
+        const years = sector.map(x => Number(x.order_date.split('/').pop())).map(Number);
+        const endYear = Math.max.apply(Math, years);
+        const startYear = Math.min.apply(Math, years);
+        sector.years = endYear === startYear ? endYear : `${startYear}-${endYear}`;
+        const groupedSector = _.groupBy(sector, item => item.order_id);
+        for (const groupName of Object.keys(groupedSector)) {
+          const group = groupedSector[groupName];
+          const groupYears = group.map(x => Number(x.order_date.split('/').pop())).map(Number);
+          const groupEnd = Math.max.apply(Math, groupYears);
+          const groupStart = Math.min.apply(Math, groupYears);
+          group.years = groupEnd === groupStart ? groupEnd : `${groupStart}-${groupEnd}`;
+          group.approved = group.reduce((x, y) => x + y.volume, 0);
+          group.executed = group.reduce((x, y) => x + y.executed, 0);
+          group.order_date = group[0].order_date;
+          group.order_id = group[0].order_id;
+          group.manof_ref = group[0].manof_ref;
+          group.budget_code = group[0].budget_code;
+          group.budget_title = group[0].budget_title;
+        }
+        sector.groupedSector = groupedSector;
+        data.procurements[sectorName] = sector;
+      }
+    }
+    console.log(data);
     this.$el.html(tplEntityDetails(data));
     // for each exemption by publisher, build a view and render it, and append it
     // to the table body
@@ -99,9 +132,30 @@ export default class EntityDetailsView extends Backbone.View {
       }
     }
     this.$el.find('h3.entity-title span.total').text(Object.keys(exemptionsByPublisher).length);
+    //this.$el.find('.entity-title-top').click(() => {
+    //  console.log('hop');
+    //});
 
+
+
+
+        $('.scroll-viewport').scroll(() =>{
+  if ($('.scroll-viewport').scrollTop() > 70) {
+    $('.entity-top-section').addClass('shrink');
+  } else {
+    $('.entity-top-section').removeClass('shrink');
+  }
+});
+
+
+
+    const entityViz = new EntityVizView({
+      entity: this.entity
+    });
     return this;
   }
+
+
 
   renderOrphan() {
     const data = this.exemption.toJSON();
@@ -112,4 +166,5 @@ export default class EntityDetailsView extends Backbone.View {
 
     this.$el.html(tplOrphanExemptionDetails(data));
   }
+
 }

@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import SpendingLine from 'Hasadna/oBudget/Pages/Exemptions/DataStruct/SpendingLine';
+import Procurements from 'Hasadna/oBudget/Pages/Exemptions/DataStruct/Procurements';
 import dataHelpers from 'Hasadna/oBudget/Pages/Exemptions/dataHelpers';
 
 export default class Entity extends Backbone.Model {
@@ -11,6 +12,7 @@ export default class Entity extends Backbone.Model {
       name: null,
       supports: [],
       exemptions: [],
+      procurements: [],
       id: null,
       exemptions_by_publisher: {},
       exemptions_sum: null,
@@ -23,7 +25,18 @@ export default class Entity extends Backbone.Model {
   }
 
   doFetch() {
-    return this.fetch({ success: this.handleFetchResult.bind(this) });
+    this.procurements = new Procurements(null, {
+      baseURL: this.baseURL,
+      entity_id: this.entityId
+    });
+
+    return this.procurements.fetch()
+      .then(() => {
+        this.set('procurements', this.procurements.toJSON());
+      })
+      .then(() => {
+        return this.fetch({ success: this.handleFetchResult.bind(this) });
+      });
   }
 
   url() {
@@ -37,6 +50,7 @@ export default class Entity extends Backbone.Model {
       [];
 
     this.set('exemptions_sum', this.getExemptionsTotalVolume());
+    this.set('supportsBySubject', this.getSupportsBySubjectByYear());
 
     this.ministriesAliasesMap = dataHelpers.generateAliasesMap(this.getRawMinistriesList());
 
@@ -127,6 +141,32 @@ export default class Entity extends Backbone.Model {
     }
 
     return exemptionsByPublisher;
+  }
+  // subject is the ministry in supports
+  getSupportsBySubjectByYear() {
+    const supportsBySubject = {};
+    _.each(this.supports, (support) => {
+      const ministry = support.subject;
+      // set default values
+      if (!(supportsBySubject[ministry])) {
+        supportsBySubject[ministry] = {
+          total_supported: 0, min_year: support.year, max_year: support.year, numOfSupports: 0, supportsByYear: {},
+        };
+      }
+      const supportYear = support.year;
+      if (!supportsBySubject[ministry].supportsByYear[supportYear]) {
+        supportsBySubject[ministry].supportsByYear[supportYear] = {
+          supports: [], total_supported_by_year: 0,
+        };
+      }
+      supportsBySubject[ministry].total_supported += support.amount_supported;
+      supportsBySubject[ministry].max_year = Math.max(supportsBySubject[ministry].max_year, support.year);
+      supportsBySubject[ministry].min_year = Math.min(supportsBySubject[ministry].min_year, support.year);
+      supportsBySubject[ministry].numOfSupports += 1;
+      supportsBySubject[ministry].supportsByYear[supportYear].supports.splice(0, 0, support);
+      supportsBySubject[ministry].supportsByYear[supportYear].total_supported_by_year += support.amount_supported;
+    });
+    return supportsBySubject;
   }
 
   minDate(a, b) {
