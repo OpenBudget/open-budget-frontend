@@ -611,6 +611,7 @@ div.exemptions-alerts {
   .manof-name {
     //font-size: 14px;
     //color: #0098E2;
+    //color: #838692;
     color: #838692;
     //float: none;
     //margin: 0;
@@ -644,7 +645,7 @@ div.exemptions-alerts {
     font-size: 18px;
     font-weight: 700;
     margin: 0;
-    padding-bottom: 25px;
+    //padding-bottom: 25px;
     display: inline-block;
     margin-right: 7px;
   }
@@ -658,8 +659,9 @@ div.exemptions-alerts {
   }
 
   .export {
-    float: left;
+    float: right;
     display: inline-block;
+    padding-bottom: 15px;
   }
 
   .export-exemptions {
@@ -1223,8 +1225,8 @@ div.exemptions-alerts {
     .export {
       float: right;
       margin-right: 6px;
-      margin-top: 20px;
-      margin-bottom: 12px;
+      //margin-top: 20px;
+      margin-bottom: 20px;
     }
 
     .entity-title-top {
@@ -1290,4 +1292,310 @@ div.exemptions-alerts {
     border: 0;
   }
 }
+
+//----
+
+.purchasing_section {
+  background-color: white;
+  margin: 30px 30px 0;
+  padding: 25px;
+  overflow-y: auto;
+
+  .entity-title-top {
+    display: block;
+    padding-bottom: 0;
+  }
+}
+
+.table-purchasing-main {
+  margin-bottom: 0;
+  table-layout: fixed;
+  border-bottom: 1px solid #ddd;
+
+  th {
+    color: #888888;
+  }
+
+  td {
+    border-left: 1px solid #D4D4D4;
+  }
+
+  tbody {
+    tr {
+      background-color: #F1F1F1;
+    }
+  }
+}
+
+.purchasing-expander {
+  text-align: center;
+  background-color: #1782B5;
+  border-left: none !important;
+  position: relative;
+}
+
+.btn-expander {
+  font-family: 'Glyphicons Halflings';
+  padding: 0;
+  display: block;
+  color: white;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  left: 50%;
+
+  &:before {
+    content: "\E113";
+  }
+
+  &.collapsed {
+    &:before {
+      content: "\E114";
+    }
+  }
+
+  &:hover,
+  &:focus {
+    color: white;
+  }
+
+  &:active,
+  &.active {
+    box-shadow: none;
+  }
+}
+
+.purchasing_details_container {
+  background-color: #DFDFDF;
+  padding: 0 20px !important;
+  -webkit-box-shadow: inset 0px 12px 5px -6px rgba(0, 0, 0, 0.06);
+  -moz-box-shadow: inset 0px 12px 5px -6px rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0px 12px 5px -6px rgba(0, 0, 0, 0.06);
+  border-top: none !important;
+}
+
+.table-purchasing-details {
+  margin: 20px 0;
+  table-layout: fixed;
+  border: 2px solid lightgrey;
+  position: relative;
+  border-collapse: initial;
+
+  &:before {
+    bottom: 100%;
+    left: 97%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(194, 225, 245, 0);
+    border-bottom-color: lightgrey;
+    border-width: 14px;
+    margin-left: -14px;
+  }
+
+  &:after {
+    bottom: 100%;
+    left: 97%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(136, 183, 213, 0);
+    border-bottom-color: white;
+    border-width: 11px;
+    margin-left: -11px;
+  }
+
+  th {
+    border-bottom: none !important;
+  }
+
+  thead {
+    tr {
+      background-color: white;
+    }
+  }
+
+  tbody {
+    tr {
+      background-color: white;
+    }
+  }
+
+  .purchasing-expander {
+    text-align: center;
+    background-color: white;
+    border-left: none !important;
+    position: relative;
+  }
+
+  .btn-expander {
+    font-family: 'Glyphicons Halflings';
+    padding: 0;
+    display: block;
+    color: #1782B5;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    left: 50%;
+
+    &:before {
+      content: "\2212";
+    }
+
+    &.collapsed {
+      &:before {
+        content: "+";
+      }
+    }
+
+    &:hover,
+    &:focus {
+      color: #1782B5;
+    }
+
+    &:active,
+    &.active {
+      box-shadow: none;
+    }
+  }
+
+}
+
+.purchasing_quarter_container {
+  padding: 0 20px !important;
+  -webkit-box-shadow: inset 0px 12px 5px -6px rgba(0, 0, 0, 0.06);
+  -moz-box-shadow: inset 0px 12px 5px -6px rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0px 12px 5px -6px rgba(0, 0, 0, 0.06);
+  border-top: none !important;
+  background-color: #1782B5;
+}
+
+.table-purchasing-quarter {
+  margin: 20px 0;
+}
+
+.xs_titel {
+  padding: 10px 8px 15px;
+  display: block;
+  color: #86888A;
+
+  a {
+    padding-right: 5px;
+    color: #0B587D;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .moreInfo {
+    border: 1px solid #1EB5FF;
+    border-radius: 50px;
+    margin-right: 5px;
+
+    .moreInfoText {
+      color: #1EB5FF;
+      padding: 5px 8px 5px 10px;
+      display: inline-block;
+
+      &:before {
+        content: "\e086";
+        position: relative;
+        top: 3px;
+        display: inline-block;
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        padding-left: 3px;
+        color: #1EB5FF;
+      }
+
+      &:hover {
+        color: white;
+
+        &:before {
+          color: white;
+        }
+      }
+    }
+
+    &:hover {
+      background-color: #1EB5FF;
+      color: white;
+    }
+  }
+}
+
+.placeholder_dashboard {
+  background-color: white;
+  margin: 0 30px;
+
+  &:before {
+    content: "";
+    background: url(assets/placeholder_dashboard.png) no-repeat;
+    display: block;
+    width: 960px;
+    height: 460px;
+    margin: auto;
+  }
+}
+
+//---------------------------------------------------------------------------------
+
+//@media
+
+//---------------------------------------------------------------------------------
+
+@media (max-width: 1200px) {
+  .table-purchasing-main {
+    table-layout: auto;
+  }
+
+  .table-purchasing-details {
+    table-layout: auto;
+  }
+
+  .xs_titel {
+    a {
+    }
+
+    .moreInfo {
+      display: inline-block;
+      padding: 0;
+      border: none;
+      padding-right: 5px;
+      margin-right: 5px;
+      border-right: 1px solid lightgrey;
+      border-radius: 0;
+
+      .moreInfoText {
+        padding: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+
+  .purchasing_section {
+    margin: 30px 15px 20px;
+    padding: 0;
+  }
+
+  .purchasing-expander {
+    padding: 0 20px !important;
+  }
+}
+
+
 
