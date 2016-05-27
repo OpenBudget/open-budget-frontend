@@ -2016,6 +2016,75 @@ div.exemptions-alerts {
   }
 }
 
+.entity-details {
+  .entity-top-section {
+    &.shrink {
+      position: absolute;
+      //background-color: green;
+      z-index: 100;
+      width: 100%;
+      right: 0;
+      background-color: #060E29;
+      border-bottom: solid 2px rgba(29, 179, 253, 0.66);
+      -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.6);
+      -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.6);
+      box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.6);
+
+      .entity-name-col {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        float: right;
+        width: 66.66666667%;
+        //background-color: yellow;
+        height: 85px;
+      }
+
+      .entity-name {
+        padding: 0;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        display: block;
+        right: 0;
+        padding-right: 30px;
+        font-size: 18px;
+        line-height: 22px;
+      }
+
+      .entity-title-col {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        float: right;
+        width: 33.33333333%;
+        //background-color: blue;
+        height: 85px;
+      }
+
+      .entity-title {
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        display: block;
+        left: 0;
+        padding-left: 35px;
+        font-size: 16px;
+        line-height: 22px;
+      }
+
+      .export-container {
+        display: none;
+
+      }
+    }
+  }
+}
+
 //#my-nav {
 //  position: absolute;
 //  background-color: green;
@@ -2085,6 +2154,74 @@ div.exemptions-alerts {
       }
     }
   }
+
+  .entity-details {
+    .entity-top-section {
+      &.shrink {
+        position: relative;
+        //background-color: green;
+        z-index: 100;
+        width: inherit;
+        right: inherit;
+        background-color: transparent;
+        box-shadow: none;
+        border-bottom: 0;
+
+        .entity-name-col {
+          position: relative;
+          min-height: 1px;
+          padding-right: 0;
+          padding-left: 0;
+          float: none;
+          width: inherit;
+          //background-color: yellow;
+          height: auto;
+        }
+
+        .entity-name {
+          padding: 0;
+          position: relative;
+          top: inherit;
+          transform: translate(0, -50%);
+          display: block;
+          right: 0;
+          padding-right: 0;
+          font-size: 25px;
+          line-height: inherit;
+        }
+
+        .entity-title-col {
+          position: relative;
+          min-height: 1px;
+          padding-right: 0;
+          padding-left: 0;
+          float: none;
+          width: 33.33333333%;
+          //background-color: blue;
+          height: auto;
+        }
+
+        .entity-title {
+          padding: 0;
+          margin: 0;
+          position: relative;
+          top: inherit;
+          transform: translate(0, -50%);
+          display: block;
+          left: 0;
+          padding-left: 0;
+          font-size: 20px;
+          line-height: inherit;
+        }
+
+        .export-container {
+          display: block;
+
+        }
+      }
+    }
+  }
+
 }
 
 @media (max-width: 768px) {
@@ -2137,11 +2274,20 @@ div.exemptions-alerts {
     .export-purchasing,
     .export-exemptions,
     .export-supports {
-      width: 100%;
       text-align: center;
       margin-left: 0;
-      padding: 12px;
-      margin-bottom: 15px;
+      padding: 0;
+      border: none;
+      margin-bottom: 0;
+      float: right;
+      padding-left: 6px;
+      margin-left: 6px;
+      border-left: 1px solid rgba(128, 128, 128, 0.44);
+      border-radius: 0;
+
+      &:last-child {
+        border-left: none;
+      }
     }
   }
 
@@ -2154,6 +2300,10 @@ div.exemptions-alerts {
   .entity-details .export-container {
     overflow: auto;
     padding: 0 10px 30px;
+  }
+
+  .entity-details .entity-title {
+    margin-bottom: 25px;
   }
 
 }

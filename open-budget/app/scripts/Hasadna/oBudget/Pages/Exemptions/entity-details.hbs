@@ -31,10 +31,11 @@
 
 
 
-<div class="entity-top-section">
+<section class="entity-top-section">
 
-    <h2 class='entity-name'>
-        <a href="#entity/{{ id }}" target="_blank">{{ name }}</a>
+    <div class="entity-name-col">
+        <h2 class='entity-name'>
+            <a href="#entity/{{ id }}" target="_blank">{{ name }}</a>
         <span class='manof-name'>
 
                   {{#ifCond kind "==" "association"}}
@@ -51,7 +52,8 @@
           {{/ifCond}}
 
         </span>
-    </h2>
+        </h2>
+    </div>
 
 
     <!--<h4 class='manof-name'>-->
@@ -59,7 +61,7 @@
 
     <!--</h4>-->
 
-
+<div class="entity-title-col">
   {{#if exemptions.length }}
       <h3 class="entity-title">
           <!--{{ exemptions.length }} התקשרויות עם <span class="total"></span>-->
@@ -72,6 +74,7 @@
           תקצוב מ-x משרדים ב-x ש״ח
 
       </h3>
+  </div>
 
       <div class="export-container">
           <div class="export">
@@ -86,7 +89,7 @@
           </div>
       </div>
 
-  </div>
+  </section>
 
       <div class="placeholder_dashboard"></div>
 
