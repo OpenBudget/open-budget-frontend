@@ -266,7 +266,7 @@ define(
           title_data = center.getCenters()
 
           tpl_total_coefficient = 1000 # TODO: should this be a constant defined somewhere else?
-          
+
           if centeredNode?
               $(tpl_bubble_group_label({
                     total: centeredNode.rev * tpl_total_coefficient,
@@ -282,9 +282,11 @@ define(
                   group.total = group.total * tpl_total_coefficient
 
                   $(tpl_bubble_group_label(group)).css({
-                    top: (group.y + @chart.radius_scale(group.total)) + "px",
+                    top: (group.y + @chart.radius_scale(group.total/tpl_total_coefficient)) + "px",
                     left: group.x + "px"
                   }).appendTo(@$bubbleContainer)
+                  console.log('GROUP',group);
+
 
         addKids: (node, readyCallback) =>
             year = node.src.get('year')
