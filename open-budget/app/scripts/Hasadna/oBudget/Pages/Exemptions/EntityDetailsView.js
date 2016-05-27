@@ -99,6 +99,31 @@ export default class EntityDetailsView extends Backbone.View {
       }
     }
     this.$el.find('h3.entity-title span.total').text(Object.keys(exemptionsByPublisher).length);
+    this.$el.find('.entity-title-top').click(() => {
+      console.log('hop');
+    });
+
+
+
+
+        $('.scroll-viewport').scroll(() =>{
+  if ($('.scroll-viewport').scrollTop() > 50) {
+    $('.entity-top-section').addClass('shrink');
+  } else {
+    $('.entity-top-section').removeClass('shrink');
+  }
+});
+
+
+
+
+//    $('.scroll-viewport').scroll(() =>{
+//  if ($('.scroll-viewport').scrollTop() > 50) {
+//    $('nav').addClass('shrink');console.log('hop');
+//  } else {
+//    $('nav').removeClass('shrink');console.log('hop2');
+//  }
+//});
 
     return this;
   }

@@ -1,6 +1,38 @@
 <div class="loading-indicator">{{> ./sk-fading-circle}}</i></div>
 <section class="scroll-viewport">
 
+
+    <!--<nav id="my-nav">-->
+    <!--<ul class="nav nav-pills">-->
+    <!--<li class=""><a href="#fat">@fat</a></li>-->
+    <!--<li class=""><a href="#mdo">@mdo</a></li>-->
+    <!--<li class=""><a href="#one" tabindex="-1">one</a></li>-->
+    <!--<li class="active"><a href="#two" tabindex="-1">two</a></li>-->
+    <!--<li class=""><a href="#three" tabindex="-1">three</a></li>-->
+    <!--</ul>-->
+    <!--</nav>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="entity-top-section">
+
     <h2 class='entity-name'>
         <a href="#entity/{{ id }}" target="_blank">{{ name }}</a>
         <span class='manof-name'>
@@ -30,20 +62,21 @@
 
   {{#if exemptions.length }}
       <h3 class="entity-title">
-        <!--{{ exemptions.length }} התקשרויות עם <span class="total"></span>-->
+          <!--{{ exemptions.length }} התקשרויות עם <span class="total"></span>-->
           <!--משרדים בסך-->
-        <!--{{#if exemptions_sum}}-->
+              <!--{{#if exemptions_sum}}-->
           <!--{{numbro exemptions_sum isCurrency=true format="0, $"}}-->
-        <!--{{else}}-->
-            <!--לא ידוע-->
-        <!--{{/if}}-->
-תקצוב מ-x משרדים ב-x ש״ח
+              <!--{{else}}-->
+          <!--לא ידוע-->
+              <!--{{/if}}-->
+          תקצוב מ-x משרדים ב-x ש״ח
 
       </h3>
 
       <div class="export-container">
           <div class="export">
-              <a href="javascript:void(0)" class="export-purchasing"><p>יצא רכש<span class="glyphicon glyphicon-save"></span></p></a>
+              <a href="javascript:void(0)" class="export-purchasing"><p>יצא רכש<span
+                      class="glyphicon glyphicon-save"></span></p></a>
               <a href="http://www.obudget.org/api/exemption/entity/{{ id }}?o=csv&limit=10000"
                  class="export-exemptions"><p>
                   יצא התקשרויות<span class="glyphicon glyphicon-save"></span></p></a>
@@ -52,6 +85,8 @@
                   תמיכות<span class="glyphicon glyphicon-save"></span></p></a>
           </div>
       </div>
+
+  </div>
 
       <div class="placeholder_dashboard"></div>
 
