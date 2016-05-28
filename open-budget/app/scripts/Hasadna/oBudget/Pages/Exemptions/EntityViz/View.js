@@ -41,20 +41,23 @@ export default class EntityVizView extends Backbone.View {
     });
 
     // get the latest for each order
-    orders = Object.keys(orders).map((order_id) => {
+    let latest_orders = Object.keys(orders).map((order_id) => {
       return orders[order_id].sort((a, b) => {
         return orderDateEpoch(b) - orderDateEpoch(a);
-      })[0].volume;
+      })[0];
     });
+
+    let order_volumes = latest_orders.map((order) => order.volume);
 
     let supports = this.entity.get('supports');
 
     PieChart('entity-viz-pie', [
       {
         type: 'procurements',
-        value: (orders && orders.length ? orders.reduce((a, b) => {
-          return a + b;
-        }) : 0)
+        value: (order_volumes && order_volumes.length ?
+          order_volumes.reduce((a, b) => {
+            return a + b;
+          }) : 0)
       },
       {
         type: 'supports',
@@ -63,5 +66,26 @@ export default class EntityVizView extends Backbone.View {
         }) : 0)
       }
     ]);
+
+    let orders_by_publisher = {};
+
+    latest_orders.forEach((order) => {
+      if ( ! (orders_by_publisher.publisher in orders_by_publisher) ) {
+        orders_by_publisher[order.publisher] = [];
+      }
+
+      orders_by_publisher[order.publisher].push(order.volume || 0);
+    });
+
+    let histogram_data = Object.keys(orders_by_publisher).map((publisher) => {
+      return {
+        publisher: publisher,
+        value: orders_by_publisher[publisher].reduce((a, b) => {
+          return a + b;
+        })
+      };
+    });
+
+    Histogram('entity-viz-histogram', histogram_data);
   }
 }

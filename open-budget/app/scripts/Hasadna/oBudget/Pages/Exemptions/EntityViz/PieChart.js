@@ -11,13 +11,13 @@ function segColor (c) {
 
 // function to handle pieChart.
 export default function PieChart (element_id, data) {
-  var pC = {},
+  let pC = {},
     pieDim = { w: 250, h: 250 };
 
   pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
 
   // create svg for pie chart.
-  var piesvg = d3.select('#' + element_id)
+  let piesvg = d3.select('#' + element_id)
     .append("svg")
     .attr("width", pieDim.w)
     .attr("height", pieDim.h)
@@ -25,10 +25,10 @@ export default function PieChart (element_id, data) {
     .attr("transform", "translate(" + pieDim.w / 2 + "," + pieDim.h / 2 + ")");
 
   // create function to draw the arcs of the pie slices.
-  var arc = d3.svg.arc().outerRadius(pieDim.r - 10).innerRadius(0);
+  let arc = d3.svg.arc().outerRadius(pieDim.r - 10).innerRadius(0);
 
   // create a function to compute the pie slice angles.
-  var pie = d3.layout.pie()
+  let pie = d3.layout.pie()
     .sort(null)
     .value(function (d) {
       return d.value;
@@ -78,7 +78,7 @@ export default function PieChart (element_id, data) {
   // Animating the pie-slice requiring a custom function which specifies
   // how the intermediate paths should be drawn.
   function arcTween (a) {
-    var i = d3.interpolate(this._current, a);
+    let i = d3.interpolate(this._current, a);
     this._current = i(0);
     return (t) => {
       return arc(i(t));
