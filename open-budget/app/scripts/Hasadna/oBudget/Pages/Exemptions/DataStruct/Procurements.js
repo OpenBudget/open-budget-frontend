@@ -12,7 +12,7 @@ export default class Procurements extends Backbone.Collection {
   }
 
   url () {
-    return `${this.baseURL}/api/procurement/${this.entity_id}`;
+    return `${this.baseURL}/api/procurement/entity/${this.entity_id}`;
   }
 
   model (attrs, options) {
