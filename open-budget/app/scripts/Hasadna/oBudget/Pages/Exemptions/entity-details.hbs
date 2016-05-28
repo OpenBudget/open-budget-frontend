@@ -1,6 +1,36 @@
 <div class="loading-indicator">{{> ./sk-fading-circle}}</i></div>
 <section class="scroll-viewport">
 
+
+    <!--<nav id="my-nav">-->
+    <!--<ul class="nav nav-pills">-->
+    <!--<li class=""><a href="#fat">@fat</a></li>-->
+    <!--<li class=""><a href="#mdo">@mdo</a></li>-->
+    <!--<li class=""><a href="#one" tabindex="-1">one</a></li>-->
+    <!--<li class="active"><a href="#two" tabindex="-1">two</a></li>-->
+    <!--<li class=""><a href="#three" tabindex="-1">three</a></li>-->
+    <!--</ul>-->
+    <!--</nav>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <section class="entity-top-section">
 
     <div class="entity-name-col">
@@ -46,25 +76,173 @@
       </h3>
   </div>
 
-
-      <div class="left-info">
-          <section id="entity-viz">
-
-          </section>
+      <div class="export-container">
+          <div class="export">
+              <a href="javascript:void(0)" class="export-purchasing"><p>יצא רכש<span
+                      class="glyphicon glyphicon-save"></span></p></a>
+              <a href="http://www.obudget.org/api/exemption/entity/{{ id }}?o=csv&limit=10000"
+                 class="export-exemptions"><p>
+                  יצא התקשרויות<span class="glyphicon glyphicon-save"></span></p></a>
+              <a href="http://www.obudget.org/api/supports/entity/{{ id }}?o=csv&limit=10000"
+                 class="export-supports"><p>יצא
+                  תמיכות<span class="glyphicon glyphicon-save"></span></p></a>
+          </div>
       </div>
-      <div class="left-info">
-          <div class="table-responsive info">
+
+  </section>
+
+      <div class="placeholder_dashboard"></div>
+
+      <section class="purchasing_section">
+          <div class="container-fluid">
+              <div class="table-responsive">
 
 
-              <h3 class="entity-title-top">&larr;&nbspהתקשרויות</h3>
+                  <h3 class="entity-title-top">←&nbsp;רכש</h3>
+                  <span class="xs_titel">מידע מדוחות רכש רבעוניים מהאתר הממשלתי לחופש המידע<a href="https://foi.gov.il/"
+                                                                                              target="_blank">foi.gov.il</a>&nbsp;(החל מ2015)
+                                    <a href="#purchasing-modal" class="moreInfo" data-toggle="modal"><span
+                                            class="moreInfoText">מידע נוסף</span></a>
+                  </span>
 
-              <div class="export">
-                  <a href="http://www.obudget.org/api/exemption/entity/{{ id }}?o=csv&limit=10000"
-                     class="export-exemptions"><p>
-                      יצא התקשרויות<span class="glyphicon glyphicon-save"></span></p></a>
-                  <a href="http://www.obudget.org/api/supports/entity/{{ id }}?o=csv&limit=10000"
-                     class="export-supports"><p>יצא
-                      תמיכות<span class="glyphicon glyphicon-save"></span></p></a>
+                  <!--table-purchasing-main-->
+
+                  <table class="table table-purchasing-main">
+                      <thead>
+                      <tr>
+                          <th class="col-xs-6">שם המשרד</th>
+                          <th class="col-xs-1">מס׳</th>
+                          <th class="col-xs-2">בסך</th>
+                          <th class="col-xs-2">שנים</th>
+                          <th class="col-xs-1"></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {{#each procurements}}
+                      <tr>
+                          <td class="purchasing-publisher">{{@key}}</td>
+                          <td class="purchasing-number">{{this.length}}</td>
+                          <td class="purchasing-volume">{{this.volume}}</td>
+                          <td class="purchasing-years">{{this.years}}</td>
+                          <td class="td-expander">
+                              <a href="#demo1" class="btn btn-expander collapsed" data-toggle="collapse"></a>
+                          </td>
+                      </tr>
+
+                      <!--table-purchasing-details-->
+                      <tr style="display: table-row;">
+                          <td colspan="6" class="purchasing_details_container">
+                              <table id="demo1" class="table table-purchasing-details collapse">
+
+                                  <thead>
+                                  <tr>
+                                      <th class="col-xs-2">נושא</th>
+                                      <th class="col-xs-1">אושר</th>
+                                      <th class="col-xs-1">הועבר</th>
+                                      <th class="col-xs-1">שנים</th>
+                                      <th class="col-xs-1">תאריך הזמנה</th>
+                                      <th class="col-xs-1">מס׳ הזמנה</th>
+                                      <th class="col-xs-1">מס׳ מנו״ף</th>
+                                      <th class="col-xs-3">סעיף תקציבי</th>
+                                      <th class="col-xs-1"></th>
+                                  </tr>
+                                  </thead>
+
+                                  <tbody>
+                                {{#each this}}
+                                  <tr>
+                                      <td class="purchasing-description">רכישת קפה<strong class="purchasing-unit">&nbsp;(מחוז צפון)</strong></td>
+                                      <td class="purchasing-approve">50,000</td>
+                                      <td class="purchasing-transported">50,000</td>
+                                      <td class="purchasing-period">2015</td>
+                                      <td class="purchasing-orderDate">27.5.2015</td>
+                                      <td class="purchasing-orderNumber">4501103123</td>
+                                      <td class="purchasing-manof-name">554645</td>
+                                      <td class="purchasing-regulation"><a href="#">002022044 תפעול ציוד וחומר </a></td>
+                                      <td class="td-expander">
+                                          <a href="#demo_inner_1" class="btn btn-expander collapsed"
+                                             data-toggle="collapse"></a>
+                                      </td>
+                                  </tr>
+                                {{/each}}
+                                  <!--table-purchasing-quarter-->
+
+                                  <tr style="display: table-row;">
+                                      <td colspan="9" class="purchasing_quarter_container">
+                                          <table id="demo_inner_1" class="table table-purchasing-quarter collapse">
+
+                                              <thead>
+                                              <tr>
+                                                  <th class="col-xs-1">תקופה</th>
+                                                  <th class="col-xs-2">אושר</th>
+                                                  <th class="col-xs-2">הועבר</th>
+                                                  <th class="col-xs-3">סוג</th>
+                                                  <th class="col-xs-4">תקנה</th>
+                                              </tr>
+                                              </thead>
+
+                                              <tbody>
+
+                                              <tr>
+                                                  <td class="purchasing-quarter">2016(1)</td>
+                                                  <td class="purchasing-quarter-approve">1,000,000 ש״ח</td>
+                                                  <td class="purchasing-quarter-transported">25,000</td>
+                                                  <td class="purchasing-quarter-kind">פטור ממכרז: תקנה 3(29) - ספק
+                                                      יחיד
+                                                  </td>
+                                                  <td class="purchasing-quarter-regulation"><a href="#">002022045 אחזקה
+                                                      ותפעול ארגון משרד</a></td>
+                                              </tr>
+
+                                              <tr>
+                                                  <td class="purchasing-quarter">2016(1)</td>
+                                                  <td class="purchasing-quarter-approve">1,000,000 ש״ח</td>
+                                                  <td class="purchasing-quarter-transported">25,000</td>
+                                                  <td class="purchasing-quarter-kind">פטור ממכרז: תקנה 3(29) - ספק
+                                                      יחיד
+                                                  </td>
+                                                  <td class="purchasing-quarter-regulation"><a href="#">002022045 אחזקה
+                                                      ותפעול ארגון משרד</a></td>
+                                              </tr>
+
+                                              <tr>
+                                                  <td class="purchasing-quarter">2016(1)</td>
+                                                  <td class="purchasing-quarter-approve">1,000,000 ש״ח</td>
+                                                  <td class="purchasing-quarter-transported">25,000</td>
+                                                  <td class="purchasing-quarter-kind">פטור ממכרז: תקנה 3(29) - ספק
+                                                      יחיד
+                                                  </td>
+                                                  <td class="purchasing-quarter-regulation"><a href="#">002022045 אחזקה
+                                                      ותפעול ארגון משרד</a></td>
+                                              </tr>
+
+                                              <tbody>
+                                          </table>
+                                      </td>
+                                  </tr>
+
+                                  <tr>
+                                      <td class="purchasing-description">רכישת חלב</td>
+                                      <td class="purchasing-approve">50,000</td>
+                                      <td class="purchasing-transported">50,000</td>
+                                      <td class="purchasing-period">2015</td>
+                                      <td class="purchasing-orderDate">27.5.2015</td>
+                                      <td class="purchasing-orderNumber">4501103123</td>
+                                      <td class="purchasing-manof-name">554645</td>
+                                      <td class="purchasing-regulation"><a href="#">002022044 תפעול ציוד וחומר </a></td>
+                                      <td class="td-expander">
+                                          <a href="#" class="btn btn-expander collapsed"
+                                             data-toggle="collapse"></a>
+                                      </td>
+                                  </tr>
+
+                                  <tbody>
+                              </table>
+                          </td>
+                      </tr>
+                      {{/each}}
+                      </tbody>
+                  </table>
               </div>
           </div>
       </section>

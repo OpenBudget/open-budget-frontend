@@ -8,7 +8,8 @@ import tplEntityDetails from 'Hasadna/oBudget/Pages/Exemptions/entity-details.hb
 import tplOrphanExemptionDetails
   from 'Hasadna/oBudget/Pages/Exemptions/orphan-exemption-details.hbs';
 import EntityVizView from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/View';
-
+import mock from "./DataStruct/MockProcurements";
+import normalize from "./DataStruct/OfficeNormalizer";
 export default class EntityDetailsView extends Backbone.View {
   className() {
     return 'entity-details center-block col-sm-9';
@@ -76,7 +77,19 @@ export default class EntityDetailsView extends Backbone.View {
 
   render() {
     this.$el.toggleClass('loading', false);
+
     const data = this.entity.toJSON();
+
+    data.procurements = _.groupBy(mock, item => normalize(item.report_publisher));
+    for(var sectorName in data.procurements) {
+      var sector = data.procurements[sectorName];
+      sector.volume = Math.round(sector.reduce((x,y) => x + y.volume, 0));
+      const years = sector.map(x => Number(x.order_date.split("/").pop())).map(Number);
+      const endYear = Math.max.apply(Math, years);
+      const startYear = Math.min.apply(Math, years);
+      sector.years = endYear === startYear ? endYear : `${startYear}-${endYear}`;
+    }
+    console.log(data.procurements);
     this.$el.html(tplEntityDetails(data));
     // for each exemption by publisher, build a view and render it, and append it
     // to the table body
