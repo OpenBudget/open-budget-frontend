@@ -7,6 +7,7 @@ import ExemptionByPublisherRowView
 import tplEntityDetails from 'Hasadna/oBudget/Pages/Exemptions/entity-details.hbs';
 import tplOrphanExemptionDetails
   from 'Hasadna/oBudget/Pages/Exemptions/orphan-exemption-details.hbs';
+import EntityVizView from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/View';
 
 export default class EntityDetailsView extends Backbone.View {
   className() {
@@ -124,6 +125,11 @@ export default class EntityDetailsView extends Backbone.View {
 //    $('nav').removeClass('shrink');console.log('hop2');
 //  }
 //});
+
+    const entityViz = new EntityVizView({
+      baseURL: this.baseURL,
+      entity_id: this.model.get('entityId')
+    });
 
     return this;
   }
