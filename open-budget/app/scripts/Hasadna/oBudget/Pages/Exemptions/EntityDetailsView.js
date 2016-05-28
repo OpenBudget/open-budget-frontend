@@ -10,6 +10,8 @@ import tplOrphanExemptionDetails
 import EntityVizView from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/View';
 import mock from "./DataStruct/MockProcurements";
 import normalize from "./DataStruct/OfficeNormalizer";
+
+
 export default class EntityDetailsView extends Backbone.View {
   className() {
     return 'entity-details center-block col-sm-9';

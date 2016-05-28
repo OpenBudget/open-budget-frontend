@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 import d3 from 'd3';
-import ProcurementModel from 'Hasadna/oBudget/Pages/Exemptions/DataStruct/Procurement';
+import Procurements from 'Hasadna/oBudget/Pages/Exemptions/DataStruct/Procurements';
 import PieChart from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/PieChart';
 import Histogram from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/Histogram';
 
@@ -11,13 +11,9 @@ export default class EntityVizView extends Backbone.View {
   }
 
   initialize (options) {
-    this.procurement = new ProcurementModel({
-      id: options.entity_id
-    }, {
-      baseURL: options.baseURL
-    });
+    this.procurements = new Procurements(null, options);
 
-    this.procurement.fetch().then((response) => {
+    this.procurements.fetch().then((response) => {
       this.render(response);
     });
   }
