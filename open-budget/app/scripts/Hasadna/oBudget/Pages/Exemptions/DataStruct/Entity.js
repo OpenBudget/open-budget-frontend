@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import SpendingLine from 'Hasadna/oBudget/Pages/Exemptions/DataStruct/SpendingLine';
+import Procurements from 'Hasadna/oBudget/Pages/Exemptions/DataStruct/Procurements';
 import dataHelpers from 'Hasadna/oBudget/Pages/Exemptions/dataHelpers';
 
 export default class Entity extends Backbone.Model {
@@ -11,6 +12,7 @@ export default class Entity extends Backbone.Model {
       name: null,
       supports: [],
       exemptions: [],
+      procurements: [],
       id: null,
       exemptions_by_publisher: {},
       exemptions_sum: null,
@@ -23,7 +25,18 @@ export default class Entity extends Backbone.Model {
   }
 
   doFetch() {
-    return this.fetch({ success: this.handleFetchResult.bind(this) });
+    this.procurements = new Procurements(null, {
+      baseURL: this.baseURL,
+      entity_id: this.entityId
+    });
+
+    return this.procurements.fetch()
+      .then(() => {
+        this.set('procurements', this.procurements.toJSON());
+      })
+      .then(() => {
+        return this.fetch({ success: this.handleFetchResult.bind(this) });
+      });
   }
 
   url() {
