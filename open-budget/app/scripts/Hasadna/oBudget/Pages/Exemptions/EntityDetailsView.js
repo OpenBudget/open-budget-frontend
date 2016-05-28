@@ -159,8 +159,7 @@ export default class EntityDetailsView extends Backbone.View {
 //});
 
     const entityViz = new EntityVizView({
-      baseURL: this.baseURL,
-      entity_id: this.model.get('entityId')
+      entity: this.entity
     });
 
     return this;
