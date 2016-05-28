@@ -95,8 +95,9 @@
           <div id="entity-viz-pie"></div>
           <div id="entity-viz-histogram"></div>
       </section>
+        {{#if hasProcurements}}
 
-      <section class="purchasing_section">
+        <section class="purchasing_section">
           <div class="container-fluid">
               <div class="table-responsive">
 
@@ -109,7 +110,6 @@
                   </span>
 
                   <!--table-purchasing-main-->
-
                   <table class="table table-purchasing-main">
                       <thead>
                       <tr>
@@ -246,10 +246,11 @@
                       {{/each}}
                       </tbody>
                   </table>
+
               </div>
           </div>
       </section>
-
+        {{/if}}
 
       <div class="left-info">
           <div class="table-responsive info">

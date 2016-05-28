@@ -81,7 +81,7 @@ export default class EntityDetailsView extends Backbone.View {
     this.$el.toggleClass('loading', false);
 
     const data = this.entity.toJSON();
-
+    data.hasProcurements = data.procurements.length > 0;
     data.procurements = _.groupBy(data.procurements, item => normalize(item.report_publisher));
     for(var sectorName in data.procurements) {
       var sector = data.procurements[sectorName];
@@ -104,7 +104,6 @@ export default class EntityDetailsView extends Backbone.View {
         group.manof_ref = group[0].manof_ref;
         group.purchase_method = group[0].purchase_method;
       }
-      console.log(sectorName, groupedSector);
       //TODO apply this
       //data.procurements[sectorName] = groupedSector;
 
