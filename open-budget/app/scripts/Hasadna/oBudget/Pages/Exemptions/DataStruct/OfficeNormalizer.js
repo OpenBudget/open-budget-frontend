@@ -22,4 +22,3 @@ export default (name) => {
     "המדפיס הממשלתי" : "משרד האוצר"
   })[name] || name
 };
-function grouping() {}
