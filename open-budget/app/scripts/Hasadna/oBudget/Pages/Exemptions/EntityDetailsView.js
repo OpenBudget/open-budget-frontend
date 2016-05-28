@@ -90,6 +90,24 @@ export default class EntityDetailsView extends Backbone.View {
       const endYear = Math.max.apply(Math, years);
       const startYear = Math.min.apply(Math, years);
       sector.years = endYear === startYear ? endYear : `${startYear}-${endYear}`;
+      const groupedSector = _.groupBy(sector, item => item.order_id);
+      for(var groupName of Object.keys(groupedSector)) {
+        var group = groupedSector[groupName];
+        const groupYears = group.map(x => Number(x.order_date.split("/").pop())).map(Number);
+        const groupEnd = Math.max.apply(Math, groupYears);
+        const groupStart = Math.min.apply(Math, groupYears);
+        group.years = groupEnd === groupStart ? groupEnd : `${groupStart}-${groupEnd}`;
+        group.approved = group.reduce((x,y) => x + y.volume, 0);
+        group.executed = group.reduce((x,y) => x + y.executed, 0);
+        group.order_date = group[0].order_date;
+        group.order_id = group[0].order_id;
+        group.manof_ref = group[0].manof_ref;
+        group.purchase_method = group[0].purchase_method;
+      }
+      console.log(sectorName, groupedSector);
+      //TODO apply this
+      //data.procurements[sectorName] = groupedSector;
+
     }
     console.log(data.procurements);
     this.$el.html(tplEntityDetails(data));

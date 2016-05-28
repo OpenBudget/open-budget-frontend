@@ -125,14 +125,14 @@
                           <td class="purchasing-volume">{{this.volume}}</td>
                           <td class="purchasing-years">{{this.years}}</td>
                           <td class="td-expander">
-                              <a href="#demo1" class="btn btn-expander collapsed" data-toggle="collapse"></a>
+                              <a href="#demo{{@index}}" class="btn btn-expander collapsed" data-toggle="collapse"></a>
                           </td>
                       </tr>
 
                       <!--table-purchasing-details-->
                       <tr style="display: table-row;">
                           <td colspan="6" class="purchasing_details_container">
-                              <table id="demo1" class="table table-purchasing-details collapse">
+                              <table id="demo{{@index}}" class="table table-purchasing-details collapse">
 
                                   <thead>
                                   <tr>
@@ -151,25 +151,24 @@
                                   <tbody>
                                 {{#each this}}
                                   <tr>
-                                      <td class="purchasing-description">רכישת קפה<strong class="purchasing-unit">&nbsp;(מחוז צפון)</strong></td>
-                                      <td class="purchasing-approve">50,000</td>
-                                      <td class="purchasing-transported">50,000</td>
-                                      <td class="purchasing-period">2015</td>
-                                      <td class="purchasing-orderDate">27.5.2015</td>
-                                      <td class="purchasing-orderNumber">4501103123</td>
-                                      <td class="purchasing-manof-name">554645</td>
-                                      <td class="purchasing-regulation"><a href="#">002022044 תפעול ציוד וחומר </a></td>
+                                      <td class="purchasing-description">{{this.budget_title}}<strong class="purchasing-unit">&nbsp;({{this.purchasing_unit}})</strong></td>
+                                      <td class="purchasing-approve">{{this.volume}}</td>
+                                      <td class="purchasing-transported">{{this.executed}}</td>
+                                      <td class="purchasing-period">{{this.order_date}}</td>
+                                      <td class="purchasing-orderDate">{{this.order_date}}</td>
+                                      <td class="purchasing-orderNumber">{{this.order_id}}</td>
+                                      <td class="purchasing-manof-name">{{this.manof_ref}}</td>
+                                      <td class="purchasing-regulation"><a href="#">{{this.purchase_method}}</a></td>
                                       <td class="td-expander">
-                                          <a href="#demo_inner_1" class="btn btn-expander collapsed"
+                                          <a href="#demo_inner_{{@index}}" class="btn btn-expander collapsed"
                                              data-toggle="collapse"></a>
                                       </td>
                                   </tr>
-                                {{/each}}
                                   <!--table-purchasing-quarter-->
 
                                   <tr style="display: table-row;">
                                       <td colspan="9" class="purchasing_quarter_container">
-                                          <table id="demo_inner_1" class="table table-purchasing-quarter collapse">
+                                          <table id="demo_inner_{{@index}}" class="table table-purchasing-quarter collapse">
 
                                               <thead>
                                               <tr>
@@ -182,7 +181,7 @@
                                               </thead>
 
                                               <tbody>
-
+                                              {{#each this}}
                                               <tr>
                                                   <td class="purchasing-quarter">2016(1)</td>
                                                   <td class="purchasing-quarter-approve">1,000,000 ש״ח</td>
@@ -215,13 +214,14 @@
                                                   <td class="purchasing-quarter-regulation"><a href="#">002022045 אחזקה
                                                       ותפעול ארגון משרד</a></td>
                                               </tr>
-
+                                              {{/each}}
                                               <tbody>
                                           </table>
                                       </td>
                                   </tr>
+                                {{/each}}
 
-                                  <tr>
+                                <tr>
                                       <td class="purchasing-description">רכישת חלב</td>
                                       <td class="purchasing-approve">50,000</td>
                                       <td class="purchasing-transported">50,000</td>
