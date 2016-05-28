@@ -6,7 +6,7 @@ import d3 from 'd3';
  */
 
 function segColor (c) {
-  return { low: "#807dba", mid: "#e08214", high: "#41ab5d" }[c];
+  return { procurements: "#807dba", supports: "#e08214" }[c];
 }
 
 // function to handle pieChart.
@@ -31,7 +31,7 @@ export default function PieChart (element_id, data) {
   var pie = d3.layout.pie()
     .sort(null)
     .value(function (d) {
-      return d.freq;
+      return d.value;
     });
 
   // Draw the pie slices.
