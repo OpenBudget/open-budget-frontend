@@ -88,6 +88,7 @@ body.kind-spending {
 
   .exemptions-alerts.in {
     height: ~"calc(100vh - 174px)" !important;
+    position: relative;
   }
 
   .entity-details .scroll-viewport {
@@ -215,6 +216,9 @@ div.exemptions-alerts {
     background-color: #DFDFDF;
     overflow-y: auto;
     direction: ltr;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 
     div.exemption-alert {
       padding: 12px 9px;
@@ -223,6 +227,39 @@ div.exemptions-alerts {
       border-left: 7px solid #86888A;
       position: relative;
       cursor: pointer;
+
+      &.empty {
+        height: 100%;
+        cursor: default;
+
+        .exemption-publisher {
+          margin: auto;
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          display: block;
+          left: 50%;
+          text-align: center;
+          font-size: 23px;
+          color: #646567;
+          line-height: 25px;
+
+          &:before {
+            content: "\E088";
+            position: relative;
+            top: 3px;
+            font-family: 'Glyphicons Halflings';
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+            color: #BDBDBD;
+            font-size: 70px;
+            display: block;
+            margin-bottom: 17px;
+          }
+        }
+      }
 
       h5.exemption-publisher {
         color: #3F414B;
@@ -1933,6 +1970,7 @@ div.exemptions-alerts {
     padding: 20px;
     border-radius: 0;
     border: 4px solid #1EB5FF;
+    background-clip: initial;
   }
 
   .infoIcon {
@@ -2051,43 +2089,42 @@ div.exemptions-alerts {
   }
 }
 
-.bootstrap-select.btn-group .dropdown-toggle .filter-option{
+.bootstrap-select.btn-group .dropdown-toggle .filter-option {
   overflow: auto;
 
-
-      &::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    &::-webkit-scrollbar-button {
-      width: 0;
-      height: 0;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #1782B5;
-      border: none;
-      border-radius: 50px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-      background: #1782B5;
-    }
-    &::-webkit-scrollbar-thumb:active {
-      background: #1782B5;
-    }
-    &::-webkit-scrollbar-track {
-      background: #0B4765;
-      border: none;
-      border-radius: 50px;
-    }
-    &::-webkit-scrollbar-track:hover {
-      background: #0B4765;
-    }
-    &::-webkit-scrollbar-track:active {
-      background: #0B4765;
-    }
-    &::-webkit-scrollbar-corner {
-      background: transparent;
-    }
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #1782B5;
+    border: none;
+    border-radius: 50px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #1782B5;
+  }
+  &::-webkit-scrollbar-thumb:active {
+    background: #1782B5;
+  }
+  &::-webkit-scrollbar-track {
+    background: #0B4765;
+    border: none;
+    border-radius: 50px;
+  }
+  &::-webkit-scrollbar-track:hover {
+    background: #0B4765;
+  }
+  &::-webkit-scrollbar-track:active {
+    background: #0B4765;
+  }
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }
 
 //---------------------------------------------------------------------------------
