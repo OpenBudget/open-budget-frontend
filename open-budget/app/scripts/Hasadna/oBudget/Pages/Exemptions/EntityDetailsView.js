@@ -65,7 +65,6 @@ export default class EntityDetailsView extends Backbone.View {
       baseURL: this.baseURL,
       entityId: this.model.get('entityId'),
     });
-
     if (this.currentReqeust) {
       this.currentReqeust.abort();
     }
