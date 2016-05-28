@@ -81,6 +81,7 @@ export default class EntityDetailsView extends Backbone.View {
     this.$el.toggleClass('loading', false);
 
     const data = this.entity.toJSON();
+    data.hasProcurements = data.procurements.length > 0;
     data.procurements = _.groupBy(data.procurements, item => normalize(item.report_publisher));
     for(var sectorName in data.procurements) {
       var sector = data.procurements[sectorName];
