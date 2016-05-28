@@ -82,7 +82,7 @@ export default class EntityDetailsView extends Backbone.View {
 
     const data = this.entity.toJSON();
 
-    data.procurements = _.groupBy(mock, item => normalize(item.report_publisher));
+    data.procurements = _.groupBy(data.procurements, item => normalize(item.report_publisher));
     for(var sectorName in data.procurements) {
       var sector = data.procurements[sectorName];
       sector.volume = Math.round(sector.reduce((x,y) => x + y.volume, 0));
@@ -109,7 +109,6 @@ export default class EntityDetailsView extends Backbone.View {
       //data.procurements[sectorName] = groupedSector;
 
     }
-    console.log(data.procurements);
     this.$el.html(tplEntityDetails(data));
     // for each exemption by publisher, build a view and render it, and append it
     // to the table body
