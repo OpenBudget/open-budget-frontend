@@ -1,67 +1,75 @@
 <div class="loading-indicator">{{> ./sk-fading-circle}}</i></div>
 <div class="scroll-viewport">
-  <h2 class='entity-name'>{{ name }}</h2>
+    <section class="entity-top-section">
 
-  <div class="left-info">
-    <div class="table-responsive info">
-        <table class="table exemption-table table-expandable">
-            <thead>
+        <div class="entity-name-col">
+            <h2 class='entity-name'>{{ name }}</h2>
+        </div>
+    </section>
+
+    <div class="left-info">
+        <div class="table-responsive info">
+            <table class="table exemption-table table-expandable">
+                <thead>
                 <th>שם המשרד</th>
                 <th>מס'</th>
                 <th>בסך</th>
                 <th>התחלה</th>
                 <th>סיום</th>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td class='exemption-publisher'>{{ publisher }}</td>
                     <td class='exemption-start'>1</td>
                     <td class='exemption-volume'>
-                    {{#if exemptions_sum}}
-                      {{numbro exemptions_sum isCurrency=true format="0, $"}}
-                    {{else}}
-                      לא ידוע
-                    {{/if}}
+                      {{#if exemptions_sum}}
+                        {{numbro exemptions_sum isCurrency=true format="0, $"}}
+                      {{else}}
+                          לא ידוע
+                      {{/if}}
                     </td>
                     <td class='exemption-description'>{{moment start_date "D/M/YYYY"}}</td>
                     <td class='exemption-subjects'>{{moment end_date "D/M/YYYY"}}</td>
                 </tr>
                 <tr>
-                  <td class='exemption-description' colspan="2">{{ description }}</td>
-                  <td>
-                  {{#if exemptions_sum}}
-                    {{numbro exemptions_sum isCurrency=true format="0, $"}}
-                  {{else}}
-                    לא ידוע
-                  {{/if}}
-                  </td>
-                  <td>{{moment start_date "D/M/YYYY"}}</td>
-                  <td>{{moment end_date "D/M/YYYY"}}</td>
+                    <td class='exemption-description' colspan="2">{{ description }}</td>
+                    <td>
+                      {{#if exemptions_sum}}
+                        {{numbro exemptions_sum isCurrency=true format="0, $"}}
+                      {{else}}
+                          לא ידוע
+                      {{/if}}
+                    </td>
+                    <td>{{moment start_date "D/M/YYYY"}}</td>
+                    <td>{{moment end_date "D/M/YYYY"}}</td>
                 </tr>
                 <tr>
-                 {{> ./exemption-full-details}}
+                  {{> ./exemption-full-details}}
                 </tr>
-            </tbody>
-        </table>
-
+                </tbody>
+            </table>
 
 
             <div class="footer">
                 <ul class="pull-right">
-                    <li><a class="hasadna" title="הסדנא לידע ציבורי" href="http://hasadna.org.il" target="_blank">הסדנא לידע ציבורי</a></li>
+                    <li><a class="hasadna" title="הסדנא לידע ציבורי" href="http://hasadna.org.il" target="_blank">הסדנא
+                        לידע ציבורי</a></li>
                     <li><a href="#teamModal" data-toggle="modal">♥ הצוות</a></li>
                     <li><a target="_blank" href="https://github.com/OpenBudget/">קוד האתר</a></li>
-                    <li><a target="_blank" href="https://github.com/OpenBudget/open-budget-frontend/issues">דווחו על תקלה</a></li>
-                    <li><a target="_blank" href="http://forum.hasadna.org.il/c/5-category/13-category">קבוצת הדיון שלנו</a></li>
+                    <li><a target="_blank" href="https://github.com/OpenBudget/open-budget-frontend/issues">דווחו על
+                        תקלה</a></li>
+                    <li><a target="_blank" href="http://forum.hasadna.org.il/c/5-category/13-category">קבוצת הדיון
+                        שלנו</a></li>
                     <li><a target="_blank" href="mailto:adam@obudget.org">צרו קשר</a></li>
                     <li><a target="_blank" href="/api">API</a></li>
                     <li><a target="_blank" href="/gov/">האתר הישן</a></li>
-                    <li><a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7DFYUXKNSKN62">תרום לנו</a></li>
+                    <li><a target="_blank"
+                           href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7DFYUXKNSKN62">תרום
+                        לנו</a></li>
                 </ul>
             </div>
 
 
-
+        </div>
     </div>
-  </div>
-</div>
+    </section>
