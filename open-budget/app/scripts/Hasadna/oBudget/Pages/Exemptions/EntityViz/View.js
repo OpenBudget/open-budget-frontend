@@ -1,39 +1,39 @@
 import Backbone from 'backbone';
-import PieChart from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/PieChart';
-import Histogram from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/Histogram';
+import pieChart from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/PieChart';
+import histogram from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/Histogram';
 
 
-function parseOrderDate (date) {
-  "use strict";
-  let split = date.split('/').map((n) => parseInt(n, 10));
+function parseOrderDate(date) {
+  'use strict';
+  const split = date.split('/').map((n) => parseInt(n, 10));
   return new Date(split[2], split[1] - 1, split[0]);
 }
 
-function orderDateEpoch (proc) {
-  "use strict";
+function orderDateEpoch(proc) {
+  'use strict';
   return parseOrderDate(proc.order_date).valueOf();
 }
 
-function amountSupportedOrZero (support) {
-  "use strict";
+function amountSupportedOrZero(support) {
+  'use strict';
   return support.amount_supported || 0;
 }
 
 export default class EntityVizView extends Backbone.View {
-  id () {
+  id() {
     return 'entity-viz';
   }
 
-  initialize (options) {
+  initialize(options) {
     this.entity = options.entity;
     this.render(this.entity.get('procurements'));
   }
 
-  render (procurements) {
-    let orders = {};
+  render(procurements) {
+    const orders = {};
 
     procurements.forEach((proc) => {
-      if ( ! (proc.order_id in orders) ) {
+      if (! (proc.order_id in orders)) {
         orders[proc.order_id] = [];
       }
 
@@ -41,51 +41,52 @@ export default class EntityVizView extends Backbone.View {
     });
 
     // get the latest for each order
-    let latest_orders = Object.keys(orders).map((order_id) => {
-      return orders[order_id].sort((a, b) => {
-        return orderDateEpoch(b) - orderDateEpoch(a);
+    const latestOrders = Object.keys(orders).map((orderId) => {
+      const tmp1 = orders[orderId].sort((a, b) => {
+        const tmp = orderDateEpoch(b) - orderDateEpoch(a);
+        return tmp;
       })[0];
+
+      return tmp1;
     });
 
-    let order_volumes = latest_orders.map((order) => order.volume);
+    const orderVolumes = latestOrders.map((order) => order.volume);
 
-    let supports = this.entity.get('supports');
+    const supports = this.entity.get('supports');
 
-    PieChart('entity-viz-pie', [
+    pieChart('entity-viz-pie', [
       {
         type: 'procurements',
-        value: (order_volumes && order_volumes.length ?
-          order_volumes.reduce((a, b) => {
-            return a + b;
-          }) : 0)
+        value: (orderVolumes && orderVolumes.length ?
+          orderVolumes.reduce((a, b) => a + b) : 0),
       },
       {
         type: 'supports',
-        value: (supports && supports.length ? supports.reduce((a, b) => {
-          return amountSupportedOrZero(a) + amountSupportedOrZero(b);
-        }) : 0)
-      }
+        value: (supports && supports.length ?
+           supports.reduce((a, b) => amountSupportedOrZero(a) + amountSupportedOrZero(b)) :
+            0),
+      },
     ]);
 
-    let orders_by_publisher = {};
+    const ordersByPublisher = {};
 
-    latest_orders.forEach((order) => {
-      if ( ! (orders_by_publisher.publisher in orders_by_publisher) ) {
-        orders_by_publisher[order.publisher] = [];
+    latestOrders.forEach((order) => {
+      if (! (ordersByPublisher.publisher in ordersByPublisher)) {
+        ordersByPublisher[order.publisher] = [];
       }
 
-      orders_by_publisher[order.publisher].push(order.volume || 0);
+      ordersByPublisher[order.publisher].push(order.volume || 0);
     });
 
-    let histogram_data = Object.keys(orders_by_publisher).map((publisher) => {
-      return {
-        publisher: publisher,
-        value: orders_by_publisher[publisher].reduce((a, b) => {
-          return a + b;
-        })
+    const histogramData = Object.keys(ordersByPublisher).map((publisher) => {
+      const tmp = {
+        publisher,
+        value: ordersByPublisher[publisher].reduce((a, b) => a + b),
       };
+
+      return tmp;
     });
 
-    Histogram('entity-viz-histogram', histogram_data);
+    histogram('entity-viz-histogram', histogramData);
   }
 }

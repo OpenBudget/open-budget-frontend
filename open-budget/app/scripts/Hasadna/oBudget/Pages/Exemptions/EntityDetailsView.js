@@ -8,7 +8,7 @@ import tplEntityDetails from 'Hasadna/oBudget/Pages/Exemptions/entity-details.hb
 import tplOrphanExemptionDetails
   from 'Hasadna/oBudget/Pages/Exemptions/orphan-exemption-details.hbs';
 import EntityVizView from 'Hasadna/oBudget/Pages/Exemptions/EntityViz/View';
-import normalize from "./DataStruct/OfficeNormalizer";
+import normalize from './DataStruct/OfficeNormalizer';
 
 
 export default class EntityDetailsView extends Backbone.View {
@@ -38,9 +38,9 @@ export default class EntityDetailsView extends Backbone.View {
         entityId: eid,
       });
 
-      if (this.currentReqeust) {
-        //this.currentReqeust.abort();
-      }
+      // if (this.currentReqeust) {
+      //   //this.currentReqeust.abort();
+      // }
 
       this.currentReqeust = this.entity.doFetch();
       this.$el.toggleClass('loading', true);
@@ -53,9 +53,9 @@ export default class EntityDetailsView extends Backbone.View {
         publicationId: this.model.get('publicationId'),
       });
 
-      if (this.currentReqeust) {
-        //this.currentReqeust.abort();
-      }
+      // if (this.currentReqeust) {
+      //   //this.currentReqeust.abort();
+      // }
       this.currentReqeust = this.exemption.doFetch();
 
       this.exemption.on('ready', () => this.renderOrphan());
@@ -67,9 +67,9 @@ export default class EntityDetailsView extends Backbone.View {
       baseURL: this.baseURL,
       entityId: this.model.get('entityId'),
     });
-    if (this.currentReqeust) {
-      //this.currentReqeust.abort();
-    }
+    // if (this.currentReqeust) {
+    //   //this.currentReqeust.abort();
+    // }
 
     this.currentReqeust = this.entity.doFetch();
 
@@ -109,7 +109,7 @@ export default class EntityDetailsView extends Backbone.View {
         data.procurements[sectorName] = sector;
       }
     }
-    console.log(data);
+
     this.$el.html(tplEntityDetails(data));
     // for each exemption by publisher, build a view and render it, and append it
     // to the table body
@@ -132,30 +132,25 @@ export default class EntityDetailsView extends Backbone.View {
       }
     }
     this.$el.find('h3.entity-title span.total').text(Object.keys(exemptionsByPublisher).length);
-    //this.$el.find('.entity-title-top').click(() => {
+    //  this.$el.find('.entity-title-top').click(() => {
     //  console.log('hop');
-    //});
+    //  });
 
-
-
-
-        $('.scroll-viewport').scroll(() =>{
-  if ($('.scroll-viewport').scrollTop() > 70) {
-    $('.entity-top-section').addClass('shrink');
-  } else {
-    $('.entity-top-section').removeClass('shrink');
-  }
-});
-
-
+    this.$el.find('.scroll-viewport').scroll(() => {
+      if (this.$el.find('.scroll-viewport').scrollTop() > 70) {
+        this.$el.find('.entity-top-section').addClass('shrink');
+      } else {
+        this.$el.find('.entity-top-section').removeClass('shrink');
+      }
+    });
 
     const entityViz = new EntityVizView({
-      entity: this.entity
+      entity: this.entity,
     });
+    entityViz.toString();
+
     return this;
   }
-
-
 
   renderOrphan() {
     const data = this.exemption.toJSON();
