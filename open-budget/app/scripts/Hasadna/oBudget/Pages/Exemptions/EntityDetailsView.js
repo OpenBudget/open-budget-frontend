@@ -79,9 +79,11 @@ export default class EntityDetailsView extends Backbone.View {
   render() {
     this.$el.toggleClass('loading', false);
 
+    let procurementsSum = 0;
     const data = this.entity.toJSON();
     data.hasProcurements = data.procurements.length > 0;
     data.procurements = _.groupBy(data.procurements, item => normalize(item.report_publisher));
+    const procurementCount = _.keys(data.procurements).length;
     for (const sectorName in data.procurements) {
       if (data.procurements.hasOwnProperty(sectorName)) {
         const sector = data.procurements[sectorName];
@@ -106,10 +108,16 @@ export default class EntityDetailsView extends Backbone.View {
           group.budget_title = group[0].budget_title;
         }
         sector.groupedSector = groupedSector;
+        procurementsSum += sector.executed;
         data.procurements[sectorName] = sector;
       }
     }
 
+    data.supports_procurements_sum = procurementsSum + data.supportsBySubject.sum;
+    data.supports_procurements_count = procurementCount + data.supportsBySubject.count
+    // remove from supports the sum and count
+    delete data.supportsBySubject.sum;
+    delete data.supportsBySubject.count;
     this.$el.html(tplEntityDetails(data));
     // for each exemption by publisher, build a view and render it, and append it
     // to the table body
@@ -148,7 +156,6 @@ export default class EntityDetailsView extends Backbone.View {
       entity: this.entity,
     });
     entityViz.toString();
-
     return this;
   }
 

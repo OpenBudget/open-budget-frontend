@@ -142,7 +142,7 @@ export default class Entity extends Backbone.Model {
   }
   // subject is the ministry in supports
   getSupportsBySubjectByYear() {
-    const supportsBySubject = {};
+    const supportsBySubject = { sum: 0, count: 0 };
     _.each(this.supports, (support) => {
       const ministry = support.subject;
       // set default values
@@ -174,7 +174,9 @@ export default class Entity extends Backbone.Model {
       supportsBySubject[ministry].supportsByYear[supportYear].supports.splice(0, 0, support);
       supportsBySubject[ministry].supportsByYear[supportYear].total_supported_by_year +=
         support.amount_supported;
+      supportsBySubject.sum += support.amount_supported;
     });
+    supportsBySubject.count = _.keys(this.supports).length;
     return supportsBySubject;
   }
 
