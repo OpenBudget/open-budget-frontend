@@ -4,6 +4,19 @@
 
 <section class="entity-top-section">
 
+    <div class="export-container">
+        <div class="export">
+            <a href="javascript:void(0)" class="export-purchasing"><p>יצא רכש<span
+                    class="glyphicon glyphicon-save"></span></p></a>
+            <a href="http://www.obudget.org/api/exemption/entity/{{ id }}?o=csv&limit=10000"
+               class="export-exemptions"><p>
+                יצא התקשרויות<span class="glyphicon glyphicon-save"></span></p></a>
+            <a href="http://www.obudget.org/api/supports/entity/{{ id }}?o=csv&limit=10000"
+               class="export-supports"><p>יצא
+                תמיכות<span class="glyphicon glyphicon-save"></span></p></a>
+        </div>
+    </div>
+
     <div class="entity-name-col">
         <h2 class='entity-name'>
             <a href="#entity/{{ id }}" target="_blank">{{ name }}</a>
@@ -42,153 +55,174 @@
               <!--{{else}}-->
           <!--לא ידוע-->
               <!--{{/if}}-->
-          תקצוב מ-x משרדים ב-x ש״ח
-
       </h3>
   </div>
 
-      <div class="export-container">
-          <div class="export">
-              <a href="javascript:void(0)" class="export-purchasing"><p>יצא רכש<span
-                      class="glyphicon glyphicon-save"></span></p></a>
-              <a href="http://www.obudget.org/api/exemption/entity/{{ id }}?o=csv&limit=10000"
-                 class="export-exemptions"><p>
-                  יצא התקשרויות<span class="glyphicon glyphicon-save"></span></p></a>
-              <a href="http://www.obudget.org/api/supports/entity/{{ id }}?o=csv&limit=10000"
-                 class="export-supports"><p>יצא
-                  תמיכות<span class="glyphicon glyphicon-save"></span></p></a>
-          </div>
-      </div>
-
   </section>
 
-      <section id="entity-viz">
-          <div id="entity-viz-pie"></div>
-          <div id="entity-viz-histogram"></div>
-      </section>
-        {{#if hasProcurements}}
+    {{#if hasProcurements}}
+            <!--<section id="entity-viz" class="container-fluid">-->
+
+        <!--תקצוב בסך-x ש״ח מ-x משרדים (משנת 2015)-->
+        <!--<div class="row vis_row">-->
+              <!--<div class="col-xs-12 col-sm-12 col-md-6 vis_histogram" id="entity-viz-histogram">-->
+                  <!--<span class="vis_title">תקצוב לפי משרדי ממשלה</span>-->
+              <!--</div>-->
+              <!--<div class="col-xs-12 col-sm-12 col-md-6 vis_pie" id="entity-viz-pie">-->
+                  <!--<div class="row">-->
+                      <!--<span class="col-xs-12 col-sm-6 col-md-8 vis_title">סוג תקצוב</span>-->
+                      <!--<div class="col-xs-6 col-sm-3 col-md-2 declaration_col"><span class="procurements_icon_color">רכש</span></div>-->
+                      <!--<div class="col-xs-6 col-sm-3 col-md-2 declaration_col"><span class="support_icon_color">תמיכות</span></div>-->
+                  <!--</div>-->
+              <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+      <!--</section>-->
 
         <section class="purchasing_section">
-          <div class="container-fluid">
-              <div class="table-responsive">
+            <div class="container-fluid">
+                <div class="table-responsive">
 
 
-                  <h3 class="entity-title-top">←&nbsp;רכש</h3>
-                  <span class="xs_titel">מידע מדוחות רכש רבעוניים מהאתר הממשלתי לחופש המידע<a href="https://foi.gov.il/"
-                                                                                              target="_blank">foi.gov.il</a>&nbsp;(החל מ2015)
-                                    <a href="#purchasing-modal" class="moreInfo" data-toggle="modal"><span
-                                            class="moreInfoText">מידע נוסף</span></a>
+                    <h3 class="entity-title-top">←&nbsp;רכש</h3>
+                  <span class="xs_titel">מידע מדוחות רכש רבעוניים מהאתר הממשלתי לחופש המידע (החל מ2015)<a class="link" href="https://foi.gov.il/" target="_blank">foi.gov.il</a><a href="#purchasing-modal" class="moreInfo" data-toggle="modal"><span
+                                            class="moreInfoText">מידע נוסף על רכש</span></a>
                   </span>
 
-                  <!--table-purchasing-main-->
-                  <table class="table table-purchasing-main">
-                      <thead>
-                      <tr>
-                          <th class="col-xs-6">שם המשרד</th>
-                          <th class="col-xs-1">מס׳</th>
-                          <th class="col-xs-2">בסך</th>
-                          <th class="col-xs-2">שנים</th>
-                          <th class="col-xs-1"></th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      {{#each procurements}}
-                      <tr>
-                          <td class="purchasing-publisher">{{@key}}</td>
-                          <td class="purchasing-number">{{this.length}}</td>
-                          <td class="purchasing-volume">{{numbro this.executed isCurrency=true format="0, $"}}</td>
-                          <td class="purchasing-years">{{this.years}}</td>
-                          <td class="td-expander">
-                              <a href="#demo{{@index}}" class="btn btn-expander collapsed" data-toggle="collapse"></a>
-                          </td>
-                      </tr>
+                    <!--table-purchasing-main-->
+                    <table class="table table-purchasing-main">
+                        <thead>
+                        <tr>
+                            <th class="col-xs-6">שם המשרד</th>
+                            <th class="col-xs-1">מס׳</th>
+                            <th class="col-xs-2">בסך</th>
+                            <th class="col-xs-2">שנים</th>
+                            <th class="col-xs-1"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each procurements}}
+                            <tr>
+                                <td class="purchasing-publisher">{{@key}}</td>
+                                <td class="purchasing-number">{{this.length}}</td>
+                                <td class="purchasing-volume">{{numbro this.executed isCurrency=true format="0, $"}}</td>
+                                <td class="purchasing-years">{{this.years}}</td>
+                                <td class="td-expander">
+                                    <a href="#demo{{@index}}" class="btn btn-expander collapsed"
+                                       data-toggle="collapse"></a>
+                                </td>
+                            </tr>
 
-                      <!--table-purchasing-details-->
-                      <tr style="display: table-row;">
-                          <td colspan="6" class="purchasing_details_container">
-                              <table id="demo{{@index}}" class="table table-purchasing-details collapse">
+                            <!--table-purchasing-details-->
+                            <tr style="display: table-row;">
+                                <td colspan="6" class="purchasing_details_container">
+                                    <table id="demo{{@index}}" class="table table-purchasing-details collapse">
 
-                                  <thead>
-                                  <tr>
-                                      <th class="col-xs-2">נושא</th>
-                                      <th class="col-xs-1">אושר</th>
-                                      <th class="col-xs-1">הועבר</th>
-                                      <th class="col-xs-1">שנים</th>
-                                      <th class="col-xs-1">תאריך הזמנה</th>
-                                      <th class="col-xs-1">מס׳ הזמנה</th>
-                                      <th class="col-xs-1">מס׳ מנו״ף</th>
-                                      <th class="col-xs-3">סעיף תקציבי</th>
-                                      <th class="col-xs-1"></th>
-                                  </tr>
-                                  </thead>
+                                        <thead>
+                                        <tr>
+                                            <th class="col-xs-2">נושא</th>
+                                            <th class="col-xs-1">אושר</th>
+                                            <th class="col-xs-1">הועבר</th>
+                                            <th class="col-xs-1">שנים</th>
+                                            <th class="col-xs-1">תאריך הזמנה</th>
+                                            <th class="col-xs-1">מס׳ הזמנה</th>
+                                            <th class="col-xs-1">מס׳ מנו״ף</th>
+                                            <th class="col-xs-3">סעיף תקציבי</th>
+                                            <th class="col-xs-1"></th>
+                                        </tr>
+                                        </thead>
 
-                                  <tbody>
-                                {{#each this.groupedSector}}
-                                  <tr>
-                                      <td class="purchasing-description">{{this.budget_title}}<strong class="purchasing-unit">&nbsp;
-                                        {{#if this.purchasing_unit}}({{this.purchasing_unit}}){{/if}}</strong></td>
-                                      <td class="purchasing-approve">{{numbro this.approved isCurrency=true format="0, $"}}</td>
-                                      <td class="purchasing-transported">{{numbro this.executed isCurrency=true format="0, $"}}</td>
-                                      <td class="purchasing-period">{{this.years}}</td>
-                                      <td class="purchasing-orderDate">{{this.order_date}}</td>
-                                      <td class="purchasing-orderNumber">{{this.order_id}}</td>
-                                      <td class="purchasing-manof-name">{{this.manof_ref}}</td>
-                                      <td class="purchasing-regulation"><a href="#">{{this.budget_code}}-{{this.budget_title}}</a></td>
-                                      <td class="td-expander">
-                                          <a href="#demo_inner_{{@../index}}{{@index}}" class="btn btn-expander collapsed"
-                                             data-toggle="collapse"></a>
-                                      </td>
-                                  </tr>
-                                  <!--table-purchasing-quarter-->
+                                        <tbody>
+                                        {{#each this.groupedSector}}
+                                            <tr>
+                                                <td class="purchasing-description">{{this.budget_title}}<strong
+                                                        class="purchasing-unit">&nbsp;
+                                                  {{#if this.purchasing_unit}}({{this.purchasing_unit}}){{/if}}</strong>
+                                                </td>
+                                                <td class="purchasing-approve">{{numbro this.approved isCurrency=true format="0, $"}}</td>
+                                                <td class="purchasing-transported">{{numbro this.executed isCurrency=true format="0, $"}}</td>
+                                                <td class="purchasing-period">{{this.years}}</td>
+                                                <td class="purchasing-orderDate">{{this.order_date}}</td>
+                                                <td class="purchasing-orderNumber">{{this.order_id}}</td>
+                                                <td class="purchasing-manof-name">{{this.manof_ref}}</td>
+                                                <td class="purchasing-regulation"><a href="#">{{this.budget_code}}
+                                                    -{{this.budget_title}}</a></td>
+                                                <td class="td-expander">
+                                                    <a href="#demo_inner_{{@../index}}{{@index}}"
+                                                       class="btn btn-expander collapsed"
+                                                       data-toggle="collapse"></a>
+                                                </td>
+                                            </tr>
+                                            <!--table-purchasing-quarter-->
 
-                                  <tr style="display: table-row;">
-                                      <td colspan="9" class="purchasing_quarter_container">
-                                          <table id="demo_inner_{{@../index}}{{@index}}" class="table table-purchasing-quarter collapse">
+                                            <tr style="display: table-row;">
+                                                <td colspan="9" class="purchasing_quarter_container">
+                                                    <table id="demo_inner_{{@../index}}{{@index}}"
+                                                           class="table table-purchasing-quarter collapse">
 
-                                              <thead>
-                                              <tr>
-                                                  <th class="col-xs-1">תקופה</th>
-                                                  <th class="col-xs-2">אושר</th>
-                                                  <th class="col-xs-2">הועבר</th>
-                                                  <th class="col-xs-3">סוג</th>
-                                              </tr>
-                                              </thead>
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="col-xs-2">תקופה</th>
+                                                            <th class="col-xs-2">אושר</th>
+                                                            <th class="col-xs-2">הועבר</th>
+                                                            <th class="col-xs-6">תקנה</th>
+                                                        </tr>
+                                                        </thead>
 
-                                              <tbody>
-                                              {{#each this}}
-                                                {{this.report_year}}
-                                                {{numbro this.volume isCurrency=true format="0, $"}}
-                                                {{numbro this.executed isCurrency=true format="0, $"}}
-                                                {{this.purchase_method}}{{#if this.exemption_reason}}-{{this.exemption_reason}}{{/if}}
+                                                        <tbody>
 
-                                              {{/each}}
-                                              <tbody>
-                                          </table>
-                                      </td>
-                                  </tr>
-                                {{/each}}
-                                  <tbody>
-                              </table>
-                          </td>
-                      </tr>
-                      {{/each}}
-                      </tbody>
-                  </table>
+                                                        {{#each this}}
+                                                            <tr>
+                                                                <td>{{this.report_year}}</td>
+                                                                <td>{{numbro this.volume isCurrency=true format="0, $"}}</td>
+                                                                <td>{{numbro this.executed isCurrency=true format="0, $"}}</td>
+                                                                <td>{{this.purchase_method}}{{#if this.exemption_reason}}
+                                                                    -{{this.exemption_reason}}{{/if}}</td>
+                                                            </tr>
 
-              </div>
-          </div>
-      </section>
-        {{/if}}
+
+                                                            <!--<tr>-->
+                                                            <!--<td class="purchasing-quarter">2016(1)</td>-->
+                                                            <!--<td class="purchasing-quarter-approve">1,000,000 ש״ח</td>-->
+                                                            <!--<td class="purchasing-quarter-transported">25,000</td>-->
+                                                            <!--<td class="purchasing-quarter-kind">פטור ממכרז: תקנה 3(29) - ספק-->
+                                                            <!--יחיד-->
+                                                            <!--</td>-->
+                                                            <!--<td class="purchasing-quarter-regulation"><a href="#">002022045 אחזקה-->
+                                                            <!--ותפעול ארגון משרד</a></td>-->
+                                                            <!--</tr>-->
+
+
+
+
+
+                                                        {{/each}}
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                        <tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </section>
+    {{/if}}
 
       <div class="left-info">
           <div class="table-responsive info">
               <h3 class="entity-title-top">&larr;&nbspהודעות פטור ממכרז</h3>
 
-<span class="xs_titel">מידע על הודעות על התקשרויות בפטור ממכרז מאתר מנהל הרכש הממשלתי<a
-        href="http://www.mr.gov.il/Pages/HomePage.aspx"
+<span class="xs_titel">מידע על הודעות על התקשרויות בפטור ממכרז מאתר מנהל הרכש הממשלתי<a class="link" href="http://www.mr.gov.il/Pages/HomePage.aspx"
         target="_blank">mr.gov.il</a>
               <a href="#exemption-modal" class="moreInfo" data-toggle="modal"><span
-                      class="moreInfoText">מידע נוסף</span></a></span>
+                      class="moreInfoText">מידע נוסף על התקשרויות בפטור ממכרז</span></a></span>
 
 
               <table class="table exemption-table table-expandable">
@@ -215,11 +249,9 @@
 
 
                   <h3 class="entity-title-top">←&nbsp;תמיכות</h3>
-                              <span class="xs_titel">מידע על מענקי תמיכות מפורטל התמיכות הממשלתי<a
-                                      href="http://www.tmichot.gov.il/irj/portal/anonymous?guest_user=awf_user"
-                                      target="_blank">tmichot.gov.il</a>
+                              <span class="xs_titel">מידע על מענקי תמיכות מפורטל התמיכות הממשלתי<a class="link" href="http://www.tmichot.gov.il/irj/portal/anonymous?guest_user=awf_user" target="_blank">tmichot.gov.il</a>
                                                <a href="#support-modal" class="moreInfo" data-toggle="modal"><span
-                                                       class="moreInfoText">מידע נוסף</span></a></span>
+                                                       class="moreInfoText">מידע נוסף על תמיכות</span></a></span>
 
                   <!--table-support-main-->
 
@@ -346,7 +378,7 @@
 
   {{/if}}
 
-    <div class="left-info">
+    <div class="left-info footer_section">
         <div class="footer details">
             <ul class="pull-right">
                 <li><a class="hasadna" title="הסדנא לידע ציבורי" href="http://hasadna.org.il" target="_blank">הסדנא לידע

@@ -26,11 +26,17 @@ export default class EntityVizView extends Backbone.View {
 
   initialize(options) {
     this.entity = options.entity;
-    this.render(this.entity.get('procurements'));
+    this.render(this.entity.get('procurements'), this.entity.get('supports'));
   }
 
-  render(procurements) {
+  render(procurements, supports) {
+    const COLORS = {
+      total: '#0b587d',
+      procurement: '#807dba',
+      support: '#FF698C',
+    };
     const orders = {};
+    let histogramData = {};
 
     procurements.forEach((proc) => {
       if (! (proc.order_id in orders)) {
@@ -41,52 +47,68 @@ export default class EntityVizView extends Backbone.View {
     });
 
     // get the latest for each order
-    const latestOrders = Object.keys(orders).map((orderId) => {
-      const tmp1 = orders[orderId].sort((a, b) => {
-        const tmp = orderDateEpoch(b) - orderDateEpoch(a);
-        return tmp;
-      })[0];
-
-      return tmp1;
-    });
+    const latestOrders = Object.keys(orders)
+        .map((orderId) => orders[orderId].sort((a, b) => orderDateEpoch(b) - orderDateEpoch(a))[0]);
 
     const orderVolumes = latestOrders.map((order) => order.volume);
 
-    const supports = this.entity.get('supports');
-
-    pieChart('entity-viz-pie', [
+    const piechart = pieChart('entity-viz-pie', [
       {
-        type: 'procurements',
+        type: 'procurement',
         value: (orderVolumes && orderVolumes.length ?
           orderVolumes.reduce((a, b) => a + b) : 0),
       },
       {
-        type: 'supports',
-        value: (supports && supports.length ?
-           supports.reduce((a, b) => amountSupportedOrZero(a) + amountSupportedOrZero(b)) :
-            0),
+        type: 'support',
+        value: (supports && supports.length ? supports
+            .reduce((a, b) => amountSupportedOrZero(a) + amountSupportedOrZero(b)) : 0),
       },
-    ]);
-
-    const ordersByPublisher = {};
+    ], { colors: COLORS });
 
     latestOrders.forEach((order) => {
-      if (! (ordersByPublisher.publisher in ordersByPublisher)) {
-        ordersByPublisher[order.publisher] = [];
+      if (! (order.report_publisher in histogramData)) {
+        histogramData[order.report_publisher] = [];
       }
 
-      ordersByPublisher[order.publisher].push(order.volume || 0);
+      histogramData[order.report_publisher].push({
+        type: 'procurement',
+        value: order.volume || 0,
+      });
     });
 
-    const histogramData = Object.keys(ordersByPublisher).map((publisher) => {
-      const tmp = {
+    supports.forEach((support) => {
+      if (! (support.subject in histogramData)) {
+        histogramData[support.subject] = [];
+      }
+
+      histogramData[support.subject].push({
+        type: 'support',
+        value: amountSupportedOrZero(support),
+      });
+    });
+
+    histogramData = Object.keys(histogramData).map((publisher) => {
+      let total = 0;
+      let procurement = 0;
+      let support = 0;
+
+      histogramData[publisher].forEach((datum) => {
+        if (datum.type === 'support') {
+          support += datum.value;
+        } else if (datum.type === 'procurement') {
+          procurement += datum.value;
+        }
+        total += datum.value;
+      });
+
+      return {
         publisher,
-        value: ordersByPublisher[publisher].reduce((a, b) => a + b),
+        support,
+        procurement,
+        total,
       };
-
-      return tmp;
     });
 
-    histogram('entity-viz-histogram', histogramData);
+    piechart.histogram = histogram('entity-viz-histogram', histogramData, { colors: COLORS });
   }
 }
