@@ -137,7 +137,7 @@ export default class EntityDetailsView extends Backbone.View {
     //  });
 
     this.$el.find('.scroll-viewport').scroll(() => {
-      if (this.$el.find('.scroll-viewport').scrollTop() > 70) {
+      if (this.$el.find('.scroll-viewport').scrollTop() > 170) {
         this.$el.find('.entity-top-section').addClass('shrink');
       } else {
         this.$el.find('.entity-top-section').removeClass('shrink');
