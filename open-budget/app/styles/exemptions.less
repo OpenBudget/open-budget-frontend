@@ -650,6 +650,13 @@ div.exemptions-alerts {
     margin: 0;
     padding: 40px 30px 10px;
     display: block;
+
+    a {
+      &:hover, &:focus {
+        color: #60a6e2;
+        text-decoration: none;
+      }
+    }
   }
 
   .manof-name {
@@ -1794,7 +1801,7 @@ div.exemptions-alerts {
   -moz-box-shadow: inset 0px 12px 5px -6px rgba(0, 0, 0, 0.06);
   box-shadow: inset 0px 12px 5px -6px rgba(0, 0, 0, 0.06);
   border-top: none !important;
-  background-color: #1782B5;
+  background-color: #b2b3b7;
 }
 
 .table-support-moreDetails {
@@ -1812,7 +1819,7 @@ div.exemptions-alerts {
     text-decoration: none;
     display: inline-block;
 
-    &.link{
+    &.link {
       border-left: 1px solid gray;
       padding-left: 20px;
     }
@@ -1842,18 +1849,18 @@ div.exemptions-alerts {
         color: #101836;
       }
 
-      &:hover {
-        color: white;
-
-        &:before {
-          color: white;
-        }
-      }
+      //&:hover {
+      //  color: white;
+      //
+      //  &:before {
+      //    color: white;
+      //  }
+      //}
     }
 
     &:hover {
-      background-color: #101836;
-      color: white;
+      background-color: #dfdfdf;
+      //color: white;
     }
   }
 }
@@ -1915,6 +1922,7 @@ div.exemptions-alerts {
     border-radius: 0;
     //border: 4px solid #1EB5FF;
     background-clip: initial;
+    border-radius: 6px;
   }
 
   .infoIcon {
@@ -1957,6 +1965,10 @@ div.exemptions-alerts {
       display: block;
       left: 50%;
     }
+  }
+
+  .close {
+    font-size: 30px;
   }
 }
 
@@ -2186,6 +2198,24 @@ div.exemptions-alerts {
         background-color: #FF698C;
       }
     }
+  }
+}
+
+.purchasing-modal {
+  .modal-content {
+    border-top: 7px solid #807dba;
+  }
+}
+
+.exemption-modal {
+  .modal-content {
+    border-top: 7px solid #86888a;
+  }
+}
+
+.support-modal {
+  .modal-content {
+    border-top: 7px solid #FF698C;
   }
 }
 
@@ -2426,5 +2456,16 @@ div.exemptions-alerts {
 
   .entity-details .left-info.footer_section {
     display: none;
+  }
+
+  .xs_titel a.link {
+    border: none;
+    padding-left: 20px;
+  }
+
+  .xs_titel .moreInfo {
+    padding-right: 0;
+    border: none;
+    margin-right: 0;
   }
 }
