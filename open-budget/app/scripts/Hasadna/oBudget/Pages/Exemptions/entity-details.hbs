@@ -145,7 +145,7 @@
                                                 <td class="purchasing-orderDate">{{this.order_date}}</td>
                                                 <td class="purchasing-orderNumber">{{this.order_id}}</td>
                                                 <td class="purchasing-manof-name">{{this.manof_ref}}</td>
-                                                <td class="purchasing-regulation"><a href="#">{{this.budget_code}}
+                                                <td class="purchasing-regulation"><a href="#budget/{{subStr this.budget_code 2 10}}/{{this.years}}">{{this.budget_code}}
                                                     -{{this.budget_title}}</a></td>
                                                 <td class="td-expander">
                                                     <a href="#demo_inner_{{@../index}}{{@index}}"
