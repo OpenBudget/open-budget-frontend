@@ -145,8 +145,8 @@
                                                 <td class="purchasing-orderDate">{{this.order_date}}</td>
                                                 <td class="purchasing-orderNumber">{{this.order_id}}</td>
                                                 <td class="purchasing-manof-name">{{this.manof_ref}}</td>
-                                                <td class="purchasing-regulation"><a href="{{URLSchemeHandler 'linkToBudget' this.budget_code this.years}}">{{this.budget_code}}
-                                                    -{{this.budget_title}}</a></td>
+                                                <td class="purchasing-regulation"><a href="{{URLSchemeHandler 'linkToBudget' this.budget_code this.years}}">
+                                                    {{subStr this.budget_code 2 10}} - {{this.budget_title}}</a></td>
                                                 <td class="td-expander">
                                                     <a href="#demo_inner_{{@../index}}{{@index}}"
                                                        class="btn btn-expander collapsed"
@@ -341,7 +341,11 @@
                                                 {{#each this.supports}}
                                                 <tbody>
                                                 <tr>
-                                                    <td>{{ title }}</td>
+                                                    {{#if code}}
+                                                      <td><a href="{{URLSchemeHandler 'linkToBudget' code year}}">{{subStr code 2 10}} - {{ title }}</a></td>
+                                                    {{else}}
+                                                      <td>{{ title }}</td>
+                                                    {{/if}}
                                                     <td>
                                                       {{#if amount_allocated}}
                                                         {{numbro amount_allocated isCurrency=true format="0, $"}}
