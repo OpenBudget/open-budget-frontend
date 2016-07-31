@@ -247,6 +247,7 @@
         <style id="arrow-helper"></style>
         <script src="bundle.js"></script>
         <script src="//platform.twitter.com/widgets.js"></script>
+        <script src="https://cdn.smooch.io/smooch.min.js"></script>
         <script>twttr.ready(function(){twttr.widgets.load()})</script>
 
         <!-- Google Analytics -->
@@ -280,6 +281,17 @@
            }(document, 'script', 'facebook-jssdk'));
         </script>
         <!-- End Facebook Code -->
+ 
+        <script>
+          Smooch.init({ appToken: '5gmh64rhubqgy08wqmuf2iu32',
+    customText: {
+        headerText: 'אפשר לעזור?',
+        inputPlaceholder: 'כתבו לנו הודעה...',
+        sendButtonText: 'לשלוח',
+        introductionText: 'אתם מוזמנים לשאול אותנו הכל, מישהו מצוות המתנדבים שלנו ישתדל לענות כמה שיותר מהר'
+    }
+ });
+        </script>
 
         <div id="teamModal" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width:90%">
