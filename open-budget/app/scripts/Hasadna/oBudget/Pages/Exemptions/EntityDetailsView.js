@@ -114,7 +114,7 @@ export default class EntityDetailsView extends Backbone.View {
     }
 
     data.supports_procurements_sum = procurementsSum + data.supportsBySubject.sum;
-    data.supports_procurements_count = procurementCount + data.supportsBySubject.count
+    data.supports_procurements_count = procurementCount + data.supportsBySubject.count;
     // remove from supports the sum and count
     delete data.supportsBySubject.sum;
     delete data.supportsBySubject.count;
