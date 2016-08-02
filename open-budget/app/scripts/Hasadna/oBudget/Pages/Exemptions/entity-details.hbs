@@ -55,6 +55,12 @@
               <!--{{else}}-->
           <!--לא ידוע-->
               <!--{{/if}}-->
+{{#ifCond hasProcurements '||' supports.length}}
+  {{numbro supports_procurements_count}}
+  משרדים בסך
+  {{numbro supports_procurements_sum format="0, $"}}
+{{/ifCond}}
+
       </h3>
   </div>
 
