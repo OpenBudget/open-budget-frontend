@@ -133,7 +133,7 @@ export default class Main {
           spending: takanaSpending,
         });
 
-        spendingList.toString();
+        spendingList.render();
         //  SpendingPivotTable is doing nothig ??
         //   const spendingPivotTable = new SpendingPivotTable({
         //     el: this.view.$el.find('#spending-pivottable-content'),

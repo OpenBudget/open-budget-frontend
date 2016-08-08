@@ -1,17 +1,22 @@
 <tr>
-    <td class='exemption-start'><%= start_date %></td>
-    <td class='exemption-supplier'>
+    <td class='spending-budget-item'>
+        <a href="<%=window.URLSchemeHandlerInstance.linkToBudget(budget_code,report_year) %>">
+            <%=budget_code.slice(2) %> - <%=budget_title %>
+        </a>
+    </td>
+    <td>
+        <%=report_year %>/<%=report_period ? report_period : '*' %>
+    </td>
+    <td class='spending-supplier'>
         <% if ( entity_id != null ) { %>
-            <a href="<%= window.URLSchemeHandlerInstance.linkToEntity(entity_id) %>"><%= supplier %></a>
+             <a href="<%= window.URLSchemeHandlerInstance.linkToEntity(entity_id) %>"><%=supplier_name %></a>
         <% } else { %>
-            <%= supplier %>
+            <%=supplier_name %>
         <% } %>
     </td>
-    <td class='exemption-volume'><%= volume == null ? 'לא ידוע' : (number_with_commas(volume==null? 0 : volume) + ' ש"ח') %></td>
-    <td class='exemption-budget-code'><a href="<%= URLSchemeHandlerInstance.linkToBudget(budget_code,pageModel.get('year')) %>"><%= budget_code.slice(2) %></a></td>
-    <td class='exemption-description'><%= description %></td>
-    <td class='exemption-subjects'><% for ( var j = 0 ; j < subjects.length ; j++ ) { %>
-        <span class='exemption-subjects-item'><%= subjects[j] %></span>
-    <% } %></td>
-    <td><a target="_blank" href="<%= url %>" class="glyphicon glyphicon-link"></a></td>
+    <td class='spending-volume'><%= volume == null ? 'לא ידוע' : (number_with_commas(volume==null? 0 : volume) +'&nbsp;'+ currency) %></td>
+    <td class='spending-volume'><%= executed == null ? 'לא ידוע' : (number_with_commas(executed==null? 0 : executed) +'&nbsp; ILS') %></td>
+    <td class='spending-order-date'><%= order_date %></td>
+    <td class='exemption-start'><%= purchase_method %></td>
+    <td class='exemption-start'><%= purpose %></td>
 </tr>

@@ -11,7 +11,7 @@ define([
         render: ->
             if @options.spending?
                 jsons = _.map(@options.spending.models, (x) -> x.toJSON())
-                htmls = _.map(jsons, tpl_single_spending_item )
+                htmls = _.map(jsons, tpl_single_spending_item)
                 for html in htmls
                     @$el.append( html )
 
