@@ -105,6 +105,7 @@ export default class EntityDetailsView extends Backbone.View {
           group.order_id = group[0].order_id;
           group.manof_ref = group[0].manof_ref;
           group.budget_code = group[0].budget_code;
+          group.purpose = group[0].purpose;
           group.budget_title = group[0].budget_title;
         }
         sector.groupedSector = groupedSector;
