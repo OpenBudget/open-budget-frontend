@@ -18,7 +18,7 @@
         <meta content="מפתח התקציב - {{ title }}" property="og:title">
         <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." property="og:description">
         <meta content="http://www.obudget.org/{{url}}" property="og:url">
-        <meta content="http://www.obudget.org/styles/assets/obudget.org.png" property="og:image">
+        <meta content="${require(`./styles/assets/obudget.org.png`)}" property="og:image">
 
         <!-- Twitter Meta Data -->
         <meta content="summary_large_image" name="twitter:card">
@@ -27,9 +27,7 @@
         <meta content="@ikramvada" name="twitter:creator">
         <meta content="מפתח התקציב - {{title}}" name="twitter:title">
         <meta content="שאלתם איפה הכסף? הנה הוא. הסדנא לידע ציבורי מציגה את אתר מפתח התקציב שמאפשר לראשונה מעקב צמוד אחרי השינויים בסעיפי התקציב הן לאורך השנה והן ביחס לשנים קודמות." name="twitter:description">
-        <meta content="http://www.obudget.org/styles/assets/obudget.org.png" name="twitter:image:src">
-
-        <link rel="stylesheet" href="/styles/main.css">
+        <meta content="${require(`./styles/assets/obudget.org.png`)}" name="twitter:image:src">
     </head>
     <body>
         <!--[if lt IE 10]>
@@ -245,7 +243,6 @@
         </div><!-- /.modal -->
 
         <style id="arrow-helper"></style>
-        <script src="bundle.js"></script>
         <script src="//platform.twitter.com/widgets.js"></script>
         <script src="https://cdn.smooch.io/smooch.min.js"></script>
         <script>twttr.ready(function(){twttr.widgets.load()})</script>
@@ -281,7 +278,7 @@
            }(document, 'script', 'facebook-jssdk'));
         </script>
         <!-- End Facebook Code -->
- 
+
         <script>
           Smooch.init({ appToken: '5gmh64rhubqgy08wqmuf2iu32',
     customText: {

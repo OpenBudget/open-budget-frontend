@@ -40,18 +40,6 @@ module.exports = function (grunt) {
     'usemin'
   ]);
 
-  grunt.registerTask('dev-workflow', [
-    'clean:dev',
-    'open:dev',
-    'webpack-dev-server:main'
-  ]);
-
-  grunt.registerTask('dev-workflow-noreload', [
-    'clean:dev',
-    'open:dev',
-    'webpack-dev-server:mainNoReload'
-  ]);
-
   grunt.registerTask('default', [
     'dev-workflow'
   ]);

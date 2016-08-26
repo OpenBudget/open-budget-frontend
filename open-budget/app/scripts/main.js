@@ -1,3 +1,11 @@
+// console.log(require('!!html-loader?interpolate=require!../index.html'));
+
+require('!!file-loader?name=[name].[ext]!../.htaccess');
+require('!!file-loader?name=[name].[ext]!../404.html');
+require('!!file-loader?name=[name].[ext]!../favicon.ico');
+require('!!file-loader?name=[name].[ext]!../robots.txt');
+require('!!file-loader?name=[name].[ext]!../subscribe.html');
+
 import Backbone from 'backbone';
 import $ from 'jquery';
 import 'scripts/shame';
@@ -14,6 +22,7 @@ import Router from 'Hasadna/oBudget/Router';
 import URLSchemeHandler from 'scripts/URLSchemeHandler';
 import appConfig from 'scripts/appConfig';
 
+// import 'file?name=[name].[ext]!../index.html';
 require('styles/main.less');
 
 let currentPage;
