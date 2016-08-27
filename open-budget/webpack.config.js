@@ -31,6 +31,13 @@ const config = {
   },
 
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        loader: "eslint-loader",
+        exclude: /node_modules/
+      }
+    ],
     loaders: [{
         test: /scripts.*\.js$/,
         loader: "babel-loader"
