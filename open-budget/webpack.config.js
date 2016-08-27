@@ -53,8 +53,9 @@ const config = {
       },
       {
         // All .html files but index.html
-        test: /^((?!index\.html).)*\.html$/,
-        loader: "underscore-template-loader"
+        test: /\.html$/,
+        loader: "underscore-template-loader",
+        exclude: /index\.html$/
       },
       // see https://github.com/ampedandwired/html-webpack-plugin/issues/301
       {
