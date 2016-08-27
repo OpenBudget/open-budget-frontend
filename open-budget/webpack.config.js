@@ -79,9 +79,7 @@ const config = {
       },
       {
         test: /\.less$/,
-        // loader: extractCSS.extract("style-loader?sourceMap", "css-loader?sourceMap", "less-loader?sourceMap")
         loader: extractCSS.extract(["css-loader?sourceMap", "less-loader?sourceMap"])
-        // loader: 'style!css?sourceMap!less?sourceMap'
       }
     ],
 
