@@ -1,14 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const extractCSS = new ExtractTextPlugin('[name].[contenthash].css');
 
 const config = {
   entry: {
     app: ["app/scripts/main.js"]
   },
   output: {
-    path: './app',
-    filename: "bundle.js"
+    path: './dist',
+    filename: "bundle.[hash].js"
   },
 
   resolve: {
@@ -27,6 +31,13 @@ const config = {
   },
 
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        loader: "eslint-loader",
+        exclude: /node_modules/
+      }
+    ],
     loaders: [{
         test: /scripts.*\.js$/,
         loader: "babel-loader"
@@ -39,10 +50,19 @@ const config = {
         query: {
           helperDirs: [path.resolve(__dirname, 'app/scripts/Hasadna/oBudget/Misc/handlebarsHelpers/')]
         }
-      }, {
-        test: /\.html/,
-        loader: "underscore-template-loader"
-      }, {
+      },
+      {
+        // All .html files but index.html
+        test: /\.html$/,
+        loader: "underscore-template-loader",
+        exclude: /index\.html$/
+      },
+      // see https://github.com/ampedandwired/html-webpack-plugin/issues/301
+      {
+        test: /index\.html/,
+        loader: "html-loader?interpolate=require"
+      },
+      {
         test: /segment-tree-browser\.js$/,
         loader: 'exports?segmentTree'
       }, {
@@ -60,12 +80,14 @@ const config = {
       }, {
         test: new RegExp(escapeRegExp(path.join('moment', 'moment'))),
         loader: "imports?require=>false"
-      }, {
+      },
+      {
+          test: /\.(jpg)|(png)|(svg)|(eot)|(woff)|(ttf)$/,
+          loader : 'file-loader?name=assets/[name]-[hash].[ext]'
+      },
+      {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract(
-          'css?-url&sourceMap!' +
-          'less?sourceMap'
-        )
+        loader: extractCSS.extract(["css-loader?sourceMap", "less-loader?sourceMap"])
       }
     ],
 
@@ -77,14 +99,26 @@ const config = {
   },
 
   plugins: [
+    // see https://github.com/ampedandwired/html-webpack-plugin/issues/301
+    new HtmlWebpackPlugin({
+      template: './app/index.html',
+      inject: true,
+      hash: true,
+      minify: false
+    }),
     // makes jquery avaiable in all plugins, for compatibility.
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
       "window.jQuery": "jquery"
     }),
-    new ExtractTextPlugin('styles/main.css')
+    extractCSS,
     // new webpack.IgnorePlugin(/^\.\/lang$/)
+    new CleanWebpackPlugin(['dist/*'], {
+        root: __dirname,
+        verbose: true,
+        dry: false
+    }),
   ],
 
   debug: true,

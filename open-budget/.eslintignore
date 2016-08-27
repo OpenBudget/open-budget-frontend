@@ -1,6 +1,4 @@
 node_modules/
 app/bower_components
-app/bundle.js
+app/index.html
 webpack.config.js
-grunt/
-Gruntfile.js

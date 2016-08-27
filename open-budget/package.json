@@ -1,6 +1,12 @@
 {
   "name": "open-budget",
   "version": "0.0.0",
+  "scripts": {
+    "install": "bower update",
+    "lint": "eslint app/",
+    "start": "webpack-dev-server --open --host 0.0.0.0 --port 9000 --inline",
+    "build": "webpack -p"
+  },
   "dependencies": {
     "interval-query": "git+https://github.com/OpenBudget/interval-query.git#047a20feee97994c0a1d4c7357e852f38df263c0"
   },
@@ -9,37 +15,32 @@
     "babel-loader": "^6.2.2",
     "babel-preset-es2015": "^6.3.13",
     "bower": "1.4.1",
+    "clean-webpack-plugin": "^0.1.10",
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.10.0",
     "css-loader": "^0.23.1",
     "eslint": "^2.3.0",
     "eslint-config-airbnb": "^6.0.2",
+    "eslint-loader": "^1.5.0",
     "eslint-plugin-react": "^4.0.0",
     "exports-loader": "^0.6.2",
     "extract-text-webpack-plugin": "^0.9.1",
-    "grunt": "~0.4.1",
-    "grunt-contrib-clean": "^0.7.0",
-    "grunt-contrib-connect": "^0.11.2",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-eslint": "^18.0.0",
-    "grunt-open": "^0.2.3",
-    "grunt-rev": "~0.1.0",
-    "grunt-usemin": "~0.1.12",
-    "grunt-webpack": "^1.0.11",
+    "file-loader": "^0.9.0",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.1.4",
+    "html-loader": "^0.4.3",
+    "html-webpack-plugin": "^2.22.0",
     "imports-loader": "^0.6.5",
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
-    "load-grunt-config": "^0.17.2",
     "noop-loader": "^1.0.0",
-    "time-grunt": "~0.2.0",
-    "underscore": "^1.8.3",
+    "style-loader": "^0.13.1",
     "underscore-template-loader": "^0.5.2",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "https://github.com/Bnaya/webpack-dev-server/tarball/fix-wrong-wds-url"
+    "webpack-dev-server": "1.15.0"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=6.0.0",
+    "npm": ">=3.0.0"
   }
 }

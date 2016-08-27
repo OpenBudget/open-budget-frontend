@@ -1,3 +1,9 @@
+require('!!file-loader?name=[name].[ext]!../.htaccess');
+require('!!file-loader?name=[name].[ext]!../404.html');
+require('!!file-loader?name=[name].[ext]!../favicon.ico');
+require('!!file-loader?name=[name].[ext]!../robots.txt');
+require('!!file-loader?name=[name].[ext]!../subscribe.html');
+
 import Backbone from 'backbone';
 import $ from 'jquery';
 import 'scripts/shame';
@@ -174,4 +180,29 @@ pageWithTourReady.then(() => {
   });
 
   training.toString();
+});
+
+$.ajax({
+  url: '//platform.twitter.com/widgets.js',
+  dataType: 'script',
+  cache: true,
+}).then(() => {
+  window.twttr.ready(() => { window.twttr.widgets.load(); });
+});
+
+$.ajax({
+  url: 'https://cdn.smooch.io/smooch.min.js',
+  dataType: 'script',
+  cache: true,
+}).then(() => {
+  window.Smooch.init({
+    appToken: '5gmh64rhubqgy08wqmuf2iu32',
+    customText: {
+      headerText: 'אפשר לעזור?',
+      inputPlaceholder: 'כתבו לנו הודעה...',
+      sendButtonText: 'לשלוח',
+      introductionText: 'אתם מוזמנים לשאול אותנו הכל, מישהו' +
+        ' מצוות המתנדבים שלנו ישתדל לענות כמה שיותר מהר',
+    },
+  });
 });

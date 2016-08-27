@@ -475,7 +475,7 @@ define(['backbone', 'd3', 'd3-tip', 'underscore'], (Backbone, d3, d3tip, _) ->
             {
               class: "main-vis-back-button",
               location: {x: @width/4, y: MIDDLE},
-              href: "styles/assets/bubble-back.svg",
+              href: require("styles/assets/bubble-back.svg"),
               width : "41px",
               height: "21px",
               viewBox: "0 0 41 21"
@@ -484,7 +484,7 @@ define(['backbone', 'd3', 'd3-tip', 'underscore'], (Backbone, d3, d3tip, _) ->
             {
               class: "main-vis-zoom-button",
               location: {x: @width/2, y: MIDDLE*1.5},
-              href: 'styles/assets/bubble-drill.svg',
+              href: require('styles/assets/bubble-drill.svg'),
               width : "21px",
               height: "41px",
               viewBox: "0 0 21 41"
