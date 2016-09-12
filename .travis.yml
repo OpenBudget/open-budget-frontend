@@ -3,13 +3,20 @@ cache:
   directories:
   - open-budget/node_modules
   - open-budget/app/bower_components
+  - email/node_modules
+  - email/bower_components
 node_js:
 - stable
 before_install:
-- cd open-budget
 install:
+- cd open-budget
 - npm install
-script: npm run lint && npm run build
+- cd ../email
+- npm install
+- cd ../
+script: 
+- cd open-budget && npm run lint && npm run build && cd ../
+- cd email && npm run build && cd ../
 notifications:
   slack:
     secure: Q9aI0q5MFmLeu9/1j/dXAJzWS/b2mx5mkkqyozOZx1KwAFcfds/bv909b2LTuXxNcTIgOqx7cQpTYzKl34lDHxDvvus08nnfozsk3UmXRAw1qB5KaWNpER641OONjeX0Ysx7/DgdpTFvbein+AKzv+LnGP0B6U2R3sQEA611cIk=
