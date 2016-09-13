@@ -1,10 +1,17 @@
 {
   "name": "matches",
   "private": true,
+  "scripts": {
+    "test": "grunt test",
+    "postinstall": "bower update",
+    "build": "grunt build"
+  },
   "devDependencies": {
+    "bower": "^1.7.9",
     "grunt": "^0.4.5",
     "grunt-angular-templates": "^0.5.7",
     "grunt-autoprefixer": "^2.0.0",
+    "grunt-cli": "^1.2.0",
     "grunt-concurrent": "^1.0.0",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-compass": "^1.0.0",
@@ -33,8 +40,5 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "scripts": {
-    "test": "grunt test"
   }
 }
