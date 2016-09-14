@@ -5,8 +5,10 @@ cache:
   - open-budget/app/bower_components
   - email/node_modules
   - email/bower_components
-  - matches/
-  - program_reports/
+  - matches/node_modules
+  - matches/bower_components
+  - program_report/node_modules
+  - program_report/bower_components
 node_js:
 - stable
 before_install:
@@ -18,13 +20,13 @@ install:
 - npm install
 - cd ../matches
 - npm install
-- cd ../program_reports
+- cd ../program_report
 - npm install
 - cd ../
 script: 
 - cd open-budget && npm run lint && npm run build && cd ../
 - cd matches && npm run build && cd ../
-- cd program_reports && npm run build && cd ../
+- cd program_report && npm run build && cd ../
 - cd email && npm run build && cd ../
 
 notifications:
