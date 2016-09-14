@@ -5,18 +5,30 @@ cache:
   - open-budget/app/bower_components
   - email/node_modules
   - email/bower_components
+  - matches/node_modules
+  - matches/bower_components
+  - program_report/node_modules
+  - program_report/bower_components
 node_js:
 - stable
 before_install:
+  - gem update --system && gem install compass
 install:
 - cd open-budget
 - npm install
 - cd ../email
 - npm install
+- cd ../matches
+- npm install
+- cd ../program_report
+- npm install
 - cd ../
 script: 
 - cd open-budget && npm run lint && npm run build && cd ../
+- cd matches && npm run build && cd ../
+- cd program_report && npm run build && cd ../
 - cd email && npm run build && cd ../
+
 notifications:
   slack:
     secure: Q9aI0q5MFmLeu9/1j/dXAJzWS/b2mx5mkkqyozOZx1KwAFcfds/bv909b2LTuXxNcTIgOqx7cQpTYzKl34lDHxDvvus08nnfozsk3UmXRAw1qB5KaWNpER641OONjeX0Ysx7/DgdpTFvbein+AKzv+LnGP0B6U2R3sQEA611cIk=
