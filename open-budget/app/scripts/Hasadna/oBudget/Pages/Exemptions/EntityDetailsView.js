@@ -99,8 +99,10 @@ export default class EntityDetailsView extends Backbone.View {
           const groupEnd = Math.max.apply(Math, groupYears);
           const groupStart = Math.min.apply(Math, groupYears);
           group.years = groupEnd === groupStart ? groupEnd : `${groupStart}-${groupEnd}`;
-          group.approved = group.reduce((x, y) => x + y.volume, 0);
-          group.executed = group.reduce((x, y) => x + y.executed, 0);
+
+          group.approved = group[0].volume;
+          group.executed = group[0].executed;
+
           group.order_date = group[0].order_date;
           group.order_id = group[0].order_id;
           group.manof_ref = group[0].manof_ref;
