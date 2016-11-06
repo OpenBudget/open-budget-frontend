@@ -25,7 +25,7 @@ angular.module('matchesApp')
 
       this.setYears = function() {
           thiz.years = [];
-          for ( var i = thiz.firstYear ; i < 2017 ; i++ ) {
+          for ( var i = thiz.firstYear ; i < 2019 ; i++ ) {
               thiz.years.push(i);
           }
       };

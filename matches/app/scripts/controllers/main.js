@@ -15,7 +15,7 @@ var data = function(handler) {
 angular.module('matchesApp')
   .controller('MainCtrl', ['$http', '$window', function ($http,$window) {
       var thiz = this;
-      this.selected_year = 2013;
+      this.selected_year = 2017;
       this.setYear = function(year) {
           if ( year !== this.selected_year ) {
               this.selected_year = year;
