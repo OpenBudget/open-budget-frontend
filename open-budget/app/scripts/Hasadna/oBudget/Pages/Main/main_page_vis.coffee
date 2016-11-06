@@ -89,7 +89,7 @@ define(
             items = _.filter(items, (x) -> x.get('group_top').length > 0 and x.get('code').substring(2,4)!='00')
             items = _.groupBy(items, (x) -> x.get('group_top')[0])
             groups = _.keys(items)
-            groups = _.sortBy(groups, (x)-> -d3.sum(_.map(items[x], (y)->y.get('orig_2016'))))
+            groups = _.sortBy(groups, (x)-> -d3.sum(_.map(items[x], (y)->y.get('orig_2017'))))
 
             @centers = {}
             _.each( groups
@@ -115,7 +115,7 @@ define(
             items = _.filter(items, (x) -> x.get('group_full').length > 0 and x.get('code').substring(2,4)!='00')
             items = _.groupBy(items, (x) -> x.get('group_full')[0])
             groups = _.keys(items)
-            groups = _.sortBy(groups, (x)-> -d3.sum(_.map(items[x], (y)->y.get('orig_2016'))))
+            groups = _.sortBy(groups, (x)-> -d3.sum(_.map(items[x], (y)->y.get('orig_2017'))))
 
             @centers = {}
             _.each( groups
@@ -150,10 +150,10 @@ define(
 
         events:
             'click #grouping-kind .btn': 'clickToggle'
-            'click .compare-2016': 'compare_2016'
-            'click .compare-2015': 'compare_2016_end'
-            'click .compare-2015 .compare-year-start': 'compare_2016_start'
-            'click .compare-2015 .compare-year-end': 'compare_2016_end'
+            'click .compare-2017': 'compare_2017'
+            'click .compare-2016': 'compare_2017_end'
+            'click .compare-2016 .compare-year-start': 'compare_2017_start'
+            'click .compare-2016 .compare-year-end': 'compare_2017_end'
 
         readyBudgetBubblesHandler: =>
           stateChange = (state, node) =>
@@ -205,24 +205,24 @@ define(
         readyMainBudgetHandler: =>
           @$el.find("#main-budget-header").html(tpl_main_budget_header({main:@options.mainBudgetItem.toJSON(), newb:@options.newBudgetItem.toJSON()}))
           if @rendered
-              @compare_2016_start()
+              @compare_2017_start()
 
-        compare_2016: =>
-            @set_actives('.compare-2016')
+        compare_2017: =>
+            @set_actives('.compare-2017')
             @switchComparison('orig_2016/rev_2016')
 
-        compare_2016_start: =>
-            @set_actives('.compare-year-start,.compare-2015')
-            @switchComparison('orig_2015/orig_2016')
+        compare_2017_start: =>
+            @set_actives('.compare-year-start,.compare-2016')
+            @switchComparison('orig_2016/orig_2017')
             false
 
-        compare_2016_end: =>
-            @set_actives('.compare-year-end,.compare-2015')
-            @switchComparison('rev_2015/orig_2016')
+        compare_2017_end: =>
+            @set_actives('.compare-year-end,.compare-2016')
+            @switchComparison('rev_2016/orig_2017')
             false
 
         set_actives: (selector) =>
-            @$el.find('.compare-2016,.compare-2015,.compare-year-start,.compare-year-end').toggleClass('active',false)
+            @$el.find('.compare-2017,.compare-2016,.compare-year-start,.compare-year-end').toggleClass('active',false)
             @$el.find(selector).toggleClass('active',true)
 
         clickToggle: (e) =>
@@ -346,7 +346,7 @@ define(
                         @addBubbleLabels(d)
                 @data.push node
 
-            @compare_2016_start()
+            @compare_2017_start()
 
         moreInfo: (node) ->
             code = @src.get('code')
@@ -380,7 +380,7 @@ define(
                 if node.orig > node.rev then decreased += 1
                 if node.rev >= node.orig then increased += 1
                 node.value = node.rev
-                if node.orig <=0 and node.rev <= 0
+                if node.orig <=0 or node.rev <= 0
                     node.part = 0
                 else if node.orig == 0
                     node.part = 0
