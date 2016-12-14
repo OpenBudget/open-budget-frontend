@@ -88,7 +88,7 @@ export default class EntityDetailsView extends Backbone.View {
       if (data.procurements.hasOwnProperty(sectorName)) {
         const sector = data.procurements[sectorName];
         sector.executed = Math.round(sector.reduce((x, y) => x + y.executed, 0));
-        const years = sector.map(x => Number(x.order_date.split('/').pop())).map(Number);
+        const years = sector.map(x => x.order_date ? Number(x.order_date.split('/').pop()) : 2015).map(Number);
         const endYear = Math.max.apply(Math, years);
         const startYear = Math.min.apply(Math, years);
         sector.years = endYear === startYear ? endYear : `${startYear}-${endYear}`;
