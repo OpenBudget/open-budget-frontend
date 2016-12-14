@@ -88,7 +88,7 @@ export default class EntityDetailsView extends Backbone.View {
       if (data.procurements.hasOwnProperty(sectorName)) {
         const sector = data.procurements[sectorName];
         sector.executed = Math.round(sector.reduce((x, y) => x + y.executed, 0));
-        const years = sector.map(x => (x.order_date ?
+        const years = sector.map(x => (x.order_date != null ?
                                        Number(x.order_date.split('/').pop()) : 2015))
                             .map(Number);
         const endYear = Math.max.apply(Math, years);
@@ -97,7 +97,9 @@ export default class EntityDetailsView extends Backbone.View {
         const groupedSector = _.groupBy(sector, item => item.order_id);
         for (const groupName of Object.keys(groupedSector)) {
           const group = groupedSector[groupName];
-          const groupYears = group.map(x => Number(x.order_date.split('/').pop())).map(Number);
+          const groupYears = group.map(x => (x.order_date != null ?
+                                       Number(x.order_date.split('/').pop()) : 2015))
+                            .map(Number);
           const groupEnd = Math.max.apply(Math, groupYears);
           const groupStart = Math.min.apply(Math, groupYears);
           group.years = groupEnd === groupStart ? groupEnd : `${groupStart}-${groupEnd}`;
