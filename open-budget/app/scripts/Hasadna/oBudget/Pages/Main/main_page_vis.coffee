@@ -209,7 +209,7 @@ define(
 
         compare_2017: =>
             @set_actives('.compare-2017')
-            @switchComparison('orig_2016/rev_2016')
+            @switchComparison('orig_2017/rev_2017')
 
         compare_2017_start: =>
             @set_actives('.compare-year-start,.compare-2016')

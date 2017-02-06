@@ -11,7 +11,7 @@ export default class Main {
     this.dataPromises = {
       compareRecords: dataFetchers.compareRecords(),
       budgetItemKids: dataFetchers.budgetItemKids('00', 2017),
-      mainBudgetItem: dataFetchers.budgetItem('00', 2016),
+      mainBudgetItem: dataFetchers.budgetItem('00', 2017),
       newBudgetItem: dataFetchers.budgetItem('00', 2017),
     };
   }

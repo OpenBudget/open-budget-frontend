@@ -29,7 +29,7 @@ $(() => {
 });
 
 const DEFAULT_HOME = 'main';
-const DEFAULT_YEAR = 2016;
+const DEFAULT_YEAR = 2017;
 
 const URLSchemeHandlerInstance = new URLSchemeHandler(DEFAULT_YEAR, DEFAULT_HOME);
 

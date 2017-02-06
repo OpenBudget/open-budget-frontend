@@ -113,7 +113,7 @@ process_templates = (code,year) ->
 get_program = ->
         program_num = $("#search-item").val()
         console.log "loading new program "+program_num
-        window.location.hash = "#"+program_num+"/"+2016
+        window.location.hash = "#"+program_num+"/"+2017
 
 $ ->
         $(".template, .tab-content").css("display","none")
@@ -137,7 +137,7 @@ $ ->
                 template: [ '<p class="item-code">{{_code}}</p>'
                             '<p class="item-title">{{title}}</p>' ].join('')
                 remote:
-                        url: 'http://www.obudget.org/api/search/full_text?q=%QUERY&limit=20&types=BudgetLine&year=2016'
+                        url: 'http://www.obudget.org/api/search/full_text?q=%QUERY&limit=20&types=BudgetLine&year=2017'
                         dataType: 'json'
                         filter: (l) ->
                                 for x in l
