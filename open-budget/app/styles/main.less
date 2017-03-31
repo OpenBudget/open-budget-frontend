@@ -2577,10 +2577,14 @@ svg rect {
 
 #indepth-widget {
   .approvedBar {
-    stroke-dasharray: 3px, 1px;
     stroke-width: 1px;
+    // stroke-dasharray: 3px, 1px;
     //stroke: fadeout(@approved, 70%) !important;
     //stroke: fadeout(@approved, 70%) !important;
+  }
+
+  .approvedBar.approvedBarContinued {
+    // stroke-dasharray: initial;
   }
 }
 

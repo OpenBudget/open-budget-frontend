@@ -287,13 +287,14 @@ export default class IndepthWidget extends Backbone.View {
   }
 
   renderApprovedBudgets() {
-    const approvedModels = _.filter(this.model.models, x => x.get('kind') === 'approved');
+    const approvedModels = this.model.filter(x => x.get('kind') === 'approved');
+
     const newGraphParts = this.chart.selectAll('.graphPartApproved')
       .data(approvedModels).enter()
       .append('g').attr('class', 'graphPartApproved');
 
     newGraphParts.append('line').attr('class', 'approvedLine').datum(d => d);
-    newGraphParts.append('line').attr('class', 'approvedBar').datum(d => d);
+    newGraphParts.append('line').attr('class', (d) => d.get('continued') ? 'approvedBar approvedBarContinued' : 'approvedBar').datum(d => d);
 
     d3.select('#approvedTooltips').selectAll('.approvedTip').data(approvedModels)
       .enter().append('div').attr('class', 'approvedTip participantTooltip')
