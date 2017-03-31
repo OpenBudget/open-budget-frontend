@@ -26,7 +26,7 @@ export default class IndepthWidget extends Backbone.View {
     this.chart = this.svg.append('g').attr('class', 'chart');
     this.bars = this.svg.append('g').attr('class', 'bar');
     let that = this;
-    this.drag = d3.behavior.drag().on('drag', () => { // eslint-disable-line
+    this.drag = d3.behavior.drag().on('drag', () => {
       const selectionOrig = that.options.selectionModel.get('selection');
       const selection = selectionOrig.slice(0, 2);
       // const { x } = d3.event;
@@ -39,9 +39,11 @@ export default class IndepthWidget extends Backbone.View {
         selection[1] -= dx;
         return that.options.selectionModel.set('selection', selection);
       }
+
+      return '';
     });
 
-    this.tooltipYOffset = function (d) {
+    this.tooltipYOffset = function h(d) {
       return -TOOLTIP_SIZE + 45 + this.valueScale(d.get('value'));
     };
 
@@ -55,13 +57,13 @@ export default class IndepthWidget extends Backbone.View {
       d.budgetCode = this.options.budgetCode;
       if (d.get('source') !== 'dummy') {
         return tplWidgetChangeTooltip(d);
-      } else {
-        return '';
       }
+
+      return '';
     });
     this.chart.call(this.change_tip);
     that = this;
-    this.showTip = function (d) {
+    this.showTip = function h(d) {
       const hook = d3.select(this);
       that.change_tip.show(d);
       $('.timeline-tip').toggleClass('active', true).css('pointer-events', 'none');
@@ -88,67 +90,89 @@ export default class IndepthWidget extends Backbone.View {
     this.showGuideline = function () {
       const hook = d3.select(this);
       const mouse = d3.mouse(this);
-      that.chart.selectAll('.guideline').attr('x1', mouse[0]).attr('x2', mouse[0]).style('visibility', 'visible');
+      that.chart.selectAll('.guideline').attr('x1', mouse[0]).attr('x2', mouse[0])
+      .style('visibility', 'visible');
       let date = that.baseTimeScale.invert(mouse[0]);
       date = new Date(date);
       const ofs = $(that.svg[0]).offset();
       that.participantThumbnailsOffset = that.participantThumbnails.offset();
       if (that.termSegmentTree) {
-        const termList = that.termSegmentTree.queryPoint(that.baseInverseTimeScale(d3.event.pageX + 4));
+        const termList = that.termSegmentTree
+        .queryPoint(that.baseInverseTimeScale(d3.event.pageX + 4));
         $('.guide-line-photo').remove();
         $('.participant-hide-photo').removeClass('participant-hide-photo');
-        for (let term of Array.from(termList)) {
+        for (const term of Array.from(termList)) {
           const participant = term.data;
-          that.participantThumbnails.find(`#participant-${ participant.get('unique_id') }`).addClass('participant-hide-photo');
+          that.participantThumbnails.find(`#participant-${participant.get('unique_id')}`)
+          .addClass('participant-hide-photo');
           $(tplParticipantPhoto(participant.attributes)).css({
-            left: d3.event.pageX + 'px',
-            top: that.titleIndexScale(participant.get('title')) + that.participantThumbnailsOffset.top - 240 + 'px'
+            left: `${d3.event.pageX}px`,
+            top: `${that.titleIndexScale(participant.get('title'))}`
+            + `${that.participantThumbnailsOffset.top - 240}px`,
           }).appendTo('body');
         }
       }
-      d3.select('#indepth-guideline-date').html(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()).style('display', 'block').style('left', d3.event.pageX + 'px').style('top', ofs.top + that.valueScale(0) + 'px');
+
+      d3.select('#indepth-guideline-date')
+        .html(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+        .style('display', 'block')
+        .style('left', `${d3.event.pageX}px`)
+        .style('top', `${ofs.top + that.valueScale(0)}px`);
+
       if (this.tagName === 'rect') {
-        const hook_ofs = mouse[0] - hook.attr('x');
-        const hook_width = hook.attr('width');
-        let compensation = hook_ofs - hook_width / 2;
-        let sub_compensation = 0;
-        const tip_width = $('.timeline-tip').width();
-        let overflow = mouse[0] - tip_width / 2;
+        const hookOfs = mouse[0] - hook.attr('x');
+        const hookWidth = hook.attr('width');
+        let compensation = hookOfs - hookWidth / 2;
+        let subCompensation = 0;
+        const tipWidth = $('.timeline-tip').width();
+        let overflow = mouse[0] - tipWidth / 2;
         if (overflow < 0) {
           compensation -= overflow;
-          sub_compensation = overflow;
+          subCompensation = overflow;
         }
-        overflow = mouse[0] + tip_width / 2 - that.maxWidth;
+        overflow = mouse[0] + tipWidth / 2 - that.maxWidth;
         if (overflow > 0) {
           compensation -= overflow;
-          sub_compensation = overflow;
+          subCompensation = overflow;
         }
-        $('.timeline-tip').css('margin-left', compensation + 'px');
+        $('.timeline-tip').css('margin-left', `${compensation}px`);
         const { sheet } = document.getElementById('arrow-helper');
         while (sheet.cssRules.length > 0) {
           sheet.deleteRule(0);
         }
-        if (sub_compensation !== 0) {
-          sheet.insertRule(`.timeline-tip .arrow.arrow-bottom:before { margin-left: ${ sub_compensation - 8 }px }`);
-          sheet.insertRule(`.timeline-tip .arrow.arrow-bottom:after { margin-left: ${ sub_compensation - 5 }px }`);
+
+        if (subCompensation !== 0) {
+          sheet
+            .insertRule('.timeline-tip .arrow.arrow-bottom:before '
+              + `{ margin-left: ${subCompensation - 8}px }`);
+          sheet
+            .insertRule('.timeline-tip .arrow.arrow-bottom:after ' +
+               `{ margin-left: ${subCompensation - 5}px }`);
         }
       }
       return d3.event.preventDefault();
     };
-    this.hideGuideline = function () {
+    this.hideGuideline = function h() {
       that.chart.selectAll('.guideline').style('visibility', 'hidden');
       d3.select('#indepth-guideline-date').html('').style('display', 'none');
       $('.guide-line-photo').remove();
       $('.participant-hide-photo').removeClass('participant-hide-photo');
       return true;
     };
-    this.scrollToChange = function (d) {
+    this.scrollToChange = function h(d) {
       const source = d.get('source');
       const uniqueId = source.get('uniqueId');
       const $target = $(`#${uniqueId}`);
-      $('html, body').animate({ scrollTop: $target.offset().top - $('#affix-header').height() }, 1000, () => $target.animate({ 'background-color': '#efefef' }, 200).animate({ 'background-color': 'white' }, 200));
+      $('html, body')
+        .animate({
+          scrollTop: $target.offset().top - $('#affix-header').height(),
+        },
+        1000,
+        () => $target.animate({ 'background-color': '#efefef' }, 200)
+        .animate({ 'background-color': 'white' }, 200));
       return true;
     };
+
     this.participants = [];
     this.titles = [];
     this.titleToIndex = {};
@@ -156,7 +180,7 @@ export default class IndepthWidget extends Backbone.View {
     return this.titleToIndex;
   }
 
-  render__chart_bg() {
+  renderChartBg() {
     this.chart.selectAll('.background').data([1]).enter().append('rect').attr('class', 'background').style('stroke', null);
     this.chart.selectAll('.background').data([1]).attr('x', d => this.timeScale(this.minTime)).attr('y', d => this.valueScale(this.maxValue)).attr('width', d => this.timeScale(this.maxTime) - this.timeScale(this.minTime)).attr('height', d => this.valueScale(this.minValue) - this.valueScale(this.maxValue));
     if (this.tipBG == null) {
@@ -412,7 +436,7 @@ export default class IndepthWidget extends Backbone.View {
     this.valueScale = t => {
       return this.pixelPerfecter(this.baseValueScale(t));
     };
-    this.render__chart_bg();
+    this.renderChartBg();
     this.render__year_starts();
     if (this.show_changes) {
       this.render__approved_budgets();
