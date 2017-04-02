@@ -2,3 +2,4 @@ node_modules/
 app/bower_components
 app/index.html
 webpack.config.js
+app/scripts/Hasadna/oBudget/Pages/BudgetItem/IndepthWidget.js
