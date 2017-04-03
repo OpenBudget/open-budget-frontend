@@ -117,6 +117,10 @@
                         <b style="font-size:125%">התאמה נוכחית</b>
                     </div>
                     <div class="panel-body">
+                        <div class="form-group">
+                            <label for="comments_{{item.code}}">הערות</label>
+                            <textarea ng-model="main.selected_item.comments" rows="4" id="comments_{{item.code}}" class="form-control" placeholder="עריכת ההערות..."></textarea>
+                        </div>
                         <div class="alert alert-danger" role="alert" ng-show="main.selected_item.match_status.invalid.length>0">
                             ברמה זו קיימות התאמות מרובות לסעיפים הבאים המהווים כפילות:
                             <ul>
