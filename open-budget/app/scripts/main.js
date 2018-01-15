@@ -155,20 +155,20 @@ function shouldNotTour() {
   // tour should start only on the main page
   return true;
 
-  if (!(currentPage instanceof MainPage) && !sessionStorage.getItem('touring')) {
-    return true;
-  }
-
-  // when focused on a bubble when not while tour, don't start it
-  if (
-      currentPage instanceof MainPage &&
-      location.hash.indexOf('?') > -1 &&
-      !sessionStorage.getItem('touring')
-    ) {
-    return true;
-  }
-
-  return false;
+  // if (!(currentPage instanceof MainPage) && !sessionStorage.getItem('touring')) {
+  //   return true;
+  // }
+  //
+  // // when focused on a bubble when not while tour, don't start it
+  // if (
+  //     currentPage instanceof MainPage &&
+  //     location.hash.indexOf('?') > -1 &&
+  //     !sessionStorage.getItem('touring')
+  //   ) {
+  //   return true;
+  // }
+  //
+  // return false;
 }
 
 pageWithTourReady.then(() => {
