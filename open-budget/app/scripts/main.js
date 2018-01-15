@@ -153,6 +153,8 @@ Backbone.history.start({ pushState: false });
 
 function shouldNotTour() {
   // tour should start only on the main page
+  return true;
+
   if (!(currentPage instanceof MainPage) && !sessionStorage.getItem('touring')) {
     return true;
   }
